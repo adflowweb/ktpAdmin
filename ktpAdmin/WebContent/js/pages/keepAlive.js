@@ -1,6 +1,7 @@
+
 function pingsettingFunc() {
 	console.log('핑주기 설정 펑션');
-
+	var tokenID=sessionStorage.getItem("tokenID");
 	if (formCheck()) {
 
 		var input_pingsetting = $('#input_pingsetting').val();
@@ -14,7 +15,7 @@ function pingsettingFunc() {
 				url : '/v1/messages',
 				type : 'POST',
 				headers : {
-					'X-ApiKey' : '9c208db3ac3f44aa8e82423'
+					'X-ApiKey' : tokenID
 				},
 				contentType : "application/json",
 				dataType : 'json',

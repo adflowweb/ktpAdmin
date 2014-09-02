@@ -56,13 +56,16 @@ function userAddFunction() {
 									console.log(data.result);
 									if (data.result.info) {
 										alert('관리자로 등록 되었습니다.');
-
+										wrapperFunction('userAdd');
 									} else {
 										alert('관리자 등록에 실패 하였습니다.');
+										wrapperFunction('userAdd');
 									}
 								},
 								error : function(data) {
 									console.log('fail');
+									alert('관리자 등록에 실패 하였습니다.');
+									wrapperFunction('userAdd');
 								}
 							});
 						}
@@ -78,11 +81,8 @@ function userAddFunction() {
 					}
 				},
 				error : function(data, textStatus, request) {
-					alert("관리자 등록에 실패 하였습니다.");
-					$('#input_userID').val("");
-
-					$('#input_userID').focus();
-					console.log(data);
+					alert('관리자 등록에 실패 하였습니다.');
+					wrapperFunction('userAdd');
 				}
 			});
 		}
