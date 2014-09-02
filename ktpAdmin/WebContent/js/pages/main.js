@@ -1,83 +1,345 @@
-function pingsettingFunc() {
-	console.log('핑주기 설정 펑션');
+$(document).ready(function() {
 
-	if (formCheck()) {
+	$('.navbar-static-side').hide();
+	var localTokenId = sessionStorage.getItem("tokenID");
+	// local storage token ID Check
+	if (localTokenId) {
+		$('.navbar-static-side').show();
+		$('#ul_userInfo').show();
+		$("#page-wrapper").load("pages/keepAlivePageWrapper.html", function() {
 
-		var input_pingsetting = $('#input_pingsetting').val();
-		var input_receiver = $('#input_receiver').val();
-		var num_check = /^[0-9]*$/;
-		if (num_check.test(input_pingsetting)) {
+		});
+		// tokenId..null
+	} else {
 
-			console.log('정상입력');
+		$("#page-wrapper").load("pages/login.html", function() {
+			$('#ul_userInfo').hide();
+			console.log("logind..html..");
+		});
 
+	}
+
+});
+
+function resetFunction(){
+	wrapperFunction('tokenManager');
+}
+
+// page wrapperfunction
+function wrapperFunction(data) {
+
+	$("#page-wrapper").load("pages/" + data + "PageWrapper.html", function() {
+
+		console.log(data);
+		var tokenID = sessionStorage.getItem("tokenID");
+		var userID = sessionStorage.getItem("userID");
+		console.log(tokenID);
+		console.log(userID);
+
+		if (data === "keepAlive") {
+
+		}
+
+		if (data === "userManager") {
+			
 			$.ajax({
-				url : '/v1/messages',
-				type : 'POST',
+				url : '/v1/users?type=admin',
+				type : 'GET',
 				headers : {
-					'X-ApiKey' : '9c208db3ac3f44aa8e82423'
+					'X-ApiKey' : tokenID
 				},
 				contentType : "application/json",
-				dataType : 'json',
 				async : false,
-				data : '{"receiver":"' + input_receiver
-						+ '","qos":2,"type":102, "content":" {\\"keepAlive\\":'
-						+ input_pingsetting + '} "}',
-
 				success : function(data) {
-					console.log(data);
-					console.log(data.result.success);
-					alert('keep Alive Time 을 전송 하였습니다.');
-					$('#input_receiver').val("");
-					$('#input_pingsetting').val("");
-					$('#input_receiver').focus();
+					var tableData = [];
+					if (data.result.data) {
 
+						for ( var i in data.result.data) {
+
+							var item = data.result.data[i];
+							console.log(item);
+							tableData.push({
+								"Id" : item.userID,
+								"Name" : item.name,
+								"Dept" : item.dept,
+								"Phone" : item.phone
+							});
+						}
+
+						console.log(tableData);
+						$('#dataTables-example').dataTable({
+							bJQueryUI : true,
+							aaData : tableData,
+							aoColumns : [ {
+								mData : 'Id'
+							}, {
+								mData : 'Name'
+							}, {
+								mData : 'Dept'
+							}, {
+								mData : 'Phone'
+							} ]
+						});
+					} else {
+						alert('유저 정보를 가지고 오는데 실패 하였습니다.');
+					}
 				},
 				error : function(data, textStatus, request) {
-					alert('전송실패');
+					console.log(data);
+					alert('유저 정보를 가지고 오는데 실패 하였습니다.');
 				}
 			});
 
+			$('#dataTables-example tbody').on(
+					'click',
+					'tr',
+					function() {
+
+						var tableData = $(this).children("td")
+								.map(function() {
+									return $(this).text();
+								}).get();
+
+						console.log(tableData[0]);
+						$('#input_adminID').val(tableData[0]);
+					});
+			
 			
 
-		} else {
-
-			alert('숫자만 입력할수 있습니다.');
-			$('#input_pingsetting').val("");
-			$('#input_pingsetting').focus();
-			return false;
+		}
+		
+		if(data==="token"){
+			
+			
+			
+			
 		}
 
-	}
+		if (data === "changePass") {
 
+		}
+
+	});
 }
 
-function resetFunc() {
-	$('#input_pingsetting').val("");
-	$('#input_receiver').val("");
-	$('#input_receiver').focus();
+// login function
+function loginFunction() {
 
-}
-
-function formCheck() {
-
-	var input_pingsetting = $('#input_pingsetting').val();
-	var input_receiver = $('#input_receiver').val();
-	if (input_receiver == "" || input_receiver == null) {
-
-		alert('대상을 입력해 주세요');
-		$('#input_receiver').focus();
+	var loginId = $('#loginId').val();
+	var loginPass = $('#loginPass').val();
+	// form null check
+	if (loginId == null || loginId == "") {
+		alert("아이디 입력해주세요");
 		return false;
-
 	}
-	if (input_pingsetting == "" || input_pingsetting == null) {
 
-		alert('초를 입력해주세요!');
-
-		$('#input_pingsetting').focus();
+	if (loginPass == null || loginPass == "") {
+		alert("비밀번호를  입력해주세요");
 		return false;
-
 	}
+	var deviceID = utf8_to_b64(loginId);
+	// login ajax call
+	$.ajax({
+		url : '/v1/adminAuth',
+		type : 'POST',
+		contentType : "application/json",
+		dataType : 'json',
+		async : false,
+		data : '{"userID":"' + loginId + '","password":"' + loginPass
+				+ '","deviceID":"' + deviceID + '"}',
+		success : function(data) {
+			console.log("ajax data!!!!!");
+			console.log(data);
+			console.log("ajax data!!!!!");
+			
+			console.log('login in ajax call success');
+			var loginResult = data.result.data;
 
-	return true;
+			if (loginResult) {
+				if (!data.result.errors) {
+
+					var tokenID = data.result.data.tokenID;
+					console.log("토큰아이디:"+tokenID);
+					var userID = data.result.data.userID;
+
+					sessionStorage.setItem("tokenID", tokenID);
+					sessionStorage.setItem("userID", userID);
+
+					$.ajax({
+						url : '/v1/users/' + loginId,
+						type : 'GET',
+						headers : {
+							'X-ApiKey' : tokenID
+						},
+						contentType : "application/json",
+						async : false,
+						success : function(data) {
+
+							if (data.result.data) {
+
+							} else {
+								alert('유정 정보를 가지고 오는데 실패하였습니다.');
+							}
+						},
+						error : function(data, textStatus, request) {
+							console.log(data);
+							alert('유저 정보를 가지고 오는데 실패 하였습니다.');
+						}
+					});
+
+					// mainPage load
+					$("#page-wrapper").load("pages/keepAlivePageWrapper.html",
+							function() {
+
+								$('#ul_userInfo').show();
+								$('.navbar-static-side').show();
+
+							});
+					// user not found or invalid password
+				} else {
+					alert(data.result.errors[0]);
+				}
+			} else {
+				alert('로그인에 실패 하였습니다.');
+			}
+
+		},
+		error : function(data, textStatus, request) {
+			console.log('fail start...........');
+			console.log(data);
+			console.log(textStatus);
+			console.log('fail end.............');
+		}
+	});
 
 }
+
+// logoutFunction
+function userInfo() {
+	var userID = sessionStorage.getItem("userID");
+	alert(userID + "으로 로그인 중입니다.");
+}
+
+function logoutFunction() {
+	if (confirm("로그아웃 하시 겠습니까??") == true) { // 확인
+		sessionStorage.removeItem("tokenID");
+		sessionStorage.removeItem("userID");
+		sessionStorage.removeItem("userRole");
+		sessionStorage.removeItem("userPhone");
+
+		// window.location = "/BootStrapTest/index.jsp";
+		window.location.reload();
+	} else { // 취소
+		return;
+	}
+
+}
+
+// //////////////UTIL/////////////////////////////////
+// date validateDate Check
+function validateDate(input_reservation) {
+	var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+	return date_regex.test(input_reservation);
+}
+
+// compactTrim function
+function compactTrim(value) {
+	return value.replace(/(\s*)/g, "");
+}
+
+// dateFormating
+function dateFormating(value) {
+	// 06/12/20146:27PM
+
+	var result = compactTrim(value);
+	if (result.length == 16) {
+		var month = result.substring(0, 2);
+		console.log('달', month);
+		console.log(month);
+		var day = result.substring(3, 5);
+		console.log(day);
+		var year = result.substring(6, 10);
+
+		var hour = result.substring(10, 11);
+		console.log(hour);
+		var minute = result.substring(12, 14);
+		var amPm = result.substring(14, 16);
+		if (amPm === 'PM') {
+			hour *= 1;
+			hour = hour + 12;
+		}
+		console.log(hour);
+		value = new Date(year, month - 1, day, hour, minute);
+		console.log(value);
+		return value;
+	}
+
+	if (result.length == 17) {
+		// 06/12/2014 06:27PM
+		var month = result.substring(0, 2);
+		var day = result.substring(3, 5);
+		var year = result.substring(6, 10);
+		var hour = result.substring(10, 12);
+		console.log(hour);
+		var minute = result.substring(13, 15);
+		var amPm = result.substring(15, 17);
+		if (amPm === 'PM') {
+			hour *= 1;
+			hour = hour + 12;
+		}
+		console.log(hour);
+		value = new Date(year, month - 1, day, hour, minute);
+		console.log(value);
+		return value;
+	}
+}
+
+// ///////////////////////////////////////////////////////////////
+// utf8_to_b64(str)
+function utf8_to_b64(str) {
+	return window.btoa(unescape(encodeURIComponent(str)));
+}
+// b64_to_utf8(str)
+function b64_to_utf8(str) {
+	return decodeURIComponent(escape(window.atob(str)));
+}
+
+// UUID generate
+var guid = (function() {
+	function s4() {
+		return Math.floor((1 + Math.random()) * 0x10000).toString(16)
+				.substring(1);
+	}
+	return function() {
+		return s4() + s4();
+	};
+})();
+
+// CKEDITOR Get Contents
+function GetContents() {
+	// Get the editor instance that you want to interact with.
+	var editor = CKEDITOR.instances.input_messageContent;
+	return editor.getData();
+
+}
+
+function ckGetPlainText() {
+	var html = CKEDITOR.instances.input_messageContent.getSnapshot();
+	var dom = document.createElement("DIV");
+	dom.innerHTML = html;
+	var plain_text = (dom.textContent || dom.innerText);
+	console.log(plain_text);
+	return plain_text;
+}
+
+Date.prototype.yyyymmdd = function() {
+	var yyyy = this.getFullYear().toString();
+	var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+	var dd = this.getDate().toString();
+	var hour = this.getHours().toString();
+	var minute = this.getMinutes().toString();
+	return yyyy + "/" + (mm[1] ? mm : "0" + mm[0]) + "/"
+			+ (dd[1] ? dd : "0" + dd[0]) + " "
+			+ (hour[1] ? hour : "0" + hour[0]) + ":"
+			+ (minute[1] ? minute : "0" + minute[0]); // padding
+};
