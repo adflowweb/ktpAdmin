@@ -30,6 +30,7 @@ function tokenSearch() {
 					console.log(tableData);
 					$('#dataTable_Token').dataTable({
 						bJQueryUI : true,
+						bDestroy: true,
 						aaData : tableData,
 						aoColumns : [ {
 							mData : 'TokenID'
@@ -161,6 +162,7 @@ function tokenSubscribe() {
 					console.log(tableData);
 					$('#dataTable_Topic').dataTable({
 						bJQueryUI : true,
+						bDestroy: true,
 						aaData : tableData,
 						aoColumns : [ {
 							mData : 'Topic'

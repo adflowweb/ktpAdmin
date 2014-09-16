@@ -69,6 +69,7 @@ function wrapperFunction(data) {
 						console.log(tableData);
 						$('#dataTables-example').dataTable({
 							bJQueryUI : true,
+							bDestroy: true,
 							aaData : tableData,
 							aoColumns : [ {
 								mData : 'Id'
@@ -117,6 +118,11 @@ function wrapperFunction(data) {
 
 		if (data === "changePass") {
 
+		}
+		
+		if(data==="MessageSend"){
+			//ckeditor create
+			CKEDITOR.replace('input_messageContent');
 		}
 
 	});
