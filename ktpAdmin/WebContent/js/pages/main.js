@@ -125,6 +125,78 @@ function wrapperFunction(data) {
 			//ckeditor create
 			CKEDITOR.replace('input_messageContent');
 		}
+		
+		if(data==="messageList"){
+			var tableData = [];
+			$.ajax({
+				url : '/v1/messages?type=sent',
+				type : 'GET',
+				headers : {
+					'X-ApiKey' : tokenID
+				},
+				contentType : "application/json",
+				async : false,
+				success : function(data) {
+				
+					if (data.result.data) {
+
+						for ( var i in data.result.data) {
+
+							var item = data.result.data[i];
+							console.log(item);
+							var status="";
+							if(item.status==0){
+								status="발송 준비중";
+							}else if(item.status==1){
+								status="push 발송됨";
+							}else if(item.status==2){
+								status="sms 발송됨";
+							}
+							else{
+								status=item.status;
+							}
+							
+							tableData.push({
+								"MessageId" :item.id,
+								"Sender" : item.sender,
+								"Receiver" : item.receiver,
+								"qos" : item.qos,
+								"status":status
+						
+							});
+						}
+
+						console.log(tableData);
+						
+						//테이블 생성
+						$('#dataTables-example').dataTable({
+							bJQueryUI : true,
+							aaData : tableData,
+							bDestroy: true,
+							aoColumns : [ {
+								mData : 'MessageId'
+							}, {
+								mData : 'Sender'
+							}, {
+								mData : 'Receiver'
+							}, {
+								mData : 'qos'
+							},{
+								mData : 'status'
+							} ],
+							aaSorting: [[0,'desc']]
+						});
+					} else {
+						alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
+					}
+				},
+				error : function(data, textStatus, request) {
+					console.log(data);
+					alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
+				}
+			});
+			
+		}
 
 	});
 }

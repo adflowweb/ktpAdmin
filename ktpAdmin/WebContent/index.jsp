@@ -77,6 +77,9 @@
 						<ul class="nav nav-second-level">
 							<li><a href="#"
 								onclick="javascript:wrapperFunction('MessageSend');">메세지 전송</a></li>
+						     <li>
+                                    <a href="#" onclick="javascript:wrapperFunction('messageList');">메세지 발송 현황</a>
+                                </li>
 
 							<li><a href="#"
 								onclick="javascript:wrapperFunction('keepAlive');">keepAlive
