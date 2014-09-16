@@ -38,6 +38,54 @@ function tokenSearch() {
 							mData : 'UserID'
 						} ]
 					});
+					
+					// 토큰클릭
+					$('#dataTable_Token tbody').on('click', 'tr', function() {
+						
+						var tableData = $(this).children("td").map(function() {
+							return $(this).text();
+						}).get();
+
+						console.log(tableData[0]);
+						// - ** MQTT Clinet Status 가져오기 **
+						// > **request : **
+						// *method : GET
+						// header : X-ApiKey:{tokenID}
+						// uri : /v1/mQTTClinetStatus/{tokenID}*
+						// >
+						// > **response : **
+						// *{"result":{"success":true,"data":{"status":"MQTT Connetted"}}}*
+						// v1/token/tokenID delete info
+						var token = tableData[0];
+						$('#h3_tokenid').val(token);
+						$.ajax({
+							url : '/v1/mQTTClinetStatus/' + token,
+							type : 'GET',
+							headers : {
+								'X-ApiKey' : tokenID
+							},
+							contentType : "application/json",
+							async : false,
+							success : function(data) {
+								var tableData = [];
+								if (data.result.data) {
+									console.log(data.result.data.status);
+									$('#h2_tokenstatus').val(data.result.data.status);
+								} else {
+									alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
+									wrapperFunction('tokenManager');
+								}
+							},
+							error : function(data, textStatus, request) {
+								console.log(data);
+								alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
+								wrapperFunction('tokenManager');
+							}
+						});
+
+					});
+					
+					
 				} else {
 					alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
 				}
@@ -52,51 +100,7 @@ function tokenSearch() {
 
 }
 
-// 토큰클릭
-$('#dataTable_Token tbody').on('click', 'tr', function() {
-	var tokenID = sessionStorage.getItem("tokenID");
-	var tableData = $(this).children("td").map(function() {
-		return $(this).text();
-	}).get();
 
-	console.log(tableData[0]);
-	// - ** MQTT Clinet Status 가져오기 **
-	// > **request : **
-	// *method : GET
-	// header : X-ApiKey:{tokenID}
-	// uri : /v1/mQTTClinetStatus/{tokenID}*
-	// >
-	// > **response : **
-	// *{"result":{"success":true,"data":{"status":"MQTT Connetted"}}}*
-	// v1/token/tokenID delete info
-	var token = tableData[0];
-	$('#h3_tokenid').val(token);
-	$.ajax({
-		url : '/v1/mQTTClinetStatus/' + token,
-		type : 'GET',
-		headers : {
-			'X-ApiKey' : tokenID
-		},
-		contentType : "application/json",
-		async : false,
-		success : function(data) {
-			var tableData = [];
-			if (data.result.data) {
-				console.log(data.result.data.status);
-				$('#h2_tokenstatus').val(data.result.data.status);
-			} else {
-				alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
-				wrapperFunction('tokenManager');
-			}
-		},
-		error : function(data, textStatus, request) {
-			console.log(data);
-			alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
-			wrapperFunction('tokenManager');
-		}
-	});
-
-});
 
 // 토큰 삭제
 
