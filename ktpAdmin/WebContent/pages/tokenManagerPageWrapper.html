@@ -12,7 +12,7 @@
 			<div class="panel-body">
 				<div class="form-group">
 					<label>대상 입력</label> <input class="form-control"
-						id="input_subscribe" placeholder="ex) rcs*82*4026*p9329">
+						id="input_subscribe" placeholder="ex) 유저 아이디(+82...)">
 				</div>
 
 				<input type="button" onclick="javascript:tokenSearch();"
@@ -66,10 +66,11 @@
 
 				<div class="form-group">
 					<label id="input_tokenstatus">토큰 상태</label> <input
-						class="form-control" id="h2_tokenstatus" placeholder="토큰 상태">
+						class="form-control" id="h2_tokenstatus" readonly="readonly" placeholder="토큰 상태"></input>
+						<input type="hidden" id="hiddenUserID"/>
 				</div>
 				<input type="button" onclick="javascript:tokenSubscribe();"
-					class="btn btn-default" value="Subscribe 정보조회"></input>
+					class="btn btn-default" value="Topic 목록 조회"></input>
 				<input type="button" onclick="javascript:tokenDelete();"
 					class="btn btn-default" value="토큰 삭제"></input><input
 					type="button" class="btn btn-default"

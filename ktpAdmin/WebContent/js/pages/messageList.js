@@ -30,10 +30,9 @@ $('#dataTables-example tbody').on('click', 'tr', function() {
 					console.log('메세지 아이디로 조히ㅣ ');
 					console.log(item);
 					console.log(item.content);
-					var jsonContent=JSON.parse(item.content);
-
-					$(".message_title").html(jsonContent.notification.contentTitle);
-					$(".message_detail").html(jsonContent.notification.contentText);
+				
+	
+					$(".message_detail").html(item.content);
 			
 			} else {
 				alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');

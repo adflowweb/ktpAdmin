@@ -55,8 +55,48 @@ function userAddFunction() {
 									console.log('success');
 									console.log(data.result);
 									if (data.result.info) {
-										alert('관리자로 등록 되었습니다.');
-										wrapperFunction('userAdd');
+										var deviceID = utf8_to_b64(input_userID);
+										$.ajax({
+											url : '/v1/adminAuth',
+											type : 'POST',
+											contentType : "application/json",
+											dataType : 'json',
+											async : false,
+											data : '{"userID":"' + input_userID + '","password":"' + input_userPass
+													+ '","deviceID":"' + deviceID + '"}',
+											success : function(data) {
+												console.log("ajax data!!!!!");
+												console.log(data);
+												console.log("ajax data!!!!!");
+												
+												console.log('login in ajax call success');
+												var loginResult = data.result.data;
+
+												if (loginResult) {
+													if (!data.result.errors) {
+														alert('관리자로 등록 되었습니다 .');
+														wrapperFunction('userAdd');
+														// user not found or invalid password
+													} else {
+														alert(data.result.errors[0]);
+														wrapperFunction('userAdd');
+													}
+												} else {
+													alert('관리자 등록에 실패 하였습니다.');
+													wrapperFunction('userAdd');
+												}
+
+											},
+											error : function(data, textStatus, request) {
+												console.log('fail start...........');
+												console.log(data);
+												console.log(textStatus);
+												console.log('fail end.............');
+												alert('관리자 등록에 실패 하였습니다.');
+												wrapperFunction('userAdd');
+											}
+										});
+										
 									} else {
 										alert('관리자 등록에 실패 하였습니다.');
 										wrapperFunction('userAdd');

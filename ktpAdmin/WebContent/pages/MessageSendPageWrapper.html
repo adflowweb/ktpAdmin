@@ -13,16 +13,24 @@
 
 
 				<div class="form-group">
-					<label>메세지 발송 대상 </label><br/>
-					 <input type="text" class="form-control" 
-						id="input_messageTarget"  placeholder="메세지 발송 대상"></input>
-					<input type="hidden" id="message_type"></input>
+					<label>메세지 발송 대상 </label><br /> <input type="text"
+						class="form-control" id="input_messageTarget"
+						placeholder="메세지 발송 대상 ex) rcs/82/3383/p1234"></input>
+
 				</div>
 				<div class="form-group">
-					<label>메세지 제목 </label> <input class="form-control"
-						id="input_messageTitle" placeholder="제목">
+					<label>대상 서비스</label> <input class="form-control"
+						id="input_messageService"
+						placeholder="서비스 아이디 입력  ex) kr.co.adflow.app1">
 				</div>
-	
+
+				<div class="form-group">
+					<label>메세지 타입</label> <input class="form-control"
+						id="input_messageType" placeholder="메세지 타입 입력(숫자)">
+				</div>
+
+
+
 				<div class="form-group">
 					<label>Qos 설정</label> <select id="qosSelect" class="form-control">
 						<option value="2">2:4단계의 핸드 쎼이킹을 통해 정확히 한번만 전달 합니다.</option>
@@ -39,9 +47,7 @@
 				<div class="form-group">
 					<label>메세지 내용</label>
 
-					<textarea id="input_messageContent" name="ckeditor"
-						class="ckeditor" rows="5" style="width: 100%; height: 100"> 
-										</textarea>
+					<textarea class="form-control" id="input_messageContent" rows="5"> </textarea>
 
 				</div>
 

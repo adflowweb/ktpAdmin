@@ -57,9 +57,11 @@ function tokenSearch() {
 						// *{"result":{"success":true,"data":{"status":"MQTT Connetted"}}}*
 						// v1/token/tokenID delete info
 						var token = tableData[0];
+						var hiddenUserID = tableData[1];
+						$('#hiddenUserID').val(hiddenUserID);
 						$('#h3_tokenid').val(token);
 						$.ajax({
-							url : '/v1/mQTTClinetStatus/' + token,
+							url : '/v1/clients/' + token,
 							type : 'GET',
 							headers : {
 								'X-ApiKey' : tokenID
@@ -69,6 +71,7 @@ function tokenSearch() {
 							success : function(data) {
 								var tableData = [];
 								if (data.result.data) {
+								
 									console.log(data.result.data.status);
 									$('#h2_tokenstatus').val(data.result.data.status);
 								} else {
@@ -107,6 +110,7 @@ function tokenSearch() {
 function tokenDelete() {
 	var formCheck = tokenIDFormCheck();
 	var h3_tokenid = $('#h3_tokenid').val();
+	var hiddenUserID=$('#hiddenUserID').val();
 	if (formCheck) {
 		$.ajax({
 			url : '/v1/token/' + h3_tokenid,
@@ -119,8 +123,39 @@ function tokenDelete() {
 			success : function(data) {
 
 				if (data.result.info) {
-					alert('토큰을 삭제 하였습니다.');
-					wrapperFunction('tokenManager');
+					//////
+					$.ajax({
+						url : '/v1/users/' + hiddenUserID,
+						type : 'DELETE',
+						headers : {
+							'X-ApiKey' : tokenID
+						},
+						contentType : "application/json",
+						dataType : 'json',
+						async : false,
+
+						success : function(data) {
+							console.log(data);
+							console.log(data.result.success);
+							if (data.result.info) {
+								
+								alert('토큰을 삭제 하였습니다.');
+								wrapperFunction('tokenManager');
+							} else {
+								alert('토큰을 삭제하는데 실패 하였습니다.');
+								wrapperFunction('tokenManager');
+							}
+						},
+						error : function(data, textStatus, request) {
+							alert('토큰을 삭제하는데 실패 하였습니다.');
+							wrapperFunction('tokenManager');
+							console.log(data);
+						}
+					});
+					
+					/////
+					
+				
 				} else {
 					alert('토큰을 삭제 하는데 실패 하였습니다.');
 					wrapperFunction('tokenManager');

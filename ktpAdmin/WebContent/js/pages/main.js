@@ -58,12 +58,44 @@ function wrapperFunction(data) {
 
 							var item = data.result.data[i];
 							console.log(item);
-							tableData.push({
-								"Id" : item.userID,
-								"Name" : item.name,
-								"Dept" : item.dept,
-								"Phone" : item.phone
+							
+							///////////
+							$.ajax({
+								url : '/v1/tokenMulti/' + item.userID,
+								type : 'GET',
+								headers : {
+									'X-ApiKey' : tokenID
+								},
+								contentType : "application/json",
+								async : false,
+								success : function(data) {
+							
+									if (data.result.data) {
+
+										for ( var i in data.result.data) {
+
+											var itemTokenInfo = data.result.data[i];
+											console.log(itemTokenInfo);
+											tableData.push({
+												"Id" : item.userID,
+												"Name" : item.name,
+												"Dept" : item.dept,
+												"Phone" : item.phone,
+												"TokenID" : itemTokenInfo.tokenID
+											});
+										
+										}
+
+									} else {
+										alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
+									}
+								},
+								error : function(data, textStatus, request) {
+									console.log(data);
+									alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
+								}
 							});
+
 						}
 
 						console.log(tableData);
@@ -79,6 +111,8 @@ function wrapperFunction(data) {
 								mData : 'Dept'
 							}, {
 								mData : 'Phone'
+							},{
+								mData : 'TokenID'
 							} ]
 						});
 					} else {
@@ -123,7 +157,9 @@ function wrapperFunction(data) {
 		
 		if(data==="MessageSend"){
 			//ckeditor create
-			CKEDITOR.replace('input_messageContent');
+//			CKEDITOR.replace('input_messageContent',{
+//				 startupFocus : true
+//			});
 		}
 		
 		if(data==="messageList"){
