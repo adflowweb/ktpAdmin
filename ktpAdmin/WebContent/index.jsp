@@ -70,6 +70,24 @@
 
 			<div class="sidebar-collapse">
 				<ul class="nav" id="side-menu">
+				
+				        <li>
+                            <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard <span class="fa arrow"></a>
+                            
+                               <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="#" onclick="javascript:wrapperFunction('monitoring');">푸시서버 모니터링</a>
+                                </li>
+                                  <li>
+                                    <a href="#" onclick="javascript:wrapperFunction('messageList');">메세지 발송 현황</a>
+                                </li>
+                           	<li><a href="#"
+								onclick="javascript:wrapperFunction('tokenManager');">토큰 관리</a>
+
+							</li>
+                            </ul>
+                            
+                        </li>
 
 					<li><a href="#"><i class="fa fa-envelope fa-fw"></i> Push
 							Message <span class="fa arrow"></a>
@@ -77,17 +95,12 @@
 						<ul class="nav nav-second-level">
 							<li><a href="#"
 								onclick="javascript:wrapperFunction('MessageSend');">메세지 전송</a></li>
-						     <li>
-                                    <a href="#" onclick="javascript:wrapperFunction('messageList');">메세지 발송 현황</a>
-                                </li>
+						
 
 							<li><a href="#"
 								onclick="javascript:wrapperFunction('keepAlive');">keepAlive
 									설정</a></li>
-							<li><a href="#"
-								onclick="javascript:wrapperFunction('tokenManager');">토큰 관리</a>
-
-							</li>
+						
 
 						</ul></li>
 					<li id="adminRole_li"><a href="#"><i

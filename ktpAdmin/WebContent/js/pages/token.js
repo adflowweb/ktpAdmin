@@ -59,7 +59,7 @@ function tokenSearch() {
 						var token = tableData[0];
 						var hiddenUserID = tableData[1];
 						$('#hiddenUserID').val(hiddenUserID);
-						$('#h3_tokenid').val(token);
+						$('#h3_tokenid').val(token+"("+hiddenUserID+")");
 						$.ajax({
 							url : '/v1/clients/' + token,
 							type : 'GET',
@@ -110,10 +110,12 @@ function tokenSearch() {
 function tokenDelete() {
 	var formCheck = tokenIDFormCheck();
 	var h3_tokenid = $('#h3_tokenid').val();
+	var tokenIdArr=[];
+	tokenIdArr=h3_tokenid.split('(');
 	var hiddenUserID=$('#hiddenUserID').val();
 	if (formCheck) {
 		$.ajax({
-			url : '/v1/token/' + h3_tokenid,
+			url : '/v1/token/' + tokenIdArr[0],
 			type : 'DELETE',
 			headers : {
 				'X-ApiKey' : tokenID
@@ -139,15 +141,15 @@ function tokenDelete() {
 							console.log(data.result.success);
 							if (data.result.info) {
 								
-								alert('토큰을 삭제 하였습니다.');
+								alert('토큰(유저)을 삭제 하였습니다.');
 								wrapperFunction('tokenManager');
 							} else {
-								alert('토큰을 삭제하는데 실패 하였습니다.');
+								alert('토큰(유저)을 삭제하는데 실패 하였습니다.');
 								wrapperFunction('tokenManager');
 							}
 						},
 						error : function(data, textStatus, request) {
-							alert('토큰을 삭제하는데 실패 하였습니다.');
+							alert('토큰(유저)을 삭제하는데 실패 하였습니다.');
 							wrapperFunction('tokenManager');
 							console.log(data);
 						}
@@ -157,13 +159,13 @@ function tokenDelete() {
 					
 				
 				} else {
-					alert('토큰을 삭제 하는데 실패 하였습니다.');
+					alert('토큰(유저)을 삭제 하는데 실패 하였습니다.');
 					wrapperFunction('tokenManager');
 				}
 			},
 			error : function(data, textStatus, request) {
 				console.log(data);
-				alert('토큰을 삭제 하는데 실패 하였습니다.');
+				alert('토큰(유저)을 삭제 하는데 실패 하였습니다.');
 				wrapperFunction('tokenManager');
 			}
 		});
@@ -175,10 +177,12 @@ function tokenDelete() {
 function tokenSubscribe() {
 	var formCheck = tokenIDFormCheck();
 	var h3_tokenid = $('#h3_tokenid').val();
+	var tokenIdArr=[];
+	tokenIdArr=h3_tokenid.split('(');
 	if (formCheck) {
 
 		$.ajax({
-			url : '/v1/subscriptions/' + h3_tokenid,
+			url : '/v1/subscriptions/' + tokenIdArr[0],
 			type : 'GET',
 			headers : {
 				'X-ApiKey' : tokenID
@@ -211,7 +215,18 @@ function tokenSubscribe() {
 
 				else if (data.result.info) {
 					alert('subscription 정보가 없습니다.');
-					wrapperFunction('tokenManager');
+//					wrapperFunction('tokenManager');
+					tableData.push({
+						"Topic" : "subscription 정보가 없습니다.",
+					});
+					$('#dataTable_Topic').dataTable({
+						bJQueryUI : true,
+						bDestroy: true,
+						aaData : tableData,
+						aoColumns : [ {
+							mData : 'Topic'
+						} ]
+					});
 				} else {
 					alert('subscription 정보를 가지고 오는데 실패 하였습니다.');
 					wrapperFunction('tokenManager');

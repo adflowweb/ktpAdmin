@@ -6,6 +6,7 @@ $(document).ready(function() {
 	if (localTokenId) {
 		$('.navbar-static-side').show();
 		$('#ul_userInfo').show();
+		sessionStorage.setItem("monitoringStatus", "disable");
 		$("#page-wrapper").load("pages/keepAlivePageWrapper.html", function() {
 
 		});
@@ -37,10 +38,11 @@ function wrapperFunction(data) {
 		console.log(userID);
 
 		if (data === "keepAlive") {
-
+			sessionStorage.setItem("monitoringStatus", "disable");
 		}
 
 		if (data === "userManager") {
+			sessionStorage.setItem("monitoringStatus", "disable");
 			
 			$.ajax({
 				url : '/v1/users?type=admin',
@@ -145,24 +147,37 @@ function wrapperFunction(data) {
 		
 		if(data==="token"){
 			
-			
+			sessionStorage.setItem("monitoringStatus", "disable");
 			
 			
 			
 		}
 
 		if (data === "changePass") {
+			sessionStorage.setItem("monitoringStatus", "disable");
 
 		}
 		
 		if(data==="MessageSend"){
+			sessionStorage.setItem("monitoringStatus", "disable");
 			//ckeditor create
 //			CKEDITOR.replace('input_messageContent',{
 //				 startupFocus : true
 //			});
 		}
 		
+		
+		if (data === "monitoring") {
+			
+			var element = document.createElement("script");
+			element.src = "js/pages/monitoring.js";
+			document.body.appendChild(element);
+			sessionStorage.setItem("monitoringStatus", "enable");
+	
+	}
+		
 		if(data==="messageList"){
+			sessionStorage.setItem("monitoringStatus", "disable");
 			var tableData = [];
 			$.ajax({
 				url : '/v1/messages?type=sent',
@@ -185,8 +200,6 @@ function wrapperFunction(data) {
 								status="발송 준비중";
 							}else if(item.status==1){
 								status="push 발송됨";
-							}else if(item.status==2){
-								status="sms 발송됨";
 							}
 							else{
 								status=item.status;
