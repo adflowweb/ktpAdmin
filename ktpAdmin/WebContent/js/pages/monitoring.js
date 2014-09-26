@@ -46,8 +46,8 @@ if(monitoringInterval){
 				used=item.memory.used*0.001;
 				free=item.memory.free*0.001;
 				
-				heapMax=item.heap.heapMax*0.001;
-				heapUsed=item.heap.heapUsed*0.001;
+				heapMax=item.heap.heapMax;
+				heapUsed=item.heap.heapUsed;
 				heapFree=heapMax-heapUsed;
 				used=used.toFixed(1);
 				free=free.toFixed(1);
@@ -176,8 +176,8 @@ if(monitoringInterval){
 				free=free.toFixed(1);
 				combined=combined.toFixed(1);
 				idle=idle.toFixed(1);
-				heapMax=item.heap.heapMax*0.001;
-				heapUsed=item.heap.heapUsed*0.001;
+				heapMax=item.heap.heapMax;
+				heapUsed=item.heap.heapUsed;
 				heapFree=heapMax-heapUsed;
 		
 				heapMax=heapMax.toFixed(1);

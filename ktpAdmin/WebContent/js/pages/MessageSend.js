@@ -10,9 +10,9 @@ function MessageSendFunction() {
 		var input_messageType = $('#input_messageType').val();
 
 		var input_messageTarget = $('#input_messageTarget').val();
-		var input_messageContent=$('#input_messageContent').val();
-		
-//		var textAreaPlainText = ckGetPlainText();
+		var input_messageContent = $('#input_messageContent').val();
+
+		// var textAreaPlainText = ckGetPlainText();
 		// var textAreaContents = GetContents();
 		// var htmlEncodeResult = utf8_to_b64(textAreaContents);
 		// textAreaPlainText = compactTrim(textAreaPlainText);
@@ -22,9 +22,21 @@ function MessageSendFunction() {
 		console.log("대상:" + input_messageTarget + "  대상서비스:"
 				+ input_messageService + "  플래인텍스트:" + input_messageContent
 				+ "Qos:" + qos + " 타입:" + input_messageType);
-		input_messageContent=input_messageContent.trim();
+
+		input_messageContent = utf8_to_b64(input_messageContent);
+
+
 		
-		input_messageContent=utf8_to_b64(input_messageContent);
+		
+		var resultData = '{"sender":"' + userID + '","receiver":"'
+				+ input_messageTarget + '","qos":' + qos
+
+				+ ', "retained":false,"serviceID":"' + input_messageService
+				+ '","type":"' + input_messageType + '","contentType":"text/plain", "content":"'
+				+ input_messageContent + '"}';
+		console.log('결과 값');
+		console.log(resultData);
+
 		$.ajax({
 			url : '/v1/messages',
 			type : 'POST',
@@ -34,19 +46,14 @@ function MessageSendFunction() {
 			contentType : "application/json",
 			dataType : 'json',
 			async : false,
-			data : '{"sender":"' + userID + '","receiver":"'
-					+ input_messageTarget + '","qos":' + qos
-					
-					+ ', "retained":false,"serviceID":"' + input_messageService
-					+ '","type":"' + input_messageType + '", "content":"'
-					+ input_messageContent + '"}',
+			data :resultData,
 
-//			 "content":"
-//			 {\\"notification\\":{\\"notificationStyle\\":1,\\"contentTitle\\":\\"'
-//			 + input_messageTitle + '\\",\\"contentText\\":\\"'
-//			 + textAreaPlainText + '\\",\\"htmlContent\\":\\"'
-//			 + htmlEncodeResult + '\\",\\"ticker\\":\\"'
-//			 + input_messageTitle + '\\"} } "}
+			// "content":"
+			// {\\"notification\\":{\\"notificationStyle\\":1,\\"contentTitle\\":\\"'
+			// + input_messageTitle + '\\",\\"contentText\\":\\"'
+			// + textAreaPlainText + '\\",\\"htmlContent\\":\\"'
+			// + htmlEncodeResult + '\\",\\"ticker\\":\\"'
+			// + input_messageTitle + '\\"} } "}
 
 			success : function(data) {
 				console.log(data);
@@ -96,11 +103,10 @@ function messageSendFormCheck() {
 
 	var input_messageService = $('#input_messageService').val();
 	var input_messageType = $('#input_messageType').val();
-	var input_messageContent=$('#input_messageContent').val();
-//	var textAreaPlainText = ckGetPlainText();
-	input_messageContent=compactTrim(input_messageContent);
+	var input_messageContent = $('#input_messageContent').val();
+	// var textAreaPlainText = ckGetPlainText();
+	input_messageContent = compactTrim(input_messageContent);
 	console.log(input_messageContent);
-	
 
 	if (input_messageTarget == null || input_messageTarget == "") {
 		alert("메세지 보낼 대상을 입력해주세요");
@@ -130,4 +136,35 @@ function messageSendFormCheck() {
 		return true;
 	}
 
+}
+
+$("#input_typeFile").change(function() {
+	console.log('file.....change...');
+	console.log(this.files[0].size);
+	var fileName = document.getElementById("input_typeFile").value;
+
+	fileName = fileName.replace(/^.*\\/, "");
+	console.log("파일이름:" + fileName);
+	readURL(this);
+});
+// 메세지 서식 이미지 적용
+function readURL(input) {
+	console.log("in readURL...");
+
+	if (input.files && input.files[0]) {
+		var reader = new FileReader();
+
+		reader.onload = function(e) {
+			console.log('컨텐츠 파일 리드');
+			console.log(e.target.result);
+
+			// var contentBase64=utf8_to_b64(e.target.result);
+			// console.log('컨텐츠 base64:'+contentBase64);
+
+		};
+
+		reader.readAsDataURL(input.files[0]);
+	} else {
+
+	}
 }

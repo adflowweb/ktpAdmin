@@ -21,7 +21,7 @@ function pingsettingFunc() {
 				dataType : 'json',
 				async : false,
 				data : '{"receiver":"' + input_receiver
-						+ '","qos":2,"type":102, "content":" {\\"keepAlive\\":'
+						+ '","qos":2,"type":102,"contentType":"application/json", "content":" {\\"keepAlive\\":'
 						+ input_pingsetting + '} "}',
 
 				success : function(data) {
