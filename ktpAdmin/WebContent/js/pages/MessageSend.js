@@ -18,22 +18,30 @@ function MessageSendFunction() {
 		// textAreaPlainText = compactTrim(textAreaPlainText);
 		var qos = 0;
 		qos = $("#qosSelect").val();
+		var contentType = $("#contentSelect").val();
+
+		if (contentType == 1) {
+
+			contentType = "text/plain";
+		} else if(contentType==2){
+			contentType = "application/json";
+		}else{
+			contentType = "application/octet-stream";
+		}
 
 		console.log("대상:" + input_messageTarget + "  대상서비스:"
 				+ input_messageService + "  플래인텍스트:" + input_messageContent
 				+ "Qos:" + qos + " 타입:" + input_messageType);
 
+		input_messageContent = input_messageContent.trim();
 		input_messageContent = utf8_to_b64(input_messageContent);
 
-
-		
-		
 		var resultData = '{"sender":"' + userID + '","receiver":"'
 				+ input_messageTarget + '","qos":' + qos
 
 				+ ', "retained":false,"serviceID":"' + input_messageService
-				+ '","type":"' + input_messageType + '","contentType":"text/plain", "content":"'
-				+ input_messageContent + '"}';
+				+ '","type":"' + input_messageType + '","contentType":"'
+				+ contentType + '", "content":"' + input_messageContent + '"}';
 		console.log('결과 값');
 		console.log(resultData);
 
@@ -46,7 +54,7 @@ function MessageSendFunction() {
 			contentType : "application/json",
 			dataType : 'json',
 			async : false,
-			data :resultData,
+			data : resultData,
 
 			// "content":"
 			// {\\"notification\\":{\\"notificationStyle\\":1,\\"contentTitle\\":\\"'
@@ -138,6 +146,19 @@ function messageSendFormCheck() {
 
 }
 
+$("#contentSelect").change(function() {
+
+	var contentType = $("#contentSelect").val();
+
+	if (contentType == 2) {
+		$('#input_messageContent').val("{'key':'value'}");
+
+	} else {
+		$('#input_messageContent').val("");
+	}
+
+});
+
 $("#input_typeFile").change(function() {
 	console.log('file.....change...');
 	console.log(this.files[0].size);
@@ -145,6 +166,7 @@ $("#input_typeFile").change(function() {
 
 	fileName = fileName.replace(/^.*\\/, "");
 	console.log("파일이름:" + fileName);
+	$('#input_fileName').val(fileName);
 	readURL(this);
 });
 // 메세지 서식 이미지 적용
@@ -157,9 +179,8 @@ function readURL(input) {
 		reader.onload = function(e) {
 			console.log('컨텐츠 파일 리드');
 			console.log(e.target.result);
-
-			// var contentBase64=utf8_to_b64(e.target.result);
-			// console.log('컨텐츠 base64:'+contentBase64);
+			$('#input_messageContent').val(e.target.result);
+			$('#contentSelect').val(3);
 
 		};
 

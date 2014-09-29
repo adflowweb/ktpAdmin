@@ -28,7 +28,14 @@
 					<label>메세지 타입</label> <input class="form-control"
 						id="input_messageType" placeholder="메세지 타입 입력(숫자)">
 				</div>
-
+				<div class="form-group">
+					<label>Content-Type</label> <select id="contentSelect"
+						class="form-control">
+						<option value="1">text/plain</option>
+						<option value="2">application/json</option>
+						]<option value="3">application/octet-stream</option>
+					</select>
+				</div>
 
 
 				<div class="form-group">
@@ -42,12 +49,10 @@
 				</div>
 
 
-<!-- 				<div class="form-group"> -->
-<!-- 					<label>컨텐츠</label> -->
-
-<!-- 					<input type="file" id="input_typeFile"/> -->
-
-<!-- 				</div> -->
+				<div class="form-group">
+					<label>컨텐츠</label> <input type="file" id="input_typeFile" />
+					<input type="hidden" id="input_fileName">
+				</div>
 
 
 				<div class="form-group">
@@ -56,9 +61,9 @@
 					<textarea class="form-control" id="input_messageContent" rows="5"> </textarea>
 
 				</div>
-				
-				
-				
+
+
+
 
 
 				<input type="button" onclick="javascript:MessageSendFunction();"
