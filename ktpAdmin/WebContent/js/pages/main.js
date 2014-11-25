@@ -205,12 +205,17 @@ function wrapperFunction(data) {
 								status=item.status;
 							}
 							
+							var dateTime=item.issue;
+							
+							var time=new Date(dateTime).toISOString();
+							
 							tableData.push({
 								"MessageId" :item.id,
 								"Sender" : item.sender,
 								"Receiver" : item.receiver,
 								"qos" : item.qos,
-								"status":status
+								"status":status,
+								"time":time
 						
 							});
 						}
@@ -232,6 +237,8 @@ function wrapperFunction(data) {
 								mData : 'qos'
 							},{
 								mData : 'status'
+							},{
+								mData : 'time'
 							} ],
 							aaSorting: [[0,'desc']]
 						});

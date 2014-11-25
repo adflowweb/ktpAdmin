@@ -15,13 +15,13 @@
 				<div class="form-group">
 					<label>메세지 발송 대상 </label><br /> <input type="text"
 						class="form-control" id="input_messageTarget"
-						placeholder="메세지 발송 대상 ex) rcs/82/3383/p1234"></input>
+						placeholder="메세지 발송 대상 ex) kr.co.ktpowertel.kakao/groups/chat_100"></input>
 
 				</div>
 				<div class="form-group">
 					<label>대상 서비스</label> <input class="form-control"
 						id="input_messageService"
-						placeholder="서비스 아이디 입력  ex) kr.co.adflow.app1">
+						placeholder="서비스 아이디 입력  ex) kr.co.ktpowertel.kakao">
 				</div>
 
 				<div class="form-group">
@@ -32,8 +32,8 @@
 					<label>Content-Type</label> <select id="contentSelect"
 						class="form-control">
 						<option value="1">text/plain</option>
-						<option value="2">application/json</option>
-						]<option value="3">application/octet-stream</option>
+						<option value="2">application/json</option> 
+						<option value="3">application/base64</option>
 					</select>
 				</div>
 
@@ -48,11 +48,17 @@
 					</select>
 				</div>
 
-
 				<div class="form-group">
-					<label>컨텐츠</label> <input type="file" id="input_typeFile" />
-					<input type="hidden" id="input_fileName">
+					<div class="checkbox">
+						<label> <input type="checkbox" id="ackckeck" checked>응답 여부
+						</label>
+					</div>
 				</div>
+
+<!-- 				<div class="form-group"> -->
+<!-- 					<label>컨텐츠</label> <input type="file" id="input_typeFile" /> <input -->
+<!-- 						type="hidden" id="input_fileName"> -->
+<!-- 				</div> -->
 
 
 				<div class="form-group">

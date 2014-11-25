@@ -5,6 +5,16 @@ function MessageSendFunction() {
 	var userID = sessionStorage.getItem("userID");
 
 	if (formCheck) {
+		if($("input:checkbox[id='ackckeck']").is(":checked") == true){
+
+	    	console.log('ack ckeck true');
+	    	ackcheck=true;
+		}else{
+			console.log('ack check false');
+			ackcheck=false;
+		}
+		
+		
 
 		var input_messageService = $('#input_messageService').val();
 		var input_messageType = $('#input_messageType').val();
@@ -26,7 +36,7 @@ function MessageSendFunction() {
 		} else if(contentType==2){
 			contentType = "application/json";
 		}else{
-			contentType = "application/octet-stream";
+			contentType = "application/base64";
 		}
 
 		console.log("대상:" + input_messageTarget + "  대상서비스:"
@@ -34,12 +44,16 @@ function MessageSendFunction() {
 				+ "Qos:" + qos + " 타입:" + input_messageType);
 
 		input_messageContent = input_messageContent.trim();
-		input_messageContent = utf8_to_b64(input_messageContent);
+		//
+//		if(contentType==="application/base64"){
+//			input_messageContent = utf8_to_b64(input_messageContent);
+//		}
+		
 
 		var resultData = '{"sender":"' + userID + '","receiver":"'
 				+ input_messageTarget + '","qos":' + qos
 
-				+ ', "retained":false,"serviceID":"' + input_messageService
+				+ ', "retained":false,"sms":'+ackcheck+',"serviceID":"' + input_messageService
 				+ '","type":"' + input_messageType + '","contentType":"'
 				+ contentType + '", "content":"' + input_messageContent + '"}';
 		console.log('결과 값');
@@ -169,7 +183,7 @@ $("#input_typeFile").change(function() {
 	$('#input_fileName').val(fileName);
 	readURL(this);
 });
-// 메세지 서식 이미지 적용
+//file read
 function readURL(input) {
 	console.log("in readURL...");
 
