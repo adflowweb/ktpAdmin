@@ -7,7 +7,9 @@ var heapMax;
 var heapUsed;
 var heapFree;
 var diskUsed;
+var diskUsed11;
 var diskFree;
+var diskFree11;
 var tps;
 
 
@@ -55,11 +57,20 @@ if(monitoringInterval){
 				heapUsed=heapUsed.toFixed(1);
 				heapFree=heapFree.toFixed(1);
 				diskUsed=item.disk[0].used;
+				diskUsed11=item.disk[11].used;
 				diskFree=item.disk[0].avail;
+				diskFree11=item.disk[11].avail;
 				diskUsed=diskUsed.slice(0, -1);
 				diskFree=diskFree.slice(0, -1);
+				diskUsed11=diskUsed11.slice(0, -1);
+				diskFree11=diskFree11.slice(0, -1);
 				diskUsed *= 1;
 				diskFree *= 1;
+				diskUsed11 *= 1;
+				diskFree11 *= 1;
+				diskUsed=diskUsed+diskUsed11;
+				diskFree=diskFree+diskFree11;
+				
 				tps=item.tps;
 				combined=combined.toFixed(1);
 				idle=idle.toFixed(1);
@@ -184,11 +195,19 @@ if(monitoringInterval){
 				heapUsed=heapUsed.toFixed(1);
 				heapFree=heapFree.toFixed(1);
 				diskUsed=item.disk[0].used;
+				diskUsed11=item.disk[11].used;
 				diskFree=item.disk[0].avail;
+				diskFree11=item.disk[11].avail;
 				diskUsed=diskUsed.slice(0, -1);
 				diskFree=diskFree.slice(0, -1);
+				diskUsed11=diskUsed11.slice(0, -1);
+				diskFree11=diskFree11.slice(0, -1);
 				diskUsed *= 1;
 				diskFree *= 1;
+				diskUsed11 *= 1;
+				diskFree11 *= 1;
+				diskUsed=diskUsed+diskUsed11;
+				diskFree=diskFree+diskFree11;
 				console.log('disk start');
 				console.log(diskUsed);
 				console.log(diskFree);
