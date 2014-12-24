@@ -22,239 +22,264 @@ $(document).ready(function() {
 
 });
 
-function resetFunction(){
+function resetFunction() {
 	wrapperFunction('tokenManager');
 }
 
 // page wrapperfunction
 function wrapperFunction(data) {
 
-	$("#page-wrapper").load("pages/" + data + "PageWrapper.html", function() {
-
-		console.log(data);
-		var tokenID = sessionStorage.getItem("tokenID");
-		var userID = sessionStorage.getItem("userID");
-		console.log(tokenID);
-		console.log(userID);
-
-		if (data === "keepAlive") {
-			sessionStorage.setItem("monitoringStatus", "disable");
-		}
-
-		if (data === "userManager") {
-			sessionStorage.setItem("monitoringStatus", "disable");
-			
-			$.ajax({
-				url : '/v1/users?type=admin',
-				type : 'GET',
-				headers : {
-					'X-ApiKey' : tokenID
-				},
-				contentType : "application/json",
-				async : false,
-				success : function(data) {
-					var tableData = [];
-					if (data.result.data) {
-
-						for ( var i in data.result.data) {
-
-							var item = data.result.data[i];
-							console.log(item);
-							
-							///////////
-							$.ajax({
-								url : '/v1/tokenMulti/' + item.userID,
-								type : 'GET',
-								headers : {
-									'X-ApiKey' : tokenID
-								},
-								contentType : "application/json",
-								async : false,
-								success : function(data) {
-							
-									if (data.result.data) {
-
-										for ( var i in data.result.data) {
-
-											var itemTokenInfo = data.result.data[i];
-											console.log(itemTokenInfo);
-											tableData.push({
-												"Id" : item.userID,
-												"Name" : item.name,
-												"Dept" : item.dept,
-												"Phone" : item.phone,
-												"TokenID" : itemTokenInfo.tokenID
-											});
-										
-										}
-
-									} else {
-										alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
-									}
-								},
-								error : function(data, textStatus, request) {
-									console.log(data);
-									alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
-								}
-							});
-
-						}
-
-						console.log(tableData);
-						$('#dataTables-example').dataTable({
-							bJQueryUI : true,
-							bDestroy: true,
-							aaData : tableData,
-							aoColumns : [ {
-								mData : 'Id'
-							}, {
-								mData : 'Name'
-							}, {
-								mData : 'Dept'
-							}, {
-								mData : 'Phone'
-							},{
-								mData : 'TokenID'
-							} ]
-						});
-					} else {
-						alert('유저 정보를 가지고 오는데 실패 하였습니다.');
-					}
-				},
-				error : function(data, textStatus, request) {
-					console.log(data);
-					alert('유저 정보를 가지고 오는데 실패 하였습니다.');
-				}
-			});
-
-			$('#dataTables-example tbody').on(
-					'click',
-					'tr',
+	$("#page-wrapper")
+			.load(
+					"pages/" + data + "PageWrapper.html",
 					function() {
 
-						var tableData = $(this).children("td")
-								.map(function() {
-									return $(this).text();
-								}).get();
+						console.log(data);
+						var tokenID = sessionStorage.getItem("tokenID");
+						var userID = sessionStorage.getItem("userID");
+						console.log(tokenID);
+						console.log(userID);
 
-						console.log(tableData[0]);
-						$('#input_adminID').val(tableData[0]);
-					});
-			
-			
-
-		}
-		
-		if(data==="token"){
-			
-			sessionStorage.setItem("monitoringStatus", "disable");
-			
-			
-			
-		}
-
-		if (data === "changePass") {
-			sessionStorage.setItem("monitoringStatus", "disable");
-
-		}
-		
-		if(data==="MessageSend"){
-			sessionStorage.setItem("monitoringStatus", "disable");
-			//ckeditor create
-//			CKEDITOR.replace('input_messageContent',{
-//				 startupFocus : true
-//			});
-		}
-		
-		
-		if (data === "monitoring") {
-			
-			var element = document.createElement("script");
-			element.src = "js/pages/monitoring.js";
-			document.body.appendChild(element);
-			sessionStorage.setItem("monitoringStatus", "enable");
-	
-	}
-		
-		if(data==="messageList"){
-			sessionStorage.setItem("monitoringStatus", "disable");
-			var tableData = [];
-			$.ajax({
-				url : '/v1/messages?type=sent',
-				type : 'GET',
-				headers : {
-					'X-ApiKey' : tokenID
-				},
-				contentType : "application/json",
-				async : false,
-				success : function(data) {
-				
-					if (data.result.data) {
-
-						for ( var i in data.result.data) {
-
-							var item = data.result.data[i];
-							console.log(item);
-							var status="";
-							if(item.status==0){
-								status="발송 준비중";
-							}else if(item.status==1){
-								status="push 발송됨";
-							}
-							else{
-								status=item.status;
-							}
-							
-							var dateTime=item.issue;
-							
-							var time=new Date(dateTime).toISOString();
-							
-							tableData.push({
-								"MessageId" :item.id,
-								"Sender" : item.sender,
-								"Receiver" : item.receiver,
-								"qos" : item.qos,
-								"status":status,
-								"time":time
-						
-							});
+						if (data === "keepAlive") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
 						}
 
-						console.log(tableData);
-						
-						//테이블 생성
-						$('#dataTables-example').dataTable({
-							bJQueryUI : true,
-							aaData : tableData,
-							bDestroy: true,
-							aoColumns : [ {
-								mData : 'MessageId'
-							}, {
-								mData : 'Sender'
-							}, {
-								mData : 'Receiver'
-							}, {
-								mData : 'qos'
-							},{
-								mData : 'status'
-							},{
-								mData : 'time'
-							} ],
-							aaSorting: [[0,'desc']]
-						});
-					} else {
-						alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
-					}
-				},
-				error : function(data, textStatus, request) {
-					console.log(data);
-					alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
-				}
-			});
-			
-		}
+						if (data === "userManager") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
 
-	});
+							$
+									.ajax({
+										url : '/v1/users?type=admin',
+										type : 'GET',
+										headers : {
+											'X-ApiKey' : tokenID
+										},
+										contentType : "application/json",
+										async : false,
+										success : function(data) {
+											var tableData = [];
+											if (data.result.data) {
+
+												for ( var i in data.result.data) {
+
+													var item = data.result.data[i];
+													console.log(item);
+
+													// /////////
+													$
+															.ajax({
+																url : '/v1/tokenMulti/'
+																		+ item.userID,
+																type : 'GET',
+																headers : {
+																	'X-ApiKey' : tokenID
+																},
+																contentType : "application/json",
+																async : false,
+																success : function(
+																		data) {
+
+																	if (data.result.data) {
+
+																		for ( var i in data.result.data) {
+
+																			var itemTokenInfo = data.result.data[i];
+																			console
+																					.log(itemTokenInfo);
+																			tableData
+																					.push({
+																						"Id" : item.userID,
+																						"Name" : item.name,
+																						"Dept" : item.dept,
+																						"Phone" : item.phone,
+																						"TokenID" : itemTokenInfo.tokenID
+																					});
+
+																		}
+
+																	} else {
+																		alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
+																	}
+																},
+																error : function(
+																		data,
+																		textStatus,
+																		request) {
+																	console
+																			.log(data);
+																	alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
+																}
+															});
+
+												}
+
+												console.log(tableData);
+												$('#dataTables-example')
+														.dataTable(
+																{
+																	bJQueryUI : true,
+																	bDestroy : true,
+																	aaData : tableData,
+																	aoColumns : [
+																			{
+																				mData : 'Id'
+																			},
+																			{
+																				mData : 'Name'
+																			},
+																			{
+																				mData : 'Dept'
+																			},
+																			{
+																				mData : 'Phone'
+																			},
+																			{
+																				mData : 'TokenID'
+																			} ]
+																});
+											} else {
+												alert('유저 정보를 가지고 오는데 실패 하였습니다.');
+											}
+										},
+										error : function(data, textStatus,
+												request) {
+											console.log(data);
+											alert('유저 정보를 가지고 오는데 실패 하였습니다.');
+										}
+									});
+
+							$('#dataTables-example tbody').on(
+									'click',
+									'tr',
+									function() {
+
+										var tableData = $(this).children("td")
+												.map(function() {
+													return $(this).text();
+												}).get();
+
+										console.log(tableData[0]);
+										$('#input_adminID').val(tableData[0]);
+									});
+
+						}
+
+						if (data === "token") {
+
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+
+						}
+
+						if (data === "changePass") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+
+						}
+
+						if (data === "MessageSend") {
+							// 기능삭제
+							// sessionStorage.setItem("monitoringStatus",
+							// "disable");
+							// ckeditor create
+							// CKEDITOR.replace('input_messageContent',{
+							// startupFocus : true
+							// });
+						}
+
+						if (data === "monitoring") {
+
+							var element = document.createElement("script");
+							element.src = "js/pages/monitoring.js";
+							document.body.appendChild(element);
+							sessionStorage
+									.setItem("monitoringStatus", "enable");
+
+						}
+
+						if (data === "messageList") {
+							// 기능삭제
+							// sessionStorage.setItem("monitoringStatus",
+							// "disable");
+							// var tableData = [];
+							// $.ajax({
+							// url : '/v1/messages?type=sent',
+							// type : 'GET',
+							// headers : {
+							// 'X-ApiKey' : tokenID
+							// },
+							// contentType : "application/json",
+							// async : false,
+							// success : function(data) {
+							//				
+							// if (data.result.data) {
+							//
+							// for ( var i in data.result.data) {
+							//
+							// var item = data.result.data[i];
+							// console.log(item);
+							// var status="";
+							// if(item.status==0){
+							// status="발송 준비중";
+							// }else if(item.status==1){
+							// status="push 발송됨";
+							// }
+							// else{
+							// status=item.status;
+							// }
+							//							
+							// var dateTime=item.issue;
+							//							
+							// var time=new Date(dateTime).toISOString();
+							//							
+							// tableData.push({
+							// "MessageId" :item.id,
+							// "Sender" : item.sender,
+							// "Receiver" : item.receiver,
+							// "qos" : item.qos,
+							// "status":status,
+							// "time":time
+							//						
+							// });
+							// }
+							//
+							// console.log(tableData);
+							//						
+							// //테이블 생성
+							// $('#dataTables-example').dataTable({
+							// bJQueryUI : true,
+							// aaData : tableData,
+							// bDestroy: true,
+							// aoColumns : [ {
+							// mData : 'MessageId'
+							// }, {
+							// mData : 'Sender'
+							// }, {
+							// mData : 'Receiver'
+							// }, {
+							// mData : 'qos'
+							// },{
+							// mData : 'status'
+							// },{
+							// mData : 'time'
+							// } ],
+							// aaSorting: [[0,'desc']]
+							// });
+							// } else {
+							// alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
+							// }
+							// },
+							// error : function(data, textStatus, request) {
+							// console.log(data);
+							// alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
+							// }
+							// });
+
+						}
+
+					});
 }
 
 // login function
@@ -286,7 +311,7 @@ function loginFunction() {
 			console.log("ajax data!!!!!");
 			console.log(data);
 			console.log("ajax data!!!!!");
-			
+
 			console.log('login in ajax call success');
 			var loginResult = data.result.data;
 
@@ -294,7 +319,7 @@ function loginFunction() {
 				if (!data.result.errors) {
 
 					var tokenID = data.result.data.tokenID;
-					console.log("토큰아이디:"+tokenID);
+					console.log("토큰아이디:" + tokenID);
 					var userID = data.result.data.userID;
 
 					sessionStorage.setItem("tokenID", tokenID);
