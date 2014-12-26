@@ -16,7 +16,11 @@ $(document).ready(function() {
 		$("#page-wrapper").load("pages/login.html", function() {
 			$('#ul_userInfo').hide();
 			console.log("logind..html..");
+
 			console.log("test branch ktpmsgAmdd");
+
+			
+
 		});
 
 	}
