@@ -46,6 +46,11 @@ function wrapperFunction(data) {
 									"disable");
 						}
 
+						if (data === "firmware") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+						}
+
 						if (data === "userManager") {
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
@@ -179,16 +184,16 @@ function wrapperFunction(data) {
 									"disable");
 
 						}
-
-						if (data === "MessageSend") {
-							// 기능삭제
-							// sessionStorage.setItem("monitoringStatus",
-							// "disable");
-							// ckeditor create
-							// CKEDITOR.replace('input_messageContent',{
-							// startupFocus : true
-							// });
-						}
+						// 메시지 전송 기능삭제
+						// if (data === "MessageSend") {
+						//
+						// sessionStorage.setItem("monitoringStatus",
+						// "disable");
+						//
+						// CKEDITOR.replace('input_messageContent', {
+						// startupFocus : true
+						// });
+						// }
 
 						if (data === "monitoring") {
 
@@ -199,86 +204,86 @@ function wrapperFunction(data) {
 									.setItem("monitoringStatus", "enable");
 
 						}
-
-						if (data === "messageList") {
-							// 기능삭제
-							// sessionStorage.setItem("monitoringStatus",
-							// "disable");
-							// var tableData = [];
-							// $.ajax({
-							// url : '/v1/messages?type=sent',
-							// type : 'GET',
-							// headers : {
-							// 'X-ApiKey' : tokenID
-							// },
-							// contentType : "application/json",
-							// async : false,
-							// success : function(data) {
-							//				
-							// if (data.result.data) {
-							//
-							// for ( var i in data.result.data) {
-							//
-							// var item = data.result.data[i];
-							// console.log(item);
-							// var status="";
-							// if(item.status==0){
-							// status="발송 준비중";
-							// }else if(item.status==1){
-							// status="push 발송됨";
-							// }
-							// else{
-							// status=item.status;
-							// }
-							//							
-							// var dateTime=item.issue;
-							//							
-							// var time=new Date(dateTime).toISOString();
-							//							
-							// tableData.push({
-							// "MessageId" :item.id,
-							// "Sender" : item.sender,
-							// "Receiver" : item.receiver,
-							// "qos" : item.qos,
-							// "status":status,
-							// "time":time
-							//						
-							// });
-							// }
-							//
-							// console.log(tableData);
-							//						
-							// //테이블 생성
-							// $('#dataTables-example').dataTable({
-							// bJQueryUI : true,
-							// aaData : tableData,
-							// bDestroy: true,
-							// aoColumns : [ {
-							// mData : 'MessageId'
-							// }, {
-							// mData : 'Sender'
-							// }, {
-							// mData : 'Receiver'
-							// }, {
-							// mData : 'qos'
-							// },{
-							// mData : 'status'
-							// },{
-							// mData : 'time'
-							// } ],
-							// aaSorting: [[0,'desc']]
-							// });
-							// } else {
-							// alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
-							// }
-							// },
-							// error : function(data, textStatus, request) {
-							// console.log(data);
-							// alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
-							// }
-							// });
-
-						}
+						// 메시지 발송 현황 기능 삭제
+						// if (data === "messageList") {
+						//
+						// sessionStorage.setItem("monitoringStatus",
+						// "disable");
+						// var tableData = [];
+						// $.ajax({
+						// url : '/v1/messages?type=sent',
+						// type : 'GET',
+						// headers : {
+						// 'X-ApiKey' : tokenID
+						// },
+						// contentType : "application/json",
+						// async : false,
+						// success : function(data) {
+						//
+						// if (data.result.data) {
+						//
+						// for ( var i in data.result.data) {
+						//
+						// var item = data.result.data[i];
+						// console.log(item);
+						// var status = "";
+						// if (item.status == 0) {
+						// status = "발송 준비중";
+						// } else if (item.status == 1) {
+						// status = "push 발송됨";
+						// } else {
+						// status = item.status;
+						// }
+						//
+						// var dateTime = item.issue;
+						//
+						// var time = new Date(dateTime)
+						// .toISOString();
+						//
+						// tableData.push({
+						// "MessageId" : item.id,
+						// "Sender" : item.sender,
+						// "Receiver" : item.receiver,
+						// "qos" : item.qos,
+						// "status" : status,
+						// "time" : time
+						//
+						// });
+						// }
+						//
+						// console.log(tableData);
+						//
+						// // 테이블 생성
+						// $('#dataTables-example').dataTable({
+						// bJQueryUI : true,
+						// aaData : tableData,
+						// bDestroy : true,
+						// aoColumns : [ {
+						// mData : 'MessageId'
+						// }, {
+						// mData : 'Sender'
+						// }, {
+						// mData : 'Receiver'
+						// }, {
+						// mData : 'qos'
+						// }, {
+						// mData : 'status'
+						// }, {
+						// mData : 'time'
+						// } ],
+						// aaSorting : [ [ 0, 'desc' ] ]
+						// });
+						// } else {
+						// alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
+						// }
+						// },
+						// error : function(data, textStatus, request) {
+						// console.log(data);
+						// alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
+						// }
+						// });
+						//
+						// }
 
 					});
 }

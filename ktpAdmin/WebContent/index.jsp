@@ -102,6 +102,9 @@
 							<li><a href="#"
 								onclick="javascript:wrapperFunction('keepAlive');">keepAlive
 									설정</a></li>
+									
+							<li><a href="#"
+								onclick="javascript:wrapperFunction('firmware');">F/W upgrade 공지</a></li>
 						
 
 						</ul></li>
