@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 	$('.navbar-static-side').hide();
 	var localTokenId = sessionStorage.getItem("tokenID");
-	// local storage token ID Check
+	// local storage token ID Check branchTEST
 	if (localTokenId) {
 		$('.navbar-static-side').show();
 		$('#ul_userInfo').show();
