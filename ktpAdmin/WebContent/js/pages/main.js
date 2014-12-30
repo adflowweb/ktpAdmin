@@ -348,7 +348,7 @@ function loginFunction() {
 							if (data.result.data) {
 
 							} else {
-								alert('유정 정보를 가지고 오는데 실패하였습니다.');
+								alert('유저 정보를 가지고 오는데 실패하였습니다.');
 							}
 						},
 						error : function(data, textStatus, request) {

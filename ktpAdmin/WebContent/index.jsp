@@ -49,7 +49,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="index.jsp">Push Server Admin </a>
+			<a class="navbar-brand" href="index.jsp">Push Configuration Center </a>
 
 		</div>
 
