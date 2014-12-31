@@ -27,10 +27,22 @@ function pingsettingFunc() {
 				success : function(data) {
 					console.log(data);
 					console.log(data.result.success);
-					alert('keep Alive Time 을 전송 하였습니다.');
-					$('#input_receiver').val("");
-					$('#input_pingsetting').val("");
-					$('#input_receiver').focus();
+					if (data.result.info) {
+						alert('keep Alive Time 을 전송 하였습니다.');
+						$('#input_receiver').val("");
+						$('#input_pingsetting').val("");
+						$('#input_receiver').focus();
+
+					} else {
+						alert("메세지 전송에 실패 하였습니다");
+						$('#input_receiver').val("");
+						$('#input_pingsetting').val("");
+						$('#input_receiver').focus();
+
+					}
+					
+					
+			
 
 				},
 				error : function(data, textStatus, request) {

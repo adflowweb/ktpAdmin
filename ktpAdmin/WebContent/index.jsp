@@ -21,8 +21,13 @@
 	rel="stylesheet">
 <link href="css/bootstrap-datetimepicker.css" rel="stylesheet">
 <link href="css/sb-admin.css" rel="stylesheet">
+<!-- ladda -->
+<link href="css/ladda.min.css" rel="stylesheet">
+
 
 <!-- 	<link rel="stylesheet" href="css/TableBarChart.css" /> -->
+
+
 
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -35,6 +40,10 @@
 <script src="ckeditor/ckeditor.js"></script>
 <script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
 <script src="js/plugins/morris/morris.js"></script>
+<script src="js/ladda.js"></script>
+<script src="js/spin.js"></script>
+<!-- ladda -->
+
 
 </head>
 

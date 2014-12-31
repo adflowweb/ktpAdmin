@@ -56,6 +56,11 @@ function MessageSendFunction() {
 				+ ', "retained":false,"sms":'+ackcheck+',"serviceID":"' + input_messageService
 				+ '","type":"' + input_messageType + '","contentType":"'
 				+ contentType + '", "content":"' + input_messageContent + '"}';
+		
+		
+		
+		
+		
 		console.log('결과 값');
 		console.log(resultData);
 

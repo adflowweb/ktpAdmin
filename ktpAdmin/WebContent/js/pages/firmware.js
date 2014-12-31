@@ -17,16 +17,27 @@ function firmwareFunc() {
 					async : false,
 					data : '{"receiver":"'
 							+ input_receiver
-							+ '","qos":2,"type":200,"contentType":"application/json", "content":" {\\"fw\\":'
-							+ input_fwcontent + '} "}',
+							+ '","qos":2,"type":200,"contentType":"application/json", "content":" {\\"fw\\":\\"'
+							+ input_fwcontent + '\\"} "}',
 
 					success : function(data) {
 						console.log(data);
 						console.log(data.result.success);
-						alert('F/W 공지를 발송하였습니다.');
-						$('#input_receiver').val("");
-						$('#input_fwcontent').val("");
-						$('#input_receiver').focus();
+						if (data.result.info) {
+							alert('F/W 공지를 발송하였습니다.');
+							$('#input_receiver').val("");
+							$('#input_fwcontent').val("");
+							$('#input_receiver').focus();
+
+						} else {
+							alert("메세지 전송에 실패 하였습니다");
+							$('#input_receiver').val("");
+							$('#input_fwcontent').val("");
+							$('#input_receiver').focus();
+
+						}
+						
+		
 
 					},
 					error : function(data, textStatus, request) {

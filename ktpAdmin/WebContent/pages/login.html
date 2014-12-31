@@ -10,14 +10,19 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="아이디" name="loginId" id="loginId" value="" autofocus>
                                 </div>
+                                
                                 <div class="form-group">
                                     <input class="form-control" placeholder="비밀번호" name="loginPass" id="loginPass" type="password" value="">
                                  
-                                </div>                
-                                <a href="#"  onclick="javascript:loginFunction();" class="btn btn-lg btn-success btn-block">Login</a>
+                                </div>    
+                                       
+                                <a href="#" id="login_ahref"  onclick="javascript:loginFunction(this);" class="btn btn-lg btn-success btn-block ladda-button" data-style="slide-left" >login</a>
                             </fieldset>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        
+<script src="js/ladda.js"></script>
+<script src="js/spin.js"></script>

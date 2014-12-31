@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+	
 	$('.navbar-static-side').hide();
 	var localTokenId = sessionStorage.getItem("tokenID");
 	// local storage token ID Check branchTEST
@@ -15,11 +15,18 @@ $(document).ready(function() {
 
 		$("#page-wrapper").load("pages/login.html", function() {
 			$('#ul_userInfo').hide();
-			console.log("logind..html..");
-
-			console.log("test branch ktpmsgAmdd");
-
 			
+			$('#loginId').keypress(function(e) {
+				if (e.keyCode != 13)
+					return;
+				$('#loginPass').focus();
+			});
+			$('#loginPass').keypress(function(e) {
+				if (e.keyCode != 13)
+					return;
+				$("#login_ahref").click();
+				
+			});
 
 		});
 
@@ -293,21 +300,29 @@ function wrapperFunction(data) {
 }
 
 // login function
-function loginFunction() {
-
+var ladda_object="";
+function loginFunction(atag) {
+	console.log("atag:"+atag);
+	ladda_object = Ladda.create(atag);
+	
 	var loginId = $('#loginId').val();
 	var loginPass = $('#loginPass').val();
 	// form null check
 	if (loginId == null || loginId == "") {
 		alert("아이디 입력해주세요");
+		$('#loginId').focus();
+		l.stop();
 		return false;
 	}
 
 	if (loginPass == null || loginPass == "") {
 		alert("비밀번호를  입력해주세요");
+		$('#loginPass').focus();
+		
 		return false;
 	}
 	var deviceID = utf8_to_b64(loginId);
+
 	// login ajax call
 	$.ajax({
 		url : '/v1/adminAuth',
@@ -346,12 +361,14 @@ function loginFunction() {
 						success : function(data) {
 
 							if (data.result.data) {
-
+								
 							} else {
+								
 								alert('유저 정보를 가지고 오는데 실패하였습니다.');
 							}
 						},
 						error : function(data, textStatus, request) {
+							
 							console.log(data);
 							alert('유저 정보를 가지고 오는데 실패 하였습니다.');
 						}
@@ -367,14 +384,18 @@ function loginFunction() {
 							});
 					// user not found or invalid password
 				} else {
+					
 					alert(data.result.errors[0]);
 				}
 			} else {
+				
 				alert('로그인에 실패 하였습니다.');
 			}
 
 		},
 		error : function(data, textStatus, request) {
+			
+			alert('로그인에 실패 하였습니다.');
 			console.log('fail start...........');
 			console.log(data);
 			console.log(textStatus);
@@ -513,3 +534,24 @@ Date.prototype.yyyymmdd = function() {
 			+ (hour[1] ? hour : "0" + hour[0]) + ":"
 			+ (minute[1] ? minute : "0" + minute[0]); // padding
 };
+
+
+
+$.ajaxSetup({
+	beforeSend : function() {
+		// show gif here, eg:
+		console.log('ajax before');
+		if(ladda_object!=null&&ladda_object!=""){
+			ladda_object.start();	
+		}
+		
+	},
+	complete : function() {
+		// hide gif here, eg:
+		console.log('ajax complate');
+		if(ladda_object!=null&&ladda_object!=""){
+			ladda_object.stop();
+		}
+		
+	}
+});
