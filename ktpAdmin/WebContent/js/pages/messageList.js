@@ -40,50 +40,50 @@ $('#dataTables-example tbody').on('click', 'tr', function() {
 		}
 	});
 
-	$.ajax({
-		url : '/v1/acks/'+ messageID,
-		type : 'GET',
-		headers : {
-			'X-ApiKey' : tokenID
-		},
-		contentType : "application/json",
-		async : false,
-		success : function(data) {
-
-			if (data.result.data) {
-				var tableData=[];
-				for ( var i in data.result.data) {
-
-					var item = data.result.data[i];
-		
-
-					tableData.push({
-						"UserId" : item.userID,
-						
-
-					});
-				}
-
-				console.log(tableData);
-
-				// 테이블 생성
-				$('#dataTables-example-ack').dataTable({
-					bJQueryUI : true,
-					aaData : tableData,
-					bDestroy : true,
-					aoColumns : [ {
-						mData : 'UserId'
-					} ],
-					aaSorting : [ [ 0, 'desc' ] ]
-				});
-			} else {
-				alert('수신 리스트를 가지고 오는데 실패 하였습니다.');
-			}
-		},
-		error : function(data, textStatus, request) {
-			console.log(data);
-			alert('수신 리스트를 가지고 오는데 실패 하였습니다.');
-		}
-	});
+	// $.ajax({
+	// url : '/v1/acks/'+ messageID,
+	// type : 'GET',
+	// headers : {
+	// 'X-ApiKey' : tokenID
+	// },
+	// contentType : "application/json",
+	// async : false,
+	// success : function(data) {
+	//
+	// if (data.result.data) {
+	// var tableData=[];
+	// for ( var i in data.result.data) {
+	//
+	// var item = data.result.data[i];
+	//		
+	//
+	// tableData.push({
+	// "UserId" : item.userID,
+	//						
+	//
+	// });
+	// }
+	//
+	// console.log(tableData);
+	//
+	// // 테이블 생성
+	// $('#dataTables-example-ack').dataTable({
+	// bJQueryUI : true,
+	// aaData : tableData,
+	// bDestroy : true,
+	// aoColumns : [ {
+	// mData : 'UserId'
+	// } ],
+	// aaSorting : [ [ 0, 'desc' ] ]
+	// });
+	// } else {
+	// alert('수신 리스트를 가지고 오는데 실패 하였습니다.');
+	// }
+	// },
+	// error : function(data, textStatus, request) {
+	// console.log(data);
+	// alert('수신 리스트를 가지고 오는데 실패 하였습니다.');
+	// }
+	// });
 
 });

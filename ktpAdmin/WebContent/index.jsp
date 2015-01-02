@@ -88,9 +88,9 @@
                                     <a href="#" onclick="javascript:wrapperFunction('monitoring');">푸시서버 모니터링</a>
                                 </li>
                                 <!-- 기능식제 -->
-<!--                                   <li> -->
-<!--                                     <a href="#" onclick="javascript:wrapperFunction('messageList');">메세지 발송 현황</a> -->
-<!--                                 </li> -->
+                                  <li>
+                                    <a href="#" onclick="javascript:wrapperFunction('messageList');">메세지 발송 현황</a>
+                                </li>
                            	<li><a href="#"
 								onclick="javascript:wrapperFunction('tokenManager');">토큰 관리</a>
 

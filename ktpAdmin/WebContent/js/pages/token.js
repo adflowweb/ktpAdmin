@@ -1,5 +1,5 @@
 var tokenID = sessionStorage.getItem("tokenID");
-
+var token_Table = "";
 function tokenSearch() {
 	var checkForm = formCheck();
 	var input_subscribe = $('#input_subscribe').val();
@@ -28,9 +28,14 @@ function tokenSearch() {
 								});
 							}
 
-						//기존 data 삭제 
-					     $("#dataTable_Token").children().remove();		
-						 $('#dataTable_Token').dataTable({
+							// 기존 data 삭제
+
+							if (token_Table != null && token_Table != "") {
+								console.log('testconsole');
+								$('#dataTable_Token').children().remove();
+							}
+
+							token_Table = $('#dataTable_Token').dataTable({
 								bJQueryUI : true,
 								bDestroy : true,
 								aaData : tableData,

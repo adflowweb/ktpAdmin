@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	
+
 	$('.navbar-static-side').hide();
 	var localTokenId = sessionStorage.getItem("tokenID");
 	// local storage token ID Check branchTEST
@@ -15,7 +15,7 @@ $(document).ready(function() {
 
 		$("#page-wrapper").load("pages/login.html", function() {
 			$('#ul_userInfo').hide();
-			
+
 			$('#loginId').keypress(function(e) {
 				if (e.keyCode != 13)
 					return;
@@ -25,7 +25,7 @@ $(document).ready(function() {
 				if (e.keyCode != 13)
 					return;
 				$("#login_ahref").click();
-				
+
 			});
 
 		});
@@ -216,95 +216,99 @@ function wrapperFunction(data) {
 
 						}
 						// 메시지 발송 현황 기능 삭제
-						// if (data === "messageList") {
-						//
-						// sessionStorage.setItem("monitoringStatus",
-						// "disable");
-						// var tableData = [];
-						// $.ajax({
-						// url : '/v1/messages?type=sent',
-						// type : 'GET',
-						// headers : {
-						// 'X-ApiKey' : tokenID
-						// },
-						// contentType : "application/json",
-						// async : false,
-						// success : function(data) {
-						//
-						// if (data.result.data) {
-						//
-						// for ( var i in data.result.data) {
-						//
-						// var item = data.result.data[i];
-						// console.log(item);
-						// var status = "";
-						// if (item.status == 0) {
-						// status = "발송 준비중";
-						// } else if (item.status == 1) {
-						// status = "push 발송됨";
-						// } else {
-						// status = item.status;
-						// }
-						//
-						// var dateTime = item.issue;
-						//
-						// var time = new Date(dateTime)
-						// .toISOString();
-						//
-						// tableData.push({
-						// "MessageId" : item.id,
-						// "Sender" : item.sender,
-						// "Receiver" : item.receiver,
-						// "qos" : item.qos,
-						// "status" : status,
-						// "time" : time
-						//
-						// });
-						// }
-						//
-						// console.log(tableData);
-						//
-						// // 테이블 생성
-						// $('#dataTables-example').dataTable({
-						// bJQueryUI : true,
-						// aaData : tableData,
-						// bDestroy : true,
-						// aoColumns : [ {
-						// mData : 'MessageId'
-						// }, {
-						// mData : 'Sender'
-						// }, {
-						// mData : 'Receiver'
-						// }, {
-						// mData : 'qos'
-						// }, {
-						// mData : 'status'
-						// }, {
-						// mData : 'time'
-						// } ],
-						// aaSorting : [ [ 0, 'desc' ] ]
-						// });
-						// } else {
-						// alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
-						// }
-						// },
-						// error : function(data, textStatus, request) {
-						// console.log(data);
-						// alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
-						// }
-						// });
-						//
-						// }
+						if (data === "messageList") {
+
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+							var tableData = [];
+							$.ajax({
+								url : '/v1/messages?type=sent',
+								type : 'GET',
+								headers : {
+									'X-ApiKey' : tokenID
+								},
+								contentType : "application/json",
+								async : false,
+								success : function(data) {
+
+									if (data.result.data) {
+
+										for ( var i in data.result.data) {
+
+											var item = data.result.data[i];
+											console.log(item);
+//											var status = "";
+//											if (item.status == 0) {
+//												status = "발송 준비중";
+//											} else if (item.status == 1) {
+//												status = "push 발송됨";
+//											} else {
+//												status = item.status;
+//											}
+
+											var dateTime = item.issue;
+
+											var time = new Date(dateTime)
+													.toISOString();
+
+											tableData.push({
+												"MessageId" : item.id,
+												"Sender" : item.sender,
+												"Receiver" : item.receiver,
+//												"qos" : item.qos,
+//												"status" : status,
+												"time" : time
+
+											});
+										}
+
+										console.log(tableData);
+
+										// 테이블 생성
+										$('#dataTables-example').dataTable({
+											bJQueryUI : true,
+											aaData : tableData,
+											bDestroy : true,
+											aoColumns : [ {
+												mData : 'MessageId'
+											}, {
+												mData : 'Sender'
+											}, {
+												mData : 'Receiver'
+											},
+//											, {
+//												mData : 'qos'
+//											}
+//											, {
+//												mData : 'status'
+//											},
+											
+											{
+												mData : 'time'
+											} ],
+											aaSorting : [ [ 0, 'desc' ] ]
+										});
+									} else {
+										alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
+									}
+								},
+								error : function(data, textStatus, request) {
+									console.log(data);
+									alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
+								}
+							});
+
+						}
 
 					});
 }
 
 // login function
-var ladda_object="";
+var ladda_object = "";
 function loginFunction(atag) {
-	console.log("atag:"+atag);
+	console.log("atag:" + atag);
 	ladda_object = Ladda.create(atag);
-	
+
 	var loginId = $('#loginId').val();
 	var loginPass = $('#loginPass').val();
 	// form null check
@@ -318,7 +322,7 @@ function loginFunction(atag) {
 	if (loginPass == null || loginPass == "") {
 		alert("비밀번호를  입력해주세요");
 		$('#loginPass').focus();
-		
+
 		return false;
 	}
 	var deviceID = utf8_to_b64(loginId);
@@ -361,14 +365,14 @@ function loginFunction(atag) {
 						success : function(data) {
 
 							if (data.result.data) {
-								
+
 							} else {
-								
+
 								alert('유저 정보를 가지고 오는데 실패하였습니다.');
 							}
 						},
 						error : function(data, textStatus, request) {
-							
+
 							console.log(data);
 							alert('유저 정보를 가지고 오는데 실패 하였습니다.');
 						}
@@ -384,17 +388,17 @@ function loginFunction(atag) {
 							});
 					// user not found or invalid password
 				} else {
-					
+
 					alert(data.result.errors[0]);
 				}
 			} else {
-				
+
 				alert('로그인에 실패 하였습니다.');
 			}
 
 		},
 		error : function(data, textStatus, request) {
-			
+
 			alert('로그인에 실패 하였습니다.');
 			console.log('fail start...........');
 			console.log(data);
@@ -535,23 +539,21 @@ Date.prototype.yyyymmdd = function() {
 			+ (minute[1] ? minute : "0" + minute[0]); // padding
 };
 
-
-
 $.ajaxSetup({
 	beforeSend : function() {
 		// show gif here, eg:
 		console.log('ajax before');
-		if(ladda_object!=null&&ladda_object!=""){
-			ladda_object.start();	
+		if (ladda_object != null && ladda_object != "") {
+			ladda_object.start();
 		}
-		
+
 	},
 	complete : function() {
 		// hide gif here, eg:
 		console.log('ajax complate');
-		if(ladda_object!=null&&ladda_object!=""){
+		if (ladda_object != null && ladda_object != "") {
 			ladda_object.stop();
 		}
-		
+
 	}
 });
