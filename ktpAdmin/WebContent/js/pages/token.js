@@ -217,6 +217,7 @@ function tokenSubscribe() {
 			async : false,
 			success : function(data) {
 				var tableData = [];
+				
 				if (data.result.data) {
 
 					for ( var i in data.result.data) {
@@ -224,7 +225,7 @@ function tokenSubscribe() {
 						var item = data.result.data[i];
 						console.log(item);
 						tableData.push({
-							"Topic" : item.topic,
+							"Topic" : item,
 						});
 					}
 

@@ -27,8 +27,11 @@ $('#dataTables-example tbody').on('click', 'tr', function() {
 				console.log('메세지 아이디로 조히ㅣ ');
 				console.log(item);
 				console.log(item.content);
-
-				$(".message_detail").html(item.content);
+				var item_Content=item.content;
+				if(item.type=="104"||item.type==104){
+					item_Content=b64_to_utf8(item_Content);
+				}
+				$(".message_detail").html(item_Content);
 
 			} else {
 				alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');

@@ -1,24 +1,27 @@
 function firmwareFunc() {
 	console.log('F/W upgrade 공지 발송 시작');
 	var tokenID = sessionStorage.getItem("tokenID");
+	var userID = sessionStorage.getItem("userID");
 	if (formCheck()) {
 		var input_receiver = $('#input_receiver').val();
 		var input_fwcontent = $('#input_fwcontent').val();
+		input_fwcontent=utf8_to_b64(input_fwcontent);
 
 		$
 				.ajax({
-					url : '/v1/messages',
-					type : 'POST',
+					url : '/v1/devices/fwInfo',
+					type : 'PUT',
 					headers : {
 						'X-ApiKey' : tokenID
 					},
 					contentType : "application/json",
 					dataType : 'json',
 					async : false,
-					data : '{"receiver":"'
+					data : '{"sender":"'
+							+ userID
+							+ '","receiver":"'
 							+ input_receiver
-							+ '","qos":2,"type":200,"contentType":"application/json", "content":" {\\"fw\\":\\"'
-							+ input_fwcontent + '\\"} "}',
+							+ '","content":"'+ input_fwcontent+'"}',
 
 					success : function(data) {
 						console.log(data);
@@ -36,8 +39,6 @@ function firmwareFunc() {
 							$('#input_receiver').focus();
 
 						}
-						
-		
 
 					},
 					error : function(data, textStatus, request) {

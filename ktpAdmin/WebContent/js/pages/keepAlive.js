@@ -1,7 +1,7 @@
-
 function pingsettingFunc() {
 	console.log('핑주기 설정 펑션');
-	var tokenID=sessionStorage.getItem("tokenID");
+	var tokenID = sessionStorage.getItem("tokenID");
+	var userID = sessionStorage.getItem("userID");
 	if (formCheck()) {
 
 		var input_pingsetting = $('#input_pingsetting').val();
@@ -12,17 +12,17 @@ function pingsettingFunc() {
 			console.log('정상입력');
 
 			$.ajax({
-				url : '/v1/messages',
-				type : 'POST',
+				url : '/v1/devices/keepAliveTime',
+				type : 'PUT',
 				headers : {
 					'X-ApiKey' : tokenID
 				},
 				contentType : "application/json",
 				dataType : 'json',
 				async : false,
-				data : '{"receiver":"' + input_receiver
-						+ '","qos":2,"type":102,"contentType":"application/json", "content":" {\\"keepAlive\\":'
-						+ input_pingsetting + '} "}',
+				data : '{"sender":"' + userID + '","receiver":"'
+						+ input_receiver + '","content":"{\\"keepAliveTime\\":'
+						+ input_pingsetting + '}"}',
 
 				success : function(data) {
 					console.log(data);
@@ -40,17 +40,12 @@ function pingsettingFunc() {
 						$('#input_receiver').focus();
 
 					}
-					
-					
-			
 
 				},
 				error : function(data, textStatus, request) {
 					alert('전송실패');
 				}
 			});
-
-			
 
 		} else {
 

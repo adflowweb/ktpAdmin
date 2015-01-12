@@ -249,7 +249,7 @@ function wrapperFunction(data) {
 											var dateTime = item.issue;
 
 											var time = new Date(dateTime)
-													.toISOString();
+													.toLocaleString();
 
 											tableData.push({
 												"MessageId" : item.id,
