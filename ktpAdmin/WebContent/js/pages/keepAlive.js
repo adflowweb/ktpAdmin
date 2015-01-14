@@ -21,7 +21,7 @@ function pingsettingFunc() {
 				dataType : 'json',
 				async : false,
 				data : '{"sender":"' + userID + '","receiver":"'
-						+ input_receiver + '","content":"{\\"keepAliveTime\\":'
+						+ input_receiver + '","content":"{\\"keepAlive\\":'
 						+ input_pingsetting + '}"}',
 
 				success : function(data) {

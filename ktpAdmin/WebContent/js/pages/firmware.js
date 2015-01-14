@@ -21,7 +21,7 @@ function firmwareFunc() {
 							+ userID
 							+ '","receiver":"'
 							+ input_receiver
-							+ '","content":"'+ input_fwcontent+'"}',
+							+ '","contentType":"application/base64","content":"'+ input_fwcontent+'"}',
 
 					success : function(data) {
 						console.log(data);
