@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Push Message Center</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Push Message Center</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+<link href="css/plugins/timeline/timeline.css" rel="stylesheet">
+<link href="css/plugins/dataTables/dataTables.bootstrap.css"
+	rel="stylesheet">
+<link href="css/bootstrap-datetimepicker.css" rel="stylesheet">
+<link href="css/sb-admin.css" rel="stylesheet">
+<!-- ladda -->
+<link href="css/ladda.min.css" rel="stylesheet">
+
+
+<!-- 	<link rel="stylesheet" href="css/TableBarChart.css" /> -->
+
+
+
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/sb-admin.js"></script>
+<script src="js/pages/main.js"></script>
+<script type="text/javascript" src="js/smoothie.js"></script>
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="ckeditor/ckeditor.js"></script>
+<script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
+<script src="js/plugins/morris/morris.js"></script>
+<script src="js/ladda.js"></script>
+<script src="js/spin.js"></script>
+<!-- ladda -->
+
+
+</head>
+
+<body>
+	<div id="wrapper">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation"
+			style="margin-bottom: 0">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html">Push Message Center </a>
+
+			</div>
+
+			<ul id="ul_userInfo" class="nav navbar-top-links navbar-right">
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
+						<i class="fa fa-caret-down"></i>
+				</a>
+					<ul class="dropdown-menu dropdown-user">
+						<li><a href="#" onclick="javascript:userInfo();"><i
+								class="fa fa-user fa-fw"></i> User Profile</a></li>
+						<li><a href="pages/changePass.html"  onclick="window.open(this.href,'change password', 'width=650,height=450'); return false;"><i
+								class="fa fa-gear fa-fw"></i> Change Password</a></li>
+						<li><a href="#" onclick="javascript:logoutFunction();"><i
+								class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+
+					</ul> <!-- /.dropdown-user --></li>
+				<!-- /.dropdown -->
+			</ul>
+			<div class="navbar-default navbar-static-side" role="navigation">
+
+				<div class="sidebar-collapse">
+					<ul class="nav" id="side-menu">
+
+						<li><a href="#"><i class="fa fa-dashboard fa-fw"></i>
+								Dashboard(관리자&서비스) <span class="fa arrow"></a>
+
+							<ul class="nav nav-second-level">
+								<!-- 관리자 메뉴 -->
+								<li><a href="#"
+									onclick="javascript:wrapperFunction('monitoring');">시스템
+										모니터링(관리자)</a></li>
+								<!-- 서비스 메뉴 -->
+								<li><a href="#"
+									onclick="javascript:wrapperFunction('messageList');">메시지 발송
+										현황(서비스)</a></li>
+
+								<!-- 서비스 메뉴 -->
+								<li><a href="#"
+									onclick="javascript:wrapperFunction('reservationList');">예약
+										메시지 발송 현황(서비스)</a></li>
+
+							</ul></li>
+
+						<li><a href="#"><i class="fa fa-envelope fa-fw"></i> Push
+								Message(서비스 내부) <span class="fa arrow"></a>
+
+							<ul class="nav nav-second-level">
+								<!-- 기능삭제 -->
+								<li><a href="#"
+									onclick="javascript:wrapperFunction('MessageSend');">메세지
+										전송(서비스내부)</a></li>
+
+
+
+
+
+							</ul></li>
+						<li id="adminRole_li"><a href="#"><i
+								class="fa fa-user fa-fw"></i> Admin(관리자)<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li><a href="#"
+									onclick="javascript:wrapperFunction('userManager');">계정
+										관리(관리자)</a></li>
+								<li><a href="#"
+									onclick="javascript:wrapperFunction('userAdd');">계정 등록(관리자)</a>
+								</li>
+
+								<li><a href="#"
+									onclick="javascript:wrapperFunction('codeList');">코드
+										목록(관리자)</a></li>
+
+								<li><a href="#"
+									onclick="javascript:wrapperFunction('statistics');">통계(관리자)</a>
+								</li>
+
+
+
+							</ul></li>
+					</ul>
+					<!-- /#side-menu -->
+				</div>
+				<!-- /.sidebar-collapse -->
+			</div>
+			<!-- /.navbar-static-side -->
+		</nav>
+
+		<div id="page-wrapper"></div>
+	</div>
+	<!-- /#wrapper -->
+
+	<!-- Core Scripts - Include with every page -->
+
+
+</body>
+</html>

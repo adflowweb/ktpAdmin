@@ -1,0 +1,112 @@
+
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">메시지 전송</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">메시지 전송</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+
+
+				<div class="form-group">
+					<label>메시지 전송 대상 </label><br /> <input type="text"
+						class="form-control" id="message-send-target-input"
+						placeholder="메세지 발송 대상 ex) 01029384747"></input>
+
+				</div>
+<!-- 				<div class="form-group"> -->
+<!-- 					<label>대상 서비스</label> <input class="form-control" -->
+<!-- 						id="message-send-service-input" -->
+<!-- 						placeholder="서비스 아이디 입력  ex) kr.co.ktpowertel.kakao"> -->
+<!-- 				</div> -->
+
+				<!-- 				<div class="form-group"> -->
+				<!-- 					<label>메시지 타입</label> <input class="form-control" -->
+				<!-- 						id="input_messageType" placeholder="메세지 타입 입력(숫자)"> -->
+				<!-- 				</div> -->
+				<!-- 				<div class="form-group"> -->
+				<!-- 					<label>Content-Type</label> <select id="contentSelect" -->
+				<!-- 						class="form-control"> -->
+				<!-- 						<option value="1">text/plain</option> -->
+				<!-- 						<option value="2">application/json</option> -->
+				<!-- 						<option value="3">application/base64</option> -->
+				<!-- 					</select> -->
+				<!-- 				</div> -->
+
+
+				<!-- 				<div class="form-group"> -->
+				<!-- 					<label>Qos 설정</label> <select id="qosSelect" class="form-control"> -->
+				<!-- 						<option value="2">2:4단계의 핸드 쎼이킹을 통해 정확히 한번만 전달 합니다.</option> -->
+				<!-- 						<option value="1">1:적어도 한번 이상 메세지를 전달하며 전달 여부는 확인 하지 -->
+				<!-- 							않습니다.</option> -->
+				<!-- 						<option value="0">0:메세지를 한번 전달하며 전달 여부는 확인 하지 않습니다.</option> -->
+
+				<!-- 					</select> -->
+				<!-- 				</div> -->
+
+				<div class="form-group">
+					<div class="checkbox">
+						<label> <input type="checkbox" id="message-send-ackckeck-input" checked>응답
+							여부
+						</label>
+					</div>
+				</div>
+
+				<!-- 				<div class="form-group"> -->
+				<!-- 					<label>컨텐츠</label> <input type="file" id="input_typeFile" /> <input -->
+				<!-- 						type="hidden" id="input_fileName"> -->
+				<!-- 				</div> -->
+
+
+
+
+				<div class="form-group">
+					<label>메시지 내용</label>
+
+					<textarea class="form-control" id="message-send-textarea" rows="5"> </textarea>
+
+				</div>
+
+				<div class="form-group">
+					<label>예약 메시지 설정<span
+						style="font-size: x-small; font-style: italic; font-weight: lighter;">(입력하지
+							않으면 즉시 발송됩니다.)</span>
+					</label>
+					<div class='input-group date' id='message-send-reservation-div'>
+						<input id="message-send-reservationdate-input" type='text' class="form-control" />
+						<span class="input-group-addon"><span
+							class="glyphicon glyphicon-calendar"></span> </span>
+					</div>
+				</div>
+
+
+
+				<input type="button" onclick="javascript:MessageSendFunction();"
+					class="btn btn-default" value="Message Send"></input> <input
+					type="button" onclick="javascript:wrapperFunction('MessageSend');"
+					class="btn btn-default" value="Reset"></input>
+
+			</div>
+			<!-- /.panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+	<!-- /.col-lg-6 -->
+
+
+
+	<!-- /.col-lg-12 -->
+</div>
+
+
+<script src="js/pages/MessageSend.js"></script>
+<script src="js/moment.js"></script>
+<script src="js/bootstrap-datetimepicker.js"></script>
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+

@@ -1,0 +1,65 @@
+
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">계정 등록</h1>
+	</div>
+</div>
+<!-- /.row -->
+
+<div class="row">
+
+
+
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">계정 등록</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<form role="form">
+					<div class="form-group">
+						<label>아이디</label> <input class="form-control" id="add-id-input"
+							placeholder="아이디 입력" />
+					</div>
+					<div class="form-group">
+						<label>패스워드</label> <input type="password" class="form-control"
+							id="add-password-input" placeholder="패스워드 입력" />
+					</div>
+					<div class="form-group">
+						<label>이름</label> <input class="form-control" id="add-name-input"
+							placeholder="이름 입력" />
+					</div>
+					<div class="form-group">
+						<label>권한</label> <select class="form-control"
+							id="add-role-select">
+							<option value="0">선택</option>
+							<option value="1">관리자</option>
+							<option value="2">서비스</option>
+							<option value="3">서비스(내부)</option>
+						</select>
+					</div>
+					<div class="form-group" id="add-messagecount-div"
+						style="display: none;">
+						<label>메시지 전송제한건수</label> <input class="form-control"
+							id="user-message-input" placeholder="숫자입력" />
+					</div>
+
+
+
+					<input type="button" onclick="javascript:userAddFunction();"
+						class="btn btn-default" value="등록"></input>
+					<button type="reset" class="btn btn-default">Reset</button>
+				</form>
+
+			</div>
+			<!-- /.panel-body -->
+		</div>
+	</div>
+
+
+
+
+	<!-- /.col-lg-12 -->
+</div>
+
+
+<script src="js/pages/userAdd.js"></script>
