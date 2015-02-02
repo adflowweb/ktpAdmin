@@ -2,20 +2,34 @@ $(document).ready(
 		function() {
 
 			$('.navbar-static-side').hide();
-			var localTokenId = sessionStorage.getItem("tokenID");
+			var localTokenId = sessionStorage.getItem("token");
+			sessionStorage.setItem("monitoringStatus", "disable");
 			if (localTokenId) {
-				$('.navbar-static-side').show();
-				$('#ul_userInfo').show();
-				sessionStorage.setItem("monitoringStatus", "disable");
-				$("#page-wrapper").load("pages/messageListPageWrapper.html",
-						function() {
+				var userRole = sessionStorage.getItem("role");
+				if (userRole == "sys") {
 
-						});
+					$("#page-wrapper").load(
+							"pages/userManagerPageWrapper.html", function() {
+								sysLogin();
+							});
+				} else if (userRole == "svc") {
+					$("#page-wrapper").load(
+							"pages/messageListPageWrapper.html", function() {
+								svcLogin();
+							});
+
+				} else if (userRole == "inf") {
+					$("#page-wrapper").load(
+							"pages/messageListPageWrapper.html", function() {
+								infLogin();
+							});
+				}
+
 			} else {
 
 				$("#page-wrapper").load("pages/login.html", function() {
 					$('#ul_userInfo').hide();
-
+					$('.navbar-static-side').hide();
 					$('#loginId').keypress(function(e) {
 						if (e.keyCode != 13)
 							return;
@@ -42,16 +56,9 @@ function wrapperFunction(data) {
 					"pages/" + data + "PageWrapper.html",
 					function() {
 
-						console.log(data);
-						var tokenID = sessionStorage.getItem("tokenID");
-						var userID = sessionStorage.getItem("userID");
-						console.log(tokenID);
-						console.log(userID);
-
 						if (data === "userManager") {
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
-
 						}
 
 						// 메시지 전송 기능삭제
@@ -100,12 +107,6 @@ function wrapperFunction(data) {
 							document.body.appendChild(elementDataTable);
 							document.body.appendChild(elementDataTableBT);
 
-							//
-							// <script
-							// src="js/plugins/dataTables/jquery.dataTables.js"></script>
-							// <script
-							// src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
-
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
 
@@ -126,10 +127,6 @@ function wrapperFunction(data) {
 						}
 
 						if (data === "statistics") {
-							$("#statistics-account-select").append(
-									"<option value='1'>Apples</option>");
-							$("#statistics-account-select").append(
-									"<option value='2'>After Apples</option>");
 
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
@@ -176,109 +173,127 @@ function loginFunction(atag) {
 
 		return false;
 	}
-	var deviceID = utf8_to_b64(loginId);
 
-	$("#page-wrapper").load("pages/messageListPageWrapper.html", function() {
-
-		$('#ul_userInfo').show();
-		$('.navbar-static-side').show();
-
-	});
+	var loginInfo = new Object();
+	loginInfo.userId = loginId;
+	loginInfo.password = loginPass;
+	var loginReq = JSON.stringify(loginInfo);
+	console.log("로그인 정보:" + loginReq);
 
 	// // login ajax call
-	// $.ajax({
-	// url : '/v1/adminAuth',
-	// type : 'POST',
-	// contentType : "application/json",
-	// dataType : 'json',
-	// async : false,
-	// data : '{"userID":"' + loginId + '","password":"' + loginPass
-	// + '","deviceID":"' + deviceID + '"}',
-	// success : function(data) {
-	// console.log("ajax data!!!!!");
-	// console.log(data);
-	// console.log("ajax data!!!!!");
-	//
-	// console.log('login in ajax call success');
-	// var loginResult = data.result.data;
-	//
-	// if (loginResult) {
-	// if (!data.result.errors) {
-	//
-	// var tokenID = data.result.data.tokenID;
-	// console.log("토큰아이디:" + tokenID);
-	// var userID = data.result.data.userID;
-	//
-	// sessionStorage.setItem("tokenID", tokenID);
-	// sessionStorage.setItem("userID", userID);
-	//
-	// $.ajax({
-	// url : '/v1/users/' + loginId,
-	// type : 'GET',
-	// headers : {
-	// 'X-ApiKey' : tokenID
-	// },
-	// contentType : "application/json",
-	// async : false,
-	// success : function(data) {
-	//
-	// if (data.result.data) {
-	//
-	// } else {
-	//
-	// alert('유저 정보를 가지고 오는데 실패하였습니다.');
-	// }
-	// },
-	// error : function(data, textStatus, request) {
-	//
-	// console.log(data);
-	// alert('유저 정보를 가지고 오는데 실패 하였습니다.');
-	// }
-	// });
-	//
-	// // mainPage load
-	// $("#page-wrapper").load("pages/keepAlivePageWrapper.html",
-	// function() {
-	//
-	// $('#ul_userInfo').show();
-	// $('.navbar-static-side').show();
-	//
-	// });
-	// // user not found or invalid password
-	// } else {
-	//
-	// alert(data.result.errors[0]);
-	// }
-	// } else {
-	//
-	// alert('로그인에 실패 하였습니다.');
-	// }
-	//
-	// },
-	// error : function(data, textStatus, request) {
-	//
-	// alert('로그인에 실패 하였습니다.');
-	// console.log('fail start...........');
-	// console.log(data);
-	// console.log(textStatus);
-	// console.log('fail end.............');
-	// }
-	// });
+	$.ajax({
+		url : '/adm/cmm/auth',
+		type : 'POST',
+		contentType : "application/json",
+		headers : {
+			'X-Application-Token' : ""
+		},
+		dataType : 'json',
+		async : false,
+		data : loginReq,
+		statusCode : {
+			200 : function(data) {
+				console.log("200..");
+			},
+			401 : function(data) {
+				alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+				$("#page-wrapper").load("pages/login.html", function() {
+					$('#ul_userInfo').hide();
+					$('.navbar-static-side').hide();
+					$('#loginId').keypress(function(e) {
+						if (e.keyCode != 13)
+							return;
+						$('#loginPass').focus();
+					});
+					$('#loginPass').keypress(function(e) {
+						if (e.keyCode != 13)
+							return;
+						$("#login_ahref").click();
+
+					});
+
+				});
+			}
+		},
+		success : function(data) {
+			console.log("ajax data!!!!!");
+			console.log(data);
+			console.log("ajax data!!!!!");
+
+			console.log('login in ajax call success');
+			var loginResult = data.result.data;
+
+			if (loginResult) {
+				if (!data.result.errors) {
+
+					var role = data.result.data.role;
+					var token = data.result.data.token;
+					var userId = data.result.data.userId;
+
+					sessionStorage.setItem("role", role);
+					sessionStorage.setItem("token", token);
+					sessionStorage.setItem("userId", userId);
+
+					var userRole = sessionStorage.getItem("role");
+					console.log("userRole:" + userRole);
+					if (userRole == "sys") {
+
+						$("#page-wrapper").load(
+								"pages/userManagerPageWrapper.html",
+								function() {
+									sysLogin();
+								});
+					} else if (userRole == "svc") {
+						$("#page-wrapper").load(
+								"pages/messageListPageWrapper.html",
+								function() {
+									svcLogin();
+								});
+
+					} else if (userRole == "inf") {
+						$("#page-wrapper").load(
+								"pages/messageListPageWrapper.html",
+								function() {
+									console.log('testpcbs');
+									infLogin();
+									console.log('testpcbs');
+								});
+					}
+
+				} else {
+
+					alert(data.result.errors[0]);
+				}
+			} else {
+
+				alert('로그인에 실패 하였습니다.');
+			}
+
+		},
+		error : function(data, textStatus, request) {
+
+			alert('로그인에 실패 하였습니다.');
+			console.log('fail start...........');
+			console.log(data);
+			console.log(textStatus);
+			console.log('fail end.............');
+		}
+	});
 
 }
 
 // logoutFunction
 function userInfo() {
-	var userID = sessionStorage.getItem("userID");
+	var userID = sessionStorage.getItem("userId");
 	alert(userID + "으로 로그인 중입니다.");
 }
 
 function logoutFunction() {
 	if (confirm("로그아웃 하시 겠습니까??") == true) { // 확인
-		sessionStorage.removeItem("tokenID");
-		sessionStorage.removeItem("userID");
-		sessionStorage.removeItem("userRole");
-		sessionStorage.removeItem("userPhone");
+		sessionStorage.removeItem("token");
+		sessionStorage.removeItem("userId");
+		sessionStorage.removeItem("role");
+		sessionStorage.removeItem("monitoringStatus");
 
 		// window.location = "/BootStrapTest/index.jsp";
 		window.location.reload();
@@ -298,6 +313,40 @@ function validateDate(input_reservation) {
 // compactTrim function
 function compactTrim(value) {
 	return value.replace(/(\s*)/g, "");
+}
+
+function sysLogin() {
+	$('#ul_userInfo').show();
+	$('.navbar-static-side').show();
+	$('#sys_monitoring_li').show();
+	$('#sys_admin_li').show();
+	$('#svc_message_list_li').hide();
+	$('#svc_message_reservation_li').hide();
+	$('#inf_message_send_li').hide();
+
+}
+
+function svcLogin() {
+	$('#ul_userInfo').show();
+	$('.navbar-static-side').show();
+	$('#sys_monitoring_li').hide();
+	$('#sys_admin_li').hide();
+	$('#svc_message_list_li').show();
+	$('#svc_message_reservation_li').show();
+	$('#inf_message_send_li').hide();
+
+}
+
+function infLogin() {
+	console.log('pcbs start');
+	$('#ul_userInfo').show();
+	$('.navbar-static-side').show();
+	$('#inf_message_send_li').show();
+	$('#svc_message_list_li').show();
+	$('#svc_message_reservation_li').show();
+	$('#sys_monitoring_li').hide();
+	$('#sys_admin_li').hide();
+
 }
 
 // dateFormating

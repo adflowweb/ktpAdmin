@@ -23,14 +23,37 @@ function MessageSendFunction() {
 		if (input_reservation) {
 			dateResult = dateResult.toISOString();
 		}
-		// if (typeof dateResult === undefined
-		// || typeof dateResult === 'undefined') {
-		// console.log("date Result is..undefined.....");
-		// dateResult = "";
-		//		}
-		
-	
-		input_messageContent = utf8_to_b64(input_messageContent);
+		if (typeof dateResult === undefined
+				|| typeof dateResult === 'undefined') {
+			console.log("date Result is..undefined.....");
+			dateResult = "";
+		}
+		input_messageTarget = input_messageTarget.split(",");
+		var messageData = new Object();
+		messageData.sender = userID;
+		messageData.receiver = input_messageTarget;
+		messageData.content = input_messageContent;
+		messageData.contentType = "application/base64";
+		messageData.ackcheck = input_ackcheck;
+		messageData.reservation = dateResult;
+		if (dateResult == "" || dateResult == null) {
+			messageData.reservationCheck = false;
+		} else {
+			messageData.reservationCheck = true;
+		}
+		var messageDataResult = JSON.stringify(messageData);
+		console.log(messageDataResult);
+
+		// input_messageTarget = input_messageTarget.replace(/,/gi, '","');
+		// console.log("고친:" + input_messageTarget);
+		//
+		// var dataExample = '{"sender":"dsafsdf","receiver":["'
+		// + input_messageTarget
+		// + '"],"contentType":"application/base64","content":"sdf"}';
+		//
+		// console.log(dataExample);
+		//
+		// input_messageContent = utf8_to_b64(input_messageContent);
 
 		$.ajax({
 			url : '/v1/devices/fwInfo',
@@ -41,9 +64,31 @@ function MessageSendFunction() {
 			contentType : "application/json",
 			dataType : 'json',
 			async : false,
-			data : '{"sender":"' + userID + '","receiver":"' + input_receiver
-					+ '","contentType":"application/base64","content":"'
-					+ input_fwcontent + '"}',
+			data : messageDataResult,
+			statusCode : {
+				200 : function(data) {
+					console.log("200..");
+				},
+				401 : function(data) {
+					alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+					$("#page-wrapper").load("pages/login.html", function() {
+						$('#ul_userInfo').hide();
+						$('.navbar-static-side').hide();
+						$('#loginId').keypress(function(e) {
+							if (e.keyCode != 13)
+								return;
+							$('#loginPass').focus();
+						});
+						$('#loginPass').keypress(function(e) {
+							if (e.keyCode != 13)
+								return;
+							$("#login_ahref").click();
+
+						});
+
+					});
+				}
+			},
 
 			success : function(data) {
 				console.log(data);
@@ -108,11 +153,11 @@ function messageSendFormCheck() {
 		return false;
 	}
 
-	else if (input_messageService == null || input_messageService == "") {
-		alert("메세지를 보낼 앱의 서비스 아이디를 입력하세요!");
-		$('#input_messageService').focus();
-		return false;
-	}
+	// else if (input_messageService == null || input_messageService == "") {
+	// alert("메세지를 보낼 앱의 서비스 아이디를 입력하세요!");
+	// $('#input_messageService').focus();
+	// return false;
+	// }
 
 	// else if (input_messageType == null || input_messageType == "") {
 	// alert("메세지 타입을 입력하세요!");

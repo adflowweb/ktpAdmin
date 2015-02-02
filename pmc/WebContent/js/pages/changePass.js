@@ -21,6 +21,34 @@ function changePassword() {
 						contentType : "application/json",
 						dataType : 'json',
 						async : false,
+						statusCode : {
+							200 : function(data) {
+								console.log("200..");
+							},
+							401 : function(data) {
+								alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+								$("#page-wrapper").load(
+										"pages/login.html",
+										function() {
+											$('#ul_userInfo').hide();
+											$('.navbar-static-side').hide();
+											$('#loginId').keypress(function(e) {
+												if (e.keyCode != 13)
+													return;
+												$('#loginPass').focus();
+											});
+											$('#loginPass').keypress(
+													function(e) {
+														if (e.keyCode != 13)
+															return;
+														$("#login_ahref")
+																.click();
+
+													});
+
+										});
+							}
+						},
 
 						success : function(data) {
 							console.log(data);
@@ -43,6 +71,30 @@ function changePassword() {
 													async : false,
 													data : JSON
 															.stringify(data.result.data),
+															statusCode : {
+																200 : function(data) {
+																	console.log("200.." );
+																},
+																401 : function(data) {
+																	alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+																	$("#page-wrapper").load("pages/login.html", function() {
+																		$('#ul_userInfo').hide();
+																		$('.navbar-static-side').hide();
+																		$('#loginId').keypress(function(e) {
+																			if (e.keyCode != 13)
+																				return;
+																			$('#loginPass').focus();
+																		});
+																		$('#loginPass').keypress(function(e) {
+																			if (e.keyCode != 13)
+																				return;
+																			$("#login_ahref").click();
+
+																		});
+
+																	});
+																}
+															},
 													success : function(data) {
 														console.log(data);
 														console
@@ -50,7 +102,11 @@ function changePassword() {
 														if (data.result.success) {
 															if (data.result.info) {
 																alert('비밀변호를 변경하였습니다.');
-																window.open('', '_self').close();
+																window
+																		.open(
+																				'',
+																				'_self')
+																		.close();
 															} else {
 																alert('비밀변호 변경에 실패하였습니다.');
 
@@ -92,7 +148,6 @@ function changePassword() {
 		}
 	}
 
-	
 }
 
 // form null check

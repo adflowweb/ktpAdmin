@@ -1,5 +1,81 @@
 $("#statistics-search-date-start-input").prop('disabled', true);
 $("#statistics-search-date-end-input").prop('disabled', true);
+
+// get adm/sys/users
+var statisticsToken = sessionStorage.getItem("token");
+$.ajax({
+	url : '/adm/sys/users',
+	type : 'GET',
+	contentType : "application/json",
+	headers : {
+		'X-Application-Token' : statisticsToken
+	},
+	dataType : 'json',
+	async : false,
+	statusCode : {
+		200 : function(data) {
+			console.log("200..");
+		},
+		401 : function(data) {
+			alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+			$("#page-wrapper").load("pages/login.html", function() {
+				$('#ul_userInfo').hide();
+				$('.navbar-static-side').hide();
+				$('#loginId').keypress(function(e) {
+					if (e.keyCode != 13)
+						return;
+					$('#loginPass').focus();
+				});
+				$('#loginPass').keypress(function(e) {
+					if (e.keyCode != 13)
+						return;
+					$("#login_ahref").click();
+
+				});
+
+			});
+		}
+	},
+	success : function(data) {
+		console.log("ajax data!!!!!");
+		console.log(data);
+		console.log("ajax data!!!!!");
+
+		console.log('login in ajax call success');
+		var loginResult = data.result.data;
+
+		if (loginResult) {
+			if (!data.result.errors) {
+
+				for ( var i in data.result.data) {
+					var successData = data.result.data[i];
+					console.log(successData.role);
+					if (successData.role == "sys") {
+
+					} else {
+						$("#statistics-account-select").append(
+								"<option value='" + (i * 1 + 1) + "'>"
+										+ successData.userId + "</option>");
+					}
+
+				}
+
+			} else {
+
+				alert(data.result.errors[0]);
+			}
+		} else {
+
+			alert('계정 목록을 가지고오는데 실패하였습니다.');
+		}
+
+	},
+	error : function(data, textStatus, request) {
+
+		alert('계정 목록을 가지고오는데 실패하였습니다.');
+	}
+});
+
 var statisticsTable = $('#statistics-datatable').dataTable(
 		{
 			// "bProcessing" : true,
@@ -39,7 +115,19 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 						'X-ApiKey' : 'chanho'
 					},
 					data : aoData,
-					success : fnCallback,
+					success : function(data) {
+						console.log(data.data);
+						var dataResult = data.data;
+						console.log(dataResult);
+						for ( var i in dataResult) {
+							if (dataResult[i].ackcheck == 5) {
+								var addObj = dataResult[i].ackcheck;
+								dataResult[i].ackcheck = addObj + "3";
+							}
+						}
+						data.data = dataResult;
+						fnCallback(data);
+					},
 					error : function(e) {
 						console.log('error');
 						$('#error').html(e.responseText);
