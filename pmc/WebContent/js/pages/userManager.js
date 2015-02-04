@@ -39,9 +39,9 @@ $.ajax({
 		console.log("ajax data!!!!!");
 
 		console.log('login in ajax call success');
-		var loginResult = data.result.data;
+		var dataResult = data.result.data;
 
-		if (loginResult) {
+		if (dataResult) {
 			if (!data.result.errors) {
 				var tableData = [];
 
@@ -59,7 +59,7 @@ $.ajax({
 						"userId" : successData.userId,
 						"Name" : successData.userName,
 						"role" : successData.role,
-						"msgCnt" : successData.msgCntLimitDay
+						"msgCnt" : successData.msgCntLimit
 					});
 
 				}
@@ -135,103 +135,242 @@ $('#dataTables-usermanager tbody').on('click', 'tr', function() {
 });
 
 function userUpdateFunction() {
-	console.log("delelte...admin");
-	var checkForm = individualFormCheck();
+	console.log("update...admin");
+	var checkForm = userUpdataFormCheck();
 	if (checkForm) {
-		var tokenID = sessionStorage.getItem("tokenID");
+		var id_input = $('#user-id-input').val();
+		var name_input = $('#user-name-input').val();
+		var role_select = $("#user-role-select option:selected").val();
+		console.log("권한value:" + role_select);
+		console.log("콘솔 테스트");
+		var roleValue = "";
+		var message_count_input = $('#user-message-input').val();
+		role_select = role_select * 1;
+		switch (role_select) {
+		case 1:
+			console.log("sys");
+			roleValue = "sys";
+			break;
+		case 2:
+			console.log("svc");
+			roleValue = "svc";
+			break;
+		case 3:
+			console.log("널");
+			roleValue = "";
+			break;
+		case 4:
+			console.log("inf");
+			roleValue = "inf";
+			break;
+		}
 
-		if (tokenID) {
-			loginUserId = sessionStorage.getItem("userID");
-			console.log(loginUserId);
-			var input_adminID = $('#input_adminID').val();
+		var userChange = new Object();
+		userChange.userName = name_input;
+		userChange.msgCntLimit = message_count_input;
+		userChange.role = roleValue;
+		var userChangeReq = JSON.stringify(userChange);
+		console.log(userChangeReq);
 
-			$.ajax({
-				url : '/v1/users/' + input_adminID,
-				type : 'DELETE',
-				headers : {
-					'X-ApiKey' : tokenID
+		$.ajax({
+			url : '/adm/sys/users/' + id_input,
+			type : 'PUT',
+			contentType : "application/json",
+			headers : {
+				'X-Application-Token' : userToken
+			},
+			dataType : 'json',
+			data : userChangeReq,
+			statusCode : {
+				200 : function(data) {
+					console.log("200..");
 				},
-				contentType : "application/json",
-				dataType : 'json',
-				async : false,
+				401 : function(data) {
+					alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+					$("#page-wrapper").load("pages/login.html", function() {
+						$('#ul_userInfo').hide();
+						$('.navbar-static-side').hide();
+						$('#loginId').keypress(function(e) {
+							if (e.keyCode != 13)
+								return;
+							$('#loginPass').focus();
+						});
+						$('#loginPass').keypress(function(e) {
+							if (e.keyCode != 13)
+								return;
+							$("#login_ahref").click();
 
-				success : function(data) {
-					console.log(data);
-					console.log(data.result.success);
-					if (data.result.info) {
+						});
 
-						alert("관리자를 삭제  하였습니다.");
+					});
+				}
+			},
+			async : false,
+			success : function(data) {
+				console.log("ajax data!!!!!");
+				console.log(data);
+				console.log("ajax data!!!!!");
+
+				console.log('login in ajax call success');
+				var dataResult = data.result.data;
+
+				if (dataResult) {
+					if (!data.result.errors) {
+						console.log(dataResult);
+						alert('걔정 정보를 변경 하였습니다.');
 						wrapperFunction('userManager');
 					} else {
-						alert("관리자를 삭제에 실패  하였습니다.");
+
+						alert(data.result.errors[0]);
 						wrapperFunction('userManager');
 					}
-				},
-				error : function(data, textStatus, request) {
-					alert("관리자를 삭제에 실패  하였습니다.");
-					$('#input_adminID').val("");
+				} else {
 
-					$('#input_adminID').focus();
-					console.log(data);
+					alert('계정 변경에  실패하였습니다.');
+					wrapperFunction('userManager');
 				}
-			});
-		}
+
+			},
+			error : function(data, textStatus, request) {
+
+				alert('계정 변경에 실패하였습니다.');
+				wrapperFunction('userManager');
+			}
+		});
+
 	}
 }
 
 function userDeleteFunction() {
-	console.log("delelte...admin");
-	var checkForm = individualFormCheck();
+	console.log("update...admin");
+	var checkForm = userDeleteFormCheck();
 	if (checkForm) {
-		var tokenID = sessionStorage.getItem("tokenID");
+		var id_input = $('#user-id-input').val();
 
-		if (tokenID) {
-			loginUserId = sessionStorage.getItem("userID");
-			console.log(loginUserId);
-			var input_adminID = $('#input_adminID').val();
-
-			$.ajax({
-				url : '/v1/users/' + input_adminID,
-				type : 'DELETE',
-				headers : {
-					'X-ApiKey' : tokenID
+		$.ajax({
+			url : '/adm/sys/users/' + id_input,
+			type : 'DELETE',
+			contentType : "application/json",
+			headers : {
+				'X-Application-Token' : userToken
+			},
+			dataType : 'json',
+			statusCode : {
+				200 : function(data) {
+					console.log("200..");
 				},
-				contentType : "application/json",
-				dataType : 'json',
-				async : false,
+				401 : function(data) {
+					alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+					$("#page-wrapper").load("pages/login.html", function() {
+						$('#ul_userInfo').hide();
+						$('.navbar-static-side').hide();
+						$('#loginId').keypress(function(e) {
+							if (e.keyCode != 13)
+								return;
+							$('#loginPass').focus();
+						});
+						$('#loginPass').keypress(function(e) {
+							if (e.keyCode != 13)
+								return;
+							$("#login_ahref").click();
 
-				success : function(data) {
-					console.log(data);
-					console.log(data.result.success);
-					if (data.result.info) {
+						});
 
-						alert("관리자를 삭제  하였습니다.");
+					});
+				}
+			},
+			async : false,
+			success : function(data) {
+				console.log("ajax data!!!!!");
+				console.log(data);
+				var dataResult = data.result.data;
+
+				if (dataResult) {
+					if (!data.result.errors) {
+						console.log(dataResult);
+						alert('계정 정보를 삭제 하였습니다.');
 						wrapperFunction('userManager');
 					} else {
-						alert("관리자를 삭제에 실패  하였습니다.");
+
+						alert(data.result.errors[0]);
 						wrapperFunction('userManager');
 					}
-				},
-				error : function(data, textStatus, request) {
-					alert("관리자를 삭제에 실패  하였습니다.");
-					$('#input_adminID').val("");
+				} else {
 
-					$('#input_adminID').focus();
-					console.log(data);
+					alert('계정 삭제에  실패하였습니다.');
+					wrapperFunction('userManager');
 				}
-			});
-		}
+
+			},
+			error : function(data, textStatus, request) {
+
+				alert('계정 삭제에 실패하였습니다.');
+				wrapperFunction('userManager');
+			}
+		});
+
 	}
 }
 
-// form null check
-function individualFormCheck() {
-	var input_userID = $('#input_adminID').val();
+function userDeleteFormCheck() {
+	var id_input = $('#user-id-input').val();
 
-	if (input_userID == null || input_userID == "") {
-		alert("관리자 아이디를 입력해주세요");
-		$('#input_adminID').focus();
+	if (id_input == null || id_input == "") {
+		alert('아이디를  입력해 주세요');
+		$('#user-id-input').focus();
 		return false;
+	}
+
+	return true;
+
+}
+
+// form null check
+function userUpdataFormCheck() {
+
+	var id_input = $('#user-id-input').val();
+	var name_input = $('#user-name-input').val();
+	var role_select = $("#user-role-select option:selected").val();
+	var message_count_input = $('#user-message-input').val();
+	if (id_input == null || id_input == "") {
+		alert('아이디를  입력해 주세요');
+		$('#user-id-input').focus();
+		return false;
+	} else {
+		console.log('id');
+		console.log(id_input.length);
+		if (id_input.length < 4 || id_input.length > 20) {
+			alert('아이디는 4자 에서 20자이하로 입력하세요');
+			$('#user-id-input').focus();
+			return false;
+		}
+
+	}
+
+	if (name_input == null || name_input == "") {
+		alert('이름를  입력해 주세요');
+		$('#user-name-input').focus();
+		return false;
+	}
+
+	if (role_select == 0) {
+		alert('권한을 선택해 주세요');
+		return false;
+	} else if (role_select == 2) {
+
+		if (message_count_input == null || message_count_input == "") {
+			alert('메시지 전송 제한건수를 입력해주세요');
+			$('#user-message-input').focus();
+			return false;
+		} else {
+			var num_check = /^[0-9]*$/;
+			if (!num_check.test(message_count_input)) {
+				alert('숫자를 입력해 주세요');
+				$('#user-message-input').focus();
+				return false;
+			}
+		}
+
 	}
 	return true;
 

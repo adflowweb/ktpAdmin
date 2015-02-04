@@ -10,11 +10,108 @@ $('#add-role-select').change(function() {
 
 function userAddFunction() {
 	console.log('계정 들록');
-
 	var formCheck = userAddFormCheck();
-
+	var userToken = sessionStorage.getItem("token");
 	if (formCheck) {
+
 		console.log('폼체크 성공');
+
+		var id_input = $('#add-id-input').val();
+		var password_input = $('#add-password-input').val();
+		var name_input = $('#add-name-input').val();
+		var role_select = $("#add-role-select option:selected").val();
+		var roleValue = "";
+		var message_count_input = $('#add-user-message-input').val();
+
+		switch (role_select) {
+		case 1:
+			roleValue = "sys";
+			break;
+		case 2:
+			roleValue = "svc";
+			break;
+		case 3:
+			roleValue = "";
+			break;
+		case 4:
+			roleValue = "inf";
+			break;
+		}
+
+		var userAdd = new Object();
+		userAdd.userId = id_input;
+		userAdd.password = password_input;
+		userAdd.userName = name_input;
+		userAdd.msgCntLimit = message_count_input;
+		userAdd.role = roleValue;
+		var userAddReq = JSON.stringify(userAdd);
+		console.log(userAddReq);
+
+		$.ajax({
+			url : '/adm/sys/users/',
+			type : 'POST',
+			contentType : "application/json",
+			headers : {
+				'X-Application-Token' : userToken
+			},
+			dataType : 'json',
+			data : userAddReq,
+			statusCode : {
+				200 : function(data) {
+					console.log("200..");
+				},
+				401 : function(data) {
+					alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+					$("#page-wrapper").load("pages/login.html", function() {
+						$('#ul_userInfo').hide();
+						$('.navbar-static-side').hide();
+						$('#loginId').keypress(function(e) {
+							if (e.keyCode != 13)
+								return;
+							$('#loginPass').focus();
+						});
+						$('#loginPass').keypress(function(e) {
+							if (e.keyCode != 13)
+								return;
+							$("#login_ahref").click();
+
+						});
+
+					});
+				}
+			},
+			async : false,
+			success : function(data) {
+				console.log("ajax data!!!!!");
+				console.log(data);
+				console.log("ajax data!!!!!");
+
+				console.log('login in ajax call success');
+				var loginResult = data.result.data;
+
+				if (loginResult) {
+					if (!data.result.errors) {
+						console.log(loginResult);
+						alert(data.result.data.userId + "를 생성 하였습니다.");
+						wrapperFunction('userAdd');
+					} else {
+
+						alert(data.result.errors[0]);
+						wrapperFunction('userAdd');
+					}
+				} else {
+
+					alert('계정 등록에  실패하였습니다.');
+					wrapperFunction('userAdd');
+				}
+
+			},
+			error : function(data, textStatus, request) {
+
+				alert('계정 등록에 실패하였습니다.');
+				wrapperFunction('userAdd');
+			}
+		});
 	}
 
 }
@@ -25,7 +122,7 @@ function userAddFormCheck() {
 	var password_input = $('#add-password-input').val();
 	var name_input = $('#add-name-input').val();
 	var role_select = $("#add-role-select option:selected").val();
-	var message_count_input = $('#user-message-input').val();
+	var message_count_input = $('#add-user-message-input').val();
 	if (id_input == null || id_input == "") {
 		alert('아이디를  입력해 주세요');
 		$('#add-id-input').focus();
@@ -69,13 +166,13 @@ function userAddFormCheck() {
 
 		if (message_count_input == null || message_count_input == "") {
 			alert('메시지 전송 제한건수를 입력해주세요');
-			$('#user-message-input').focus();
+			$('#add-user-message-input').focus();
 			return false;
 		} else {
 			var num_check = /^[0-9]*$/;
 			if (!num_check.test(message_count_input)) {
 				alert('숫자를 입력해 주세요');
-				$('#user-message-input').focus();
+				$('#add-user-message-input').focus();
 				return false;
 			}
 		}
