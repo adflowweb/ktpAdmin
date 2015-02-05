@@ -51,13 +51,14 @@ $.ajax({
 					if (successData.role == "svc") {
 						successData.role = "서비스";
 					} else if (successData.role == "inf") {
-						successData.role = "서비스(내부)";
+						successData.role = "Interface Open";
 					} else if (successData.role = "sys") {
 						successData.role = "관리자";
 					}
 					tableData.push({
 						"userId" : successData.userId,
 						"Name" : successData.userName,
+						"IPFilter":successData.ipFilters,
 						"role" : successData.role,
 						"msgCnt" : successData.msgCntLimit
 					});
@@ -72,7 +73,11 @@ $.ajax({
 						mData : 'userId'
 					}, {
 						mData : 'Name'
-					}, {
+					},
+					{
+						mData : 'IPFilter'
+					},
+					{
 						mData : 'role'
 					}, {
 						mData : 'msgCnt'
@@ -119,16 +124,17 @@ $('#dataTables-usermanager tbody').on('click', 'tr', function() {
 	console.log(tableData[2]);
 	$('#user-id-input').val(tableData[0]);
 	$('#user-name-input').val(tableData[1]);
+	$('#user-ipfilter-input').val(tableData[2]);
 
-	if (tableData[2] == "관리자") {
+	if (tableData[3] == "관리자") {
 		$("#user-role-select option:eq(1)").attr("selected", "selected");
 		$('#user-messagecount-div').hide();
-	} else if (tableData[2] == "서비스") {
+	} else if (tableData[3] == "서비스") {
 		$("#user-role-select option:eq(2)").attr("selected", "selected");
 		$('#user-messagecount-div').show();
-		$('#user-message-input').val(tableData[3]);
-	} else if (tableData[2] == "서비스(내부)") {
-		$("#user-role-select option:eq(3)").attr("selected", "selected");
+		$('#user-message-input').val(tableData[4]);
+	} else if (tableData[3] == "Interface Open") {
+		$("#user-role-select option:eq(4)").attr("selected", "selected");
 		$('#user-messagecount-div').hide();
 	}
 
@@ -140,6 +146,8 @@ function userUpdateFunction() {
 	if (checkForm) {
 		var id_input = $('#user-id-input').val();
 		var name_input = $('#user-name-input').val();
+		var ip_filter_input=$('#user-ipfilter-input').val();
+		
 		var role_select = $("#user-role-select option:selected").val();
 		console.log("권한value:" + role_select);
 		console.log("콘솔 테스트");
@@ -169,6 +177,7 @@ function userUpdateFunction() {
 		userChange.userName = name_input;
 		userChange.msgCntLimit = message_count_input;
 		userChange.role = roleValue;
+		userChange.ipFilters=ip_filter_input;
 		var userChangeReq = JSON.stringify(userChange);
 		console.log(userChangeReq);
 
@@ -332,6 +341,7 @@ function userUpdataFormCheck() {
 	var name_input = $('#user-name-input').val();
 	var role_select = $("#user-role-select option:selected").val();
 	var message_count_input = $('#user-message-input').val();
+	var ip_filter_input=$('#user-ipfilter-input').val();
 	if (id_input == null || id_input == "") {
 		alert('아이디를  입력해 주세요');
 		$('#user-id-input').focus();
@@ -350,6 +360,12 @@ function userUpdataFormCheck() {
 	if (name_input == null || name_input == "") {
 		alert('이름를  입력해 주세요');
 		$('#user-name-input').focus();
+		return false;
+	}
+	
+	if (ip_filter_input == null || ip_filter_input == "") {
+		alert('IP 를 입력해 주세요');
+		$('#user-ipfilter-input').focus();
 		return false;
 	}
 

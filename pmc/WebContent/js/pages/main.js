@@ -16,13 +16,9 @@ $(document).ready(
 					$("#page-wrapper").load(
 							"pages/messageListPageWrapper.html", function() {
 								svcLogin();
+
 							});
 
-				} else if (userRole == "inf") {
-					$("#page-wrapper").load(
-							"pages/messageListPageWrapper.html", function() {
-								infLogin();
-							});
 				}
 
 			} else {
@@ -51,104 +47,104 @@ $(document).ready(
 // page wrapperfunction
 function wrapperFunction(data) {
 
-	$("#page-wrapper")
-			.load(
-					"pages/" + data + "PageWrapper.html",
-					function() {
+	$("#page-wrapper").load(
+			"pages/" + data + "PageWrapper.html",
+			function() {
 
-						if (data === "userManager") {
-							sessionStorage.setItem("monitoringStatus",
-									"disable");
-						}
+				if (data === "userManager") {
+					sessionStorage.setItem("monitoringStatus", "disable");
+				}
 
-						// 메시지 전송 기능삭제
-						if (data === "MessageSend") {
+				// 메시지 전송 기능삭제
+				if (data === "MessageSend") {
 
-							sessionStorage.setItem("monitoringStatus",
-									"disable");
+					sessionStorage.setItem("monitoringStatus", "disable");
 
-							// CKEDITOR.replace('input_messageContent', {
-							// startupFocus : true
-							// });
+					// CKEDITOR.replace('input_messageContent', {
+					// startupFocus : true
+					// });
 
-							var nowDate = new Date();
-							var today = new Date(nowDate.getFullYear(), nowDate
-									.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-							var today_30 = new Date(nowDate.getFullYear(),
-									nowDate.getMonth(), nowDate.getDate() + 30,
-									0, 0, 0, 0);
-							$('#message-send-reservation-div').datetimepicker()
-									.data("DateTimePicker").setMinDate(today);
+					var nowDate = new Date();
+					var today = new Date(nowDate.getFullYear(), nowDate
+							.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+					var today_30 = new Date(nowDate.getFullYear(), nowDate
+							.getMonth(), nowDate.getDate() + 30, 0, 0, 0, 0);
+					$('#message-send-reservation-div').datetimepicker().data(
+							"DateTimePicker").setMinDate(today);
 
-							$('#message-send-reservation-div').datetimepicker()
-									.data("DateTimePicker")
-									.setMaxDate(today_30);
-						}
+					$('#message-send-reservation-div').datetimepicker().data(
+							"DateTimePicker").setMaxDate(today_30);
+				}
 
-						if (data === "monitoring") {
+				if (data === "monitoring") {
 
-							var element = document.createElement("script");
-							element.src = "js/pages/monitoring.js";
-							document.body.appendChild(element);
-							sessionStorage
-									.setItem("monitoringStatus", "enable");
+					var element = document.createElement("script");
+					element.src = "js/pages/monitoring.js";
+					document.body.appendChild(element);
+					sessionStorage.setItem("monitoringStatus", "enable");
 
-						}
-						// 메시지 발송 현황 기능 삭제
-						if (data === "messageList") {
+				}
+				// 메시지 발송 현황 기능 삭제
+				if (data === "messageList") {
 
-							var elementDataTable = document
-									.createElement("script");
-							elementDataTable.src = "js/plugins/dataTables/jquery.dataTables.js";
-							var elementDataTableBT = document
-									.createElement("script");
-							elementDataTableBT.src = "js/plugins/dataTables/dataTables.bootstrap.js";
+					// var elementDataTable = document
+					// .createElement("script");
+					// elementDataTable.src =
+					// "js/plugins/dataTables/jquery.dataTables.js";
+					// var elementDataTableBT = document
+					// .createElement("script");
+					// elementDataTableBT.src =
+					// "js/plugins/dataTables/dataTables.bootstrap.js";
+					//
+					// document.body.appendChild(elementDataTable);
+					// document.body.appendChild(elementDataTableBT);
 
-							document.body.appendChild(elementDataTable);
-							document.body.appendChild(elementDataTableBT);
-
-							sessionStorage.setItem("monitoringStatus",
-									"disable");
-
-						}
-
-						if (data === "reservationList") {
-							sessionStorage.setItem("monitoringStatus",
-									"disable");
-						}
-
-						if (data === "userAdd") {
-							sessionStorage.setItem("monitoringStatus",
-									"disable");
-						}
-						if (data === "userManager") {
-							sessionStorage.setItem("monitoringStatus",
-									"disable");
-						}
-
-						if (data === "statistics") {
-
-							sessionStorage.setItem("monitoringStatus",
-									"disable");
-
-							// CKEDITOR.replace('input_messageContent', {
-							// startupFocus : true
-							// });
-
-							var nowDate = new Date();
-							var today = new Date(nowDate.getFullYear(), nowDate
-									.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-
-							$('#statistics-search-date-start-div')
-									.datetimepicker().data("DateTimePicker")
-									.setMaxDate(today);
-
-							$('#statistics-search-date-end-div')
-									.datetimepicker().data("DateTimePicker")
-									.setMaxDate(today);
-						}
-
+					sessionStorage.setItem("monitoringStatus", "disable");
+					$('#messagelist-date-div').datetimepicker({
+						viewMode : 'years',
+						format : 'YYYY/MM'
 					});
+					$('#messagelist-date-input').prop('disabled', true);
+
+				}
+
+				if (data === "reservationList") {
+					sessionStorage.setItem("monitoringStatus", "disable");
+
+					$('#reservation-date-div').datetimepicker({
+						viewMode : 'years',
+						format : 'YYYY/MM'
+					});
+					$('#reservation-date-input').prop('disabled', true);
+				}
+
+				if (data === "userAdd") {
+					sessionStorage.setItem("monitoringStatus", "disable");
+				}
+				if (data === "userManager") {
+					sessionStorage.setItem("monitoringStatus", "disable");
+				}
+
+				if (data === "statistics") {
+
+					sessionStorage.setItem("monitoringStatus", "disable");
+
+					// CKEDITOR.replace('input_messageContent', {
+					// startupFocus : true
+					// });
+
+					var nowDate = new Date();
+					var today = new Date(nowDate.getFullYear(), nowDate
+							.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+
+					$('#statistics-search-date-start-div').datetimepicker()
+							.data("DateTimePicker").setMaxDate(today);
+
+					$('#statistics-search-date-end-div').datetimepicker().data(
+							"DateTimePicker").setMaxDate(today);
+				}
+
+			});
 }
 
 // login function
@@ -251,13 +247,9 @@ function loginFunction(atag) {
 								});
 
 					} else if (userRole == "inf") {
-						$("#page-wrapper").load(
-								"pages/messageListPageWrapper.html",
-								function() {
-									console.log('testpcbs');
-									infLogin();
-									console.log('testpcbs');
-								});
+					
+							infLogin();
+							
 					}
 
 				} else {
@@ -334,10 +326,32 @@ function svcLogin() {
 	$('#svc_message_list_li').show();
 	$('#svc_message_reservation_li').show();
 	$('#inf_message_send_li').hide();
+//	var elementDataTable = document.createElement("script");
+//	elementDataTable.src = "js/plugins/dataTables/jquery.dataTables.js";
+//	var elementDataTableBT = document.createElement("script");
+//	elementDataTableBT.src = "js/plugins/dataTables/dataTables.bootstrap.js";
+//
+//	document.body.appendChild(elementDataTable);
+//	document.body.appendChild(elementDataTableBT);
+
+	sessionStorage.setItem("monitoringStatus", "disable");
+	$('#messagelist-date-div').datetimepicker({
+		viewMode : 'years',
+		format : 'YYYY/MM'
+	});
+
+	$('#messagelist-date-input').prop('disabled', true);
 
 }
 
 function infLogin() {
+	sessionStorage.removeItem("token");
+	alert('해당 계정은 page를 제공 하지 않습니다. 다른 아이디로 로그인하세요!');
+
+
+}
+
+function svcAdmLogin() {
 	console.log('pcbs start');
 	$('#ul_userInfo').show();
 	$('.navbar-static-side').show();
