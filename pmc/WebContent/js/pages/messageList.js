@@ -42,7 +42,7 @@ var messageTable = $('#dataTables-messageList').dataTable(
 				"data" : "resendInterval"
 			} ],
 			'sPaginationType' : 'full_numbers',
-			'sAjaxSource' : '/adm/' + messageListRole + '/messages',
+			'sAjaxSource' : '/pms/adm/' + messageListRole + '/messages',
 			// custom ajax
 			'fnServerData' : function(sSource, aoData, fnCallback) {
 				$.ajax({
@@ -157,18 +157,18 @@ var messageTable = $('#dataTables-messageList').dataTable(
 					break;
 				case 1:
 					break;
-				searchSelect = "msgId";
-			case 2:
-				searchSelect = "updateId";
+					searchSelect = "msgId";
+				case 2:
+					searchSelect = "updateId";
 				break;
-			case 3:
-				searchSelect = "receiver";
+				case 3:
+					searchSelect = "receiver";
 				break;
-			case 4:
-				searchSelect = "ack";
+				case 4:
+					searchSelect = "ack";
 				break;
-			case 5:
-				searchSelect = "status";
+				case 5:
+					searchSelect = "status";
 				break;
 
 			}

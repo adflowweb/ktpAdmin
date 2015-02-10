@@ -16,7 +16,7 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 				"data" : "reservationTime"
 			} ],
 			'sPaginationType' : 'full_numbers',
-			'sAjaxSource' : '/adm/'+reservationListRole+'/messages/reservations',
+			'sAjaxSource' : '/pms/adm/'+reservationListRole+'/messages/reservations',
 			// custom ajax
 			'fnServerData' : function(sSource, aoData, fnCallback) {
 				$.ajax({

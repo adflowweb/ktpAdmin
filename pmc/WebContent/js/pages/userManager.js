@@ -1,7 +1,7 @@
 //get adm/sys/users
 var userToken = sessionStorage.getItem("token");
 $.ajax({
-	url : '/adm/sys/users',
+	url : '/pms/adm/sys/users',
 	type : 'GET',
 	contentType : "application/json",
 	headers : {
@@ -185,7 +185,7 @@ function userUpdateFunction() {
 		console.log(userChangeReq);
 
 		$.ajax({
-			url : '/adm/sys/users/' + id_input,
+			url : '/pms/adm/sys/users/' + id_input,
 			type : 'PUT',
 			contentType : "application/json",
 			headers : {
@@ -260,7 +260,7 @@ function userDeleteFunction() {
 		var id_input = $('#user-id-input').val();
 
 		$.ajax({
-			url : '/adm/sys/users/' + id_input,
+			url : '/pms/adm/sys/users/' + id_input,
 			type : 'DELETE',
 			contentType : "application/json",
 			headers : {

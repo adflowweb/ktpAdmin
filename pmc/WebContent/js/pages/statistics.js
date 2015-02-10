@@ -7,7 +7,7 @@ var statisticsRole = sessionStorage.getItem("role");
 
 //setAccount
 $.ajax({
-	url : '/adm/sys/users',
+	url : '/pms/adm/sys/users',
 	type : 'GET',
 	contentType : "application/json",
 	headers : {
@@ -117,7 +117,7 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 				"data" : "resendInterval"
 			}] ,
 			'sPaginationType' : 'full_numbers',
-			'sAjaxSource' : '/adm/'+statisticsRole+'/messages',
+			'sAjaxSource' : '/pms/adm/'+statisticsRole+'/messages',
 			// custom ajax
 			'fnServerData' : function(sSource, aoData, fnCallback) {
 				$.ajax({
@@ -299,7 +299,7 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 		});
 
 
-//create reservationMessageList
+//create reservationMessageList      
 var statisticsReservationTable = $('#statistics-reservation-datatable').dataTable(
 		{
 			// "bProcessing" : true,
@@ -316,7 +316,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable').dataTabl
 				"data" : "reservationTime"
 			} ],
 			'sPaginationType' : 'full_numbers',
-			'sAjaxSource' : '/adm/'+statisticsRole+'/messages/reservations',
+			'sAjaxSource' : '/pms/adm/'+statisticsRole+'/messages/reservations',
 			// custom ajax
 			'fnServerData' : function(sSource, aoData, fnCallback) {
 				$.ajax({
