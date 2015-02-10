@@ -22,8 +22,8 @@ function userAddFunction() {
 		var role_select = $("#add-role-select option:selected").val();
 		var roleValue = "";
 		var message_count_input = $('#add-user-message-input').val();
-		var ip_filter_input=$('#add-ipfilter-input').val();
-
+		var ip_filter_input = $('#add-ipfilter-input').val();
+		role_select = role_select * 1;
 		switch (role_select) {
 		case 1:
 			roleValue = "sys";
@@ -32,7 +32,7 @@ function userAddFunction() {
 			roleValue = "svc";
 			break;
 		case 3:
-			roleValue = "";
+			roleValue = "svcadm";
 			break;
 		case 4:
 			roleValue = "inf";
@@ -45,7 +45,7 @@ function userAddFunction() {
 		userAdd.userName = name_input;
 		userAdd.msgCntLimit = message_count_input;
 		userAdd.role = roleValue;
-		userAdd.ipFilters=ip_filter_input;
+		userAdd.ipFilters = ip_filter_input;
 		var userAddReq = JSON.stringify(userAdd);
 		console.log(userAddReq);
 
@@ -125,7 +125,7 @@ function userAddFormCheck() {
 	var name_input = $('#add-name-input').val();
 	var role_select = $("#add-role-select option:selected").val();
 	var message_count_input = $('#add-user-message-input').val();
-	var ip_filter_input=$('#add-ipfilter-input').val();
+	var ip_filter_input = $('#add-ipfilter-input').val();
 	if (id_input == null || id_input == "") {
 		alert('아이디를  입력해 주세요');
 		$('#add-id-input').focus();
@@ -161,7 +161,7 @@ function userAddFormCheck() {
 		$('#add-name-input').focus();
 		return false;
 	}
-	
+
 	if (ip_filter_input == null || ip_filter_input == "") {
 		alert('IP 를 입력해 주세요');
 		$('#add-ipfilter-input').focus();

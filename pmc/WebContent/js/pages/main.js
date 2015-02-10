@@ -19,6 +19,13 @@ $(document).ready(
 
 							});
 
+				} else if (userRole == "svcadm") {
+					$("#page-wrapper").load(
+							"pages/messageListPageWrapper.html", function() {
+								svcAdmLogin();
+
+							});
+
 				}
 
 			} else {
@@ -142,6 +149,12 @@ function wrapperFunction(data) {
 
 					$('#statistics-search-date-end-div').datetimepicker().data(
 							"DateTimePicker").setMaxDate(today);
+
+					$('#statistics-reservation-search-date-start-div').datetimepicker()
+							.data("DateTimePicker").setMaxDate(today);
+
+					$('#statistics-reservation-search-date-end-div').datetimepicker().data(
+							"DateTimePicker").setMaxDate(today);
 				}
 
 			});
@@ -182,7 +195,7 @@ function loginFunction(atag) {
 		type : 'POST',
 		contentType : "application/json",
 		headers : {
-			'X-Application-Token' : ""
+			'X-Application-Token' : 'admauth'
 		},
 		dataType : 'json',
 		async : false,
@@ -247,9 +260,17 @@ function loginFunction(atag) {
 								});
 
 					} else if (userRole == "inf") {
-					
-							infLogin();
-							
+
+						infLogin();
+
+					} else if (userRole = "svcadm") {
+						$("#page-wrapper").load(
+								"pages/messageListPageWrapper.html",
+								function() {
+									svcAdmLogin();
+
+								});
+
 					}
 
 				} else {
@@ -326,13 +347,13 @@ function svcLogin() {
 	$('#svc_message_list_li').show();
 	$('#svc_message_reservation_li').show();
 	$('#inf_message_send_li').hide();
-//	var elementDataTable = document.createElement("script");
-//	elementDataTable.src = "js/plugins/dataTables/jquery.dataTables.js";
-//	var elementDataTableBT = document.createElement("script");
-//	elementDataTableBT.src = "js/plugins/dataTables/dataTables.bootstrap.js";
-//
-//	document.body.appendChild(elementDataTable);
-//	document.body.appendChild(elementDataTableBT);
+	// var elementDataTable = document.createElement("script");
+	// elementDataTable.src = "js/plugins/dataTables/jquery.dataTables.js";
+	// var elementDataTableBT = document.createElement("script");
+	// elementDataTableBT.src = "js/plugins/dataTables/dataTables.bootstrap.js";
+	//
+	// document.body.appendChild(elementDataTable);
+	// document.body.appendChild(elementDataTableBT);
 
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({
@@ -348,7 +369,6 @@ function infLogin() {
 	sessionStorage.removeItem("token");
 	alert('해당 계정은 page를 제공 하지 않습니다. 다른 아이디로 로그인하세요!');
 
-
 }
 
 function svcAdmLogin() {
@@ -360,6 +380,13 @@ function svcAdmLogin() {
 	$('#svc_message_reservation_li').show();
 	$('#sys_monitoring_li').hide();
 	$('#sys_admin_li').hide();
+	// sessionStorage.setItem("monitoringStatus", "disable");
+	// $('#messagelist-date-div').datetimepicker({
+	// viewMode : 'years',
+	// format : 'YYYY/MM'
+	// });
+	//
+	// $('#messagelist-date-input').prop('disabled', true);
 
 }
 

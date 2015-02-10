@@ -1,33 +1,22 @@
-var reservationTable = $('#reservation-datatable').dataTable(
+var reservationListToken = sessionStorage.getItem("token");
+var reservationListRole=sessionStorage.getItem("role");
+var reservationListTable = $('#reservation-datatable').dataTable(
 		{
 			// "bProcessing" : true,
 			'bSort' : false,
 			'bServerSide' : true,
 			'dom' : 'T<"clear">lrtip',
 			'columns' : [ {
-				"data" : "msg_id"
+				"data" : "msgId"
 			}, {
-				"data" : "sender"
+				"data" : "updateId"
 			}, {
 				"data" : "receiver"
 			}, {
-				"data" : "time"
-			}, {
-				"data" : "ackcheck"
+				"data" : "reservationTime"
 			} ],
-
-			// "tableTools" : {
-			// "sSwfPath" : "swf/copycsvxlspdf.swf"
-
-			// "aButtons" : [ {
-			// "sExtends" : "xls",
-			// "sButtonText" : "excel",
-			// "sFileName" : "*.xls"
-			// }, "copy", "pdf" ]
-			// },
-
 			'sPaginationType' : 'full_numbers',
-			'sAjaxSource' : '/adflow/v1',
+			'sAjaxSource' : '/adm/'+reservationListRole+'/messages/reservations',
 			// custom ajax
 			'fnServerData' : function(sSource, aoData, fnCallback) {
 				$.ajax({
@@ -36,7 +25,7 @@ var reservationTable = $('#reservation-datatable').dataTable(
 					type : 'GET',
 					url : sSource,
 					headers : {
-						'X-ApiKey' : 'chanho'
+						'X-Application-Token' : messageListToken
 					},
 					data : aoData,
 					statusCode : {
@@ -64,10 +53,37 @@ var reservationTable = $('#reservation-datatable').dataTable(
 									});
 						}
 					},
-					success : fnCallback,
+					success : function(data) {
+
+						console.log('success');
+						console.log(data.result);
+						console.log('success');
+
+						var dataResult = data.result.data;
+						if (dataResult) {
+							dataResult = data.result.data.data;
+							for ( var i in dataResult) {						
+								var dateTime = dataResult[i].reservationTime;
+								console.log("dateTime:"+dateTime);
+								if(dateTime!=null){
+									dataResult[i].reservationTime = new Date(dateTime)
+									.toLocaleString();
+								}
+
+
+							}
+
+							data.result.data.data = dataResult;
+							fnCallback(data.result.data);
+
+						} else {
+							alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+
+						}
+
+					},
 					error : function(e) {
-						console.log('error');
-						$('#error').html(e.responseText);
+						alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
 					}
 				});
 			},
@@ -78,31 +94,41 @@ var reservationTable = $('#reservation-datatable').dataTable(
 				var searchSelectValue = $('#reservation-search-select').val();
 				var searchSelect = $(
 						'#reservation-search-select option:selected').text();
-				var searchInputValue = $('#reservation-search-input').val();
+				var searchInputValue = $('#reservation-input').val();
 				var messageMonth = $('#reservation-date-input').val();
 				searchSelectValue = searchSelectValue * 1;
 
-				switch (searchSelectValue) {
+				switch (searchSelectValue) {		
 				case 0:
 					searchSelect = "";
 					break;
 				case 1:
-					searchSelect = "sender";
 					break;
+					searchSelect = "msgId";
 				case 2:
-					searchSelect = "receiver";
+					searchSelect = "updateId";
 					break;
 				case 3:
-					searchSelect = "time";
+					searchSelect = "receiver";
 					break;
 				case 4:
 					searchSelect = "ack";
+					break;
+				case 5:
+					searchSelect = "status";
 					break;
 
 				}
 
 				if (searchInputValue == null || searchInputValue == "") {
 					searchInputValue = "";
+				}else if(searchInputValue=="응답"){
+					searchInputValue=true;
+					
+				}else if(searchInputValue=="응답 없음"){
+					searchInputValue=false;
+				}else if(searchInputValue=="발송된"){
+					searchInputValue=1*1;
 				}
 
 				if (messageMonth == null || messageMonth == "") {
@@ -120,6 +146,7 @@ var reservationTable = $('#reservation-datatable').dataTable(
 				}
 
 				messageMonth = messageMonth.replace("/", "");
+	
 
 				aoData.push({
 					'name' : 'cSearchFilter',

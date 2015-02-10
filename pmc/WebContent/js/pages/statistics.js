@@ -1,8 +1,11 @@
 $("#statistics-search-date-start-input").prop('disabled', true);
 $("#statistics-search-date-end-input").prop('disabled', true);
-
-// get adm/sys/users
+$("#statistics-reservation-search-date-start-input").prop('disabled', true);
+$("#statistics-reservation-search-date-end-input").prop('disabled', true);
 var statisticsToken = sessionStorage.getItem("token");
+var statisticsRole = sessionStorage.getItem("role");
+
+//setAccount
 $.ajax({
 	url : '/adm/sys/users',
 	type : 'GET',
@@ -52,8 +55,18 @@ $.ajax({
 					console.log(successData.role);
 					if (successData.role == "sys") {
 
-					} else {
+					} else if(successData.role == "svc") {
 						$("#statistics-account-select").append(
+								"<option value='" + (i * 1 + 1) + "'>"
+										+ successData.userId + "</option>");
+						$("#statistics-reservation-account-select").append(
+								"<option value='" + (i * 1 + 1) + "'>"
+										+ successData.userId + "</option>");
+					}else if(successData.role=="svcadm"){
+						$("#statistics-account-select").append(
+								"<option value='" + (i * 1 + 1) + "'>"
+										+ successData.userId + "</option>");
+						$("#statistics-reservation-account-select").append(
 								"<option value='" + (i * 1 + 1) + "'>"
 										+ successData.userId + "</option>");
 					}
@@ -76,34 +89,35 @@ $.ajax({
 	}
 });
 
+
+//create messageList
 var statisticsTable = $('#statistics-datatable').dataTable(
 		{
 			// "bProcessing" : true,
 			'bServerSide' : true,
+			'bSort' : false,
 			'dom' : 'T<"clear">lrtip',
-			'columns' : [ {
-				"data" : "msg_id"
+			'columns' :[{
+				"data" : "msgId"
 			}, {
-				"data" : "sender"
+				"data" : "updateId"
 			}, {
 				"data" : "receiver"
 			}, {
-				"data" : "time"
+				"data" : "status"
 			}, {
-				"data" : "ackcheck"
-			} ],
-			// "tableTools" : {
-			// "sSwfPath" : "swf/copycsvxlspdf.swf"
-
-			// "aButtons" : [ {
-			// "sExtends" : "xls",
-			// "sButtonText" : "excel",
-			// "sFileName" : "*.xls"
-			// }, "copy", "pdf" ]
-			// },
-
+				"data" : "updateTime"
+			}, {
+				"data" : "pmaAckType"
+			}, {
+				"data" : "pmaAckTime"
+			}, {
+				"data" : "resendCount"
+			}, {
+				"data" : "resendInterval"
+			}] ,
 			'sPaginationType' : 'full_numbers',
-			'sAjaxSource' : '/adflow/v1',
+			'sAjaxSource' : '/adm/'+statisticsRole+'/messages',
 			// custom ajax
 			'fnServerData' : function(sSource, aoData, fnCallback) {
 				$.ajax({
@@ -112,25 +126,92 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 					type : 'GET',
 					url : sSource,
 					headers : {
-						'X-ApiKey' : 'chanho'
+						'X-Application-Token' : statisticsToken
 					},
 					data : aoData,
-					success : function(data) {
-						console.log(data.data);
-						var dataResult = data.data;
-						console.log(dataResult);
-						for ( var i in dataResult) {
-							if (dataResult[i].ackcheck == 5) {
-								var addObj = dataResult[i].ackcheck;
-								dataResult[i].ackcheck = addObj + "3";
-							}
+					statusCode : {
+						200 : function(data) {
+							console.log("200..");
+						},
+						401 : function(data) {
+							alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+							$("#page-wrapper").load("pages/login.html",
+									function() {
+										$('#ul_userInfo').hide();
+										$('.navbar-static-side').hide();
+										$('#loginId').keypress(function(e) {
+											if (e.keyCode != 13)
+												return;
+											$('#loginPass').focus();
+										});
+										$('#loginPass').keypress(function(e) {
+											if (e.keyCode != 13)
+												return;
+											$("#login_ahref").click();
+
+										});
+
+									});
 						}
-						data.data = dataResult;
-						fnCallback(data);
+					},
+					success : function(data) {
+
+						console.log('success');
+						console.log(data.result);
+						console.log('success');
+
+						var dataResult = data.result.data;
+						if (dataResult) {
+							dataResult = data.result.data.data;
+							for ( var i in dataResult) {
+								if (dataResult[i].pmaAckType == null
+										&& dataResult[i].appAckType == null) {
+									dataResult[i].pmaAckType = "응답없음";
+								} else {
+									dataResult[i].pmaAckType = "응답";
+									if (dataResult[i].appAckTime != null) {
+										dataResult[i].pmaAckTime=dataResult[i].appAckTime;
+										 var dateTime = dataResult[i].pmaAckTime;
+										 dataResult[i].pmaAckTime = new Date(dateTime)
+										 .toLocaleString();
+									}else if(dataResult[i].pmaAckTime != null){
+										 var dateTime = dataResult[i].pmaAckTime;
+										 dataResult[i].pmaAckTime = new Date(dateTime)
+										 .toLocaleString();
+									}
+
+								}
+							 switch (dataResult[i].status) {
+								 case 1:
+									 dataResult[i].status = "발송됨";
+								 break;
+							
+								 }
+								 if (dataResult[i].ack) {
+									 
+									 dataResult[i].ack = "응답";
+								 } else {
+									 dataResult[i].ack = "응답 없음";
+								 }
+																
+								 dataResult[i].resendInterval=dataResult[i].resendInterval+"초";							
+								 var dateTime = dataResult[i].updateTime;
+								 dataResult[i].updateTime = new Date(dateTime)
+								 .toLocaleString();
+
+							}
+
+							data.result.data.data = dataResult;
+							fnCallback(data.result.data);
+
+						} else {
+							alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+
+						}
+
 					},
 					error : function(e) {
-						console.log('error');
-						$('#error').html(e.responseText);
+						alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
 					}
 				});
 			},
@@ -138,6 +219,7 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 			// },
 			// custom params
 			'fnServerParams' : function(aoData) {
+				//계정select
 				var accountSelectValue = $('#statistics-account-select').val();
 				var searchSelectValue = $('#statistics-search-select').val();
 				var searchSelectText = $(
@@ -151,6 +233,16 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 				var searchDateEnd = $('#statistics-search-date-end-input')
 						.val();
 
+				var nowDate = new Date();
+				var year = nowDate.getFullYear();
+				var month = nowDate.getMonth() + 1;
+				console.log(month);
+				if (month < 10) {
+					month = '0' + month;
+				}
+				console.log(year + "/" + month);
+				var defaultMonth = year + month;
+				
 				searchDateStart = dateFormating(searchDateStart);
 				if (searchDateStart) {
 					searchDateStart = searchDateStart.toISOString();
@@ -179,19 +271,195 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 				});
 
 				aoData.push({
-					'name' : 'searchSelect',
+					'name' : 'cSearchFilter',
 					'value' : searchSelectText
 				});
 				aoData.push({
-					'name' : 'searchValue',
+					'name' : 'cSearchContent',
 					'value' : searchInputValue
 				});
 				aoData.push({
-					'name' : 'searchDateStart',
-					'value' : searchDateStart
+					'name' : 'cSearchDate',
+					'value' : defaultMonth
 				});
 				aoData.push({
-					'name' : 'searchDateEnd',
+					'name' : 'cSearchDateStart',
+					'value' : searchDateEnd
+				});
+				aoData.push({
+					'name' : 'cSearchDateEnd',
+					'value' : searchDateEnd
+				});
+
+
+				
+				
+			}
+
+		});
+
+
+//create reservationMessageList
+var statisticsReservationTable = $('#statistics-reservation-datatable').dataTable(
+		{
+			// "bProcessing" : true,
+			'bServerSide' : true,
+			'bSort' : false,
+			'dom' : 'T<"clear">lrtip',
+			'columns' : [ {
+				"data" : "msgId"
+			}, {
+				"data" : "updateId"
+			}, {
+				"data" : "receiver"
+			}, {
+				"data" : "reservationTime"
+			} ],
+			'sPaginationType' : 'full_numbers',
+			'sAjaxSource' : '/adm/'+statisticsRole+'/messages/reservations',
+			// custom ajax
+			'fnServerData' : function(sSource, aoData, fnCallback) {
+				$.ajax({
+					dataType : 'json',
+					contentType : 'application/json;charset=UTF-8',
+					type : 'GET',
+					url : sSource,
+					headers : {
+						'X-Application-Token' : statisticsToken
+					},
+					data : aoData,
+					statusCode : {
+						200 : function(data) {
+							console.log("200..");
+						},
+						401 : function(data) {
+							alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+							$("#page-wrapper").load("pages/login.html",
+									function() {
+										$('#ul_userInfo').hide();
+										$('.navbar-static-side').hide();
+										$('#loginId').keypress(function(e) {
+											if (e.keyCode != 13)
+												return;
+											$('#loginPass').focus();
+										});
+										$('#loginPass').keypress(function(e) {
+											if (e.keyCode != 13)
+												return;
+											$("#login_ahref").click();
+
+										});
+
+									});
+						}
+					},
+					success : function(data) {
+
+						console.log('success');
+						console.log(data.result);
+						console.log('success');
+
+						var dataResult = data.result.data;
+						if (dataResult) {
+							dataResult = data.result.data.data;
+							for ( var i in dataResult) {
+
+								var dateTime = dataResult[i].reservationTime;
+								console.log("dateTime:"+dateTime);
+								if(dateTime!=null){
+									dataResult[i].reservationTime = new Date(dateTime)
+									.toLocaleString();
+								}
+
+							}
+
+							data.result.data.data = dataResult;
+							fnCallback(data.result.data);
+
+						} else {
+							alert('예약 메시지 목록을 가지고 오는데 실패 하였습니다.');
+
+						}
+
+					},
+					error : function(e) {
+						alert('예약 메시지 목록을 가지고 오는데 실패 하였습니다.');
+					}
+				});
+			},
+			//
+			// },
+			// custom params
+			'fnServerParams' : function(aoData) {
+				//계정select
+				var accountSelectValue = $('#statistics-account-select').val();
+				var searchSelectValue = $('#statistics-search-select').val();
+				var searchSelectText = $(
+						'#statistics-search-select option:selected').text();
+				var accountSelectText = $(
+						'#statistics-account-select option:selected').text();
+				var searchInputValue = $('#statistics-search-input').val();
+
+				var searchDateStart = $('#statistics-search-date-start-input')
+						.val();
+				var searchDateEnd = $('#statistics-search-date-end-input')
+						.val();
+
+				var nowDate = new Date();
+				var year = nowDate.getFullYear();
+				var month = nowDate.getMonth() + 1;
+				console.log(month);
+				if (month < 10) {
+					month = '0' + month;
+				}
+				console.log(year + "/" + month);
+				var defaultMonth = year + month;
+				
+				searchDateStart = dateFormating(searchDateStart);
+				if (searchDateStart) {
+					searchDateStart = searchDateStart.toISOString();
+				}
+
+				searchDateEnd = dateFormating(searchDateEnd);
+				if (searchDateEnd) {
+					searchDateEnd = searchDateEnd.toISOString();
+				}
+
+				if (searchSelectValue == 0) {
+					searchSelectText = "";
+				}
+
+				if (accountSelectValue == 0) {
+					accountSelectText = "";
+				}
+
+				if (searchInputValue == null || searchInputValue == "") {
+					searchInputValue = "";
+				}
+
+				aoData.push({
+					'name' : 'accountSelect',
+					'value' : accountSelectText
+				});
+
+				aoData.push({
+					'name' : 'cSearchFilter',
+					'value' : searchSelectText
+				});
+				aoData.push({
+					'name' : 'cSearchContent',
+					'value' : searchInputValue
+				});
+				aoData.push({
+					'name' : 'cSearchDate',
+					'value' : defaultMonth
+				});
+				aoData.push({
+					'name' : 'cSearchDateStart',
+					'value' : searchDateEnd
+				});
+				aoData.push({
+					'name' : 'cSearchDateEnd',
 					'value' : searchDateEnd
 				});
 
@@ -199,6 +467,10 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 
 		});
 
+
+
+
+//message list serach click
 $('#statistics-search-btn').click(function() {
 
 	console.log('target click function..');
@@ -211,6 +483,21 @@ $('#statistics-search-btn').click(function() {
 	}
 
 });
+
+//reservation list search click
+$('#statistics-reservation-search-btn').click(function() {
+
+	console.log('target click function..');
+	var formCheck = checkReservationSearch();
+
+	if (formCheck) {
+		statisticsReservationTable.fnFilter();
+	} else {
+		console.log('검색항목 선택 안함!!');
+	}
+
+});
+
 
 $("#statistics-account-select").change(function() {
 
@@ -228,6 +515,25 @@ $("#statistics-account-select").change(function() {
 
 });
 
+$("#statistics-reservation-account-select").change(function() {
+
+	var accountSelectValue = $('#statistics-reservation-account-select').val();
+	$('#statistics-reservation-search-date-start-input').val("");
+	$('#statistics-reservation-search-date-end-input').val("");
+	$('#statistics-reservation-search-input').val("");
+	$("#statistics-reservation-search-select option:eq(0)").attr("selected", "selected");
+
+	if (accountSelectValue === 0) {
+
+	} else {
+		statisticsReservationTable.fnFilter();
+	}
+
+});
+
+
+
+//messageList CheckForm
 function checkSearchStatistics() {
 
 	var selectOptionValue = $('#statistics-search-select').val();
@@ -257,6 +563,7 @@ function checkSearchStatistics() {
 		return false;
 	} else if (inputSearchValue == null || inputSearchValue == "") {
 		alert('검색할 내용을 입력해 주세요');
+		$('#statistics-search-input').focus();
 		return false;
 	} else if (searchDateStart != null && searchDateStart != "") {
 		console.log(searchDateStart);
@@ -292,30 +599,70 @@ function checkSearchStatistics() {
 
 }
 
-// .columnFilter();
 
-// $('#dataTables-example_filter input').unbind();
-// $('#dataTables-example_filter input').bind('keyup', function(e) {
-// if (e.keyCode == 13) {
-// oTable.fnFilter(this.value);
-// }
-//
-// });
+//reservationList Check Form
+function checkReservationSearch() {
 
-// $('tfoot input').unbind();
-//
-// $('#send_dateButton').bind('click', function(e) {
-//  
-// oTable.fnFilter();
-//
-// });
-// $('tfoot input').bind('keyup', function(e) {
-// if (e.keyCode == 13) {
-// oTable.fnFilter(this.value, $("tfoot input").index(this));
-// }
-//
-// });
+	var selectOptionValue = $('#statistics-reservation-search-select').val();
+	var inputSearchValue = $('#statistics-reservation-search-input').val();
+	var searchDateStart = $('#statistics-reservation-search-date-start-input').val();
+	searchDateStart = dateFormating(searchDateStart);
 
-function excelExportFunction() {
+	if (typeof searchDateStart === undefined
+			|| typeof searchDateStart === 'undefined') {
+		console.log("dsearchDateStart id undefined ");
+		searchDateStart = "";
+	}
+
+	var searchDateEnd = $('#statistics-reservation-search-date-end-input').val();
+
+	searchDateEnd = dateFormating(searchDateEnd);
+	if (typeof searchDateEnd === undefined
+			|| typeof searchDateEnd === 'undefined') {
+		console.log("dsearchDateEnd.....");
+		searchDateEnd = "";
+	}
+
+	console.log('selectOptjionValue:' + selectOptionValue);
+
+	if (selectOptionValue == 0) {
+		alert('검색할 항목을 선택해 주세요');
+		return false;
+	} else if (inputSearchValue == null || inputSearchValue == "") {		
+		alert('검색할 내용을 입력해 주세요');
+		$('#statistics-reservation-search-input').focus();
+		return false;
+	} else if (searchDateStart != null && searchDateStart != "") {
+		console.log(searchDateStart);
+		if (searchDateEnd == null || searchDateEnd == "") {
+			alert('검색 종료일을 입력해 주세요');
+			return false;
+		} else {
+			if (searchDateStart >= searchDateEnd) {
+				alert('검색 시작일이 종료일보다 클 수 없습니다');
+				return false;
+			} else {
+				return true;
+			}
+
+		}
+
+	} else if (searchDateEnd != null && searchDateEnd != "") {
+
+		if (searchDateStart == null || searchDateStart == "") {
+			alert('검색 시작일을 입력해 주세요');
+			return false;
+		} else {
+			if (searchDateStart >= searchDateEnd) {
+				alert('검색 시작일이 종료일보다 클 수 없습니다');
+				return false;
+			} else {
+				return true;
+			}
+		}
+	} else {
+		return true;
+	}
 
 }
+

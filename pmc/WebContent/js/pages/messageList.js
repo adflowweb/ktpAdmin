@@ -15,42 +15,34 @@ var morrisDataMessage = Morris.Donut({
 	resize : true
 });
 var messageListToken = sessionStorage.getItem("token");
+var messageListRole = sessionStorage.getItem("role");
 var messageTable = $('#dataTables-messageList').dataTable(
 		{
 			// "bProcessing" : true,
 			'bSort' : false,
 			'bServerSide' : true,
 			'dom' : 'T<"clear">lrtip',
-			
-//			<result property="msgId" column="msg_id" />
-//			<result property="msgType" column="msg_type" />
-//			<result property="receiver" column="receiver" />
-//			<result property="receiverTopic" column="receiver_topic" />
-//			<result property="serviceId" column="service_id" />
-
 			'columns' : [ {
 				"data" : "msgId"
 			}, {
-				"data" : "msgType"
+				"data" : "updateId"
 			}, {
 				"data" : "receiver"
 			}, {
-				"data" : "receiverTopic"
+				"data" : "status"
 			}, {
-				"data" : "serviceId"
+				"data" : "updateTime"
+			}, {
+				"data" : "pmaAckType"
+			}, {
+				"data" : "pmaAckTime"
+			}, {
+				"data" : "resendCount"
+			}, {
+				"data" : "resendInterval"
 			} ],
-			// "tableTools" : {
-			// "sSwfPath" : "swf/copycsvxlspdf.swf"
-
-			// "aButtons" : [ {
-			// "sExtends" : "xls",
-			// "sButtonText" : "excel",
-			// "sFileName" : "*.xls"
-			// }, "copy", "pdf" ]
-			// },
-
 			'sPaginationType' : 'full_numbers',
-			'sAjaxSource' : '/adm/svc/messages',
+			'sAjaxSource' : '/adm/' + messageListRole + '/messages',
 			// custom ajax
 			'fnServerData' : function(sSource, aoData, fnCallback) {
 				$.ajax({
@@ -97,14 +89,44 @@ var messageTable = $('#dataTables-messageList').dataTable(
 						if (dataResult) {
 							dataResult = data.result.data.data;
 							for ( var i in dataResult) {
-								if (dataResult[i].msgId) {
-									console.log("성공");
-								//	dataResult[i].msgId="1234l";
+								if (dataResult[i].pmaAckType == null
+										&& dataResult[i].appAckType == null) {
+									dataResult[i].pmaAckType = "응답없음";
+								} else {
+									dataResult[i].pmaAckType = "응답";
+									if (dataResult[i].appAckTime != null) {
+										dataResult[i].pmaAckTime=dataResult[i].appAckTime;
+										 var dateTime = dataResult[i].pmaAckTime;
+										 dataResult[i].pmaAckTime = new Date(dateTime)
+										 .toLocaleString();
+									}else if(dataResult[i].pmaAckTime != null){
+										 var dateTime = dataResult[i].pmaAckTime;
+										 dataResult[i].pmaAckTime = new Date(dateTime)
+										 .toLocaleString();
+									}
 
 								}
-							}
+							 switch (dataResult[i].status) {
+								 case 1:
+									 dataResult[i].status = "발송됨";
+								 break;
 							
-							data.result.data.data=dataResult;
+								 }
+								 if (dataResult[i].ack) {
+									 
+									 dataResult[i].ack = "응답";
+								 } else {
+									 dataResult[i].ack = "응답 없음";
+								 }
+																
+								 dataResult[i].resendInterval=dataResult[i].resendInterval+"초";							
+								 var dateTime = dataResult[i].updateTime;
+								 dataResult[i].updateTime = new Date(dateTime)
+								 .toLocaleString();
+
+							}
+
+							data.result.data.data = dataResult;
 							fnCallback(data.result.data);
 
 						} else {
@@ -134,65 +156,64 @@ var messageTable = $('#dataTables-messageList').dataTable(
 					searchSelect = "";
 					break;
 				case 1:
-					searchSelect = "sender";
 					break;
-				case 2:
-					searchSelect = "receiver";
-					break;
-				case 3:
-					searchSelect = "time";
-					break;
-				case 4:
-					searchSelect = "ack";
-					break;
-
-				}
-
-				if (searchInputValue == null || searchInputValue == "") {
-					searchInputValue = "";
-				}
-
-				if (messageMonth == null || messageMonth == "") {
-					var nowDate = new Date();
-					var year = nowDate.getFullYear();
-					var month = nowDate.getMonth() + 1;
-					console.log(month);
-					if (month < 10) {
-						month = '0' + month;
-					}
-					console.log(year + "/" + month);
-					messageMonth = year + "/" + month;
-
-					$('#messagelist-date-input').val(messageMonth);
-				}
-
-				messageMonth = messageMonth.replace("/", "");
-				// if (messageMonth == null || messageMonth == "") {
-				// var nowDate = new Date();
-				// var year = nowDate.getFullYear();
-				// var month = nowDate.getMonth();
-				// if (month < 10) {
-				// month = '0' + month;
-				// }
-				// console.log(year + "/" + month);
-				// messageMonth = year + "/" + month;
-				//
-				// }
-
-				aoData.push({
-					'name' : 'cSearchFilter',
-					'value' : searchSelect
-				});
-				aoData.push({
-					'name' : 'cSearchContent',
-					'value' : searchInputValue
-				});
-				aoData.push({
-					'name' : 'cSearchDate',
-					'value' : messageMonth
-				});
+				searchSelect = "msgId";
+			case 2:
+				searchSelect = "updateId";
+				break;
+			case 3:
+				searchSelect = "receiver";
+				break;
+			case 4:
+				searchSelect = "ack";
+				break;
+			case 5:
+				searchSelect = "status";
+				break;
 
 			}
+
+			if (searchInputValue == null || searchInputValue == "") {
+				searchInputValue = "";
+			} else if (searchInputValue == "응답") {
+				searchInputValue = true;
+
+			} else if (searchInputValue == "응답 없음") {
+				searchInputValue = false;
+			} else if (searchInputValue == "발송된") {
+				searchInputValue = 1 * 1;
+			}
+
+			if (messageMonth == null || messageMonth == "") {
+				var nowDate = new Date();
+				var year = nowDate.getFullYear();
+				var month = nowDate.getMonth() + 1;
+				console.log(month);
+				if (month < 10) {
+					month = '0' + month;
+				}
+				console.log(year + "/" + month);
+				messageMonth = year + "/" + month;
+
+				$('#messagelist-date-input').val(messageMonth);
+			}
+
+			messageMonth = messageMonth.replace("/", "");
+
+			aoData.push({
+				'name' : 'cSearchFilter',
+				'value' : searchSelect
+			});
+			aoData.push({
+				'name' : 'cSearchContent',
+				'value' : searchInputValue
+			});
+			aoData.push({
+				'name' : 'cSearchDate',
+				'value' : messageMonth
+			});
+
+		}
 
 		});
 
