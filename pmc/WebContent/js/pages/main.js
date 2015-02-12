@@ -109,7 +109,8 @@ function wrapperFunction(data) {
 					sessionStorage.setItem("monitoringStatus", "disable");
 					$('#messagelist-date-div').datetimepicker({
 						viewMode : 'years',
-						format : 'YYYY/MM'
+						format : 'YYYY/MM',
+						minViewMode : "months"
 					});
 					$('#messagelist-date-input').prop('disabled', true);
 
@@ -120,7 +121,8 @@ function wrapperFunction(data) {
 
 					$('#reservation-date-div').datetimepicker({
 						viewMode : 'years',
-						format : 'YYYY/MM'
+						format : 'YYYY/MM',
+						minViewMode : 'months'
 					});
 					$('#reservation-date-input').prop('disabled', true);
 				}
@@ -150,11 +152,13 @@ function wrapperFunction(data) {
 					$('#statistics-search-date-end-div').datetimepicker().data(
 							"DateTimePicker").setMaxDate(today);
 
-					$('#statistics-reservation-search-date-start-div').datetimepicker()
-							.data("DateTimePicker").setMaxDate(today);
+					$('#statistics-reservation-search-date-start-div')
+							.datetimepicker().data("DateTimePicker")
+							.setMaxDate(today);
 
-					$('#statistics-reservation-search-date-end-div').datetimepicker().data(
-							"DateTimePicker").setMaxDate(today);
+					$('#statistics-reservation-search-date-end-div')
+							.datetimepicker().data("DateTimePicker")
+							.setMaxDate(today);
 				}
 
 			});
@@ -200,30 +204,30 @@ function loginFunction(atag) {
 		dataType : 'json',
 		async : false,
 		data : loginReq,
-		statusCode : {
-			200 : function(data) {
-				console.log("200..");
-			},
-			401 : function(data) {
-				alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
-				$("#page-wrapper").load("pages/login.html", function() {
-					$('#ul_userInfo').hide();
-					$('.navbar-static-side').hide();
-					$('#loginId').keypress(function(e) {
-						if (e.keyCode != 13)
-							return;
-						$('#loginPass').focus();
-					});
-					$('#loginPass').keypress(function(e) {
-						if (e.keyCode != 13)
-							return;
-						$("#login_ahref").click();
-
-					});
-
-				});
-			}
-		},
+		// statusCode : {
+		// 200 : function(data) {
+		// console.log("200..");
+		// },
+		// 401 : function(data) {
+		// alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+		// $("#page-wrapper").load("pages/login.html", function() {
+		// $('#ul_userInfo').hide();
+		// $('.navbar-static-side').hide();
+		// $('#loginId').keypress(function(e) {
+		// if (e.keyCode != 13)
+		// return;
+		// $('#loginPass').focus();
+		// });
+		// $('#loginPass').keypress(function(e) {
+		// if (e.keyCode != 13)
+		// return;
+		// $("#login_ahref").click();
+		//
+		// });
+		//
+		// });
+		// }
+		// },
 		success : function(data) {
 			console.log("ajax data!!!!!");
 			console.log(data);
@@ -358,7 +362,8 @@ function svcLogin() {
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',
-		format : 'YYYY/MM'
+		format : 'YYYY/MM',
+		minViewMode : "months"
 	});
 
 	$('#messagelist-date-input').prop('disabled', true);
@@ -488,6 +493,35 @@ Date.prototype.yyyymmdd = function() {
 };
 
 $.ajaxSetup({
+	statusCode : {
+		200 : function() {
+			console.log('200 test');
+		},
+		401 : function(data) {
+			// this will catch any and all access denied errors
+
+				alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+				
+	
+			$("#page-wrapper").load("pages/login.html", function() {
+				$('#ul_userInfo').hide();
+				$('.navbar-static-side').hide();
+				$('#loginId').keypress(function(e) {
+					if (e.keyCode != 13)
+						return;
+					$('#loginPass').focus();
+				});
+				$('#loginPass').keypress(function(e) {
+					if (e.keyCode != 13)
+						return;
+					$("#login_ahref").click();
+
+				});
+
+			});
+		}
+	},
+
 	beforeSend : function() {
 		// show gif here, eg:
 		console.log('ajax before');

@@ -37,17 +37,7 @@ function changePassword() {
 			dataType : 'json',
 			data : changePassReq,
 			async : false,
-			statusCode : {
-				200 : function(data) {
-					console.log("200..");
-				},
-				401 : function(data) {
-					alert("토큰이 만료 되었습니다.");
-					var daddy = window.self;
-					daddy.opener = window.self;
-					daddy.close();
-				}
-			},
+
 
 			success : function(data) {
 				console.log(data);

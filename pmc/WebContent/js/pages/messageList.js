@@ -1,21 +1,62 @@
-var morrisDataMessage = Morris.Donut({
-	element : 'morris-donut-chart-message',
-	data : [ {
-		label : "사용량",
-		value : 14000
-	}, {
-		label : "남은 사용량",
-		value : 10000
-	} ],
-
-	// colors: [
-	// 'red',
-	// 'rgb(11, 98, 164)',
-	// ],
-	resize : true
-});
 var messageListToken = sessionStorage.getItem("token");
 var messageListRole = sessionStorage.getItem("role");
+
+$.ajax({
+	url : '/pms/adm/'+ messageListRole +'/account',
+	type : 'GET',
+	contentType : "application/json",
+	headers : {
+		'X-Application-Token' : messageListToken
+	},
+	dataType : 'json',
+	async : false,
+
+	success : function(data) {
+		console.log("ajax data!!!!!");
+		console.log(data);
+		console.log("ajax data!!!!!");
+
+		console.log('login in ajax call success');
+		var ajaxResult = data.result.data;
+
+		if (ajaxResult) {
+			if (!data.result.errors) {
+
+				console.log("맥스 리밋:"+ajaxResult.msgCntLimit);
+				$('#messageCnt_div').text(ajaxResult.msgCntLimit);
+			} else {
+
+				alert(data.result.errors[0]);
+			}
+		} else {
+
+			//alert('계정 목록을 가지고오는데 실패하였습니다.');
+		}
+
+	},
+	error : function(data, textStatus, request) {
+
+		//alert('계정 목록을 가지고오는데 실패하였습니다.');
+	}
+});
+
+//var morrisDataMessage = Morris.Donut({
+//	element : 'morris-donut-chart-message',
+//	data : [ {
+//		label : "사용량",
+//		value : 14000
+//	}, {
+//		label : "남은 사용량",
+//		value : 10000
+//	} ],
+//
+//	// colors: [
+//	// 'red',
+//	// 'rgb(11, 98, 164)',
+//	// ],
+//	resize : true
+//});
+
 var messageTable = $('#dataTables-messageList').dataTable(
 		{
 			// "bProcessing" : true,
@@ -54,31 +95,7 @@ var messageTable = $('#dataTables-messageList').dataTable(
 						'X-Application-Token' : messageListToken
 					},
 					data : aoData,
-					statusCode : {
-						200 : function(data) {
-							console.log("200..");
-						},
-						401 : function(data) {
-							alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
-							$("#page-wrapper").load("pages/login.html",
-									function() {
-										$('#ul_userInfo').hide();
-										$('.navbar-static-side').hide();
-										$('#loginId').keypress(function(e) {
-											if (e.keyCode != 13)
-												return;
-											$('#loginPass').focus();
-										});
-										$('#loginPass').keypress(function(e) {
-											if (e.keyCode != 13)
-												return;
-											$("#login_ahref").click();
-
-										});
-
-									});
-						}
-					},
+		
 					success : function(data) {
 
 						console.log('success');

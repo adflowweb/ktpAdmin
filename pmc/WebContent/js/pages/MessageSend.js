@@ -56,7 +56,7 @@ function MessageSendFunction() {
 		// input_messageContent = utf8_to_b64(input_messageContent);
 
 		$.ajax({
-			url : '/v1/devices/fwInfo',
+			url : '/pms/v1/devices/fwInfo',
 			type : 'PUT',
 			headers : {
 				'X-ApiKey' : tokenID
@@ -65,30 +65,7 @@ function MessageSendFunction() {
 			dataType : 'json',
 			async : false,
 			data : messageDataResult,
-			statusCode : {
-				200 : function(data) {
-					console.log("200..");
-				},
-				401 : function(data) {
-					alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
-					$("#page-wrapper").load("pages/login.html", function() {
-						$('#ul_userInfo').hide();
-						$('.navbar-static-side').hide();
-						$('#loginId').keypress(function(e) {
-							if (e.keyCode != 13)
-								return;
-							$('#loginPass').focus();
-						});
-						$('#loginPass').keypress(function(e) {
-							if (e.keyCode != 13)
-								return;
-							$("#login_ahref").click();
 
-						});
-
-					});
-				}
-			},
 
 			success : function(data) {
 				console.log(data);

@@ -15,30 +15,7 @@ $.ajax({
 	},
 	dataType : 'json',
 	async : false,
-	statusCode : {
-		200 : function(data) {
-			console.log("200..");
-		},
-		401 : function(data) {
-			alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
-			$("#page-wrapper").load("pages/login.html", function() {
-				$('#ul_userInfo').hide();
-				$('.navbar-static-side').hide();
-				$('#loginId').keypress(function(e) {
-					if (e.keyCode != 13)
-						return;
-					$('#loginPass').focus();
-				});
-				$('#loginPass').keypress(function(e) {
-					if (e.keyCode != 13)
-						return;
-					$("#login_ahref").click();
 
-				});
-
-			});
-		}
-	},
 	success : function(data) {
 		console.log("ajax data!!!!!");
 		console.log(data);
@@ -79,13 +56,13 @@ $.ajax({
 			}
 		} else {
 
-			alert('계정 목록을 가지고오는데 실패하였습니다.');
+			//alert('계정 목록을 가지고오는데 실패하였습니다.');
 		}
 
 	},
 	error : function(data, textStatus, request) {
 
-		alert('계정 목록을 가지고오는데 실패하였습니다.');
+		//alert('계정 목록을 가지고오는데 실패하였습니다.');
 	}
 });
 
@@ -129,31 +106,7 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 						'X-Application-Token' : statisticsToken
 					},
 					data : aoData,
-					statusCode : {
-						200 : function(data) {
-							console.log("200..");
-						},
-						401 : function(data) {
-							alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
-							$("#page-wrapper").load("pages/login.html",
-									function() {
-										$('#ul_userInfo').hide();
-										$('.navbar-static-side').hide();
-										$('#loginId').keypress(function(e) {
-											if (e.keyCode != 13)
-												return;
-											$('#loginPass').focus();
-										});
-										$('#loginPass').keypress(function(e) {
-											if (e.keyCode != 13)
-												return;
-											$("#login_ahref").click();
 
-										});
-
-									});
-						}
-					},
 					success : function(data) {
 
 						console.log('success');
@@ -205,13 +158,13 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 							fnCallback(data.result.data);
 
 						} else {
-							alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+							//alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
 
 						}
 
 					},
 					error : function(e) {
-						alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+						//alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
 					}
 				});
 			},
@@ -328,31 +281,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable').dataTabl
 						'X-Application-Token' : statisticsToken
 					},
 					data : aoData,
-					statusCode : {
-						200 : function(data) {
-							console.log("200..");
-						},
-						401 : function(data) {
-							alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
-							$("#page-wrapper").load("pages/login.html",
-									function() {
-										$('#ul_userInfo').hide();
-										$('.navbar-static-side').hide();
-										$('#loginId').keypress(function(e) {
-											if (e.keyCode != 13)
-												return;
-											$('#loginPass').focus();
-										});
-										$('#loginPass').keypress(function(e) {
-											if (e.keyCode != 13)
-												return;
-											$("#login_ahref").click();
 
-										});
-
-									});
-						}
-					},
 					success : function(data) {
 
 						console.log('success');
@@ -377,13 +306,13 @@ var statisticsReservationTable = $('#statistics-reservation-datatable').dataTabl
 							fnCallback(data.result.data);
 
 						} else {
-							alert('예약 메시지 목록을 가지고 오는데 실패 하였습니다.');
+							//alert('예약 메시지 목록을 가지고 오는데 실패 하였습니다.');
 
 						}
 
 					},
 					error : function(e) {
-						alert('예약 메시지 목록을 가지고 오는데 실패 하였습니다.');
+						//alert('예약 메시지 목록을 가지고 오는데 실패 하였습니다.');
 					}
 				});
 			},
