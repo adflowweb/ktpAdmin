@@ -104,6 +104,7 @@ var messageTable = $('#dataTables-messageList').dataTable(
 
 						var dataResult = data.result.data;
 						if (dataResult) {
+							$('#messageListCnt_div').text(data.result.data.recordsTotal);
 							dataResult = data.result.data.data;
 							for ( var i in dataResult) {
 								if (dataResult[i].pmaAckType == null

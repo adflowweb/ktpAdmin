@@ -7,21 +7,36 @@
 <!-- /.row -->
 
 <div class="row">
-  <div class="col-lg-4 col-md-3">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-comments fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div style="font-size: 4opx;">메시지 발송 남은 횟수</div>
-                                    <div style="font-size: 40px;" class="huge" id="messageCnt_div"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+	<div class="col-lg-6 col-md-3">
+		<div style="border-color: red;"  class="panel panel-primary">
+			<div style="background-color: red;" class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-comments fa-5x"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div style="font-size: 4opx;">메시지 발송 남은 횟수</div>
+						<div style="font-size: 40px;" class="huge" id="messageCnt_div"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6 col-md-3">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-tasks fa-5x"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div style="font-size: 4opx;">목록 조회 건수</div>
+						<div style="font-size: 40px;" class="huge" id="messageListCnt_div"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 
@@ -49,8 +64,8 @@
 						<option value="1">메시지아이디</option>
 						<option value="2">송신자</option>
 						<option value="3">수신자</option>
-					    <option value="4">응답상태</option>
-						<option value="5">발송상태</option>	
+						<option value="4">응답상태</option>
+						<option value="5">발송상태</option>
 					</select>
 
 				</div>
@@ -74,7 +89,7 @@
 								<th>수신자</th>
 								<th>발송상태</th>
 								<th>발송시간</th>
-								<th>응답상태</th>	
+								<th>응답상태</th>
 								<th>응답시간</th>
 								<th>재전송 횟수</th>
 								<th>재전송 Interval</th>
