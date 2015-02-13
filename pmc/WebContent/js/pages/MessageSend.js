@@ -3,7 +3,7 @@ function MessageSendFunction() {
 
 	console.log('메시지 발송 시작');
 	var tokenID = sessionStorage.getItem("token");
-	var userID = sessionStorage.getItem("userId");
+	//var userID = sessionStorage.getItem("userId");
 	var role = sessionStorage.getItem("role");
 	var ackcheck = false;
 	if (messageSendFormCheck()) {
@@ -77,7 +77,7 @@ function MessageSendFunction() {
 		console.log(messageDataResult);
 
 		$.ajax({
-			url : '/pms/adm/' + role + '/messages',
+			url : '/v1/pms/adm/' + role + '/messages',
 			type : 'POST',
 			headers : {
 				'X-Application-Token' : tokenID

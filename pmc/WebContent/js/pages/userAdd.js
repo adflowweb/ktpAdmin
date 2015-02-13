@@ -50,7 +50,7 @@ function userAddFunction() {
 		console.log(userAddReq);
 
 		$.ajax({
-			url : '/pms/adm/sys/users/',
+			url : '/v1/pms/adm/sys/users/',
 			type : 'POST',
 			contentType : "application/json",
 			headers : {

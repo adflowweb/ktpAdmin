@@ -195,7 +195,7 @@ function loginFunction(atag) {
 
 	// // login ajax call
 	$.ajax({
-		url : '/pms/adm/cmm/auth',
+		url : '/v1/pms/adm/cmm/auth',
 		type : 'POST',
 		contentType : "application/json",
 		headers : {

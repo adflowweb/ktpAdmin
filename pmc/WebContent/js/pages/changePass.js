@@ -12,11 +12,11 @@ function changePassword() {
 		var input_newPassWordConfirm = $('#change-confirmpass-input').val();
 		var urlReq = "";
 		if (role == "sys") {
-			urlReq = "/pms/adm/sys";
+			urlReq = "/v1/pms/adm/sys";
 		} else if (role == "sysadm") {
-			urlReq = "/pms/adm/sysadm";
+			urlReq = "/v1/pms/adm/sysadm";
 		} else if (role == "svc") {
-			urlReq = "/pms/adm/svc";
+			urlReq = "/v1/pms/adm/svc";
 		}
 
 		var changePass = new Object();

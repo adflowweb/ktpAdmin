@@ -84,7 +84,7 @@ var messageTable = $('#dataTables-messageList')
 						"data" : "resendInterval"
 					} ],
 					'sPaginationType' : 'full_numbers',
-					'sAjaxSource' : '/pms/adm/' + messageListRole + '/messages',
+					'sAjaxSource' : '/v1/pms/adm/' + messageListRole + '/messages',
 					// custom ajax
 					'fnServerData' : function(sSource, aoData, fnCallback) {
 						$
