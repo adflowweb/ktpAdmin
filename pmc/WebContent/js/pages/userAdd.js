@@ -143,6 +143,22 @@ function userAddFormCheck() {
 		alert('IP 를 입력해 주세요');
 		$('#add-ipfilter-input').focus();
 		return false;
+	} else {
+		ip_filter_input = ip_filter_input.split('/');
+
+		var ipCheck = /^([1]\d\d|[2][0-5][0-5]|[1-9][0-9]|[0-9][\*]){1}(\.([1]\d\d|[2][0-5][0-5]|[1-9][0-9]|[0-9]|[\*])){3}$/;
+		var ipCheckAlert = false;
+		for ( var i in ip_filter_input) {
+			if (!ipCheck.test(ip_filter_input[i])) {
+				ipCheckAlert = true;
+			}
+		}
+		if (ipCheckAlert) {
+			alert('올바른 IP 형식이 아닙니다.');
+			$('#add-user-message-input').focus();
+			return false;
+		}
+
 	}
 
 	if (role_select == 0) {

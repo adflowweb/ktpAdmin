@@ -2,10 +2,12 @@ $("#message-send-reservationdate-input").prop('disabled', true);
 function MessageSendFunction() {
 
 	console.log('메시지 발송 시작');
-	var tokenID = sessionStorage.getItem("tokenID");
-	var userID = sessionStorage.getItem("userID");
+	var tokenID = sessionStorage.getItem("token");
+	var userID = sessionStorage.getItem("userId");
+	var role = sessionStorage.getItem("role");
+	var ackcheck = false;
 	if (messageSendFormCheck()) {
-		var ackcheck = false;
+
 		if ($("input:checkbox[id='message-send-ackckeck-input']")
 				.is(":checked") == true) {
 
@@ -16,8 +18,25 @@ function MessageSendFunction() {
 		var input_messageTarget = $('#message-send-target-input').val();
 		var input_messageService = $('#message-send-service-input').val();
 		var input_messageContent = $('#message-send-textarea').val();
-		var input_ackcheck = $('message-send-ackckeck-input').val();
+		input_messageContent = utf8_to_b64(input_messageContent);
+		// var input_ackcheck = $('message-send-ackckeck-input').val();
 		var input_reservation = $('#message-send-reservationdate-input').val();
+		var input_resendCount = $('#message-send-resendCount-input').val();
+		var input_resendInterval = $('#message-send-resendInterval-input')
+				.val();
+		var qos = 0;
+		qos = $("#message-send-qos-select").val();
+		var contentType = $("#message-send-contentType-select").val();
+
+		if (contentType == 1) {
+
+			contentType = "text/plain";
+		} else if (contentType == 2) {
+			contentType = "application/json";
+		} else {
+			contentType = "application/base64";
+		}
+
 		var dateResult = dateFormating(input_reservation);
 
 		if (input_reservation) {
@@ -30,65 +49,59 @@ function MessageSendFunction() {
 		}
 		input_messageTarget = input_messageTarget.split(",");
 		var messageData = new Object();
-		messageData.sender = userID;
-		messageData.receiver = input_messageTarget;
+
+		messageData.receivers = input_messageTarget;
 		messageData.content = input_messageContent;
-		messageData.contentType = "application/base64";
-		messageData.ackcheck = input_ackcheck;
-		messageData.reservation = dateResult;
-		if (dateResult == "" || dateResult == null) {
-			messageData.reservationCheck = false;
-		} else {
-			messageData.reservationCheck = true;
+		messageData.serviceId = input_messageService;
+		messageData.contentType = contentType;
+		messageData.ack = ackcheck;
+		messageData.qos = qos;
+		if (dateResult != "") {
+			messageData.reservationTime = dateResult;
+			console.log("테스트:" + messageData.reservationTime);
 		}
+
+		if (input_resendCount != "") {
+			messageData.resendMaxCount = input_resendCount;
+		}
+		if (input_resendInterval != "") {
+			messageData.resendInterval = input_resendInterval;
+		}
+
+		// if (dateResult == "" || dateResult == null) {
+		// messageData.reservation = false;
+		// } else {
+		// messageData.reservation = true;
+		// }
 		var messageDataResult = JSON.stringify(messageData);
 		console.log(messageDataResult);
 
-		// input_messageTarget = input_messageTarget.replace(/,/gi, '","');
-		// console.log("고친:" + input_messageTarget);
-		//
-		// var dataExample = '{"sender":"dsafsdf","receiver":["'
-		// + input_messageTarget
-		// + '"],"contentType":"application/base64","content":"sdf"}';
-		//
-		// console.log(dataExample);
-		//
-		// input_messageContent = utf8_to_b64(input_messageContent);
-
 		$.ajax({
-			url : '/pms/v1/devices/fwInfo',
-			type : 'PUT',
+			url : '/pms/adm/' + role + '/messages',
+			type : 'POST',
 			headers : {
-				'X-ApiKey' : tokenID
+				'X-Application-Token' : tokenID
 			},
 			contentType : "application/json",
 			dataType : 'json',
 			async : false,
 			data : messageDataResult,
 
-
 			success : function(data) {
 				console.log(data);
 				console.log(data.result.success);
-				if (data.result.info) {
+				if (data.result.data) {
 					alert('메시지를 발송하였습니다.');
-					$('#message-send-target-input').val("");
-					$('#message-send-service-input').val("");
-					$('#message-send-textarea').val("");
-					$('#message-send-target-input').focus();
-
+					wrapperFunction('MessageSend');
 				} else {
-					alert("메세지 전송에 실패 하였습니다");
-					$('#message-send-target-input').val("");
-					$('#message-send-service-input').val("");
-					$('#message-send-textarea').val("");
-					$('#message-send-target-input').focus();
-
+					alert("메세지 전송에 실패 하였습니다.");
+					wrapperFunction('MessageSend');
 				}
 
 			},
 			error : function(data, textStatus, request) {
-				alert('전송실패');
+				alert('메세지 전송에 실패 하였습니다.');
+				wrapperFunction('MessageSend');
 			}
 		});
 
@@ -98,102 +111,148 @@ function MessageSendFunction() {
 
 // form null check
 function messageSendFormCheck() {
-	// <div class="form-group">
-	// <label>메세지 발송 대상 </label><br/>
-	// <input type="text" class="form-control"
-	// id="input_messageTarget" placeholder="메세지 발송 대상
-	// ex)rcs/82/3383/p1234"></input>
-	//	
-	// </div>
-	// <div class="form-group">
-	// <label>대상 서비스</label> <input class="form-control"
-	// id="input_messageService" placeholder="서비스 아이디 입력">
-	// </div>
-	//
-	// <div class="form-group">
-	// <label>메세지 타입</label> <input class="form-control"
-	// id="input_messageType" placeholder="메세지 타입 입력">
-	// </div>
 
 	var input_messageTarget = $('#message-send-target-input').val();
-
+	// var
+	// input_ho,input_ba,input_ka,input_ka,input_je,input_to,input_z,input_ho2;
 	var input_messageService = $('#message-send-service-input').val();
-	// var input_messageType = $('#input_messageType').val();
+	var input_messageType = $('#message-send-messageType-input').val();
+	var input_messageExpire = $('#message-send-messageExpire-input').val();
 	var input_messageContent = $('#message-send-textarea').val();
+	var input_resendCount = $('#message-send-resendCount-input').val();
+	var input_resendInterval = $('#message-send-resendInterval-input').val();
+	var input_reservation = $('#message-send-reservationdate-input').val();
+
 	// var textAreaPlainText = ckGetPlainText();
 	input_messageContent = compactTrim(input_messageContent);
 	console.log(input_messageContent);
 
 	if (input_messageTarget == null || input_messageTarget == "") {
 		alert("메세지 보낼 대상을 입력해주세요");
-		$('#input_messageTarget').focus();
+		$('#message-send-target-input').focus();
 		return false;
 	}
 
-	// else if (input_messageService == null || input_messageService == "") {
-	// alert("메세지를 보낼 앱의 서비스 아이디를 입력하세요!");
-	// $('#input_messageService').focus();
-	// return false;
-	// }
+	if (input_messageService == null || input_messageService == "") {
+		alert("메세지를 보낼 앱의 서비스 아이디를 입력하세요!");
+		$('#message-send-service-input').focus();
+		return false;
+	}
 
-	// else if (input_messageType == null || input_messageType == "") {
-	// alert("메세지 타입을 입력하세요!");
-	// $('#input_messageType').focus();
-	// return false;
-	// }
+	if (input_messageType == null || input_messageType == "") {
+		alert("메세지 타입을 입력하세요!");
+		$('#message-send-messageType-input').focus();
+		return false;
+	} else {
+		var num_check = /^[0-9]*$/;
+		if (num_check.test(input_messageType)) {
 
-	else if (input_messageContent == null || input_messageContent == "") {
+		} else {
+			alert("숫자만 입력가능합니다.");
+			$('#message-send-messageType-input').focus();
+			return false;
+		}
+
+	}
+	if (input_messageExpire == null || input_messageExpire == "") {
+		// alert("메세지 소멸 시간을 입력하세요!");
+		// $('#message-send-messageExpire-input').focus();
+		// return false;
+	} else {
+		var num_check = /^[0-9]*$/;
+		if (num_check.test(input_messageExpire)) {
+
+		} else {
+			alert("숫자만 입력가능합니다.");
+			$('#message-send-messageExpire-input').focus();
+			return false;
+		}
+
+	}
+
+	if (input_resendCount == null || input_resendCount == "") {
+		// alert("메세지 재전송 횟수를 입력하세요!");
+		// $('#message-send-resendCount-input').focus();
+		// return false;
+	} else {
+		var num_check = /^[0-9]*$/;
+		if (num_check.test(input_resendCount)) {
+			input_resendCount = input_resendCount * 1;
+			if (input_resendCount > 10) {
+				alert('재전송 횟수는 최대 10번까지 가능합니다.');
+				$('#message-send-resendCount-input').focus();
+				return false;
+			}
+
+		} else {
+			alert("숫자만 입력가능합니다.");
+			$('#message-send-resendCount-input').focus();
+			return false;
+		}
+
+	}
+
+	if (input_resendInterval == null || input_resendInterval == "") {
+		// alert("메세지 전송 시간을 입력하세요!");
+		// $('#message-send-resendInterval-input').focus();
+		// return false;
+	} else {
+		var num_check = /^[0-9]*$/;
+		if (num_check.test(input_messageExpire)) {
+
+		} else {
+			alert("숫자만 입력가능합니다.");
+			$('#message-send-resendInterval-input').focus();
+			return false;
+		}
+
+	}
+
+	if (input_messageContent == null || input_messageContent == "") {
 		alert("메세지 내용  입력해주세요");
-		$('#input_messageContent').focus();
+		$('#message-send-textarea').focus();
 		return false;
 	}
 
-	else {
-		return true;
+	if (input_reservation == null || input_reservation == "") {
+
+		if (confirm("예약 시간이 설정 되지 않아 메세지가 즉시 전송됩니다.") == true) {
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		if (input_reservation) { // 예약 메세지
+			var convertDate = input_reservation;
+			input_reservation = compactTrim(input_reservation);
+			input_reservation = input_reservation.substring(0, 10);
+			var validateDateResult = validateDate(input_reservation);
+
+			if (!validateDateResult) {
+				alert('입렵하신 예약 날짜가 형식에 맞지 않습니다.');
+				return false;
+			} else {
+
+				convertDate = dateFormating(convertDate);
+				var nowDateTime = new Date();
+				var nowTime = nowDateTime.getTime() + 300000;
+				var convertPickerTime = convertDate.getTime();
+				if (nowTime > convertPickerTime) {
+					alert('예약메세지는 현재 시각기준보다 5분 이상 설정 되어야 합니다.');
+					return false;
+				}
+				return true;
+			}
+			if (confirm("예약이 설정된 시간으로 메세지가 전송됩니다. 확인해 주세요") == true) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+
 	}
+
+	return true;
 
 }
-
-// $("#contentSelect").change(function() {
-//
-// var contentType = $("#contentSelect").val();
-//
-// if (contentType == 2) {
-// $('#input_messageContent').val("{'key':'value'}");
-//
-// } else {
-// $('#input_messageContent').val("");
-// }
-//
-// });
-
-// $("#input_typeFile").change(function() {
-// console.log('file.....change...');
-// console.log(this.files[0].size);
-// var fileName = document.getElementById("input_typeFile").value;
-//
-// fileName = fileName.replace(/^.*\\/, "");
-// console.log("파일이름:" + fileName);
-// $('#input_fileName').val(fileName);
-// readURL(this);
-// });
-// file read
-// function readURL(input) {
-// console.log("in readURL...");
-//
-// if (input.files && input.files[0]) {
-// var reader = new FileReader();
-//
-// reader.onload = function(e) {
-// console.log('컨텐츠 파일 리드');
-// console.log(e.target.result);
-// $('#input_messageContent').val(e.target.result);
-// $('#contentSelect').val(3);
-//
-// };
-//
-// reader.readAsDataURL(input.files[0]);
-// } else {
-//
-// }
-// }

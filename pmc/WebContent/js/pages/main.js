@@ -392,6 +392,14 @@ function svcAdmLogin() {
 	// });
 	//
 	// $('#messagelist-date-input').prop('disabled', true);
+	sessionStorage.setItem("monitoringStatus", "disable");
+	$('#messagelist-date-div').datetimepicker({
+		viewMode : 'years',
+		format : 'YYYY/MM',
+		minViewMode : "months"
+	});
+
+	$('#messagelist-date-input').prop('disabled', true);
 
 }
 

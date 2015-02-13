@@ -2,7 +2,7 @@ var messageListToken = sessionStorage.getItem("token");
 var messageListRole = sessionStorage.getItem("role");
 
 $.ajax({
-	url : '/pms/adm/'+ messageListRole +'/account',
+	url : '/pms/adm/' + messageListRole + '/account',
 	type : 'GET',
 	contentType : "application/json",
 	headers : {
@@ -22,7 +22,7 @@ $.ajax({
 		if (ajaxResult) {
 			if (!data.result.errors) {
 
-				console.log("맥스 리밋:"+ajaxResult.msgCntLimit);
+				console.log("맥스 리밋:" + ajaxResult.msgCntLimit);
 				$('#messageCnt_div').text(ajaxResult.msgCntLimit);
 			} else {
 
@@ -30,210 +30,226 @@ $.ajax({
 			}
 		} else {
 
-			//alert('계정 목록을 가지고오는데 실패하였습니다.');
+			// alert('계정 목록을 가지고오는데 실패하였습니다.');
 		}
 
 	},
 	error : function(data, textStatus, request) {
 
-		//alert('계정 목록을 가지고오는데 실패하였습니다.');
+		// alert('계정 목록을 가지고오는데 실패하였습니다.');
 	}
 });
 
-//var morrisDataMessage = Morris.Donut({
-//	element : 'morris-donut-chart-message',
-//	data : [ {
-//		label : "사용량",
-//		value : 14000
-//	}, {
-//		label : "남은 사용량",
-//		value : 10000
-//	} ],
+// var morrisDataMessage = Morris.Donut({
+// element : 'morris-donut-chart-message',
+// data : [ {
+// label : "사용량",
+// value : 14000
+// }, {
+// label : "남은 사용량",
+// value : 10000
+// } ],
 //
-//	// colors: [
-//	// 'red',
-//	// 'rgb(11, 98, 164)',
-//	// ],
-//	resize : true
-//});
+// // colors: [
+// // 'red',
+// // 'rgb(11, 98, 164)',
+// // ],
+// resize : true
+// });
 
-var messageTable = $('#dataTables-messageList').dataTable(
-		{
-			// "bProcessing" : true,
-			'bSort' : false,
-			'bServerSide' : true,
-			'dom' : 'T<"clear">lrtip',
-			'columns' : [ {
-				"data" : "msgId"
-			}, {
-				"data" : "updateId"
-			}, {
-				"data" : "receiver"
-			}, {
-				"data" : "status"
-			}, {
-				"data" : "updateTime"
-			}, {
-				"data" : "pmaAckType"
-			}, {
-				"data" : "pmaAckTime"
-			}, {
-				"data" : "resendCount"
-			}, {
-				"data" : "resendInterval"
-			} ],
-			'sPaginationType' : 'full_numbers',
-			'sAjaxSource' : '/pms/adm/' + messageListRole + '/messages',
-			// custom ajax
-			'fnServerData' : function(sSource, aoData, fnCallback) {
-				$.ajax({
-					dataType : 'json',
-					contentType : 'application/json;charset=UTF-8',
-					type : 'GET',
-					url : sSource,
-					headers : {
-						'X-Application-Token' : messageListToken
-					},
-					data : aoData,
-		
-					success : function(data) {
+var messageTable = $('#dataTables-messageList')
+		.dataTable(
+				{
+					// "bProcessing" : true,
+					'bSort' : false,
+					'bServerSide' : true,
+					'dom' : 'T<"clear">lrtip',
+					'columns' : [ {
+						"data" : "msgId"
+					}, {
+						"data" : "updateId"
+					}, {
+						"data" : "receiver"
+					}, {
+						"data" : "status"
+					}, {
+						"data" : "updateTime"
+					}, {
+						"data" : "pmaAckType"
+					}, {
+						"data" : "pmaAckTime"
+					}, {
+						"data" : "resendMaxCount"
+					}, {
+						"data" : "resendInterval"
+					} ],
+					'sPaginationType' : 'full_numbers',
+					'sAjaxSource' : '/pms/adm/' + messageListRole + '/messages',
+					// custom ajax
+					'fnServerData' : function(sSource, aoData, fnCallback) {
+						$
+								.ajax({
+									dataType : 'json',
+									contentType : 'application/json;charset=UTF-8',
+									type : 'GET',
+									url : sSource,
+									headers : {
+										'X-Application-Token' : messageListToken
+									},
+									data : aoData,
 
-						console.log('success');
-						console.log(data.result);
-						console.log('success');
+									success : function(data) {
 
-						var dataResult = data.result.data;
-						if (dataResult) {
-							$('#messageListCnt_div').text(data.result.data.recordsTotal);
-							dataResult = data.result.data.data;
-							for ( var i in dataResult) {
-								if (dataResult[i].pmaAckType == null
-										&& dataResult[i].appAckType == null) {
-									dataResult[i].pmaAckType = "응답없음";
-								} else {
-									dataResult[i].pmaAckType = "응답";
-									if (dataResult[i].appAckTime != null) {
-										dataResult[i].pmaAckTime=dataResult[i].appAckTime;
-										 var dateTime = dataResult[i].pmaAckTime;
-										 dataResult[i].pmaAckTime = new Date(dateTime)
-										 .toLocaleString();
-									}else if(dataResult[i].pmaAckTime != null){
-										 var dateTime = dataResult[i].pmaAckTime;
-										 dataResult[i].pmaAckTime = new Date(dateTime)
-										 .toLocaleString();
+										console.log('success');
+										console.log(data.result);
+										console.log('success');
+
+										var dataResult = data.result.data;
+										if (dataResult) {
+											$('#messageListCnt_div')
+													.text(
+															data.result.data.recordsTotal);
+											dataResult = data.result.data.data;
+											for ( var i in dataResult) {
+												if (dataResult[i].pmaAckType == null) {
+													dataResult[i].pmaAckType = "응답없음";
+												} else {
+													if (dataResult[i].appAckType != null) {
+														dataResult[i].pmaAckType = "사용자응답";
+														var dateTime = dataResult[i].appAckTime;
+														dataResult[i].pmaAckTime = new Date(dateTime).toLocaleString();
+													} else {
+														dataResult[i].pmaAckType = "기기응답";
+														var dateTime = dataResult[i].pmaAckTime;
+														dataResult[i].pmaAckTime = new Date(dateTime).toLocaleString();
+													}
+
+													
+												}
+
+												switch (dataResult[i].status) {
+												case -99:
+													dataResult[i].status = "발송오류";
+													break;
+												case -2:
+													dataResult[i].status = "수신자없음";
+													break;
+												case -1:
+													dataResult[i].status = "메시지제한";
+													break;
+												case 0:
+													dataResult[i].status = "발송중";
+													break;
+												case 1:
+													dataResult[i].status = "발송됨";
+													break;
+												case 2:
+													dataResult[i].status = "예약취소됨";
+													break;
+
+												}
+
+												dataResult[i].resendInterval = dataResult[i].resendInterval
+														+ "분";
+												var dateTime = dataResult[i].updateTime;
+												dataResult[i].updateTime = new Date(
+														dateTime)
+														.toLocaleString();
+
+											}
+
+											data.result.data.data = dataResult;
+											fnCallback(data.result.data);
+
+										} else {
+											alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+
+										}
+
+									},
+									error : function(e) {
+										alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
 									}
-
-								}
-							 switch (dataResult[i].status) {
-								 case 1:
-									 dataResult[i].status = "발송됨";
-								 break;
-							
-								 }
-								 if (dataResult[i].ack) {
-									 
-									 dataResult[i].ack = "응답";
-								 } else {
-									 dataResult[i].ack = "응답 없음";
-								 }
-																
-								 dataResult[i].resendInterval=dataResult[i].resendInterval+"초";							
-								 var dateTime = dataResult[i].updateTime;
-								 dataResult[i].updateTime = new Date(dateTime)
-								 .toLocaleString();
-
-							}
-
-							data.result.data.data = dataResult;
-							fnCallback(data.result.data);
-
-						} else {
-							alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
-
-						}
-
+								});
 					},
-					error : function(e) {
-						alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+					//
+					// },
+					// custom params
+					'fnServerParams' : function(aoData) {
+						var searchSelectValue = $('#messagelist-search-select')
+								.val();
+						var searchSelect = $(
+								'#messagelist-search-select option:selected')
+								.text();
+						var searchInputValue = $('#messagelist-input').val();
+						var messageMonth = $('#messagelist-date-input').val();
+						searchSelectValue = searchSelectValue * 1;
+
+						switch (searchSelectValue) {
+						case 0:
+							searchSelect = "";
+							break;
+						case 1:
+							break;
+						searchSelect = "msgId";
+					case 2:
+						searchSelect = "updateId";
+						break;
+					case 3:
+						searchSelect = "receiver";
+						break;
+					case 4:
+						searchSelect = "ack";
+						break;
+					case 5:
+						searchSelect = "status";
+						break;
+
 					}
-				});
-			},
-			//
-			// },
-			// custom params
-			'fnServerParams' : function(aoData) {
-				var searchSelectValue = $('#messagelist-search-select').val();
-				var searchSelect = $(
-						'#messagelist-search-select option:selected').text();
-				var searchInputValue = $('#messagelist-input').val();
-				var messageMonth = $('#messagelist-date-input').val();
-				searchSelectValue = searchSelectValue * 1;
 
-				switch (searchSelectValue) {
-				case 0:
-					searchSelect = "";
-					break;
-				case 1:
-					break;
-					searchSelect = "msgId";
-				case 2:
-					searchSelect = "updateId";
-				break;
-				case 3:
-					searchSelect = "receiver";
-				break;
-				case 4:
-					searchSelect = "ack";
-				break;
-				case 5:
-					searchSelect = "status";
-				break;
+					if (searchInputValue == null || searchInputValue == "") {
+						searchInputValue = "";
+					} else if (searchInputValue == "응답") {
+						searchInputValue = true;
 
-			}
+					} else if (searchInputValue == "응답 없음") {
+						searchInputValue = false;
+					} else if (searchInputValue == "발송된") {
+						searchInputValue = 1 * 1;
+					}
 
-			if (searchInputValue == null || searchInputValue == "") {
-				searchInputValue = "";
-			} else if (searchInputValue == "응답") {
-				searchInputValue = true;
+					if (messageMonth == null || messageMonth == "") {
+						var nowDate = new Date();
+						var year = nowDate.getFullYear();
+						var month = nowDate.getMonth() + 1;
+						console.log(month);
+						if (month < 10) {
+							month = '0' + month;
+						}
+						console.log(year + "/" + month);
+						messageMonth = year + "/" + month;
 
-			} else if (searchInputValue == "응답 없음") {
-				searchInputValue = false;
-			} else if (searchInputValue == "발송된") {
-				searchInputValue = 1 * 1;
-			}
+						$('#messagelist-date-input').val(messageMonth);
+					}
 
-			if (messageMonth == null || messageMonth == "") {
-				var nowDate = new Date();
-				var year = nowDate.getFullYear();
-				var month = nowDate.getMonth() + 1;
-				console.log(month);
-				if (month < 10) {
-					month = '0' + month;
+					messageMonth = messageMonth.replace("/", "");
+
+					aoData.push({
+						'name' : 'cSearchFilter',
+						'value' : searchSelect
+					});
+					aoData.push({
+						'name' : 'cSearchContent',
+						'value' : searchInputValue
+					});
+					aoData.push({
+						'name' : 'cSearchDate',
+						'value' : messageMonth
+					});
+
 				}
-				console.log(year + "/" + month);
-				messageMonth = year + "/" + month;
 
-				$('#messagelist-date-input').val(messageMonth);
-			}
-
-			messageMonth = messageMonth.replace("/", "");
-
-			aoData.push({
-				'name' : 'cSearchFilter',
-				'value' : searchSelect
-			});
-			aoData.push({
-				'name' : 'cSearchContent',
-				'value' : searchInputValue
-			});
-			aoData.push({
-				'name' : 'cSearchDate',
-				'value' : messageMonth
-			});
-
-		}
-
-		});
+				});
 
 $('#messagelist-search-btn').click(function() {
 

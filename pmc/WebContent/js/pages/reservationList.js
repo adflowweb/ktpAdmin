@@ -36,10 +36,12 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 						console.log('success');
 
 						var dataResult = data.result.data;
+						
 						if (dataResult) {
 							dataResult = data.result.data.data;
 							for ( var i in dataResult) {						
 								var dateTime = dataResult[i].reservationTime;
+								dataResult[i].msgId='<input name="reservatoin-checkbox" type="checkbox" value="'+dataResult[i].msgId+'"/>&nbsp;'+dataResult[i].msgId;
 								console.log("dateTime:"+dateTime);
 								if(dateTime!=null){
 									dataResult[i].reservationTime = new Date(dateTime)
@@ -154,6 +156,36 @@ $('#reservation-search-btn').click(function() {
 
 });
 
+
+function reservationCheck(source) {
+	  checkboxes = document.getElementsByName('reservatoin-checkbox');
+	  for(var i=0, n=checkboxes.length;i<n;i++) {
+	    checkboxes[i].checked = source.checked;
+	  }
+	}
+
+
+
+
+function reservationCancelFunction() {
+	
+	var checkedLength=$('input[name="reservatoin-checkbox"]:checked').length;
+	if(checkedLength==0){
+		alert('취소할 메시지를 선택해주세요');
+		return false;
+	}else{
+		$('input[name="reservatoin-checkbox"]:checked').each(function() {
+			
+			   if(this.value!="on"){
+				   console.log(this.value);
+			   }
+			});
+
+	}
+	
+	
+}
+
 function checkSearchReservation() {
 
 	var selectOptionValue = $('#reservation-search-select').val();
@@ -184,6 +216,9 @@ function checkSearchReservation() {
 	return true;
 
 }
+
+
+
 
 //$('#reservation-datatable tbody').on('click', 'tr', function() {
 //

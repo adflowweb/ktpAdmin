@@ -7,7 +7,7 @@ var statisticsRole = sessionStorage.getItem("role");
 
 //setAccount
 $.ajax({
-	url : '/pms/adm/sys/users',
+	url : '/pms/adm/'+statisticsRole+'/users',
 	type : 'GET',
 	contentType : "application/json",
 	headers : {
@@ -88,8 +88,8 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 				"data" : "pmaAckType"
 			}, {
 				"data" : "pmaAckTime"
-			}, {
-				"data" : "resendCount"
+			},  {
+				"data" : "resendMaxCount"
 			}, {
 				"data" : "resendInterval"
 			}] ,
@@ -117,37 +117,48 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 						if (dataResult) {
 							dataResult = data.result.data.data;
 							for ( var i in dataResult) {
-								if (dataResult[i].pmaAckType == null
-										&& dataResult[i].appAckType == null) {
+								if (dataResult[i].pmaAckType == null) {
 									dataResult[i].pmaAckType = "응답없음";
 								} else {
-									dataResult[i].pmaAckType = "응답";
-									if (dataResult[i].appAckTime != null) {
-										dataResult[i].pmaAckTime=dataResult[i].appAckTime;
-										 var dateTime = dataResult[i].pmaAckTime;
-										 dataResult[i].pmaAckTime = new Date(dateTime)
-										 .toLocaleString();
-									}else if(dataResult[i].pmaAckTime != null){
-										 var dateTime = dataResult[i].pmaAckTime;
-										 dataResult[i].pmaAckTime = new Date(dateTime)
-										 .toLocaleString();
+									if (dataResult[i].appAckType != null) {
+										dataResult[i].pmaAckType = "사용자응답";
+										var dateTime = dataResult[i].appAckTime;
+										dataResult[i].pmaAckTime = new Date(dateTime).toLocaleString();
+									} else {
+										dataResult[i].pmaAckType = "기기응답";
+										var dateTime = dataResult[i].pmaAckTime;
+										dataResult[i].pmaAckTime = new Date(dateTime).toLocaleString();
 									}
 
+									
 								}
+								
+
+								
 							 switch (dataResult[i].status) {
-								 case 1:
-									 dataResult[i].status = "발송됨";
-								 break;
+								case -99:
+									dataResult[i].status = "발송오류";
+									break;
+								case -2:
+									dataResult[i].status = "수신자없음";
+									break;
+								case -1:
+									dataResult[i].status = "메시지제한";
+									break;
+								case 0:
+									dataResult[i].status = "발송중";
+									break;
+								case 1:
+									dataResult[i].status = "발송됨";
+									break;
+								case 2:
+									dataResult[i].status = "예약취소됨";
+									break;
 							
 								 }
-								 if (dataResult[i].ack) {
-									 
-									 dataResult[i].ack = "응답";
-								 } else {
-									 dataResult[i].ack = "응답 없음";
-								 }
+								
 																
-								 dataResult[i].resendInterval=dataResult[i].resendInterval+"초";							
+								 dataResult[i].resendInterval=dataResult[i].resendInterval+"분";							
 								 var dateTime = dataResult[i].updateTime;
 								 dataResult[i].updateTime = new Date(dateTime)
 								 .toLocaleString();

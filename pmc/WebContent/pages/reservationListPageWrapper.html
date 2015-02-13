@@ -8,7 +8,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="panel panel-default">
-			<div class="panel-heading">예약 메세지 목록</div>
+			<div style="background-color: aquamarine;" class="panel-heading">예약된 메세지 목록</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 				<div class="form-group">
@@ -47,17 +47,25 @@
 						id="reservation-datatable" width="100%">
 						<thead>
 							<tr>
-								<th>Message Id</th>
+								<th><input name="reservatoin-checkbox"
+									id="reservaton-checkbox-id" onclick="reservationCheck(this)"
+									type="checkbox" />&nbsp;Message Id</th>
 								<th>송신자</th>
 								<th>수신자</th>
 								<th>예약시간</th>
-				
+
 							</tr>
 						</thead>
 						<tbody id="reservation-tablebody">
 
 						</tbody>
 					</table>
+				</div>
+				<br/>
+				<div class="form-group input-group">
+					<input type="button"
+						onclick="javascript:reservationCancelFunction();"
+						class="btn btn-default" value="예약 메세지 취소"></input>
 				</div>
 
 			</div>
@@ -69,64 +77,7 @@
 </div>
 
 
-<!-- <div class="row"> -->
-<!-- 	<div class="col-lg-12"> -->
-<!-- 		<div class="panel panel-default"> -->
-<!-- 			<div class="panel-heading">예약 메세지 취소</div> -->
-			<!-- /.panel-heading -->
-<!-- 			<div class="panel-body"> -->
 
-<!-- 				<form role="form"> -->
-<!-- 					<div class="form-group"> -->
-<!-- 						<label>예약 대상 </label> <input class="form-control" -->
-<!-- 							id="reservation-cancel-input" value="" placeholder="예약  대상(Message Id)"> -->
-
-<!-- 					</div> -->
-<!-- 					<input type="button" -->
-<!-- 						onclick="javascript:reservationCancelFunction();" -->
-<!-- 						class="btn btn-default" value="예약 메세지 취소"></input> -->
-
-<!-- 					<button type="reset" class="btn btn-default">Reset</button> -->
-<!-- 				</form> -->
-<!-- 				<br /> -->
-				<!-- 				<div class="panel panel-default"> -->
-				<!-- 					<div class="panel-heading">예약 메세지 제목</div> -->
-				<!-- 					<div class="panel-body"> -->
-				<!-- 						<p class="reservation-title-p"></p> -->
-				<!-- 					</div> -->
-
-
-				<!-- 				</div> -->
-
-				<!-- 				<div class="panel panel-default"> -->
-				<!-- 					<div class="panel-heading">예약 메세지 내용</div> -->
-				<!-- 					<div class="panel-body"> -->
-				<!-- 						<p class="reservation-detail-p"></p> -->
-				<!-- 					</div> -->
-
-
-				<!-- 				</div> -->
-
-
-
-
-
-
-
-<!-- 			</div> -->
-			<!-- /.panel-body -->
-
-			<!-- /.panel -->
-<!-- 		</div> -->
-
-
-		<!-- /.col-lg-6 -->
-
-
-
-		<!-- /.col-lg-12 -->
-<!-- 	</div> -->
-<!-- </div> -->
 
 
 <script src="js/pages/reservationList.js"></script>
