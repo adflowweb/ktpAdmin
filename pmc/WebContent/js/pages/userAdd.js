@@ -1,4 +1,3 @@
-//	var num_check = /^[0-9]*$/;
 $('#add-role-select').change(function() {
 	var selectValue = $("#add-role-select option:selected").val();
 	if (selectValue == 2) {
@@ -9,88 +8,86 @@ $('#add-role-select').change(function() {
 });
 
 function userAddFunction() {
-	console.log('계정 들록');
 	var formCheck = userAddFormCheck();
 	var userToken = sessionStorage.getItem("token");
 	if (formCheck) {
+		if (confirm("계정을 추가 하시겠습니까?") == true) {
+			var id_input = $('#add-id-input').val();
+			var password_input = $('#add-password-input').val();
+			var name_input = $('#add-name-input').val();
+			var role_select = $("#add-role-select option:selected").val();
+			var roleValue = "";
+			var message_count_input = $('#add-user-message-input').val();
+			var ip_filter_input = $('#add-ipfilter-input').val();
+			role_select = role_select * 1;
+			switch (role_select) {
+			case 1:
+				roleValue = "sys";
+				break;
+			case 2:
+				roleValue = "svc";
+				break;
+			case 3:
+				roleValue = "svcadm";
+				break;
+			case 4:
+				roleValue = "inf";
+				break;
+			}
 
-		console.log('폼체크 성공');
+			var userAdd = new Object();
+			userAdd.userId = id_input;
+			userAdd.password = password_input;
+			userAdd.userName = name_input;
+			userAdd.msgCntLimit = message_count_input;
+			userAdd.role = roleValue;
+			userAdd.ipFilters = ip_filter_input;
+			var userAddReq = JSON.stringify(userAdd);
+			console.log(userAddReq);
 
-		var id_input = $('#add-id-input').val();
-		var password_input = $('#add-password-input').val();
-		var name_input = $('#add-name-input').val();
-		var role_select = $("#add-role-select option:selected").val();
-		var roleValue = "";
-		var message_count_input = $('#add-user-message-input').val();
-		var ip_filter_input = $('#add-ipfilter-input').val();
-		role_select = role_select * 1;
-		switch (role_select) {
-		case 1:
-			roleValue = "sys";
-			break;
-		case 2:
-			roleValue = "svc";
-			break;
-		case 3:
-			roleValue = "svcadm";
-			break;
-		case 4:
-			roleValue = "inf";
-			break;
-		}
+			$.ajax({
+				url : '/v1/pms/adm/sys/users',
+				type : 'POST',
+				contentType : "application/json",
+				headers : {
+					'X-Application-Token' : userToken
+				},
+				dataType : 'json',
+				data : userAddReq,
 
-		var userAdd = new Object();
-		userAdd.userId = id_input;
-		userAdd.password = password_input;
-		userAdd.userName = name_input;
-		userAdd.msgCntLimit = message_count_input;
-		userAdd.role = roleValue;
-		userAdd.ipFilters = ip_filter_input;
-		var userAddReq = JSON.stringify(userAdd);
-		console.log(userAddReq);
+				async : false,
+				success : function(data) {
 
-		$.ajax({
-			url : '/v1/pms/adm/sys/users/',
-			type : 'POST',
-			contentType : "application/json",
-			headers : {
-				'X-Application-Token' : userToken
-			},
-			dataType : 'json',
-			data : userAddReq,
+					var dataResult = data.result.data;
 
-			async : false,
-			success : function(data) {
-				console.log("ajax data!!!!!");
-				console.log(data);
-				console.log("ajax data!!!!!");
+					if (dataResult) {
+						if (!data.result.errors) {
+							console.log(dataResult);
+							console.log('/v1/pms/adm/sys/users(POST)');
+							alert(data.result.data.userId + "를 생성 하였습니다.");
+							wrapperFunction('userAdd');
+						} else {
 
-				console.log('login in ajax call success');
-				var loginResult = data.result.data;
-
-				if (loginResult) {
-					if (!data.result.errors) {
-						console.log(loginResult);
-						alert(data.result.data.userId + "를 생성 하였습니다.");
-						wrapperFunction('userAdd');
+							alert(data.result.errors[0]);
+							wrapperFunction('userAdd');
+						}
 					} else {
 
-						alert(data.result.errors[0]);
+						alert('계정 등록에  실패하였습니다.');
 						wrapperFunction('userAdd');
 					}
-				} else {
 
-					alert('계정 등록에  실패하였습니다.');
+				},
+				error : function(data, textStatus, request) {
+
+					alert('계정 등록에 실패하였습니다.');
 					wrapperFunction('userAdd');
 				}
+			});
+		} else {
+			return;
+		}
 
-			},
-			error : function(data, textStatus, request) {
-
-				alert('계정 등록에 실패하였습니다.');
-				wrapperFunction('userAdd');
-			}
-		});
 	}
 
 }
@@ -145,8 +142,7 @@ function userAddFormCheck() {
 		return false;
 	} else {
 		ip_filter_input = ip_filter_input.split('/');
-
-		var ipCheck = /^([1]\d\d|[2][0-5][0-5]|[1-9][0-9]|[0-9][\*]){1}(\.([1]\d\d|[2][0-5][0-5]|[1-9][0-9]|[0-9]|[\*])){3}$/;
+		var ipCheck = /^([1]\d\d|[2][0-5][0-5]|[1-9][0-9]|[0-9]|[\*]){1}(\.([1]\d\d|[2][0-5][0-5]|[1-9][0-9]|[0-9]|[\*])){3}$/;
 		var ipCheckAlert = false;
 		for ( var i in ip_filter_input) {
 			if (!ipCheck.test(ip_filter_input[i])) {

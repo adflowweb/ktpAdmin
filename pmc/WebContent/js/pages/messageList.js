@@ -2,7 +2,7 @@ var messageListToken = sessionStorage.getItem("token");
 var messageListRole = sessionStorage.getItem("role");
 
 $.ajax({
-	url : '/pms/adm/' + messageListRole + '/account',
+	url : '/v1/pms/adm/' + messageListRole + '/account',
 	type : 'GET',
 	contentType : "application/json",
 	headers : {
@@ -12,18 +12,13 @@ $.ajax({
 	async : false,
 
 	success : function(data) {
-		console.log("ajax data!!!!!");
-		console.log(data);
-		console.log("ajax data!!!!!");
-
-		console.log('login in ajax call success');
-		var ajaxResult = data.result.data;
-
-		if (ajaxResult) {
+		
+		var dataResult = data.result.data;
+		if (dataResult) {
 			if (!data.result.errors) {
-
-				console.log("맥스 리밋:" + ajaxResult.msgCntLimit);
-				$('#messageCnt_div').text(ajaxResult.msgCntLimit);
+				console.log( '/v1/pms/adm/' + messageListRole + '/account(GET)');
+				console.log(dataResult);
+				$('#messageCnt_div').text(dataResult.msgCntLimit);
 			} else {
 
 				alert(data.result.errors[0]);
@@ -40,27 +35,12 @@ $.ajax({
 	}
 });
 
-// var morrisDataMessage = Morris.Donut({
-// element : 'morris-donut-chart-message',
-// data : [ {
-// label : "사용량",
-// value : 14000
-// }, {
-// label : "남은 사용량",
-// value : 10000
-// } ],
-//
-// // colors: [
-// // 'red',
-// // 'rgb(11, 98, 164)',
-// // ],
-// resize : true
-// });
+
 
 var messageTable = $('#dataTables-messageList')
 		.dataTable(
 				{
-					// "bProcessing" : true,
+
 					'bSort' : false,
 					'bServerSide' : true,
 					'dom' : 'T<"clear">lrtip',
@@ -99,13 +79,11 @@ var messageTable = $('#dataTables-messageList')
 									data : aoData,
 
 									success : function(data) {
-
-										console.log('success');
-										console.log(data.result);
-										console.log('success');
-
+									
 										var dataResult = data.result.data;
 										if (dataResult) {
+											console.log('/v1/pms/adm/' + messageListRole + '/messages(GET)');
+											console.log(dataResult);
 											$('#messageListCnt_div')
 													.text(
 															data.result.data.recordsTotal);
@@ -252,8 +230,6 @@ var messageTable = $('#dataTables-messageList')
 				});
 
 $('#messagelist-search-btn').click(function() {
-
-	console.log('target click function..');
 	var formCheck = checkSearch();
 
 	if (formCheck) {
@@ -268,8 +244,8 @@ function checkSearch() {
 
 	var selectOptionValue = $('#messagelist-search-select').val();
 	var inputSearchValue = $('#messagelist-input').val();
-	console.log("서치 벨류" + inputSearchValue);
-	console.log('selectOptjionValue:' + selectOptionValue);
+	console.log("검색 값" + inputSearchValue);
+	console.log('검색 항목:' + selectOptionValue);
 	inputSearchValue = compactTrim(inputSearchValue);
 	console.log(inputSearchValue);
 	if (selectOptionValue != 0) {
@@ -295,120 +271,4 @@ function checkSearch() {
 
 }
 
-// .columnFilter();
 
-// $('#dataTables-example_filter input').unbind();
-// $('#dataTables-example_filter input').bind('keyup', function(e) {
-// if (e.keyCode == 13) {
-// oTable.fnFilter(this.value);
-// }
-//
-// });
-
-// $('tfoot input').unbind();
-//
-// $('#messagelist-search-btn').bind('click', function(e) {
-//
-// oTable.fnFilter();
-//
-// });
-// $('tfoot input').bind('keyup', function(e) {
-// if (e.keyCode == 13) {
-// oTable.fnFilter(this.value, $("tfoot input").index(this));
-// }
-//
-// });
-
-// message content get
-// $('#dataTables-messageList tbody').on('click', 'tr', function() {
-// console.log('message list id click');
-//
-// var tableDataRow = $(this).children('td').map(function() {
-// return $(this).text();
-// }).get();
-//
-// console.log(tableDataRow[0]);
-// var messageID = tableDataRow[0];
-// var tokenID = sessionStorage.getItem('tokenID');
-// console.log('메세지 아이디');
-// console.log(messageID);
-//
-// $.ajax({
-// url : '/v1/messages/' + messageID,
-// type : 'GET',
-// headers : {
-// 'X-ApiKey' : tokenID
-// },
-// contentType : 'application/json',
-// async : false,
-// success : function(data) {
-//
-// if (data.result.data) {
-//
-// var item = data.result.data;
-// console.log('메세지 아이디로 조히ㅣ ');
-// console.log(item);
-// console.log(item.content);
-// var item_Content = item.content;
-// if (item.type == "104" || item.type == 104) {
-// item_Content = b64_to_utf8(item_Content);
-// }
-// $('.message-detail-p').html(item_Content);
-//
-// } else {
-// alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
-// }
-// },
-// error : function(data, textStatus, request) {
-// console.log(data);
-// alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
-// }
-// });
-//
-// // $.ajax({
-// // url : '/v1/acks/'+ messageID,
-// // type : 'GET',
-// // headers : {
-// // 'X-ApiKey' : tokenID
-// // },
-// // contentType : "application/json",
-// // async : false,
-// // success : function(data) {
-// //
-// // if (data.result.data) {
-// // var tableData=[];
-// // for ( var i in data.result.data) {
-// //
-// // var item = data.result.data[i];
-// //
-// //
-// // tableData.push({
-// // "UserId" : item.userID,
-// //
-// //
-// // });
-// // }
-// //
-// // console.log(tableData);
-// //
-// // // 테이블 생성
-// // $('#dataTables-example-ack').dataTable({
-// // bJQueryUI : true,
-// // aaData : tableData,
-// // bDestroy : true,
-// // aoColumns : [ {
-// // mData : 'UserId'
-// // } ],
-// // aaSorting : [ [ 0, 'desc' ] ]
-// // });
-// // } else {
-// // alert('수신 리스트를 가지고 오는데 실패 하였습니다.');
-// // }
-// // },
-// // error : function(data, textStatus, request) {
-// // console.log(data);
-// // alert('수신 리스트를 가지고 오는데 실패 하였습니다.');
-// // }
-// // });
-//
-// });

@@ -1,11 +1,5 @@
-$("#statistics-search-date-start-input").prop('disabled', true);
-$("#statistics-search-date-end-input").prop('disabled', true);
-$("#statistics-reservation-search-date-start-input").prop('disabled', true);
-$("#statistics-reservation-search-date-end-input").prop('disabled', true);
 var statisticsToken = sessionStorage.getItem("token");
 var statisticsRole = sessionStorage.getItem("role");
-
-//setAccount
 $.ajax({
 	url : '/v1/pms/adm/'+statisticsRole+'/users',
 	type : 'GET',
@@ -17,18 +11,16 @@ $.ajax({
 	async : false,
 
 	success : function(data) {
-		console.log("ajax data!!!!!");
-		console.log(data);
-		console.log("ajax data!!!!!");
 
-		console.log('login in ajax call success');
-		var loginResult = data.result.data;
+		var dataResult = data.result.data;
 
-		if (loginResult) {
+		if (dataResult) {
+			console.log('/v1/pms/adm/'+statisticsRole+'/users');
+			console.log(dataResult);
 			if (!data.result.errors) {
 
 				for ( var i in data.result.data) {
-					var successData = data.result.data[i];
+					var successData = dataResult[i];
 					console.log(successData.role);
 					if (successData.role == "sys") {
 
@@ -56,13 +48,11 @@ $.ajax({
 			}
 		} else {
 
-			//alert('계정 목록을 가지고오는데 실패하였습니다.');
 		}
 
 	},
 	error : function(data, textStatus, request) {
 
-		//alert('계정 목록을 가지고오는데 실패하였습니다.');
 	}
 });
 
@@ -70,7 +60,6 @@ $.ajax({
 //create messageList
 var statisticsTable = $('#statistics-datatable').dataTable(
 		{
-			// "bProcessing" : true,
 			'bServerSide' : true,
 			'bSort' : false,
 			'dom' : 'T<"clear">lrtip',
@@ -108,14 +97,10 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 					data : aoData,
 
 					success : function(data) {
-
-						console.log('success');
-						console.log(data.result);
-						console.log('success');
-
-						var dataResult = data.result.data;
+						var dataResult = data.result.data.data;
 						if (dataResult) {
-							dataResult = data.result.data.data;
+							console.log('/v1/pms/adm/'+statisticsRole+'/messages(GET)');
+							console.log(dataResult);
 							for ( var i in dataResult) {
 								if (dataResult[i].pmaAckType == null) {
 									dataResult[i].pmaAckType = "응답없음";
@@ -179,11 +164,9 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 					}
 				});
 			},
-			//
-			// },
-			// custom params
+
 			'fnServerParams' : function(aoData) {
-				//계정select
+
 				var accountSelectValue = $('#statistics-account-select').val();
 				var searchSelectValue = $('#statistics-search-select').val();
 				var searchSelectText = $(
@@ -266,7 +249,7 @@ var statisticsTable = $('#statistics-datatable').dataTable(
 //create reservationMessageList      
 var statisticsReservationTable = $('#statistics-reservation-datatable').dataTable(
 		{
-			// "bProcessing" : true,
+
 			'bServerSide' : true,
 			'bSort' : false,
 			'dom' : 'T<"clear">lrtip',
@@ -281,7 +264,6 @@ var statisticsReservationTable = $('#statistics-reservation-datatable').dataTabl
 			} ],
 			'sPaginationType' : 'full_numbers',
 			'sAjaxSource' : '/v1/pms/adm/'+statisticsRole+'/messages/reservations',
-			// custom ajax
 			'fnServerData' : function(sSource, aoData, fnCallback) {
 				$.ajax({
 					dataType : 'json',
@@ -294,14 +276,10 @@ var statisticsReservationTable = $('#statistics-reservation-datatable').dataTabl
 					data : aoData,
 
 					success : function(data) {
-
-						console.log('success');
-						console.log(data.result);
-						console.log('success');
-
-						var dataResult = data.result.data;
+						var dataResult = data.result.data.data;
 						if (dataResult) {
-							dataResult = data.result.data.data;
+							console.log('/v1/pms/adm/'+statisticsRole+'/messages/reservations(GET)');
+							console.log(dataResult);
 							for ( var i in dataResult) {
 
 								var dateTime = dataResult[i].reservationTime;

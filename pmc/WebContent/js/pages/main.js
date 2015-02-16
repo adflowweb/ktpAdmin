@@ -1,3 +1,4 @@
+//ready Function
 $(document).ready(
 		function() {
 
@@ -51,7 +52,7 @@ $(document).ready(
 
 		});
 
-// page wrapperfunction
+// Page wrapperfunction
 function wrapperFunction(data) {
 
 	$("#page-wrapper").load(
@@ -62,15 +63,9 @@ function wrapperFunction(data) {
 					sessionStorage.setItem("monitoringStatus", "disable");
 				}
 
-				// 메시지 전송 기능삭제
 				if (data === "MessageSend") {
 
 					sessionStorage.setItem("monitoringStatus", "disable");
-
-					// CKEDITOR.replace('input_messageContent', {
-					// startupFocus : true
-					// });
-
 					var nowDate = new Date();
 					var today = new Date(nowDate.getFullYear(), nowDate
 							.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
@@ -81,6 +76,7 @@ function wrapperFunction(data) {
 
 					$('#message-send-reservation-div').datetimepicker().data(
 							"DateTimePicker").setMaxDate(today_30);
+					$("#message-send-reservationdate-input").prop('disabled', true);
 				}
 
 				if (data === "monitoring") {
@@ -91,21 +87,8 @@ function wrapperFunction(data) {
 					sessionStorage.setItem("monitoringStatus", "enable");
 
 				}
-				// 메시지 발송 현황 기능 삭제
+
 				if (data === "messageList") {
-
-					// var elementDataTable = document
-					// .createElement("script");
-					// elementDataTable.src =
-					// "js/plugins/dataTables/jquery.dataTables.js";
-					// var elementDataTableBT = document
-					// .createElement("script");
-					// elementDataTableBT.src =
-					// "js/plugins/dataTables/dataTables.bootstrap.js";
-					//
-					// document.body.appendChild(elementDataTable);
-					// document.body.appendChild(elementDataTableBT);
-
 					sessionStorage.setItem("monitoringStatus", "disable");
 					$('#messagelist-date-div').datetimepicker({
 						viewMode : 'years',
@@ -137,11 +120,10 @@ function wrapperFunction(data) {
 				if (data === "statistics") {
 
 					sessionStorage.setItem("monitoringStatus", "disable");
-
-					// CKEDITOR.replace('input_messageContent', {
-					// startupFocus : true
-					// });
-
+					$("#statistics-search-date-start-input").prop('disabled', true);
+					$("#statistics-search-date-end-input").prop('disabled', true);
+					$("#statistics-reservation-search-date-start-input").prop('disabled', true);
+					$("#statistics-reservation-search-date-end-input").prop('disabled', true);
 					var nowDate = new Date();
 					var today = new Date(nowDate.getFullYear(), nowDate
 							.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
@@ -164,15 +146,14 @@ function wrapperFunction(data) {
 			});
 }
 
-// login function
+// Login
 var ladda_object = "";
 function loginFunction(atag) {
-	console.log("atag:" + atag);
-	ladda_object = Ladda.create(atag);
 
+	ladda_object = Ladda.create(atag);
 	var loginId = $('#loginId').val();
 	var loginPass = $('#loginPass').val();
-	// form null check
+
 	if (loginId == null || loginId == "") {
 		alert("아이디 입력해주세요");
 		$('#loginId').focus();
@@ -191,9 +172,7 @@ function loginFunction(atag) {
 	loginInfo.userId = loginId;
 	loginInfo.password = loginPass;
 	var loginReq = JSON.stringify(loginInfo);
-	console.log("로그인 정보:" + loginReq);
 
-	// // login ajax call
 	$.ajax({
 		url : '/v1/pms/adm/cmm/auth',
 		type : 'POST',
@@ -204,41 +183,13 @@ function loginFunction(atag) {
 		dataType : 'json',
 		async : false,
 		data : loginReq,
-		// statusCode : {
-		// 200 : function(data) {
-		// console.log("200..");
-		// },
-		// 401 : function(data) {
-		// alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
-		// $("#page-wrapper").load("pages/login.html", function() {
-		// $('#ul_userInfo').hide();
-		// $('.navbar-static-side').hide();
-		// $('#loginId').keypress(function(e) {
-		// if (e.keyCode != 13)
-		// return;
-		// $('#loginPass').focus();
-		// });
-		// $('#loginPass').keypress(function(e) {
-		// if (e.keyCode != 13)
-		// return;
-		// $("#login_ahref").click();
-		//
-		// });
-		//
-		// });
-		// }
-		// },
 		success : function(data) {
-			console.log("ajax data!!!!!");
-			console.log(data);
-			console.log("ajax data!!!!!");
-
-			console.log('login in ajax call success');
-			var loginResult = data.result.data;
-
-			if (loginResult) {
+		
+			var dataResult = data.result.data;
+			if (dataResult) {
+				console.log('/v1/pms/adm/cmm/auth(POST)');
+				console.log(dataResult);
 				if (!data.result.errors) {
-
 					var role = data.result.data.role;
 					var token = data.result.data.token;
 					var userId = data.result.data.userId;
@@ -282,7 +233,7 @@ function loginFunction(atag) {
 					alert(data.result.errors[0]);
 				}
 			} else {
-
+				console.log(data.result.errors[0]);
 				alert('로그인에 실패 하였습니다.');
 			}
 
@@ -290,48 +241,43 @@ function loginFunction(atag) {
 		error : function(data, textStatus, request) {
 
 			alert('로그인에 실패 하였습니다.');
-			console.log('fail start...........');
 			console.log(data);
 			console.log(textStatus);
-			console.log('fail end.............');
 		}
 	});
 
 }
 
-// logoutFunction
+// User Info
 function userInfo() {
 	var userID = sessionStorage.getItem("userId");
 	alert(userID + "으로 로그인 중입니다.");
 }
-
+// Log out
 function logoutFunction() {
 	if (confirm("로그아웃 하시 겠습니까??") == true) { // 확인
 		sessionStorage.removeItem("token");
 		sessionStorage.removeItem("userId");
 		sessionStorage.removeItem("role");
 		sessionStorage.removeItem("monitoringStatus");
-
-		// window.location = "/BootStrapTest/index.jsp";
 		window.location.reload();
-	} else { // 취소
+	} else {
 		return;
 	}
 
 }
 
-// //////////////UTIL/////////////////////////////////
-// date validateDate Check
+// Date ValidateDate Check
 function validateDate(input_reservation) {
 	var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
 	return date_regex.test(input_reservation);
 }
 
-// compactTrim function
+// CompactTrim
 function compactTrim(value) {
 	return value.replace(/(\s*)/g, "");
 }
-
+// Sys Login
 function sysLogin() {
 	$('#ul_userInfo').show();
 	$('.navbar-static-side').show();
@@ -340,9 +286,9 @@ function sysLogin() {
 	$('#svc_message_list_li').hide();
 	$('#svc_message_reservation_li').hide();
 	$('#inf_message_send_li').hide();
-
+	sessionStorage.setItem("monitoringStatus", "disable");
 }
-
+// Svc Login
 function svcLogin() {
 	$('#ul_userInfo').show();
 	$('.navbar-static-side').show();
@@ -351,14 +297,6 @@ function svcLogin() {
 	$('#svc_message_list_li').show();
 	$('#svc_message_reservation_li').show();
 	$('#inf_message_send_li').hide();
-	// var elementDataTable = document.createElement("script");
-	// elementDataTable.src = "js/plugins/dataTables/jquery.dataTables.js";
-	// var elementDataTableBT = document.createElement("script");
-	// elementDataTableBT.src = "js/plugins/dataTables/dataTables.bootstrap.js";
-	//
-	// document.body.appendChild(elementDataTable);
-	// document.body.appendChild(elementDataTableBT);
-
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',
@@ -369,13 +307,13 @@ function svcLogin() {
 	$('#messagelist-date-input').prop('disabled', true);
 
 }
-
+// Inf Login
 function infLogin() {
 	sessionStorage.removeItem("token");
 	alert('해당 계정은 page를 제공 하지 않습니다. 다른 아이디로 로그인하세요!');
 
 }
-
+// Svc Admin Login
 function svcAdmLogin() {
 	console.log('pcbs start');
 	$('#ul_userInfo').show();
@@ -385,13 +323,6 @@ function svcAdmLogin() {
 	$('#svc_message_reservation_li').show();
 	$('#sys_monitoring_li').hide();
 	$('#sys_admin_li').hide();
-	// sessionStorage.setItem("monitoringStatus", "disable");
-	// $('#messagelist-date-div').datetimepicker({
-	// viewMode : 'years',
-	// format : 'YYYY/MM'
-	// });
-	//
-	// $('#messagelist-date-input').prop('disabled', true);
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',
@@ -403,10 +334,10 @@ function svcAdmLogin() {
 
 }
 
-// dateFormating
+/*
+ * DateFormating 06/12/20146:27PM
+ */
 function dateFormating(value) {
-	// 06/12/20146:27PM
-
 	var result = compactTrim(value);
 	if (result.length == 16) {
 		var month = result.substring(0, 2);
@@ -450,7 +381,6 @@ function dateFormating(value) {
 	}
 }
 
-// ///////////////////////////////////////////////////////////////
 // utf8_to_b64(str)
 function utf8_to_b64(str) {
 	return window.btoa(unescape(encodeURIComponent(str)));
@@ -473,12 +403,13 @@ var guid = (function() {
 
 // CKEDITOR Get Contents
 function GetContents() {
-	// Get the editor instance that you want to interact with.
 	var editor = CKEDITOR.instances.input_messageContent;
 	return editor.getData();
 
 }
 
+
+// CKEDITOR Plain Text
 function ckGetPlainText() {
 	var html = CKEDITOR.instances.input_messageContent.getSnapshot();
 	var dom = document.createElement("DIV");
@@ -488,29 +419,45 @@ function ckGetPlainText() {
 	return plain_text;
 }
 
+//Date Formating
 Date.prototype.yyyymmdd = function() {
 	var yyyy = this.getFullYear().toString();
-	var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+	var mm = (this.getMonth() + 1).toString(); 
 	var dd = this.getDate().toString();
 	var hour = this.getHours().toString();
 	var minute = this.getMinutes().toString();
 	return yyyy + "/" + (mm[1] ? mm : "0" + mm[0]) + "/"
 			+ (dd[1] ? dd : "0" + dd[0]) + " "
 			+ (hour[1] ? hour : "0" + hour[0]) + ":"
-			+ (minute[1] ? minute : "0" + minute[0]); // padding
+			+ (minute[1] ? minute : "0" + minute[0]); 
 };
 
 $.ajaxSetup({
 	statusCode : {
 		200 : function() {
-			console.log('200 test');
+			
 		},
 		401 : function(data) {
-			// this will catch any and all access denied errors
+			alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+			$("#page-wrapper").load("pages/login.html", function() {
+				$('#ul_userInfo').hide();
+				$('.navbar-static-side').hide();
+				$('#loginId').keypress(function(e) {
+					if (e.keyCode != 13)
+						return;
+					$('#loginPass').focus();
+				});
+				$('#loginPass').keypress(function(e) {
+					if (e.keyCode != 13)
+						return;
+					$("#login_ahref").click();
 
-				alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
-				
-	
+				});
+
+			});
+		},
+		404 : function(data) {
+			alert("페이지를 찾을수 없어 로그인 화면으로 이동합니다.");
 			$("#page-wrapper").load("pages/login.html", function() {
 				$('#ul_userInfo').hide();
 				$('.navbar-static-side').hide();
@@ -531,16 +478,12 @@ $.ajaxSetup({
 	},
 
 	beforeSend : function() {
-		// show gif here, eg:
-		console.log('ajax before');
 		if (ladda_object != null && ladda_object != "") {
 			ladda_object.start();
 		}
 
 	},
 	complete : function() {
-		// hide gif here, eg:
-		console.log('ajax complate');
 		if (ladda_object != null && ladda_object != "") {
 			ladda_object.stop();
 		}

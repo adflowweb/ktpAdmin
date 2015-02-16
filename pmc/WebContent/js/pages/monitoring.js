@@ -31,15 +31,13 @@ if(monitoringInterval){
 		contentType : "application/json",
 		async : false,
 		success : function(data) {
-
+			console.log("Ajax Data:"+data.result);
 			if (data.result.success) {
 
 
 				var item = data.result.data;
 				console.log(item);
-//				var heapMax;
-//				var heapUsed;
-//				var heapFree;
+
 				
 				combined = item.cpu.combined;
 				idle = item.cpu.idle;
@@ -97,11 +95,7 @@ if(monitoringInterval){
 			label : "idle",
 			value : idle
 		} ],
-	
-//		  colors: [
-//		    'red',
-//		    'rgb(11, 98, 164)',
-//		  ],
+
 		resize : true
 	});
 	
@@ -114,10 +108,7 @@ if(monitoringInterval){
 			label : "Memory free",
 			value : free
 		} ],
-//		 colors: [
-//				    'rgb(11, 98, 164)',
-//				    'aqua',
-//				  ],
+
 		resize : true
 	});
 
@@ -144,7 +135,7 @@ if(monitoringInterval){
 		} ],
 		resize : true
 	});
-	//tps
+
 
 
 	
@@ -228,8 +219,7 @@ if(monitoringInterval){
 					label : "Heap Free",
 					value : heapFree
 				} ]);
-				//morrisDataheap
-				//morrisDatadisk
+
 				morrisDatadisk.setData([ {
 					label : "Disk used",
 					value : diskUsed

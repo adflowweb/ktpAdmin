@@ -2,7 +2,6 @@ var reservationListToken = sessionStorage.getItem("token");
 var reservationListRole=sessionStorage.getItem("role");
 var reservationListTable = $('#reservation-datatable').dataTable(
 		{
-			// "bProcessing" : true,
 			'bSort' : false,
 			'bServerSide' : true,
 			'dom' : 'T<"clear">lrtip',
@@ -17,7 +16,6 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 			} ],
 			'sPaginationType' : 'full_numbers',
 			'sAjaxSource' : '/v1/pms/adm/'+reservationListRole+'/messages/reservations',
-			// custom ajax
 			'fnServerData' : function(sSource, aoData, fnCallback) {
 				$.ajax({
 					dataType : 'json',
@@ -30,15 +28,10 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 					data : aoData,
 
 					success : function(data) {
-
-						console.log('success');
-						console.log(data.result);
-						console.log('success');
-
-						var dataResult = data.result.data;
-						
+						var dataResult = data.result.data.data;
 						if (dataResult) {
-							dataResult = data.result.data.data;
+							console.log('/v1/pms/adm/'+reservationListRole+'/messages/reservations(GET)');
+							console.log(dataResult);
 							for ( var i in dataResult) {						
 								var dateTime = dataResult[i].reservationTime;
 								dataResult[i].msgId='<input name="reservatoin-checkbox" type="checkbox" value="'+dataResult[i].msgId+'"/>&nbsp;'+dataResult[i].msgId;
@@ -47,7 +40,6 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 									dataResult[i].reservationTime = new Date(dateTime)
 									.toLocaleString();
 								}
-
 
 							}
 
@@ -65,9 +57,7 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 					}
 				});
 			},
-			//
-			// },
-			// custom params
+
 			'fnServerParams' : function(aoData) {
 				var searchSelectValue = $('#reservation-search-select').val();
 				var searchSelect = $(
@@ -217,79 +207,6 @@ function checkSearchReservation() {
 
 }
 
-
-
-
-//$('#reservation-datatable tbody').on('click', 'tr', function() {
-//
-//	var tableDataRow = $(this).children('td').map(function() {
-//		return $(this).text();
-//	}).get();
-//
-//	console.log(tableDataRow[0]);
-//	$('#reservation-cancel-input').val(tableDataRow[0]);
-//
-////	for (var i = 0; i < tableData.length; i++) {
-////		console.log('in for');
-////		console.log(tableData[i].MessageId);
-////		if (tableData[i].MessageId == tableDataRow[0]) {
-////			console.log(tableData[i].MessageId);
-////			$('.reservation-detail-p').html(tableData[i].content);
-////			$('.reservation-title-p').html(tableData[i].title);
-////		}
-////	}
-//
-//});
-
-// function reservationCancelFunction() {
-// console.log('reservationCancelFunction...');
-// var checkForm = cancelFormCheck();
-// if (checkForm) {
-// var tokenID = sessionStorage.getItem('tokenID');
-//
-// if (tokenID) {
-// loginUserId = sessionStorage.getItem('userID');
-// console.log(loginUserId);
-// var input_reservationCancelID = $('#reservation-cancel-input')
-// .val();
-//
-// $.ajax({
-// url : '/v1/messages/' + input_reservationCancelID,
-// type : 'DELETE',
-// headers : {
-// 'X-ApiKey' : tokenID
-// },
-// contentType : 'application/json',
-// dataType : 'json',
-// async : false,
-// success : function(data) {
-// console.log(data);
-// console.log(data.result.success);
-// if (data.result.success) {
-// alert("예약된 메세지를 취소하였습니다.");
-// $('#reservation-cancel-input').val("");
-// $('#reservation-cancel-input').focus();
-// wrapperFunction('reservation');
-// } else {
-// alert("예약된 메세지를 취소에 실패했습니다.");
-// $('#reservation-cancel-input').val("");
-// $('#reservation-cancel-input').focus();
-//
-// }
-// },
-// error : function(data, textStatus, request) {
-// alert("예약된 메세지를 취소에 실패했습니다.");
-// $('#reservation-cancel-input').val("");
-// $('#reservation-cancel-input').focus();
-//
-// console.log(data);
-// }
-// });
-// }
-// }
-// }
-
-// form check..
 function cancelFormCheck() {
 	var input_reservationCancelID = $('#reservation-cancel-input').val();
 	if (input_reservationCancelID == null || input_reservationCancelID == "") {

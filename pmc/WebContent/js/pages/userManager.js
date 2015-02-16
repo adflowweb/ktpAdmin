@@ -1,4 +1,3 @@
-//get adm/sys/users
 var userToken = sessionStorage.getItem("token");
 $.ajax({
 	url : '/v1/pms/adm/sys/users',
@@ -11,14 +10,10 @@ $.ajax({
 
 	async : false,
 	success : function(data) {
-		console.log("ajax data!!!!!");
-		console.log(data);
-		console.log("ajax data!!!!!");
-
-		console.log('login in ajax call success');
 		var dataResult = data.result.data;
-
 		if (dataResult) {
+			console.log(dataResult);
+			console.log('/v1/pms/adm/sys/users(GET)');
 			if (!data.result.errors) {
 				var tableData = [];
 
@@ -48,14 +43,15 @@ $.ajax({
 					bJQueryUI : true,
 					bDestroy : true,
 					aaData : tableData,
-				
-					autoWidth: false,
+
+					autoWidth : false,
 					aoColumns : [ {
 						mData : 'userId'
 					}, {
 						mData : 'Name'
 					}, {
-						mData : 'IPFilter', "sWidth": "50%"
+						mData : 'IPFilter',
+						"sWidth" : "50%"
 					}, {
 						mData : 'role'
 					}, {
@@ -80,9 +76,6 @@ $.ajax({
 });
 
 $("#user-id-input").prop('disabled', true);
-// 한글체크
-// /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
-// var num_check = /^[0-9]*$/;숫자 체크
 $('#user-role-select').change(function() {
 	var selectValue = $("#user-role-select option:selected").val();
 	if (selectValue == 2) {
@@ -98,9 +91,6 @@ $('#dataTables-usermanager tbody').on('click', 'tr', function() {
 		return $(this).text();
 	}).get();
 
-	console.log(tableData[0]);
-	console.log(tableData[1]);
-	console.log(tableData[2]);
 	$('#user-id-input').val(tableData[0]);
 	$('#user-name-input').val(tableData[1]);
 	$('#user-ipfilter-input').val(tableData[2]);
@@ -126,85 +116,86 @@ function userUpdateFunction() {
 	console.log("update...admin");
 	var checkForm = userUpdataFormCheck();
 	if (checkForm) {
-		var id_input = $('#user-id-input').val();
-		var name_input = $('#user-name-input').val();
-		var ip_filter_input = $('#user-ipfilter-input').val();
+		if (confirm("계정 정보를 변경 하시겠습니까?") == true) {
+			var id_input = $('#user-id-input').val();
+			var name_input = $('#user-name-input').val();
+			var ip_filter_input = $('#user-ipfilter-input').val();
 
-		var role_select = $("#user-role-select option:selected").val();
-		console.log("권한value:" + role_select);
-		console.log("콘솔 테스트");
-		var roleValue = "";
-		var message_count_input = $('#user-message-input').val();
-		role_select = role_select * 1;
-		switch (role_select) {
-		case 1:
-			console.log("sys");
-			roleValue = "sys";
-			break;
-		case 2:
-			console.log("svc");
-			roleValue = "svc";
-			break;
-		case 3:
-			console.log("svcadm");
-			roleValue = "svcadm";
-			break;
-		case 4:
-			console.log("inf");
-			roleValue = "inf";
-			break;
-		}
+			var role_select = $("#user-role-select option:selected").val();
 
-		var userChange = new Object();
-		userChange.userName = name_input;
-		userChange.msgCntLimit = message_count_input;
-		userChange.role = roleValue;
-		userChange.ipFilters = ip_filter_input;
-		var userChangeReq = JSON.stringify(userChange);
-		console.log(userChangeReq);
+			var roleValue = "";
+			var message_count_input = $('#user-message-input').val();
+			role_select = role_select * 1;
+			switch (role_select) {
+			case 1:
+				console.log("sys");
+				roleValue = "sys";
+				break;
+			case 2:
+				console.log("svc");
+				roleValue = "svc";
+				break;
+			case 3:
+				console.log("svcadm");
+				roleValue = "svcadm";
+				break;
+			case 4:
+				console.log("inf");
+				roleValue = "inf";
+				break;
+			}
 
-		$.ajax({
-			url : '/v1/pms/adm/sys/users/' + id_input,
-			type : 'PUT',
-			contentType : "application/json",
-			headers : {
-				'X-Application-Token' : userToken
-			},
-			dataType : 'json',
-			data : userChangeReq,
+			var userChange = new Object();
+			userChange.userName = name_input;
+			userChange.msgCntLimit = message_count_input;
+			userChange.role = roleValue;
+			userChange.ipFilters = ip_filter_input;
+			var userChangeReq = JSON.stringify(userChange);
+			console.log(userChangeReq);
 
-			async : false,
-			success : function(data) {
-				console.log("ajax data!!!!!");
-				console.log(data);
-				console.log("ajax data!!!!!");
+			$.ajax({
+				url : '/v1/pms/adm/sys/users/' + id_input,
+				type : 'PUT',
+				contentType : "application/json",
+				headers : {
+					'X-Application-Token' : userToken
+				},
+				dataType : 'json',
+				data : userChangeReq,
 
-				console.log('login in ajax call success');
-				var dataResult = data.result.data;
+				async : false,
+				success : function(data) {
+					console.log("Ajax Data:" + data.result);
+					var dataResult = data.result.data;
 
-				if (dataResult) {
-					if (!data.result.errors) {
-						console.log(dataResult);
-						alert('걔정 정보를 변경 하였습니다.');
-						wrapperFunction('userManager');
+					if (dataResult) {
+						if (!data.result.errors) {
+							console.log('/v1/pms/adm/sys/users/' + id_input
+									+ '(PUT)');
+							console.log(dataResult);
+							alert('걔정 정보를 변경 하였습니다.');
+							wrapperFunction('userManager');
+						} else {
+
+							alert(data.result.errors[0]);
+							wrapperFunction('userManager');
+						}
 					} else {
 
-						alert(data.result.errors[0]);
+						alert('계정 변경에  실패하였습니다.');
 						wrapperFunction('userManager');
 					}
-				} else {
 
-					alert('계정 변경에  실패하였습니다.');
+				},
+				error : function(data, textStatus, request) {
+
+					alert('계정 변경에 실패하였습니다.');
 					wrapperFunction('userManager');
 				}
-
-			},
-			error : function(data, textStatus, request) {
-
-				alert('계정 변경에 실패하였습니다.');
-				wrapperFunction('userManager');
-			}
-		});
+			});
+		} else {
+			return;
+		}
 
 	}
 }
@@ -214,45 +205,49 @@ function userDeleteFunction() {
 	var checkForm = userDeleteFormCheck();
 	if (checkForm) {
 		var id_input = $('#user-id-input').val();
+		if (confirm("계정 정보를 삭제 하시겠습니까?") == true) { // 확인
+			$.ajax({
+				url : '/v1/pms/adm/sys/users/' + id_input,
+				type : 'DELETE',
+				contentType : "application/json",
+				headers : {
+					'X-Application-Token' : userToken
+				},
+				dataType : 'json',
 
-		$.ajax({
-			url : '/v1/pms/adm/sys/users/' + id_input,
-			type : 'DELETE',
-			contentType : "application/json",
-			headers : {
-				'X-Application-Token' : userToken
-			},
-			dataType : 'json',
+				async : false,
+				success : function(data) {
+					var dataResult = data.result.data;
 
-			async : false,
-			success : function(data) {
-				console.log("ajax data!!!!!");
-				console.log(data);
-				var dataResult = data.result.data;
+					if (dataResult) {
+						if (!data.result.errors) {
+							console.log('/v1/pms/adm/sys/users/' + id_input
+									+ '(DELETE)');
+							console.log(dataResult);
+							alert('계정 정보를 삭제 하였습니다.');
+							wrapperFunction('userManager');
+						} else {
 
-				if (dataResult) {
-					if (!data.result.errors) {
-						console.log(dataResult);
-						alert('계정 정보를 삭제 하였습니다.');
-						wrapperFunction('userManager');
+							alert(data.result.errors[0]);
+							wrapperFunction('userManager');
+						}
 					} else {
 
-						alert(data.result.errors[0]);
+						alert('계정 삭제에  실패하였습니다.');
 						wrapperFunction('userManager');
 					}
-				} else {
 
-					alert('계정 삭제에  실패하였습니다.');
+				},
+				error : function(data, textStatus, request) {
+
+					alert('계정 삭제에 실패하였습니다.');
 					wrapperFunction('userManager');
 				}
+			});
 
-			},
-			error : function(data, textStatus, request) {
-
-				alert('계정 삭제에 실패하였습니다.');
-				wrapperFunction('userManager');
-			}
-		});
+		} else {
+			return;
+		}
 
 	}
 }
@@ -303,7 +298,7 @@ function userUpdataFormCheck() {
 		alert('IP 를 입력해 주세요');
 		$('#user-ipfilter-input').focus();
 		return false;
-	}else{
+	} else {
 		ip_filter_input = ip_filter_input.split('/');
 
 		var ipCheck = /^([1]\d\d|[2][0-5][0-5]|[1-9][0-9]|[0-9]|[\*]){1}(\.([1]\d\d|[2][0-5][0-5]|[1-9][0-9]|[0-9]|[\*])){3}$/;

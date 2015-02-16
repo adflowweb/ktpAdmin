@@ -1,74 +1,77 @@
+// Change Password
 function changePassword() {
-	console.log('비밀번호 병경');
-	console.log('test');
 	var checkForm = changePassFormCheck();
 	if (checkForm) {
-		var tokenId = sessionStorage.getItem("token");
-		console.log("tokenid:" + tokenId);
-		var role = sessionStorage.getItem("role");
-		console.log("롤" + role);
-		var input_changePassword = $('#change-currentpass-input').val();
-		var input_newPassWord = $('#change-newpass-input').val();
-		var input_newPassWordConfirm = $('#change-confirmpass-input').val();
-		var urlReq = "";
-		if (role == "sys") {
-			urlReq = "/v1/pms/adm/sys";
-		} else if (role == "sysadm") {
-			urlReq = "/v1/pms/adm/sysadm";
-		} else if (role == "svc") {
-			urlReq = "/v1/pms/adm/svc";
-		}
+		if (confirm("비밀 번호를 변경 하시겠습니까?") == true) {
+			var tokenId = sessionStorage.getItem("token");
+			var role = sessionStorage.getItem("role");
+			var input_changePassword = $('#change-currentpass-input').val();
+			var input_newPassWord = $('#change-newpass-input').val();
+			var input_newPassWordConfirm = $('#change-confirmpass-input').val();
+			var urlReq = "";
+			if (role == "sys") {
+				urlReq = "/v1/pms/adm/sys";
+			} else if (role == "svcadm") {
+				urlReq = "/v1/pms/adm/svcadm";
+			} else if (role == "svc") {
+				urlReq = "/v1/pms/adm/svc";
+			}
 
-		var changePass = new Object();
-		changePass.oldPassword = input_changePassword;
-		changePass.newPassword = input_newPassWord;
-		changePass.rePassword = input_newPassWordConfirm;
+			var changePass = new Object();
+			changePass.oldPassword = input_changePassword;
+			changePass.newPassword = input_newPassWord;
+			changePass.rePassword = input_newPassWordConfirm;
 
-		var changePassReq = JSON.stringify(changePass);
-		console.log(changePassReq);
+			var changePassReq = JSON.stringify(changePass);
 
-		$.ajax({
-			url : urlReq + '/account/sec',
-			type : 'PUT',
-			headers : {
-				'X-Application-Token' : tokenId
-			},
-			contentType : "application/json",
-			dataType : 'json',
-			data : changePassReq,
-			async : false,
+			$.ajax({
+				url : urlReq + '/account/sec',
+				type : 'PUT',
+				headers : {
+					'X-Application-Token' : tokenId
+				},
+				contentType : "application/json",
+				dataType : 'json',
+				data : changePassReq,
+				async : false,
 
 
-			success : function(data) {
-				console.log(data);
-				console.log(data.result.success);
-				if (data.result.success) {
-					alert('비밀 번호를 변경하였습니다');
-					var daddy = window.self;
-					daddy.opener = window.self;
-					daddy.close();
+				success : function(data) {
+					dataInfo=data.result.info;
+					if (dataInfo) {
+						console.log(urlReq + '/account/sec(PUT)');
+						console.log(dataInfo);
+						alert('비밀 번호를 변경하였습니다');
+						var daddy = window.self;
+						daddy.opener = window.self;
+						daddy.close();
 
-				} else {
-					console.log(data.result.errors[0]);
-					if (data.result.errors[0] == "패스워드 변경 실패2") {
-						alert('기존 비밀 번호가 맞지 않습니다');
-					} else if (data.result.errors[0] == "패스워드 변경 실패1") {
-						alert('새로운 비밀번호와 재입력한 번호가 일치 하지 안습니다');
+					} else {
+						console.log(data.result.errors[0]);
+						if (data.result.errors[0] == "패스워드 변경 실패2") {
+							alert('기존 비밀 번호가 맞지 않습니다');
+						} else if (data.result.errors[0] == "패스워드 변경 실패1") {
+							alert('새로운 비밀번호와 재입력한 번호가 일치 하지 안습니다');
+						}
+
 					}
+				},
+				error : function(data, textStatus, request) {
+					alert('비밀변호 변경에 실패하였습니다.');
 
 				}
-			},
-			error : function(data, textStatus, request) {
-				alert('비밀변호 변경에 실패하였습니다.');
+			});
+			
+		}else{
+			return
+		}
 
-			}
-		});
 
 	}
 
 }
 
-// form null check
+// Form Check
 function changePassFormCheck() {
 
 	var input_changePassword = $('#change-currentpass-input').val();
