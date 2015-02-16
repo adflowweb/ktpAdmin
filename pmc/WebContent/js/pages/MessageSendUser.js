@@ -1,40 +1,22 @@
 
-function MessageSendFunction() {
+function MessageSendUserFunction() {
 
 	console.log('메시지 발송 시작');
 	var tokenID = sessionStorage.getItem("token");
 	var role = sessionStorage.getItem("role");
-	var ackcheck = false;
-	if (messageSendFormCheck()) {
 
-		if ($("input:checkbox[id='message-send-ackckeck-input']")
-				.is(":checked") == true) {
+	if (messageSendUserFormCheck()) {
 
-			console.log('ack ckeck true');
-			ackcheck = true;
-		}
 
-		var input_messageTarget = $('#message-send-target-input').val();
-		var input_messageService = $('#message-send-service-input').val();
-		var input_messageContent = $('#message-send-textarea').val();
+
+		var input_messageTarget = $('#message-send-user-target-input').val();
+		var input_messageContent = $('#message-send-user-textarea').val();
 		input_messageContent = utf8_to_b64(input_messageContent);
-		var input_reservation = $('#message-send-reservationdate-input').val();
-		var input_resendCount = $('#message-send-resendCount-input').val();
-		var input_resendInterval = $('#message-send-resendInterval-input')
+		var input_reservation = $('#message-send-user-reservationdate-input').val();
+		var input_resendCount = $('#message-send-user-resendCount-input').val();
+		var input_resendInterval = $('#message-send-user-resendInterval-input')
 				.val();
-		var qos = 0;
-		qos = $("#message-send-qos-select").val();
-		var contentType = $("#message-send-contentType-select").val();
-
-		if (contentType == 1) {
-
-			contentType = "text/plain";
-		} else if (contentType == 2) {
-			contentType = "application/json";
-		} else {
-			contentType = "application/base64";
-		}
-
+	
 		var dateResult = dateFormating(input_reservation);
 
 		if (input_reservation) {
@@ -50,10 +32,7 @@ function MessageSendFunction() {
 
 		messageData.receivers = input_messageTarget;
 		messageData.content = input_messageContent;
-		messageData.serviceId = input_messageService;
-		messageData.contentType = contentType;
-		messageData.ack = ackcheck;
-		messageData.qos = qos;
+		messageData.contentType = "application/base64";
 		if (dateResult != "") {
 			messageData.reservationTime = dateResult;
 			console.log("테스트:" + messageData.reservationTime);
@@ -86,16 +65,17 @@ function MessageSendFunction() {
 					console.log('/v1/pms/adm/' + role + '/messages(POST)');
 					console.log(dataResult);
 					alert('메시지를 발송하였습니다.');
-					wrapperFunction('MessageSend');
+					wrapperFunction('MessageSendUser');
 				} else {
-					alert("메세지 전송에 실패 하였습니다.");
-					wrapperFunction('MessageSend');
+					alert(data.result.errors[0]);
+				
+					wrapperFunction('MessageSendUser');
 				}
 
 			},
 			error : function(data, textStatus, request) {
 				alert('메세지 전송에 실패 하였습니다.');
-				wrapperFunction('MessageSend');
+				wrapperFunction('MessageSendUser');
 			}
 		});
 
@@ -104,59 +84,24 @@ function MessageSendFunction() {
 }
 
 // form null check
-function messageSendFormCheck() {
+function messageSendUserFormCheck() {
 
-	var input_messageTarget = $('#message-send-target-input').val();
-	var input_messageService = $('#message-send-service-input').val();
-	var input_messageType = $('#message-send-messageType-input').val();
-	var input_messageExpire = $('#message-send-messageExpire-input').val();
-	var input_messageContent = $('#message-send-textarea').val();
-	var input_resendCount = $('#message-send-resendCount-input').val();
-	var input_resendInterval = $('#message-send-resendInterval-input').val();
-	var input_reservation = $('#message-send-reservationdate-input').val();
+	var input_messageTarget = $('#message-send-user-target-input').val();
+	var input_messageContent = $('#message-send-user-textarea').val();
+	var input_resendCount = $('#message-send-user-resendCount-input').val();
+	var input_resendInterval = $('#message-send-user-resendInterval-input').val();
 
+	var input_reservation = $('#message-send-user-reservationdate-input').val();
+	console.log("메세지 내용");
 	input_messageContent = compactTrim(input_messageContent);
+	console.log("여기");
 	console.log(input_messageContent);
+	console.log(input_reservation);
 
 	if (input_messageTarget == null || input_messageTarget == "") {
 		alert("메세지 보낼 대상을 입력해주세요");
-		$('#message-send-target-input').focus();
+		$('#message-send-user-target-input').focus();
 		return false;
-	}
-
-	if (input_messageService == null || input_messageService == "") {
-		alert("메세지를 보낼 앱의 서비스 아이디를 입력하세요!");
-		$('#message-send-service-input').focus();
-		return false;
-	}
-
-	if (input_messageType == null || input_messageType == "") {
-		alert("메세지 타입을 입력하세요!");
-		$('#message-send-messageType-input').focus();
-		return false;
-	} else {
-		var num_check = /^[0-9]*$/;
-		if (num_check.test(input_messageType)) {
-
-		} else {
-			alert("숫자만 입력가능합니다.");
-			$('#message-send-messageType-input').focus();
-			return false;
-		}
-
-	}
-	if (input_messageExpire == null || input_messageExpire == "") {
-
-	} else {
-		var num_check = /^[0-9]*$/;
-		if (num_check.test(input_messageExpire)) {
-
-		} else {
-			alert("숫자만 입력가능합니다.");
-			$('#message-send-messageExpire-input').focus();
-			return false;
-		}
-
 	}
 
 	if (input_resendCount == null || input_resendCount == "") {
@@ -167,13 +112,13 @@ function messageSendFormCheck() {
 			input_resendCount = input_resendCount * 1;
 			if (input_resendCount > 10) {
 				alert('재전송 횟수는 최대 10번까지 가능합니다.');
-				$('#message-send-resendCount-input').focus();
+				$('#message-send-user-resendCount-input').focus();
 				return false;
 			}
 
 		} else {
 			alert("숫자만 입력가능합니다.");
-			$('#message-send-resendCount-input').focus();
+			$('#message-send-user-resendCount-input').focus();
 			return false;
 		}
 
@@ -183,11 +128,11 @@ function messageSendFormCheck() {
 
 	} else {
 		var num_check = /^[0-9]*$/;
-		if (num_check.test(input_messageExpire)) {
+		if (num_check.test(input_resendInterval)) {
 
 		} else {
 			alert("숫자만 입력가능합니다.");
-			$('#message-send-resendInterval-input').focus();
+			$('#message-send-user-resendInterval-input').focus();
 			return false;
 		}
 
@@ -195,21 +140,24 @@ function messageSendFormCheck() {
 
 	if (input_messageContent == null || input_messageContent == "") {
 		alert("메세지 내용  입력해주세요");
-		$('#message-send-textarea').focus();
+		$('#message-send-user-textarea').focus();
 		return false;
 	}
 
 	if (input_reservation == null || input_reservation == "") {
-
+		console.log('예약 이프문');
 		if (confirm("예약 시간이 설정 되지 않아 메세지가 즉시 전송됩니다.") == true) {
 			return true;
 		} else {
 			return false;
 		}
 	} else {
+		
 		if (input_reservation) { // 예약 메세지
 			var convertDate = input_reservation;
+			console.log('여가');
 			input_reservation = compactTrim(input_reservation);
+			console.log('여가');
 			input_reservation = input_reservation.substring(0, 10);
 			var validateDateResult = validateDate(input_reservation);
 

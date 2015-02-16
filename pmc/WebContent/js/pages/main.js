@@ -63,7 +63,7 @@ function wrapperFunction(data) {
 					sessionStorage.setItem("monitoringStatus", "disable");
 				}
 
-				if (data === "MessageSend") {
+				if (data === "MessageSendAdm") {
 
 					sessionStorage.setItem("monitoringStatus", "disable");
 					var nowDate = new Date();
@@ -77,6 +77,22 @@ function wrapperFunction(data) {
 					$('#message-send-reservation-div').datetimepicker().data(
 							"DateTimePicker").setMaxDate(today_30);
 					$("#message-send-reservationdate-input").prop('disabled', true);
+				}
+				
+				if (data === "MessageSendUser") {
+
+					sessionStorage.setItem("monitoringStatus", "disable");
+					var nowDate = new Date();
+					var today = new Date(nowDate.getFullYear(), nowDate
+							.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+					var today_30 = new Date(nowDate.getFullYear(), nowDate
+							.getMonth(), nowDate.getDate() + 30, 0, 0, 0, 0);
+					$('#message-send-user-reservation-div').datetimepicker().data(
+							"DateTimePicker").setMinDate(today);
+
+					$('#message-send-user-reservation-div').datetimepicker().data(
+							"DateTimePicker").setMaxDate(today_30);
+					$("#message-send-user-reservationdate-input").prop('disabled', true);
 				}
 
 				if (data === "monitoring") {
@@ -285,7 +301,7 @@ function sysLogin() {
 	$('#sys_admin_li').show();
 	$('#svc_message_list_li').hide();
 	$('#svc_message_reservation_li').hide();
-	$('#inf_message_send_li').hide();
+	$('#message_send_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
 }
 // Svc Login
@@ -296,7 +312,8 @@ function svcLogin() {
 	$('#sys_admin_li').hide();
 	$('#svc_message_list_li').show();
 	$('#svc_message_reservation_li').show();
-	$('#inf_message_send_li').hide();
+	$('#message_send_li').show();
+	$('#svcadm_message_send_li_second').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',
@@ -318,7 +335,8 @@ function svcAdmLogin() {
 	console.log('pcbs start');
 	$('#ul_userInfo').show();
 	$('.navbar-static-side').show();
-	$('#inf_message_send_li').show();
+	$('#message_send_li').show();
+	$('#svc_message_send_li_second').hide();
 	$('#svc_message_list_li').show();
 	$('#svc_message_reservation_li').show();
 	$('#sys_monitoring_li').hide();
@@ -338,6 +356,8 @@ function svcAdmLogin() {
  * DateFormating 06/12/20146:27PM
  */
 function dateFormating(value) {
+	console.log('dateFor');
+	console.log(value);
 	var result = compactTrim(value);
 	if (result.length == 16) {
 		var month = result.substring(0, 2);

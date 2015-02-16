@@ -113,7 +113,7 @@ var messageTable = $('#dataTables-messageList')
 													dataResult[i].status = "수신자없음";
 													break;
 												case -1:
-													dataResult[i].status = "메시지제한";
+													dataResult[i].status = "허용갯수초과";
 													break;
 												case 0:
 													dataResult[i].status = "발송중";

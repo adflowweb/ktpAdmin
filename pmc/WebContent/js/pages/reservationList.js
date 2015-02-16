@@ -32,6 +32,9 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 						if (dataResult) {
 							console.log('/v1/pms/adm/'+reservationListRole+'/messages/reservations(GET)');
 							console.log(dataResult);
+							if(dataResult.length==0){
+								$("#reservaton-checkbox-id").hide();
+							}
 							for ( var i in dataResult) {						
 								var dateTime = dataResult[i].reservationTime;
 								dataResult[i].msgId='<input name="reservatoin-checkbox" type="checkbox" value="'+dataResult[i].msgId+'"/>&nbsp;'+dataResult[i].msgId;

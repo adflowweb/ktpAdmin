@@ -24,21 +24,18 @@
 					<label>검색 항목</label> <select class="form-control"
 						id="statistics-search-select">
 						<option value="0">선택</option>
-						<option value="1">메시지아이디</option>
-						<option value="2">송신자</option>
+						<option value="1">발송상태</option>
+						<option value="2">Message Id</option>
 						<option value="3">수신자</option>
-						<option value="4">발송시간</option>
+						<option value="4">응답상태</option>
 					</select>
 
 				</div>
 
-				<div class="form-group input-group">
+				<div class="form-group">
 					<input type="text" placeholder="검색 내용" class="form-control"
-						id="statistics-search-input"> <span
-						class="input-group-btn"><button class="btn btn-default"
-							type="button" id="statistics-search-btn">
-							<i class="fa fa-search"></i>
-						</button></span>
+						id="statistics-search-input"/> 
+					
 				</div>
 				<div class="form-group">
 					<label>검색 기간 설정 <span
@@ -60,8 +57,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<input type="button"
-						onclick="javascript:wrapperFunction('statistics')"
+					<input type="button" onclick="javascript:statisticsDateSearch()"
+						class="btn btn-default" value="Search"></input> <input
+						type="button" onclick="javascript:statisticsDateReset()"
 						class="btn btn-default" value="Reset"></input>
 				</div>
 				<div class="table-responsive">
@@ -157,8 +155,10 @@
 					</div>
 				</div>
 				<div class="form-group">
+				<input type="button" onclick="javascript:statisticsReservationSearch()"
+						class="btn btn-default" value="Search"></input>
 					<input type="button"
-						onclick="javascript:wrapperFunction('statistics')"
+						onclick="javascript:statisticsReservationReset()"
 						class="btn btn-default" value="Reset"></input>
 				</div>
 				<div class="table-responsive">
