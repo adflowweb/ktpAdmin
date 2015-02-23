@@ -64,7 +64,12 @@ function MessageSendUserFunction() {
 				if (dataResult) {
 					console.log('/v1/pms/adm/' + role + '/messages(POST)');
 					console.log(dataResult);
-					alert('메시지를 발송하였습니다.');
+					if(messageData.resendMaxCount){
+						messageData.resendMaxCount=messageData.resendMaxCount*1+1;
+						alert('반복 메시지를 포함하여 총 '+messageData.resendMaxCount+'건을 발송하였습니다.');
+					}else{
+						alert('메시지 1건을 발송하였습니다.');	
+					}
 					wrapperFunction('MessageSendUser');
 				} else {
 					alert(data.result.errors[0]);
@@ -74,7 +79,7 @@ function MessageSendUserFunction() {
 
 			},
 			error : function(data, textStatus, request) {
-				alert('메세지 전송에 실패 하였습니다.');
+				alert('메시지 전송에 실패 하였습니다.');
 				wrapperFunction('MessageSendUser');
 			}
 		});
@@ -111,7 +116,7 @@ function messageSendUserFormCheck() {
 		if (num_check.test(input_resendCount)) {
 			input_resendCount = input_resendCount * 1;
 			if (input_resendCount > 10) {
-				alert('재전송 횟수는 최대 10번까지 가능합니다.');
+				alert('반복 횟수는 최대 10번까지 가능합니다.');
 				$('#message-send-user-resendCount-input').focus();
 				return false;
 			}
@@ -145,8 +150,8 @@ function messageSendUserFormCheck() {
 	}
 
 	if (input_reservation == null || input_reservation == "") {
-		console.log('예약 이프문');
-		if (confirm("예약 시간이 설정 되지 않아 메세지가 즉시 전송됩니다.") == true) {
+
+		if (confirm("예약 시간이 설정 되지 않아 메시지가 즉시 전송됩니다.") == true) {
 			return true;
 		} else {
 			return false;

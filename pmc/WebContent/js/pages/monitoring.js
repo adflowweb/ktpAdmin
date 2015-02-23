@@ -1,4 +1,4 @@
-var tokenID = sessionStorage.getItem("tokenID");
+var tokenID = sessionStorage.getItem("token");
 var combined;
 var idle;
 var used;
@@ -23,10 +23,10 @@ if(monitoringInterval){
 
 
 	$.ajax({
-		url : '/v1/server',
+		url : '/v1/pms/adm/sys/server',
 		type : 'GET',
 		headers : {
-			'X-ApiKey' : tokenID
+			'X-Application-Token' : tokenID
 		},
 		contentType : "application/json",
 		async : false,
@@ -40,10 +40,13 @@ if(monitoringInterval){
 
 				
 				combined = item.cpu.combined;
+				console.log("test");
+				console.log(combined);
 				idle = item.cpu.idle;
 				combined = combined * 100;
 				idle = idle * 100;
 				used=item.memory.used*0.001;
+				console.log(used);
 				free=item.memory.free*0.001;
 				
 				heapMax=item.heap.heapMax;
@@ -147,10 +150,10 @@ if(monitoringInterval){
 		if(	monitoringStatus=="enable"){
 			
 	$.ajax({
-		url : '/v1/server',
+		url : '/v1/pms/adm/sys/server',
 		type : 'GET',
 		headers : {
-			'X-ApiKey' : tokenID
+			'X-Application-Token' : tokenID
 		},
 		contentType : "application/json",
 		async : false,

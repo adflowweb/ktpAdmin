@@ -27,14 +27,8 @@ function MessageSendFunction() {
 		var contentType = $("#message-send-contentType-select").val();
 
 		if (contentType == 1) {
-
-			contentType = "text/plain";
-		} else if (contentType == 2) {
-			contentType = "application/json";
-		} else {
 			contentType = "application/base64";
-		}
-
+		} 
 		var dateResult = dateFormating(input_reservation);
 
 		if (input_reservation) {
@@ -85,16 +79,21 @@ function MessageSendFunction() {
 				if (dataResult) {
 					console.log('/v1/pms/adm/' + role + '/messages(POST)');
 					console.log(dataResult);
-					alert('메시지를 발송하였습니다.');
+					if(messageData.resendMaxCount){
+						alert('반복 메시지를 포함하여 총 '+messageData.resendMaxCount+1+'건을 발송하였습니다.');
+					}else{
+						alert('메시지를 발송하였습니다.');	
+					}
+					
 					wrapperFunction('MessageSendAdm');
 				} else {
-					alert("메세지 전송에 실패 하였습니다.");
+					alert("메시지 전송에 실패 하였습니다.");
 					wrapperFunction('MessageSendAdm');
 				}
 
 			},
 			error : function(data, textStatus, request) {
-				alert('메세지 전송에 실패 하였습니다.');
+				alert('메시지 전송에 실패 하였습니다.');
 				wrapperFunction('MessageSendAdm');
 			}
 		});
@@ -166,7 +165,7 @@ function messageSendFormCheck() {
 		if (num_check.test(input_resendCount)) {
 			input_resendCount = input_resendCount * 1;
 			if (input_resendCount > 10) {
-				alert('재전송 횟수는 최대 10번까지 가능합니다.');
+				alert('반복 횟수는 최대 10번까지 가능합니다.');
 				$('#message-send-resendCount-input').focus();
 				return false;
 			}

@@ -1,41 +1,41 @@
 var messageListToken = sessionStorage.getItem("token");
 var messageListRole = sessionStorage.getItem("role");
 
-$.ajax({
-	url : '/v1/pms/adm/' + messageListRole + '/account',
-	type : 'GET',
-	contentType : "application/json",
-	headers : {
-		'X-Application-Token' : messageListToken
-	},
-	dataType : 'json',
-	async : false,
+$
+		.ajax({
+			url : '/v1/pms/adm/' + messageListRole + '/account',
+			type : 'GET',
+			contentType : "application/json",
+			headers : {
+				'X-Application-Token' : messageListToken
+			},
+			dataType : 'json',
+			async : false,
 
-	success : function(data) {
-		
-		var dataResult = data.result.data;
-		if (dataResult) {
-			if (!data.result.errors) {
-				console.log( '/v1/pms/adm/' + messageListRole + '/account(GET)');
-				console.log(dataResult);
-				$('#messageCnt_div').text(dataResult.msgCntLimit);
-			} else {
+			success : function(data) {
 
-				alert(data.result.errors[0]);
+				var dataResult = data.result.data;
+				if (dataResult) {
+					if (!data.result.errors) {
+						console.log('/v1/pms/adm/' + messageListRole
+								+ '/account(GET)');
+						console.log(dataResult);
+						$('#messageCnt_div').text(dataResult.msgCntLimit);
+					} else {
+
+						alert(data.result.errors[0]);
+					}
+				} else {
+
+					// alert('계정 목록을 가지고오는데 실패하였습니다.');
+				}
+
+			},
+			error : function(data, textStatus, request) {
+
+				// alert('계정 목록을 가지고오는데 실패하였습니다.');
 			}
-		} else {
-
-			// alert('계정 목록을 가지고오는데 실패하였습니다.');
-		}
-
-	},
-	error : function(data, textStatus, request) {
-
-		// alert('계정 목록을 가지고오는데 실패하였습니다.');
-	}
-});
-
-
+		});
 
 var messageTable = $('#dataTables-messageList')
 		.dataTable(
@@ -64,7 +64,8 @@ var messageTable = $('#dataTables-messageList')
 						"data" : "resendInterval"
 					} ],
 					'sPaginationType' : 'full_numbers',
-					'sAjaxSource' : '/v1/pms/adm/' + messageListRole + '/messages',
+					'sAjaxSource' : '/v1/pms/adm/' + messageListRole
+							+ '/messages',
 					// custom ajax
 					'fnServerData' : function(sSource, aoData, fnCallback) {
 						$
@@ -79,10 +80,12 @@ var messageTable = $('#dataTables-messageList')
 									data : aoData,
 
 									success : function(data) {
-									
+										console.log(data);
 										var dataResult = data.result.data;
 										if (dataResult) {
-											console.log('/v1/pms/adm/' + messageListRole + '/messages(GET)');
+											console.log('/v1/pms/adm/'
+													+ messageListRole
+													+ '/messages(GET)');
 											console.log(dataResult);
 											$('#messageListCnt_div')
 													.text(
@@ -95,14 +98,17 @@ var messageTable = $('#dataTables-messageList')
 													if (dataResult[i].appAckType != null) {
 														dataResult[i].pmaAckType = "사용자응답";
 														var dateTime = dataResult[i].appAckTime;
-														dataResult[i].pmaAckTime = new Date(dateTime).toLocaleString();
+														dataResult[i].pmaAckTime = new Date(
+																dateTime)
+																.toLocaleString();
 													} else {
 														dataResult[i].pmaAckType = "기기응답";
 														var dateTime = dataResult[i].pmaAckTime;
-														dataResult[i].pmaAckTime = new Date(dateTime).toLocaleString();
+														dataResult[i].pmaAckTime = new Date(
+																dateTime)
+																.toLocaleString();
 													}
 
-													
 												}
 
 												switch (dataResult[i].status) {
@@ -140,12 +146,15 @@ var messageTable = $('#dataTables-messageList')
 											fnCallback(data.result.data);
 
 										} else {
+									
 											alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
 
 										}
 
 									},
+									
 									error : function(e) {
+										console.log(e);
 										alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
 									}
 								});
@@ -156,7 +165,7 @@ var messageTable = $('#dataTables-messageList')
 					'fnServerParams' : function(aoData) {
 						var searchSelectValue = $('#messagelist-search-select')
 								.val();
-						var searchSelect = $(
+						var searchSelectText = $(
 								'#messagelist-search-select option:selected')
 								.text();
 						var searchInputValue = $('#messagelist-input').val();
@@ -165,67 +174,123 @@ var messageTable = $('#dataTables-messageList')
 
 						switch (searchSelectValue) {
 						case 0:
-							searchSelect = "";
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
 							break;
+						// status
 						case 1:
+							if (searchInputValue == "발송오류") {
+								searchSelectText = -99 * 1;
+							} else if (searchInputValue == "수신자 없음") {
+								searchSelectText = -2 * 1;
+							} else if (searchInputValue == "허용갯수초과") {
+								searchSelectText = -1 * 1;
+							} else if (searchInputValue == "발송중") {
+								searchSelectText = 1 - 1;
+							} else if (searchInputValue == "발송됨") {
+								console.log(searchSelectText);
+								searchSelectText = 1 * 1;
+							} else if (searchInputValue == "예약취소됨") {
+								searchSelectText = 2 * 1;
+							}
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : searchSelectText
+							});
 							break;
-						searchSelect = "msgId";
-					case 2:
-						searchSelect = "updateId";
-						break;
-					case 3:
-						searchSelect = "receiver";
-						break;
-					case 4:
-						searchSelect = "ack";
-						break;
-					case 5:
-						searchSelect = "status";
-						break;
+						// msgid
+						case 2:
+							searchSelectText = "msgId";
+							aoData.push({
+								'name' : 'cSearchFilter',
+								'value' : searchSelectText
+							});
+							aoData.push({
+								'name' : 'cSearchContent',
+								'value' : searchInputValue
+							});
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
 
-					}
+							break;
+						// receiver
+						case 3:
+							searchSelectText = "receiver";
 
-					if (searchInputValue == null || searchInputValue == "") {
-						searchInputValue = "";
-					} else if (searchInputValue == "응답") {
-						searchInputValue = true;
+							aoData.push({
+								'name' : 'cSearchFilter',
+								'value' : searchSelectText
+							});
+							aoData.push({
+								'name' : 'cSearchContent',
+								'value' : searchInputValue
+							});
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
 
-					} else if (searchInputValue == "응답 없음") {
-						searchInputValue = false;
-					} else if (searchInputValue == "발송된") {
-						searchInputValue = 1 * 1;
-					}
+							break;
+						// ack
+						case 4:
+							searchSelectText = "ack";
+							// search value
+							if (searchInputValue == "응답없음") {
+								searchInputValue = 1 - 1;
+							} else if (searchInputValue == "기기응답") {
+								searchInputValue = 1 * 1;
+							} else if (searchInputValue == "사용자응답") {
+								searchInputValue = 1 * 2;
+							}
+							aoData.push({
+								'name' : 'cSearchFilter',
+								'value' : searchSelectText
+							});
+							aoData.push({
+								'name' : 'cSearchContent',
+								'value' : searchInputValue
+							});
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
 
-					if (messageMonth == null || messageMonth == "") {
-						var nowDate = new Date();
-						var year = nowDate.getFullYear();
-						var month = nowDate.getMonth() + 1;
-						console.log(month);
-						if (month < 10) {
-							month = '0' + month;
+							break;
+
+						default:
+
+							break;
 						}
-						console.log(year + "/" + month);
-						messageMonth = year + "/" + month;
 
-						$('#messagelist-date-input').val(messageMonth);
+						if (messageMonth == null || messageMonth == "") {
+							var nowDate = new Date();
+							var year = nowDate.getFullYear();
+							var month = nowDate.getMonth() + 1;
+							console.log(month);
+							if (month < 10) {
+								month = '0' + month;
+							}
+							console.log(year + "/" + month);
+							messageMonth = year + "/" + month;
+
+							$('#messagelist-date-input').val(messageMonth);
+						}
+
+						messageMonth = messageMonth.replace("/", "");
+
+						aoData.push({
+							'name' : 'cSearchDate',
+							'value' : messageMonth
+						});
+
+						console.log("메시지 리스트  aoData");
+						console.log(aoData);
+						console.log("메시지 리스트  aoData");
 					}
-
-					messageMonth = messageMonth.replace("/", "");
-
-					aoData.push({
-						'name' : 'cSearchFilter',
-						'value' : searchSelect
-					});
-					aoData.push({
-						'name' : 'cSearchContent',
-						'value' : searchInputValue
-					});
-					aoData.push({
-						'name' : 'cSearchDate',
-						'value' : messageMonth
-					});
-
-				}
 
 				});
 
@@ -270,5 +335,3 @@ function checkSearch() {
 	return true;
 
 }
-
-

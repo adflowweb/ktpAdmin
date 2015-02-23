@@ -77,6 +77,7 @@ function wrapperFunction(data) {
 					$('#message-send-reservation-div').datetimepicker().data(
 							"DateTimePicker").setMaxDate(today_30);
 					$("#message-send-reservationdate-input").prop('disabled', true);
+					$("#message-send-contentType-select").prop('disabled', true);
 				}
 				
 				if (data === "MessageSendUser") {
@@ -285,6 +286,7 @@ function logoutFunction() {
 
 // Date ValidateDate Check
 function validateDate(input_reservation) {
+	//car la pi alba 
 	var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
 	return date_regex.test(input_reservation);
 }
@@ -460,6 +462,10 @@ $.ajaxSetup({
 		401 : function(data) {
 			alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
 			$("#page-wrapper").load("pages/login.html", function() {
+				sessionStorage.removeItem("token");
+				sessionStorage.removeItem("userId");
+				sessionStorage.removeItem("role");
+				sessionStorage.removeItem("monitoringStatus");
 				$('#ul_userInfo').hide();
 				$('.navbar-static-side').hide();
 				$('#loginId').keypress(function(e) {
@@ -479,6 +485,10 @@ $.ajaxSetup({
 		404 : function(data) {
 			alert("페이지를 찾을수 없어 로그인 화면으로 이동합니다.");
 			$("#page-wrapper").load("pages/login.html", function() {
+				sessionStorage.removeItem("token");
+				sessionStorage.removeItem("userId");
+				sessionStorage.removeItem("role");
+				sessionStorage.removeItem("monitoringStatus");
 				$('#ul_userInfo').hide();
 				$('.navbar-static-side').hide();
 				$('#loginId').keypress(function(e) {

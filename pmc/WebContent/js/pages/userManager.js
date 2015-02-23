@@ -43,15 +43,16 @@ $.ajax({
 					bJQueryUI : true,
 					bDestroy : true,
 					aaData : tableData,
-
+					bScrollCollapse :true,
+					scrollX: true,
 					autoWidth : false,
+					'bSort' : false,
 					aoColumns : [ {
 						mData : 'userId'
 					}, {
 						mData : 'Name'
 					}, {
-						mData : 'IPFilter',
-						"sWidth" : "50%"
+						mData : 'IPFilter'
 					}, {
 						mData : 'role'
 					}, {

@@ -105,6 +105,10 @@ var statisticsTable = $('#statistics-datatable')
 													+ statisticsRole
 													+ '/messages(GET)');
 											console.log(dataResult);
+//											$('#reservationListCnt_div')
+//											.text(
+//													data.result.data.recordsTotal);
+											$('#statisticsListCnt_div').text(data.result.data.recordsTotal);
 											for ( var i in dataResult) {
 												if (dataResult[i].pmaAckType == null) {
 													dataResult[i].pmaAckType = "응답없음";
@@ -364,6 +368,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 															+ statisticsRole
 															+ '/messages/reservations(GET)');
 											console.log(dataResult);
+											$('#statisticsList-reservation-Cnt_div').text(data.result.data.recordsTotal);
 											for ( var i in dataResult) {
 
 												var dateTime = dataResult[i].reservationTime;
@@ -427,73 +432,87 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 						var defaultMonth = year + month;
 
 						searchDateStart = dateFormating(searchDateStart);
+						// 시작일
 						if (searchDateStart) {
 							searchDateStart = searchDateStart.toISOString();
+							aoData.push({
+								'name' : 'cSearchDateStart',
+								'value' : searchDateStart
+							});
 						}
 
 						searchDateEnd = dateFormating(searchDateEnd);
+
+						// 종료일
 						if (searchDateEnd) {
 							searchDateEnd = searchDateEnd.toISOString();
+							aoData.push({
+								'name' : 'cSearchDateEnd',
+								'value' : searchDateEnd
+							});
 						}
-						// cSearchStatus add
-						if (searchSelectValue != 0) {
+						// 검색 조건 서치 vlaue
+						console.log('검색조건');
+						console.log(searchInputValue);
+						searchSelectValue=searchSelectValue*1;
+						switch (searchSelectValue) {
+						case 0:
+							break;
+						// msgId
+						case 1:
+							searchSelectText = "msgId";
 							aoData.push({
 								'name' : 'cSearchFilter',
 								'value' : searchSelectText
 							});
-						}
-
-						if (accountSelectValue != 0) {
-							aoData.push({
-								'name' : 'accountSelect',
-								'value' : accountSelectText
-							});
-						}
-
-						if (searchInputValue == null || searchInputValue == "") {
-							searchInputValue = "";
-						}
-
-						if (searchInputValue != "") {
 							aoData.push({
 								'name' : 'cSearchContent',
 								'value' : searchInputValue
 							});
+
+							break;
+						// receiver
+						case 2:
+							searchSelectText = "receiver";
+
+							aoData.push({
+								'name' : 'cSearchFilter',
+								'value' : searchSelectText
+							});
+							aoData.push({
+								'name' : 'cSearchContent',
+								'value' : searchInputValue
+							});
+
+							break;
+				
+						default:
+
+							break;
 						}
+
+						// 계정을 선택 했을경우
+						if (accountSelectValue != 0) {
+							aoData.push({
+								'name' : 'userId',
+								'value' : accountSelectText
+							});
+						}
+
 						aoData.push({
 							'name' : 'cSearchDate',
 							'value' : defaultMonth
 						});
-						aoData.push({
-							'name' : 'cSearchDateStart',
-							'value' : searchDateEnd
-						});
-						aoData.push({
-							'name' : 'cSearchDateEnd',
-							'value' : searchDateEnd
-						});
 
-						console.log('서치 데이터');
+						console.log('예약 서치 데이터');
 						console.log(aoData);
-						console.log('서치 데이터');
+						console.log('예약 서치 데이터');
 
 					}
 
 				});
 
-// message list serach click
-// $('#statistics-search-btn').click(function() {
-//
-// console.log('target click function..');
-// var formCheck = checkSearchStatistics();
-//
-// if (formCheck) {
-// statisticsTable.fnFilter();
-// } else {
-// console.log('검색항목 선택 안함!!');
-// }
-//
-// });
+
 
 function statisticsDateSearch() {
 	console.log('statisticsDateSearch');
@@ -663,7 +682,7 @@ function checkReservationSearch() {
 
 	if (selectOptionValue != 0) {
 		if (inputSearchValue == null || inputSearchValue == "") {
-			alert('검색할 내용을dd 입력해 주세요');
+			alert('검색할 내용 입력해 주세요');
 			$('#statistics-reservation-search-input').focus();
 			return false;
 		}
