@@ -194,6 +194,8 @@ var messageTable = $('#dataTables-messageList')
 								searchSelectText = 1 * 1;
 							} else if (searchInputValue == "예약취소됨") {
 								searchSelectText = 2 * 1;
+							} else{
+								searchSelectText="";
 							}
 							aoData.push({
 								'name' : 'cSearchStatus',
@@ -295,6 +297,11 @@ var messageTable = $('#dataTables-messageList')
 				});
 
 $('#messagelist-search-btn').click(function() {
+
+
+});
+
+function messageListSearch(){
 	var formCheck = checkSearch();
 
 	if (formCheck) {
@@ -302,8 +309,24 @@ $('#messagelist-search-btn').click(function() {
 	} else {
 		console.log('검색항목 선택 안함!!');
 	}
+}
+
+
+$('#messagelist-input').keypress(function(e) {
+	 if(event.keyCode == 13){
+	    	var formCheck = checkSearch();
+
+	    	if (formCheck) {
+	    		messageTable.fnFilter();
+	    	} else {
+	    		console.log('검색항목 선택 안함!!');
+	    	}
+
+	    }
 
 });
+
+
 
 function checkSearch() {
 

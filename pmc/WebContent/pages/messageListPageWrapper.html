@@ -8,7 +8,7 @@
 
 <div class="row">
 	<div class="col-lg-6 col-md-3">
-		<div  class="panel panel-primary">
+		<div class="panel panel-primary">
 			<div style="background-color: red;" class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
@@ -42,7 +42,8 @@
 
 	<div class="col-lg-12">
 		<div class="panel panel-default">
-			<div style="background-color: aquamarine;" class="panel-heading">발송 메세지 목록</div>
+			<div style="background-color: aquamarine;" class="panel-heading">발송
+				메세지 목록</div>
 			<!-- /.panel-heading -->
 
 
@@ -68,12 +69,18 @@
 					</select>
 
 				</div>
-				<div class="form-group input-group">
+
+
+
+				<div class="form-group">
 					<input type="text" placeholder="검색 내용" class="form-control"
-						id="messagelist-input"> <span class="input-group-btn"><button
-							class="btn btn-default" type="button" id="messagelist-search-btn">
-							<i class="fa fa-search"></i>
-						</button></span>
+						id="messagelist-input" />
+				</div>
+				<div class="form-group">
+					<input type="button" onclick="javascript:messageListSearch()"
+						class="btn btn-default" value="Search"></input> <input
+						type="button" onclick="javascript:wrapperFunction('messageList');"
+						class="btn btn-default" value="Reset"></input>
 				</div>
 
 				<div class="table-responsive">

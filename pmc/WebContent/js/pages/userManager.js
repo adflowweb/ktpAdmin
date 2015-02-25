@@ -1,4 +1,66 @@
 var userToken = sessionStorage.getItem("token");
+var userManagertableData = [];
+$("#user-id-input").prop('disabled', true);
+$("#user-name-input").prop('disabled', true);
+$("#user-ipfilter-input").prop('disabled', true);
+$("#user-role-select").prop('disabled', true);
+$("#user-message-input").prop('disabled', true);
+$("#user-option-callback-cntlimit-input").prop('disabled', true);
+$("#user-option-callback-method-input").prop('disabled', true);
+$("#user-option-callback-url-input").prop('disabled', true);
+$("#user-option-qos-select").prop('disabled', true);
+$("#user-option-expiry-input").prop('disabled', true);
+$("#user-account-div").hide();
+$("#user-option-div").hide();
+$("#user-account-input").hide();
+$("#user-option-input").hide();
+
+$('#user-account-input').change(function() {
+	console.log("체크 변경");
+    if($(this).is(":checked")) {
+    	console.log("조건문 체크 변경");
+    	$("#user-id-input").prop('disabled', false);
+    	$("#user-name-input").prop('disabled', false);
+    	$("#user-ipfilter-input").prop('disabled', false);
+    	$("#user-role-select").prop('disabled', false);
+    	$("#user-message-input").prop('disabled', false);
+    	$("#user-account-div").show();
+    }else{
+    	$("#user-id-input").prop('disabled', true);
+    	$("#user-name-input").prop('disabled', true);
+    	$("#user-ipfilter-input").prop('disabled', true);
+    	$("#user-role-select").prop('disabled', true);
+    	$("#user-message-input").prop('disabled', true);
+    	$("#user-account-div").hide();
+    }
+    
+});
+
+//<input name="user-account-input" id="user-account-input" type="checkbox">계정
+
+$('#user-option-input').change(function() {
+	console.log("체크 변경");
+    if($(this).is(":checked")) {
+    	console.log("조건문 체크 변경");
+    	$("#user-option-callback-cntlimit-input").prop('disabled', false);
+    	$("#user-option-callback-method-input").prop('disabled', false);
+    	$("#user-option-callback-url-input").prop('disabled', false);
+    	$("#user-option-qos-select").prop('disabled', false);
+    	$("#user-option-expiry-input").prop('disabled', false);
+    	$("#user-option-div").show();
+    }else{
+    	$("#user-option-callback-cntlimit-input").prop('disabled', true);
+    	$("#user-option-callback-method-input").prop('disabled', true);
+    	$("#user-option-callback-url-input").prop('disabled', true);
+    	$("#user-option-qos-select").prop('disabled', true);
+    	$("#user-option-expiry-input").prop('disabled', true);
+    	$("#user-option-div").hide();
+    }
+    
+});
+
+
+
 $.ajax({
 	url : '/v1/pms/adm/sys/users',
 	type : 'GET',
@@ -11,11 +73,11 @@ $.ajax({
 	async : false,
 	success : function(data) {
 		var dataResult = data.result.data;
+		console.log(data);
 		if (dataResult) {
 			console.log(dataResult);
 			console.log('/v1/pms/adm/sys/users(GET)');
 			if (!data.result.errors) {
-				var tableData = [];
 
 				for ( var i in data.result.data) {
 					var successData = data.result.data[i];
@@ -29,12 +91,17 @@ $.ajax({
 					} else if (successData.role == "svcadm") {
 						successData.role = "서비스 어드민";
 					}
-					tableData.push({
+					userManagertableData.push({
 						"userId" : successData.userId,
 						"Name" : successData.userName,
 						"IPFilter" : successData.ipFilters,
 						"role" : successData.role,
-						"msgCnt" : successData.msgCntLimit
+						"msgCnt" : successData.msgCntLimit,
+						"callbackCntLimit" : successData.callbackCntLimit,
+						"callbackMethod" : successData.callbackMethod,
+						"callbackUrl" : successData.callbackUrl,
+						"defaultExpiry" : successData.defaultExpiry,
+						"defaultQos" : successData.defaultQos
 					});
 
 				}
@@ -42,9 +109,9 @@ $.ajax({
 				$('#dataTables-usermanager').dataTable({
 					bJQueryUI : true,
 					bDestroy : true,
-					aaData : tableData,
-					bScrollCollapse :true,
-					scrollX: true,
+					aaData : userManagertableData,
+					bScrollCollapse : true,
+					scrollX : true,
 					autoWidth : false,
 					'bSort' : false,
 					aoColumns : [ {
@@ -76,7 +143,7 @@ $.ajax({
 	}
 });
 
-$("#user-id-input").prop('disabled', true);
+
 $('#user-role-select').change(function() {
 	var selectValue = $("#user-role-select option:selected").val();
 	if (selectValue == 2) {
@@ -86,36 +153,73 @@ $('#user-role-select').change(function() {
 	}
 });
 
-$('#dataTables-usermanager tbody').on('click', 'tr', function() {
+$('#dataTables-usermanager tbody').on(
+		'click',
+		'tr',
+		function() {
+			$("#user-account-input").show();
+			$("#user-option-input").show();
 
-	var tableData = $(this).children("td").map(function() {
-		return $(this).text();
-	}).get();
+			var tableData = $(this).children("td").map(function() {
+				return $(this).text();
+			}).get();
 
-	$('#user-id-input').val(tableData[0]);
-	$('#user-name-input').val(tableData[1]);
-	$('#user-ipfilter-input').val(tableData[2]);
+			$('#user-id-input').val(tableData[0]);
+			$('#user-name-input').val(tableData[1]);
+			$('#user-ipfilter-input').val(tableData[2]);
 
-	if (tableData[3] == "관리자") {
-		$("#user-role-select option:eq(1)").attr("selected", "selected");
-		$('#user-messagecount-div').hide();
-	} else if (tableData[3] == "서비스") {
-		$("#user-role-select option:eq(2)").attr("selected", "selected");
-		$('#user-messagecount-div').show();
-		$('#user-message-input').val(tableData[4]);
-	} else if (tableData[3] == "Interface Open") {
-		$("#user-role-select option:eq(4)").attr("selected", "selected");
-		$('#user-messagecount-div').hide();
-	} else if (tableData[3] == "서비스 어드민") {
-		$("#user-role-select option:eq(3)").attr("selected", "selected");
-		$('#user-messagecount-div').hide();
-	}
+			for ( var i in userManagertableData) {
+				if (userManagertableData[i].userId == tableData[0]) {
 
-});
+					$('#user-option-callback-cntlimit-input').val(
+							userManagertableData[i].callbackCntLimit);
+					$('#user-option-callback-method-input').val(
+							userManagertableData[i].callbackMethod);
+					$('#user-option-callback-url-input').val(
+							userManagertableData[i].callbackUrl);
+					$('#user-option-expiry-input').val(
+							userManagertableData[i].defaultExpiry);
+					console.log("기본 QOS");
+					console.log(userManagertableData[i].defaultQos);
+					userManagertableData[i].defaultQos=userManagertableData[i].defaultQos*1;
+					if (userManagertableData[i].defaultQos == 2) {
+						console.log("이프문");
+						$('#user-option-qos-select  option:eq(0)').attr(
+								"selected", "selected");
+					} else {
+						$('#user-option-qos-select  option:eq(1)').attr(
+								"selected", "selected");
+					}
+				}
+
+			}
+
+			if (tableData[3] == "관리자") {
+				$("#user-role-select option:eq(1)")
+						.attr("selected", "selected");
+				$('#user-messagecount-div').hide();
+			} else if (tableData[3] == "서비스") {
+				$("#user-role-select option:eq(2)")
+						.attr("selected", "selected");
+				$('#user-messagecount-div').show();
+				$('#user-message-input').val(tableData[4]);
+			} else if (tableData[3] == "Interface Open") {
+				$("#user-role-select option:eq(4)")
+						.attr("selected", "selected");
+				$('#user-messagecount-div').hide();
+			} else if (tableData[3] == "서비스 어드민") {
+				$("#user-role-select option:eq(3)")
+						.attr("selected", "selected");
+				$('#user-messagecount-div').hide();
+			}
+
+		});
 
 function userUpdateFunction() {
 	console.log("update...admin");
-	var checkForm = userUpdataFormCheck();
+	
+	
+	var checkForm = userUpdateFormCheck();
 	if (checkForm) {
 		if (confirm("계정 정보를 변경 하시겠습니까?") == true) {
 			var id_input = $('#user-id-input').val();
@@ -201,6 +305,96 @@ function userUpdateFunction() {
 	}
 }
 
+function userOptionUpdateFunction() {
+	console.log("update...admin");
+	var checkForm = userOptionFormCheck();
+	console.log(checkForm);
+	if (checkForm) {
+		console.log('test');
+		if (confirm("옵션값을 변경 하시겠습니까?") == true) {
+			var id_input = $('#user-id-input').val();
+			var option_expiry_input = $('#user-option-expiry-input').val();
+			var option_callback_url_input = $('#user-option-callback-url-input')
+					.val();
+			var option_callback_method_input = $(
+					'#user-option-callback-method-input').val();
+			var option_callback_cntlimit_input = $(
+					'#user-option-callback-cntlimit-input').val();
+
+			var option_qos_select = $("#user-option-qos-select option:selected")
+					.val();
+
+			option_qos_select = option_qos_select * 1;
+			switch (option_qos_select) {
+			case 0:
+				option_qos_select=1*1;
+
+				break;
+			case 1:
+				console.log(option_qos_select);
+				option_qos_select=2*1;
+				break;
+
+			}
+
+			var userOption = new Object();
+
+			userOption.defaultQos = option_qos_select;
+			userOption.defaultExpiry = option_expiry_input;
+			userOption.callbackUrl = option_callback_url_input;
+			userOption.callbackMethod = option_callback_method_input;
+			userOption.callbackCntLimit = option_callback_cntlimit_input;
+			userOption.options = true;
+			var userOptionReq = JSON.stringify(userOption);
+			console.log(userOptionReq);
+
+			$.ajax({
+				url : '/v1/pms/adm/sys/users/' + id_input,
+				type : 'PUT',
+				contentType : "application/json",
+				headers : {
+					'X-Application-Token' : userToken
+				},
+				dataType : 'json',
+				data : userOptionReq,
+
+				async : false,
+				success : function(data) {
+					console.log(data);
+					var dataResult = data.result.data;
+
+					if (dataResult) {
+						if (!data.result.errors) {
+							console.log('/v1/pms/adm/sys/users/' + id_input
+									+ '(PUT)');
+							console.log(dataResult);
+							alert('옵션 정보를 변경 하였습니다.');
+							wrapperFunction('userManager');
+						} else {
+
+							alert(data.result.errors[0]);
+							wrapperFunction('userManager');
+						}
+					} else {
+
+						alert('옵션 변경에  실패하였습니다.');
+						wrapperFunction('userManager');
+					}
+
+				},
+				error : function(data, textStatus, request) {
+
+					alert('옵션 변경에 실패하였습니다.');
+					wrapperFunction('userManager');
+				}
+			});
+		} else {
+			return;
+		}
+
+	}
+}
+
 function userDeleteFunction() {
 	console.log("update...admin");
 	var checkForm = userDeleteFormCheck();
@@ -267,7 +461,7 @@ function userDeleteFormCheck() {
 }
 
 // form null check
-function userUpdataFormCheck() {
+function userUpdateFormCheck() {
 
 	var id_input = $('#user-id-input').val();
 	var name_input = $('#user-name-input').val();
@@ -335,6 +529,43 @@ function userUpdataFormCheck() {
 		}
 
 	}
+	return true;
+
+}
+
+function userOptionFormCheck() {
+	var option_expiry_input = $('#user-option-expiry-input').val();
+	var option_callback_url_input = $('#user-option-callback-url-input').val();
+	var option_callback_method_input = $('#user-option-callback-method-input')
+			.val();
+	var option_callback_cntlimit_input = $(
+			'#user-option-callback-cntlimit-input').val();
+
+	if (option_expiry_input == null || option_expiry_input == "") {
+		alert('메시지 소멸 시간을 입력해주세요');
+		$('#user-option-expiry-input').focus();
+		return false;
+	} else {
+		var num_check = /^[0-9]*$/;
+		if (!num_check.test(option_expiry_input)) {
+			alert('숫자를 입력해 주세요');
+			$('#user-option-expiry-input').focus();
+			return false;
+		}
+	}
+
+	if (option_callback_cntlimit_input == null
+			|| option_callback_cntlimit_input == "") {
+
+	} else {
+		var num_check = /^[0-9]*$/;
+		if (!num_check.test(option_callback_cntlimit_input)) {
+			alert('숫자를 입력해 주세요');
+			$('#user-option-callback-cntlimit-input').focus();
+			return false;
+		}
+	}
+
 	return true;
 
 }

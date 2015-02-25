@@ -80,7 +80,8 @@ function MessageSendFunction() {
 					console.log('/v1/pms/adm/' + role + '/messages(POST)');
 					console.log(dataResult);
 					if(messageData.resendMaxCount){
-						alert('반복 메시지를 포함하여 총 '+messageData.resendMaxCount+1+'건을 발송하였습니다.');
+						messageData.resendMaxCount=messageData.resendMaxCount*1+1;
+						alert('반복 메시지를 포함하여 총 '+messageData.resendMaxCount+'건을 발송하였습니다.');
 					}else{
 						alert('메시지를 발송하였습니다.');	
 					}

@@ -13,7 +13,7 @@ $.ajax({
 	success : function(data) {
 
 		var dataResult = data.result.data;
-
+		console.log(data);
 		if (dataResult) {
 			console.log('/v1/pms/adm/' + statisticsRole + '/users');
 			console.log(dataResult);
@@ -232,6 +232,10 @@ var statisticsTable = $('#statistics-datatable')
 						searchSelectValue=searchSelectValue*1;
 						switch (searchSelectValue) {
 						case 0:
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
 							break;
 						// status
 						case 1:
@@ -265,6 +269,10 @@ var statisticsTable = $('#statistics-datatable')
 								'name' : 'cSearchContent',
 								'value' : searchInputValue
 							});
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
 
 							break;
 						// receiver
@@ -278,6 +286,10 @@ var statisticsTable = $('#statistics-datatable')
 							aoData.push({
 								'name' : 'cSearchContent',
 								'value' : searchInputValue
+							});
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
 							});
 
 							break;
@@ -299,6 +311,10 @@ var statisticsTable = $('#statistics-datatable')
 							aoData.push({
 								'name' : 'cSearchContent',
 								'value' : searchInputValue
+							});
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
 							});
 
 							break;
@@ -403,23 +419,23 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 					// custom params
 					'fnServerParams' : function(aoData) {
 						// 계정select
-						var accountSelectValue = $('#statistics-account-select')
+						var accountSelectValue = $('#statistics-reservatoin-account-select')
 								.val();
-						var searchSelectValue = $('#statistics-search-select')
+						var searchSelectValue = $('#statistics-reservation-search-select')
 								.val();
 						var searchSelectText = $(
-								'#statistics-search-select option:selected')
+								'#statistics-reservation-search-select option:selected')
 								.text();
 						var accountSelectText = $(
-								'#statistics-account-select option:selected')
+								'#statistics-reservation-account-select option:selected')
 								.text();
-						var searchInputValue = $('#statistics-search-input')
+						var searchInputValue = $('#statistics-reservation-search-input')
 								.val();
 
 						var searchDateStart = $(
-								'#statistics-search-date-start-input').val();
+								'#statistics-reservation-search-date-start-input').val();
 						var searchDateEnd = $(
-								'#statistics-search-date-end-input').val();
+								'#statistics-reservation-search-date-end-input').val();
 
 						var nowDate = new Date();
 						var year = nowDate.getFullYear();
@@ -457,8 +473,12 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 						searchSelectValue=searchSelectValue*1;
 						switch (searchSelectValue) {
 						case 0:
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
 							break;
-						// msgId
+						// msgid
 						case 1:
 							searchSelectText = "msgId";
 							aoData.push({
@@ -468,6 +488,10 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 							aoData.push({
 								'name' : 'cSearchContent',
 								'value' : searchInputValue
+							});
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
 							});
 
 							break;
@@ -483,9 +507,13 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 								'name' : 'cSearchContent',
 								'value' : searchInputValue
 							});
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
 
 							break;
-				
+						
 						default:
 
 							break;
@@ -524,6 +552,9 @@ function statisticsDateSearch() {
 		console.log('검색항목 선택 안함!!');
 	}
 }
+
+
+
 
 function statisticsReservationSearch() {
 	console.log('target click function..');
@@ -597,6 +628,15 @@ function checkSearchStatistics() {
 			$('#statistics-search-input').focus();
 			return false;
 		}
+	}else if (inputSearchValue != null && inputSearchValue != "") {
+		console.log(inputSearchValue);
+
+		if (selectOptionValue == 0) {
+			alert('검색 항목을 선택해주세요');
+
+			return false;
+		}
+
 	}
 
 	if (searchDateStart != null && searchDateStart != "") {
@@ -686,6 +726,15 @@ function checkReservationSearch() {
 			$('#statistics-reservation-search-input').focus();
 			return false;
 		}
+	}else if (inputSearchValue != null && inputSearchValue != "") {
+		console.log(inputSearchValue);
+
+		if (selectOptionValue == 0) {
+			alert('검색 항목을 선택해주세요');
+
+			return false;
+		}
+
 	}
 
 	if (searchDateStart != null && searchDateStart != "") {

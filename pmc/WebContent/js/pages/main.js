@@ -142,22 +142,22 @@ function wrapperFunction(data) {
 					$("#statistics-reservation-search-date-start-input").prop('disabled', true);
 					$("#statistics-reservation-search-date-end-input").prop('disabled', true);
 					var nowDate = new Date();
-					var today = new Date(nowDate.getFullYear(), nowDate
-							.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+					var today_10 = new Date(nowDate.getFullYear(), nowDate
+							.getMonth(), nowDate.getDate()+10, 0, 0, 0, 0);
 
 					$('#statistics-search-date-start-div').datetimepicker()
-							.data("DateTimePicker").setMaxDate(today);
+							.data("DateTimePicker").setMaxDate(today_10);
 
 					$('#statistics-search-date-end-div').datetimepicker().data(
-							"DateTimePicker").setMaxDate(today);
+							"DateTimePicker").setMaxDate(today_10);
 
 					$('#statistics-reservation-search-date-start-div')
 							.datetimepicker().data("DateTimePicker")
-							.setMaxDate(today);
+							.setMaxDate(today_10);
 
 					$('#statistics-reservation-search-date-end-div')
 							.datetimepicker().data("DateTimePicker")
-							.setMaxDate(today);
+							.setMaxDate(today_10);
 				}
 
 			});

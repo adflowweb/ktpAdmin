@@ -66,43 +66,58 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 
 			'fnServerParams' : function(aoData) {
 				var searchSelectValue = $('#reservation-search-select').val();
-				var searchSelect = $(
+				var searchSelectText = $(
 						'#reservation-search-select option:selected').text();
-				var searchInputValue = $('#reservation-input').val();
+				var searchInputValue = $('#reservation-search-input').val();
 				var messageMonth = $('#reservation-date-input').val();
 				searchSelectValue = searchSelectValue * 1;
 
-				switch (searchSelectValue) {		
+				switch (searchSelectValue) {
 				case 0:
-					searchSelect = "";
+					aoData.push({
+						'name' : 'cSearchStatus',
+						'value' : 'ALL'
+					});
 					break;
+				// msgid
 				case 1:
+					searchSelectText = "msgId";
+					aoData.push({
+						'name' : 'cSearchFilter',
+						'value' : searchSelectText
+					});
+					aoData.push({
+						'name' : 'cSearchContent',
+						'value' : searchInputValue
+					});
+					aoData.push({
+						'name' : 'cSearchStatus',
+						'value' : 'ALL'
+					});
+
 					break;
-					searchSelect = "msgId";
+				// receiver
 				case 2:
-					searchSelect = "updateId";
-					break;
-				case 3:
-					searchSelect = "receiver";
-					break;
-				case 4:
-					searchSelect = "ack";
-					break;
-				case 5:
-					searchSelect = "status";
-					break;
+					searchSelectText = "receiver";
 
-				}
+					aoData.push({
+						'name' : 'cSearchFilter',
+						'value' : searchSelectText
+					});
+					aoData.push({
+						'name' : 'cSearchContent',
+						'value' : searchInputValue
+					});
+					aoData.push({
+						'name' : 'cSearchStatus',
+						'value' : 'ALL'
+					});
 
-				if (searchInputValue == null || searchInputValue == "") {
-					searchInputValue = "";
-				}else if(searchInputValue=="응답"){
-					searchInputValue=true;
-					
-				}else if(searchInputValue=="응답 없음"){
-					searchInputValue=false;
-				}else if(searchInputValue=="발송된"){
-					searchInputValue=1*1;
+					break;
+				
+				default:
+
+					break;
 				}
 
 				if (messageMonth == null || messageMonth == "") {
@@ -120,20 +135,15 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 				}
 
 				messageMonth = messageMonth.replace("/", "");
-	
 
-				aoData.push({
-					'name' : 'cSearchFilter',
-					'value' : searchSelect
-				});
-				aoData.push({
-					'name' : 'cSearchContent',
-					'value' : searchInputValue
-				});
 				aoData.push({
 					'name' : 'cSearchDate',
 					'value' : messageMonth
 				});
+
+				console.log("메시지 리스트  aoData");
+				console.log(aoData);
+				console.log("메시지 리스트  aoData");
 
 			}
 
@@ -141,16 +151,20 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 
 $('#reservation-search-btn').click(function() {
 
+
+
+});
+
+function reservationSearch(){
 	console.log('reservation search click function..');
 	var formCheck = checkSearchReservation();
 
 	if (formCheck) {
-		reservationTable.fnFilter();
+		reservationListTable.fnFilter();
 	} else {
 		console.log('검색항목 선택 안함!!');
 	}
-
-});
+}
 
 
 function reservationCheck(source) {
