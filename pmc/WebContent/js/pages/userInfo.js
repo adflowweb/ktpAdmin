@@ -12,7 +12,7 @@ $.ajax({
 	async : false,
 
 	success : function(data) {
-		
+		console.log(data);
 		var dataResult = data.result.data;
 		if (dataResult) {
 			if (!data.result.errors) {
@@ -32,7 +32,7 @@ $.ajax({
 
 	},
 	error : function(data, textStatus, request) {
-
+		console.log(data);
 		// alert('계정 목록을 가지고오는데 실패하였습니다.');
 	}
 });

@@ -252,6 +252,10 @@ var statisticsTable = $('#statistics-datatable')
 								searchSelectText = 1 * 1;
 							} else if (searchInputValue == "예약취소됨") {
 								searchSelectText = 2 * 1;
+							}else if(searchInputValue !== parseInt(searchInputValue, 10)){
+								alert('발송 상태 입력이 올바르지 않습니다.');
+								$('#statistics-search-input').focus();
+								return;
 							}
 							aoData.push({
 								'name' : 'cSearchStatus',
@@ -323,7 +327,8 @@ var statisticsTable = $('#statistics-datatable')
 
 							break;
 						}
-
+						console.log('일반 계정 ');
+						console.log(accountSelectValue);
 						// 계정을 선택 했을경우
 						if (accountSelectValue != 0) {
 							aoData.push({
@@ -419,7 +424,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 					// custom params
 					'fnServerParams' : function(aoData) {
 						// 계정select
-						var accountSelectValue = $('#statistics-reservatoin-account-select')
+						var accountSelectValue = $('#statistics-reservation-account-select')
 								.val();
 						var searchSelectValue = $('#statistics-reservation-search-select')
 								.val();
@@ -518,7 +523,8 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 
 							break;
 						}
-
+						console.log("예약 계정 선택 값");
+						console.log(accountSelectValue);
 						// 계정을 선택 했을경우
 						if (accountSelectValue != 0) {
 							aoData.push({
@@ -628,15 +634,6 @@ function checkSearchStatistics() {
 			$('#statistics-search-input').focus();
 			return false;
 		}
-	}else if (inputSearchValue != null && inputSearchValue != "") {
-		console.log(inputSearchValue);
-
-		if (selectOptionValue == 0) {
-			alert('검색 항목을 선택해주세요');
-
-			return false;
-		}
-
 	}
 
 	if (searchDateStart != null && searchDateStart != "") {

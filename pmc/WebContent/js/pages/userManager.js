@@ -10,6 +10,7 @@ $("#user-option-callback-method-input").prop('disabled', true);
 $("#user-option-callback-url-input").prop('disabled', true);
 $("#user-option-qos-select").prop('disabled', true);
 $("#user-option-expiry-input").prop('disabled', true);
+$('#user-option-msgsizelimit-input').prop('disabled', true);
 $("#user-account-div").hide();
 $("#user-option-div").hide();
 $("#user-account-input").hide();
@@ -17,49 +18,49 @@ $("#user-option-input").hide();
 
 $('#user-account-input').change(function() {
 	console.log("체크 변경");
-    if($(this).is(":checked")) {
-    	console.log("조건문 체크 변경");
-    	$("#user-id-input").prop('disabled', false);
-    	$("#user-name-input").prop('disabled', false);
-    	$("#user-ipfilter-input").prop('disabled', false);
-    	$("#user-role-select").prop('disabled', false);
-    	$("#user-message-input").prop('disabled', false);
-    	$("#user-account-div").show();
-    }else{
-    	$("#user-id-input").prop('disabled', true);
-    	$("#user-name-input").prop('disabled', true);
-    	$("#user-ipfilter-input").prop('disabled', true);
-    	$("#user-role-select").prop('disabled', true);
-    	$("#user-message-input").prop('disabled', true);
-    	$("#user-account-div").hide();
-    }
-    
+	if ($(this).is(":checked")) {
+		console.log("조건문 체크 변경");
+
+		$("#user-name-input").prop('disabled', false);
+		$("#user-ipfilter-input").prop('disabled', false);
+		$("#user-role-select").prop('disabled', false);
+		$("#user-message-input").prop('disabled', false);
+		$("#user-account-div").show();
+	} else {
+
+		$("#user-name-input").prop('disabled', true);
+		$("#user-ipfilter-input").prop('disabled', true);
+		$("#user-role-select").prop('disabled', true);
+		$("#user-message-input").prop('disabled', true);
+		$("#user-account-div").hide();
+	}
+
 });
 
-//<input name="user-account-input" id="user-account-input" type="checkbox">계정
+// <input name="user-account-input" id="user-account-input" type="checkbox">계정
 
 $('#user-option-input').change(function() {
 	console.log("체크 변경");
-    if($(this).is(":checked")) {
-    	console.log("조건문 체크 변경");
-    	$("#user-option-callback-cntlimit-input").prop('disabled', false);
-    	$("#user-option-callback-method-input").prop('disabled', false);
-    	$("#user-option-callback-url-input").prop('disabled', false);
-    	$("#user-option-qos-select").prop('disabled', false);
-    	$("#user-option-expiry-input").prop('disabled', false);
-    	$("#user-option-div").show();
-    }else{
-    	$("#user-option-callback-cntlimit-input").prop('disabled', true);
-    	$("#user-option-callback-method-input").prop('disabled', true);
-    	$("#user-option-callback-url-input").prop('disabled', true);
-    	$("#user-option-qos-select").prop('disabled', true);
-    	$("#user-option-expiry-input").prop('disabled', true);
-    	$("#user-option-div").hide();
-    }
-    
+	if ($(this).is(":checked")) {
+		console.log("조건문 체크 변경");
+		$("#user-option-callback-cntlimit-input").prop('disabled', false);
+		$("#user-option-callback-method-input").prop('disabled', false);
+		$("#user-option-callback-url-input").prop('disabled', false);
+		$("#user-option-qos-select").prop('disabled', false);
+		$("#user-option-expiry-input").prop('disabled', false);
+		$('#user-option-msgsizelimit-input').prop('disabled', false);
+		$("#user-option-div").show();
+	} else {
+		$("#user-option-callback-cntlimit-input").prop('disabled', true);
+		$("#user-option-callback-method-input").prop('disabled', true);
+		$("#user-option-callback-url-input").prop('disabled', true);
+		$("#user-option-qos-select").prop('disabled', true);
+		$("#user-option-expiry-input").prop('disabled', true);
+		$('#user-option-msgsizelimit-input').prop('disabled', true);
+		$("#user-option-div").hide();
+	}
+
 });
-
-
 
 $.ajax({
 	url : '/v1/pms/adm/sys/users',
@@ -101,7 +102,8 @@ $.ajax({
 						"callbackMethod" : successData.callbackMethod,
 						"callbackUrl" : successData.callbackUrl,
 						"defaultExpiry" : successData.defaultExpiry,
-						"defaultQos" : successData.defaultQos
+						"defaultQos" : successData.defaultQos,
+						"msgSizeLimit" : successData.msgSizeLimit
 					});
 
 				}
@@ -143,7 +145,6 @@ $.ajax({
 	}
 });
 
-
 $('#user-role-select').change(function() {
 	var selectValue = $("#user-role-select option:selected").val();
 	if (selectValue == 2) {
@@ -153,72 +154,76 @@ $('#user-role-select').change(function() {
 	}
 });
 
-$('#dataTables-usermanager tbody').on(
-		'click',
-		'tr',
-		function() {
-			$("#user-account-input").show();
-			$("#user-option-input").show();
+$('#dataTables-usermanager tbody')
+		.on(
+				'click',
+				'tr',
+				function() {
+					$("#user-account-input").show();
+					$("#user-option-input").show();
 
-			var tableData = $(this).children("td").map(function() {
-				return $(this).text();
-			}).get();
+					var tableData = $(this).children("td").map(function() {
+						return $(this).text();
+					}).get();
 
-			$('#user-id-input').val(tableData[0]);
-			$('#user-name-input').val(tableData[1]);
-			$('#user-ipfilter-input').val(tableData[2]);
+					$('#user-id-input').val(tableData[0]);
+					$('#user-name-input').val(tableData[1]);
+					$('#user-ipfilter-input').val(tableData[2]);
 
-			for ( var i in userManagertableData) {
-				if (userManagertableData[i].userId == tableData[0]) {
+					for ( var i in userManagertableData) {
+						if (userManagertableData[i].userId == tableData[0]) {
 
-					$('#user-option-callback-cntlimit-input').val(
-							userManagertableData[i].callbackCntLimit);
-					$('#user-option-callback-method-input').val(
-							userManagertableData[i].callbackMethod);
-					$('#user-option-callback-url-input').val(
-							userManagertableData[i].callbackUrl);
-					$('#user-option-expiry-input').val(
-							userManagertableData[i].defaultExpiry);
-					console.log("기본 QOS");
-					console.log(userManagertableData[i].defaultQos);
-					userManagertableData[i].defaultQos=userManagertableData[i].defaultQos*1;
-					if (userManagertableData[i].defaultQos == 2) {
-						console.log("이프문");
-						$('#user-option-qos-select  option:eq(0)').attr(
-								"selected", "selected");
-					} else {
-						$('#user-option-qos-select  option:eq(1)').attr(
-								"selected", "selected");
+							$('#user-option-callback-cntlimit-input').val(
+									userManagertableData[i].callbackCntLimit);
+							$('#user-option-callback-method-input').val(
+									userManagertableData[i].callbackMethod);
+							$('#user-option-callback-url-input').val(
+									userManagertableData[i].callbackUrl);
+							$('#user-option-expiry-input').val(
+									userManagertableData[i].defaultExpiry);
+							// msgSizeLimit
+							$('#user-option-msgsizelimit-input')
+									.val(
+											getBytesWithUnit(userManagertableData[i].msgSizeLimit)+"("+userManagertableData[i].msgSizeLimit+")");
+							console.log("기본 QOS");
+							console.log(userManagertableData[i].defaultQos);
+							userManagertableData[i].defaultQos = userManagertableData[i].defaultQos * 1;
+							if (userManagertableData[i].defaultQos == 2) {
+								console.log("이프문");
+								$('#user-option-qos-select  option:eq(0)')
+										.attr("selected", "selected");
+							} else {
+								$('#user-option-qos-select  option:eq(1)')
+										.attr("selected", "selected");
+							}
+						}
+
 					}
-				}
 
-			}
+					if (tableData[3] == "관리자") {
+						$("#user-role-select option:eq(1)").attr("selected",
+								"selected");
+						$('#user-messagecount-div').hide();
+					} else if (tableData[3] == "서비스") {
+						$("#user-role-select option:eq(2)").attr("selected",
+								"selected");
+						$('#user-messagecount-div').show();
+						$('#user-message-input').val(tableData[4]);
+					} else if (tableData[3] == "Interface Open") {
+						$("#user-role-select option:eq(4)").attr("selected",
+								"selected");
+						$('#user-messagecount-div').hide();
+					} else if (tableData[3] == "서비스 어드민") {
+						$("#user-role-select option:eq(3)").attr("selected",
+								"selected");
+						$('#user-messagecount-div').hide();
+					}
 
-			if (tableData[3] == "관리자") {
-				$("#user-role-select option:eq(1)")
-						.attr("selected", "selected");
-				$('#user-messagecount-div').hide();
-			} else if (tableData[3] == "서비스") {
-				$("#user-role-select option:eq(2)")
-						.attr("selected", "selected");
-				$('#user-messagecount-div').show();
-				$('#user-message-input').val(tableData[4]);
-			} else if (tableData[3] == "Interface Open") {
-				$("#user-role-select option:eq(4)")
-						.attr("selected", "selected");
-				$('#user-messagecount-div').hide();
-			} else if (tableData[3] == "서비스 어드민") {
-				$("#user-role-select option:eq(3)")
-						.attr("selected", "selected");
-				$('#user-messagecount-div').hide();
-			}
-
-		});
+				});
 
 function userUpdateFunction() {
 	console.log("update...admin");
-	
-	
+
 	var checkForm = userUpdateFormCheck();
 	if (checkForm) {
 		if (confirm("계정 정보를 변경 하시겠습니까?") == true) {
@@ -323,16 +328,21 @@ function userOptionUpdateFunction() {
 
 			var option_qos_select = $("#user-option-qos-select option:selected")
 					.val();
-
+			var option_msgSizeLimit_input = $('#user-option-msgsizelimit-input')
+					.val();
+			console.log('테스트 사이즈');
+			console.log(getBytesWithUnit(option_msgSizeLimit_input));
+			console.log('테스트 사이즈');
+			// bytesToSize
 			option_qos_select = option_qos_select * 1;
 			switch (option_qos_select) {
 			case 0:
-				option_qos_select=1*1;
+				option_qos_select = 1 * 1;
 
 				break;
 			case 1:
 				console.log(option_qos_select);
-				option_qos_select=2*1;
+				option_qos_select = 2 * 1;
 				break;
 
 			}
@@ -344,6 +354,7 @@ function userOptionUpdateFunction() {
 			userOption.callbackUrl = option_callback_url_input;
 			userOption.callbackMethod = option_callback_method_input;
 			userOption.callbackCntLimit = option_callback_cntlimit_input;
+			userOption.msgSizeLimit = option_msgSizeLimit_input;
 			userOption.options = true;
 			var userOptionReq = JSON.stringify(userOption);
 			console.log(userOptionReq);
@@ -540,6 +551,7 @@ function userOptionFormCheck() {
 			.val();
 	var option_callback_cntlimit_input = $(
 			'#user-option-callback-cntlimit-input').val();
+	var option_msgSizeLimit_input=$('#user-option-msgsizelimit-input').val();
 
 	if (option_expiry_input == null || option_expiry_input == "") {
 		alert('메시지 소멸 시간을 입력해주세요');
@@ -565,7 +577,46 @@ function userOptionFormCheck() {
 			return false;
 		}
 	}
+	
+	if (option_msgSizeLimit_input == null
+			|| option_msgSizeLimit_input == "") {
+
+	} else {
+		var num_check = /^[0-9]*$/;
+		if (!num_check.test(option_msgSizeLimit_input)) {
+			alert('bytes 단위 숫자를 입력해 주세요');
+			$('#user-option-msgsizelimit-input').focus();
+			return false;
+		}
+	}
+	//option_msgSizeLimit_input
 
 	return true;
 
 }
+
+/**
+ * @function: getBytesWithUnit()
+ * @purpose: Converts bytes to the most simplified unit.
+ * @param: (number) bytes, the amount of bytes
+ * @returns: (string)
+ */
+var getBytesWithUnit = function(bytes) {
+	if (isNaN(bytes)) {
+		return;
+	}
+	var units = [ ' bytes', ' KB', ' MB', ' GB', ' TB', ' PB', ' EB', ' ZB',
+			' YB' ];
+	var amountOf2s = Math.floor(Math.log(+bytes) / Math.log(2));
+	if (amountOf2s < 1) {
+		amountOf2s = 0;
+	}
+	var i = Math.floor(amountOf2s / 10);
+	bytes = +bytes / Math.pow(2, 10 * i);
+
+	// Rounds to 3 decimals places.
+	if (bytes.toString().length > bytes.toFixed(3).toString().length) {
+		bytes = bytes.toFixed(3);
+	}
+	return bytes + units[i];
+};
