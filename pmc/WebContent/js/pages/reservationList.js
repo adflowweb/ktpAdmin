@@ -46,7 +46,6 @@ var reservationListTable = $('#reservation-datatable').dataTable(
 									dataResult[i].reservationTime = new Date(dateTime)
 									.toLocaleString();
 								}
-
 							}
 
 							data.result.data.data = dataResult;

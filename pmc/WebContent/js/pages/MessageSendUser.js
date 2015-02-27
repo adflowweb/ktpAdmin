@@ -45,6 +45,12 @@ function MessageSendUserFunction() {
 			messageData.resendInterval = input_resendInterval;
 		}
 		var messageDataResult = JSON.stringify(messageData);
+		if(utf8ByteLength(messageDataResult)>400000){
+			console.log(utf8ByteLength(messageDataResult));
+			alert('메시지 사이즈가 너무 큽니다.');
+			return false;
+		}
+		console.log(utf8ByteLength(messageDataResult));
 		console.log(messageDataResult);
 
 		$.ajax({

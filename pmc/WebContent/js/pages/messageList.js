@@ -20,7 +20,12 @@ $
 						console.log('/v1/pms/adm/' + messageListRole
 								+ '/account(GET)');
 						console.log(dataResult);
-						$('#messageCnt_div').text(dataResult.msgCntLimit);
+						if(dataResult.msgCntLimit==-1){
+							$('#messageCnt_div').text("제한없음");
+						}else{
+							$('#messageCnt_div').text(dataResult.msgCntLimit);	
+						}
+						
 					} else {
 
 						alert(data.result.errors[0]);
@@ -87,6 +92,7 @@ var messageTable = $('#dataTables-messageList')
 													+ messageListRole
 													+ '/messages(GET)');
 											console.log(dataResult);
+									
 											$('#messageListCnt_div')
 													.text(
 															data.result.data.recordsTotal);
@@ -114,31 +120,49 @@ var messageTable = $('#dataTables-messageList')
 												switch (dataResult[i].status) {
 												case -99:
 													dataResult[i].status = "발송오류";
+													var dateTime = dataResult[i].updateTime;
+													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
 													break;
 												case -2:
 													dataResult[i].status = "수신자없음";
+													var dateTime = dataResult[i].updateTime;
+													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
 													break;
 												case -1:
 													dataResult[i].status = "허용갯수초과";
+													var dateTime = dataResult[i].updateTime;
+													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
 													break;
 												case 0:
 													dataResult[i].status = "발송중";
+												
+													console.log(dataResult[i].reservationTime);
+													if(dataResult[i].reservationTime==null){
+														console.log('널일경우 예약 메시지가 아닌데 발송중일경우 업데이트 타임표시');
+														var dateTime = dataResult[i].updateTime;
+														dataResult[i].updateTime = new Date(dateTime).toLocaleString();
+													}else{
+														var dateTime = dataResult[i].reservationTime;
+														dataResult[i].updateTime = new Date(dateTime).toLocaleString()+"(예약)";
+													}
+												
 													break;
 												case 1:
 													dataResult[i].status = "발송됨";
+													var dateTime = dataResult[i].updateTime;
+													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
 													break;
 												case 2:
 													dataResult[i].status = "예약취소됨";
+													var dateTime = dataResult[i].updateTime;
+													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
 													break;
 
 												}
 
 												dataResult[i].resendInterval = dataResult[i].resendInterval
 														+ "분";
-												var dateTime = dataResult[i].updateTime;
-												dataResult[i].updateTime = new Date(
-														dateTime)
-														.toLocaleString();
+												
 
 											}
 

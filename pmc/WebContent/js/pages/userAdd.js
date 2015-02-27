@@ -18,6 +18,10 @@ function userAddFunction() {
 			var role_select = $("#add-role-select option:selected").val();
 			var roleValue = "";
 			var message_count_input = $('#add-user-message-input').val();
+			console.log(message_count_input);
+			if(message_count_input==null||message_count_input==""){
+				message_count_input=-1*1;
+			}
 			var ip_filter_input = $('#add-ipfilter-input').val();
 			role_select = role_select * 1;
 			switch (role_select) {

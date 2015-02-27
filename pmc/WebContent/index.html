@@ -63,11 +63,13 @@
 						<i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
-<!-- 						<li><a href="#" onclick="javascript:userInfo();"><i -->
-<!-- 								class="fa fa-user fa-fw"></i> User Profile</a></li> -->
-						<li><a href="pages/userInfo.html"  onclick="window.open(this.href,'user Info', 'width=650,height=450'); return false;"><i
-								class="fa fa-user fa-fw"></i> User Profile</a></li>		
-						<li><a href="pages/changePass.html"  onclick="window.open(this.href,'change password', 'width=650,height=450'); return false;"><i
+						<!-- 						<li><a href="#" onclick="javascript:userInfo();"><i -->
+						<!-- 								class="fa fa-user fa-fw"></i> User Profile</a></li> -->
+						<li><a href="pages/userInfo.html"
+							onclick="window.open(this.href,'user Info', 'width=650,height=450'); return false;"><i
+								class="fa fa-user fa-fw"></i> User Profile</a></li>
+						<li><a href="pages/changePass.html"
+							onclick="window.open(this.href,'change password', 'width=650,height=450'); return false;"><i
 								class="fa fa-gear fa-fw"></i> Change Password</a></li>
 						<li><a href="#" onclick="javascript:logoutFunction();"><i
 								class="fa fa-sign-out fa-fw"></i> Logout</a></li>
@@ -100,18 +102,21 @@
 
 							</ul></li>
 
-						<li id="message_send_li"><a href="#"><i class="fa fa-envelope fa-fw"></i> Push
-								Message(서비스 내부) <span class="fa arrow"></a>
+						<li id="message_send_li"><a href="#"><i
+								class="fa fa-envelope fa-fw"></i> Push Message(서비스 내부) <span
+								class="fa arrow"></a>
 
 							<ul class="nav nav-second-level">
 								<!-- 기능삭제 -->
 								<li id="svcadm_message_send_li_second"><a href="#"
 									onclick="javascript:wrapperFunction('MessageSendAdm');">메세지
 										전송(서비스내부)</a></li>
-								 <li id="svc_message_send_li_second"><a href="#"
+								<li id="svc_message_send_li_second"><a href="#"
 									onclick="javascript:wrapperFunction('MessageSendUser');">메세지
 										전송(서비스유저)</a></li>
-
+								<li id="sys_message_list_li"><a href="#"
+									onclick="javascript:wrapperFunction('statistics');">메시지 발송
+										현황(관리자)</a></li>
 
 
 
@@ -131,9 +136,7 @@
 									onclick="javascript:wrapperFunction('codeList');">코드
 										목록(관리자)</a></li>
 
-								<li><a href="#"
-									onclick="javascript:wrapperFunction('statistics');">통계(관리자)</a>
-								</li>
+
 
 
 

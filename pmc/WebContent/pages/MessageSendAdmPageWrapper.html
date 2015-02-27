@@ -18,7 +18,7 @@
 							대상에게 전송시에 ,로 구분하여 입력해주세요.)</span>
 					</label><br /> <input type="text" class="form-control"
 						id="message-send-target-input"
-						placeholder="필수       메세지 발송 대상 ex) 01029384747"></input>
+						placeholder="필수       메세지 발송 대상 ex) topic 입력"></input>
 
 				</div>
 				<div class="form-group">
@@ -29,12 +29,12 @@
 
 				<div class="form-group">
 					<label>메시지 타입</label> <input class="form-control"
-						id="message-send-messageType-input" placeholder="필수       메세지 타입 입력(숫자)">
+						id="message-send-messageType-input" placeholder="필수       메세지 타입 입력(숫자)" value="10">
 				</div>
 
 				<div class="form-group">
 					<label>메시지 소멸 시간</label> <input class="form-control"
-						id="message-send-messageExpire-input" placeholder="옵션       메세지 소멸 시간(milliseconds)">
+						id="message-send-messageExpire-input" placeholder="옵션       메세지 소멸 시간(초)">
 				</div>
 					<div class="form-group">
 					<label>반복메시지 횟수</label> <input class="form-control"
@@ -48,9 +48,8 @@
 				<div class="form-group">
 					<label>Qos 설정</label> <select id="message-send-qos-select"
 						class="form-control">
-						<option value="2">1:메시지 전송 보장
-							않습니다.</option>
-						<option value="1">0:메세지를 한번 전달하며 전달 여부는 확인 하지 않습니다.</option>
+						<option value="2">2:메시지 전송 보장</option>
+						<option value="1">1:메세지를 한번 전달하며 전달 여부는 확인 하지 않습니다.</option>
 
 					</select>
 				</div>

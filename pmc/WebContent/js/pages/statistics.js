@@ -209,7 +209,10 @@ var statisticsTable = $('#statistics-datatable')
 						searchDateStart = dateFormating(searchDateStart);
 						// 시작일
 						if (searchDateStart) {
+							console.log('검색 시작일');
+							console.log(searchDateStart);
 							searchDateStart = searchDateStart.toISOString();
+							console.log(searchDateStart);
 							aoData.push({
 								'name' : 'cSearchDateStart',
 								'value' : searchDateStart
@@ -220,7 +223,10 @@ var statisticsTable = $('#statistics-datatable')
 
 						// 종료일
 						if (searchDateEnd) {
+							console.log('검색 종ㄹ');
+							console.log(searchDateEnd);
 							searchDateEnd = searchDateEnd.toISOString();
+							console.log(searchDateEnd);
 							aoData.push({
 								'name' : 'cSearchDateEnd',
 								'value' : searchDateEnd

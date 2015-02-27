@@ -1,4 +1,4 @@
-
+$("#message-send-messageType-input").prop('disabled', true);
 function MessageSendFunction() {
 
 	console.log('메시지 발송 시작');
@@ -17,11 +17,13 @@ function MessageSendFunction() {
 		var input_messageTarget = $('#message-send-target-input').val();
 		var input_messageService = $('#message-send-service-input').val();
 		var input_messageContent = $('#message-send-textarea').val();
+		var input_messageType = $('#message-send-messageType-input').val();
 		input_messageContent = utf8_to_b64(input_messageContent);
 		var input_reservation = $('#message-send-reservationdate-input').val();
 		var input_resendCount = $('#message-send-resendCount-input').val();
 		var input_resendInterval = $('#message-send-resendInterval-input')
 				.val();
+		var input_messageExpire = $('#message-send-messageExpire-input').val();
 		var qos = 0;
 		qos = $("#message-send-qos-select").val();
 		var contentType = $("#message-send-contentType-select").val();
@@ -47,7 +49,9 @@ function MessageSendFunction() {
 		messageData.serviceId = input_messageService;
 		messageData.contentType = contentType;
 		messageData.ack = ackcheck;
+		messageData.msgType=input_messageType;
 		messageData.qos = qos;
+		messageData.expiry=input_messageExpire;
 		if (dateResult != "") {
 			messageData.reservationTime = dateResult;
 			console.log("테스트:" + messageData.reservationTime);
@@ -60,6 +64,11 @@ function MessageSendFunction() {
 			messageData.resendInterval = input_resendInterval;
 		}
 		var messageDataResult = JSON.stringify(messageData);
+		
+		if(utf8ByteLength(messageDataResult)>400000){
+			alert('메시지 사이즈가 너무 큽니다.');
+			return false;
+		}
 		console.log(messageDataResult);
 
 		$.ajax({

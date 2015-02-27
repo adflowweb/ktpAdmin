@@ -75,7 +75,9 @@ $.ajax({
 	success : function(data) {
 		var dataResult = data.result.data;
 		console.log(data);
+
 		if (dataResult) {
+			
 			console.log(dataResult);
 			console.log('/v1/pms/adm/sys/users(GET)');
 			if (!data.result.errors) {
@@ -91,6 +93,10 @@ $.ajax({
 						successData.role = "관리자";
 					} else if (successData.role == "svcadm") {
 						successData.role = "서비스 어드민";
+					}
+
+					if (successData.msgCntLimit == "-1") {
+						successData.msgCntLimit = "제한없음";
 					}
 					userManagertableData.push({
 						"userId" : successData.userId,
@@ -184,7 +190,10 @@ $('#dataTables-usermanager tbody')
 							// msgSizeLimit
 							$('#user-option-msgsizelimit-input')
 									.val(
-											getBytesWithUnit(userManagertableData[i].msgSizeLimit)+"("+userManagertableData[i].msgSizeLimit+")");
+											getBytesWithUnit(userManagertableData[i].msgSizeLimit)
+													+ "("
+													+ userManagertableData[i].msgSizeLimit
+													+ ")");
 							console.log("기본 QOS");
 							console.log(userManagertableData[i].defaultQos);
 							userManagertableData[i].defaultQos = userManagertableData[i].defaultQos * 1;
@@ -236,28 +245,32 @@ function userUpdateFunction() {
 			var roleValue = "";
 			var message_count_input = $('#user-message-input').val();
 			role_select = role_select * 1;
+			var userChange = new Object();
 			switch (role_select) {
 			case 1:
 				console.log("sys");
 				roleValue = "sys";
+				userChange.msgCntLimit = -1 * 1;
 				break;
 			case 2:
 				console.log("svc");
 				roleValue = "svc";
+				userChange.msgCntLimit = message_count_input;
 				break;
 			case 3:
 				console.log("svcadm");
 				roleValue = "svcadm";
+				userChange.msgCntLimit = -1 * 1;
 				break;
 			case 4:
 				console.log("inf");
 				roleValue = "inf";
+				userChange.msgCntLimit = -1 * 1;
 				break;
 			}
 
-			var userChange = new Object();
 			userChange.userName = name_input;
-			userChange.msgCntLimit = message_count_input;
+
 			userChange.role = roleValue;
 			userChange.ipFilters = ip_filter_input;
 			var userChangeReq = JSON.stringify(userChange);
@@ -551,7 +564,7 @@ function userOptionFormCheck() {
 			.val();
 	var option_callback_cntlimit_input = $(
 			'#user-option-callback-cntlimit-input').val();
-	var option_msgSizeLimit_input=$('#user-option-msgsizelimit-input').val();
+	var option_msgSizeLimit_input = $('#user-option-msgsizelimit-input').val();
 
 	if (option_expiry_input == null || option_expiry_input == "") {
 		alert('메시지 소멸 시간을 입력해주세요');
@@ -577,9 +590,8 @@ function userOptionFormCheck() {
 			return false;
 		}
 	}
-	
-	if (option_msgSizeLimit_input == null
-			|| option_msgSizeLimit_input == "") {
+
+	if (option_msgSizeLimit_input == null || option_msgSizeLimit_input == "") {
 
 	} else {
 		var num_check = /^[0-9]*$/;
@@ -589,10 +601,18 @@ function userOptionFormCheck() {
 			return false;
 		}
 	}
-	//option_msgSizeLimit_input
+	// option_msgSizeLimit_input
 
 	return true;
 
+}
+
+function utf8ByteLength(str) {
+	if (!str)
+		return 0;
+	var escapedStr = encodeURI(str);
+	var match = escapedStr.match(/%/g);
+	return match ? (escapedStr.length - match.length * 2) : escapedStr.length;
 }
 
 /**

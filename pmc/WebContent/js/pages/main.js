@@ -303,7 +303,20 @@ function sysLogin() {
 	$('#sys_admin_li').show();
 	$('#svc_message_list_li').hide();
 	$('#svc_message_reservation_li').hide();
-	$('#message_send_li').hide();
+	$('#message_send_li').show();
+	$('#sys_message_list_li').show();
+	$('#svcadm_message_send_li_second').hide();
+	$('#svc_message_send_li_second').hide();
+//	<li id="svcadm_message_send_li_second"><a href="#"
+//		onclick="javascript:wrapperFunction('MessageSendAdm');">메세지
+//			전송(서비스내부)</a></li>
+//	<li id="svc_message_send_li_second"><a href="#"
+//		onclick="javascript:wrapperFunction('MessageSendUser');">메세지
+//			전송(서비스유저)</a></li>
+//	<li id="sys_message_list_li"><a href="#"
+	
+	
+	
 	sessionStorage.setItem("monitoringStatus", "disable");
 }
 // Svc Login
@@ -315,6 +328,7 @@ function svcLogin() {
 	$('#svc_message_list_li').show();
 	$('#svc_message_reservation_li').show();
 	$('#message_send_li').show();
+	$('#sys_message_list_li').hide();
 	$('#svcadm_message_send_li_second').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({
@@ -342,6 +356,7 @@ function svcAdmLogin() {
 	$('#svc_message_list_li').show();
 	$('#svc_message_reservation_li').show();
 	$('#sys_monitoring_li').hide();
+	$('#sys_message_list_li').hide();
 	$('#sys_admin_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({
@@ -439,6 +454,15 @@ function ckGetPlainText() {
 	var plain_text = (dom.textContent || dom.innerText);
 	console.log(plain_text);
 	return plain_text;
+}
+
+//
+function utf8ByteLength(str) {
+	if (!str)
+		return 0;
+	var escapedStr = encodeURI(str);
+	var match = escapedStr.match(/%/g);
+	return match ? (escapedStr.length - match.length * 2) : escapedStr.length;
 }
 
 //Date Formating
