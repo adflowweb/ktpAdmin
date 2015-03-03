@@ -15,7 +15,8 @@
 					</div>
 					<div class="col-xs-9 text-right">
 						<div style="font-size: 4opx;">발송 메시지 목록 조회 건수</div>
-						<div style="font-size: 40px;" class="huge" id="statisticsListCnt_div"></div>
+						<div style="font-size: 40px;" class="huge"
+							id="statisticsListCnt_div"></div>
 					</div>
 				</div>
 			</div>
@@ -51,13 +52,21 @@
 
 				<div class="form-group">
 					<input type="text" placeholder="검색 내용" class="form-control"
-						id="statistics-search-input"/> 
-					
+						id="statistics-search-input" />
+
 				</div>
 				<div class="form-group">
 					<label>검색 기간 설정 <span
 						style="font-size: x-small; font-style: italic; font-weight: lighter;">(기간을
-							설정 하지 않으면 전체 통계로 검색됩니다.)</span></label> <br /> <label>검색 시작일 </label>
+							설정 하지 않으면 전체 통계로 검색됩니다.)</span></label> <br /> <label>월별 선택</label> <br />
+					<div class='input-group date' id='statistics-search-date-month-div'>
+						<input placeholder="월을 선택해주세요"
+							id="statistics-search-date-month-input" type='text'
+							class="form-control" /> <span class="input-group-addon"><span
+							class="glyphicon glyphicon-calendar"></span> </span>
+					</div>
+
+					<br /> <label>일별 시작일 </label>
 					<div class='input-group date' id='statistics-search-date-start-div'>
 						<input id="statistics-search-date-start-input" type='text'
 							class="form-control" /> <span class="input-group-addon"><span
@@ -66,7 +75,7 @@
 				</div>
 				<div class="form-group">
 
-					<label>검색 종료일 </label>
+					<label>일별 종료일 </label>
 					<div class='input-group date' id='statistics-search-date-end-div'>
 						<input id="statistics-search-date-end-input" type='text'
 							class="form-control" /> <span class="input-group-addon"><span
@@ -116,14 +125,15 @@
 <div class="row">
 	<div class="col-lg-12 col-md-3">
 		<div class="panel panel-primary">
-			<div style="background-color:darkorange;" class="panel-heading">
+			<div style="background-color: darkorange;" class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
 						<i class="fa fa-tasks fa-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right">
 						<div style="font-size: 4opx;">예약 메시지 목록 조회 건수</div>
-						<div style="font-size: 40px;" class="huge" id="statisticsList-reservation-Cnt_div"></div>
+						<div style="font-size: 40px;" class="huge"
+							id="statisticsList-reservation-Cnt_div"></div>
 					</div>
 				</div>
 			</div>
@@ -167,7 +177,15 @@
 				<div class="form-group">
 					<label>검색 기간 설정 <span
 						style="font-size: x-small; font-style: italic; font-weight: lighter;">(기간을
-							설정 하지 않으면 전체 통계로 검색됩니다.)</span></label> <br /> <label>검색 시작일 </label>
+							설정 하지 않으면 전체 통계로 검색됩니다.)</span></label> <label>월별 선택</label> <br />
+					<div class='input-group date' id='statistics-reservation-search-date-month-div'>
+						<input placeholder="월을 선택해주세요"
+							id="statistics-reservation-search-date-month-input" type='text'
+							class="form-control" /> <span class="input-group-addon"><span
+							class="glyphicon glyphicon-calendar"></span> </span>
+					</div>
+
+					<br /> <label>일별 시작일 </label>
 					<div class='input-group date'
 						id='statistics-reservation-search-date-start-div'>
 						<input id="statistics-reservation-search-date-start-input"
@@ -178,7 +196,7 @@
 				</div>
 				<div class="form-group">
 
-					<label>검색 종료일 </label>
+					<label>일별 종료일 </label>
 					<div class='input-group date'
 						id='statistics-reservation-search-date-end-div'>
 						<input id="statistics-reservation-search-date-end-input"
@@ -188,10 +206,10 @@
 					</div>
 				</div>
 				<div class="form-group">
-				<input type="button" onclick="javascript:statisticsReservationSearch()"
-						class="btn btn-default" value="Search"></input>
 					<input type="button"
-						onclick="javascript:statisticsReservationReset()"
+						onclick="javascript:statisticsReservationSearch()"
+						class="btn btn-default" value="Search"></input> <input
+						type="button" onclick="javascript:statisticsReservationReset()"
 						class="btn btn-default" value="Reset"></input>
 				</div>
 				<div class="table-responsive">

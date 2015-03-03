@@ -133,6 +133,38 @@ function wrapperFunction(data) {
 				if (data === "userManager") {
 					sessionStorage.setItem("monitoringStatus", "disable");
 				}
+				
+				if (data === "monthSys") {
+					sessionStorage.setItem("monitoringStatus", "disable");
+					$('#month-msgcnt-panel-head').hide();
+					$('#month-msgcnt-panel-body').hide();
+					$('#month-ack-panel-head').hide();
+					$('#month-ack-panel-body').hide();
+					$('#month-sys-date-input').prop('disabled', true);
+					$('#month-sys-date-div').datetimepicker({
+						viewMode : 'years',
+						format : 'YYYY/MM',
+						minViewMode : "months"
+					});
+					//month-sys-date-div
+				}
+				
+				if (data === "monthSvc") {
+					sessionStorage.setItem("monitoringStatus", "disable");
+					
+					$('#month-svc-msgcnt-panel-head').hide();
+					$('#month-svc-msgcnt-panel-body').hide();
+					$('#month-svc-ack-panel-head').hide();
+					$('#month-svc-sack-panel-body').hide();
+					
+					$('#month-svc-date-input').prop('disabled', true);
+					$('#month-svc-date-div').datetimepicker({
+						viewMode : 'years',
+						format : 'YYYY/MM',
+						minViewMode : "months"
+					});
+					//month-sys-date-div
+				}
 
 				if (data === "statistics") {
 
@@ -142,22 +174,35 @@ function wrapperFunction(data) {
 					$("#statistics-reservation-search-date-start-input").prop('disabled', true);
 					$("#statistics-reservation-search-date-end-input").prop('disabled', true);
 					var nowDate = new Date();
-					var today_10 = new Date(nowDate.getFullYear(), nowDate
-							.getMonth(), nowDate.getDate()+10, 0, 0, 0, 0);
+					var today_1 = new Date(nowDate.getFullYear(), nowDate
+							.getMonth(), nowDate.getDate()+1, 0, 0, 0, 0);
 
 					$('#statistics-search-date-start-div').datetimepicker()
-							.data("DateTimePicker").setMaxDate(today_10);
+							.data("DateTimePicker").setMaxDate(today_1);
 
 					$('#statistics-search-date-end-div').datetimepicker().data(
-							"DateTimePicker").setMaxDate(today_10);
+							"DateTimePicker").setMaxDate(today_1);
 
 					$('#statistics-reservation-search-date-start-div')
 							.datetimepicker().data("DateTimePicker")
-							.setMaxDate(today_10);
+							.setMaxDate(today_1);
 
 					$('#statistics-reservation-search-date-end-div')
 							.datetimepicker().data("DateTimePicker")
-							.setMaxDate(today_10);
+							.setMaxDate(today_1);
+					$('#statistics-search-date-month-div').datetimepicker({
+						viewMode : 'years',
+						format : 'YYYY/MM',
+						minViewMode : "months"
+					});
+					$('#statistics-reservation-search-date-month-div').datetimepicker({
+						viewMode : 'years',
+						format : 'YYYY/MM',
+						minViewMode : "months"
+					});
+					$('#statistics-search-date-month-input').prop('disabled', true);
+					$('#statistics-reservation-search-date-month-input').prop('disabled', true);
+					
 				}
 
 			});
@@ -303,20 +348,11 @@ function sysLogin() {
 	$('#sys_admin_li').show();
 	$('#svc_message_list_li').hide();
 	$('#svc_message_reservation_li').hide();
-	$('#message_send_li').show();
+	$('#message_send_li').hide();
 	$('#sys_message_list_li').show();
 	$('#svcadm_message_send_li_second').hide();
 	$('#svc_message_send_li_second').hide();
-//	<li id="svcadm_message_send_li_second"><a href="#"
-//		onclick="javascript:wrapperFunction('MessageSendAdm');">메세지
-//			전송(서비스내부)</a></li>
-//	<li id="svc_message_send_li_second"><a href="#"
-//		onclick="javascript:wrapperFunction('MessageSendUser');">메세지
-//			전송(서비스유저)</a></li>
-//	<li id="sys_message_list_li"><a href="#"
-	
-	
-	
+	$('#svc_message_list_month_li').hide();	
 	sessionStorage.setItem("monitoringStatus", "disable");
 }
 // Svc Login
@@ -330,6 +366,7 @@ function svcLogin() {
 	$('#message_send_li').show();
 	$('#sys_message_list_li').hide();
 	$('#svcadm_message_send_li_second').hide();
+	$('#sys_message_list_month_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',
@@ -358,6 +395,7 @@ function svcAdmLogin() {
 	$('#sys_monitoring_li').hide();
 	$('#sys_message_list_li').hide();
 	$('#sys_admin_li').hide();
+	$('#sys_message_list_month_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',

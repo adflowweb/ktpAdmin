@@ -1,160 +1,173 @@
 var reservationListToken = sessionStorage.getItem("token");
-var reservationListRole=sessionStorage.getItem("role");
-var reservationListTable = $('#reservation-datatable').dataTable(
-		{
-			'bSort' : false,
-			'bServerSide' : true,
-			'dom' : 'T<"clear">lrtip',
-			'columns' : [ {
-				"data" : "msgId"
-			}, {
-				"data" : "updateId"
-			}, {
-				"data" : "receiver"
-			}, {
-				"data" : "reservationTime"
-			} ],
-			'sPaginationType' : 'full_numbers',
-			'sAjaxSource' : '/v1/pms/adm/'+reservationListRole+'/messages/reservations',
-			'fnServerData' : function(sSource, aoData, fnCallback) {
-				$.ajax({
-					dataType : 'json',
-					contentType : 'application/json;charset=UTF-8',
-					type : 'GET',
-					url : sSource,
-					headers : {
-						'X-Application-Token' : messageListToken
+var reservationListRole = sessionStorage.getItem("role");
+var reservationListTable = $('#reservation-datatable')
+		.dataTable(
+				{
+					'bSort' : false,
+					'bServerSide' : true,
+					'dom' : 'T<"clear">lrtip',
+					'columns' : [ {
+						"data" : "msgId"
+					}, {
+						"data" : "updateId"
+					}, {
+						"data" : "receiver"
+					}, {
+						"data" : "reservationTime"
+					} ],
+					'sPaginationType' : 'full_numbers',
+					'sAjaxSource' : '/v1/pms/adm/' + reservationListRole
+							+ '/messages/reservations',
+					'fnServerData' : function(sSource, aoData, fnCallback) {
+						$
+								.ajax({
+									dataType : 'json',
+									contentType : 'application/json;charset=UTF-8',
+									type : 'GET',
+									url : sSource,
+									headers : {
+										'X-Application-Token' : messageListToken
+									},
+									data : aoData,
+
+									success : function(data) {
+										var dataResult = data.result.data.data;
+										if (dataResult) {
+											console
+													.log('/v1/pms/adm/'
+															+ reservationListRole
+															+ '/messages/reservations(GET)');
+											console.log(dataResult);
+											if (dataResult.length == 0) {
+												$("#reservaton-checkbox-id")
+														.hide();
+											}
+											$('#reservationListCnt_div')
+													.text(
+															data.result.data.recordsTotal);
+											for ( var i in dataResult) {
+												var dateTime = dataResult[i].reservationTime;
+												dataResult[i].msgId = '<input name="reservatoin-checkbox" type="checkbox" value="'
+														+ dataResult[i].msgId
+														+ '"/>&nbsp;'
+														+ dataResult[i].msgId;
+												console.log("dateTime:"
+														+ dateTime);
+												if (dateTime != null) {
+													dataResult[i].reservationTime = new Date(
+															dateTime)
+															.toLocaleString();
+												}
+											}
+
+											data.result.data.data = dataResult;
+											fnCallback(data.result.data);
+
+										} else {
+											alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+
+										}
+
+									},
+									error : function(e) {
+										alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+									}
+								});
 					},
-					data : aoData,
 
-					success : function(data) {
-						var dataResult = data.result.data.data;
-						if (dataResult) {
-							console.log('/v1/pms/adm/'+reservationListRole+'/messages/reservations(GET)');
-							console.log(dataResult);
-							if(dataResult.length==0){
-								$("#reservaton-checkbox-id").hide();
-							}
-							$('#reservationListCnt_div')
-							.text(
-									data.result.data.recordsTotal);
-							for ( var i in dataResult) {						
-								var dateTime = dataResult[i].reservationTime;
-								dataResult[i].msgId='<input name="reservatoin-checkbox" type="checkbox" value="'+dataResult[i].msgId+'"/>&nbsp;'+dataResult[i].msgId;
-								console.log("dateTime:"+dateTime);
-								if(dateTime!=null){
-									dataResult[i].reservationTime = new Date(dateTime)
-									.toLocaleString();
-								}
-							}
+					'fnServerParams' : function(aoData) {
+						var searchSelectValue = $('#reservation-search-select')
+								.val();
+						var searchSelectText = $(
+								'#reservation-search-select option:selected')
+								.text();
+						var searchInputValue = $('#reservation-search-input')
+								.val();
+						var messageMonth = $('#reservation-date-input').val();
+						searchSelectValue = searchSelectValue * 1;
 
-							data.result.data.data = dataResult;
-							fnCallback(data.result.data);
+						switch (searchSelectValue) {
+						case 0:
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
+							break;
+						// msgid
+						case 1:
+							searchSelectText = "msgId";
+							aoData.push({
+								'name' : 'cSearchFilter',
+								'value' : searchSelectText
+							});
+							aoData.push({
+								'name' : 'cSearchContent',
+								'value' : searchInputValue
+							});
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
 
-						} else {
-							alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+							break;
+						// receiver
+						case 2:
+							searchSelectText = "receiver";
 
+							aoData.push({
+								'name' : 'cSearchFilter',
+								'value' : searchSelectText
+							});
+							aoData.push({
+								'name' : 'cSearchContent',
+								'value' : searchInputValue
+							});
+							aoData.push({
+								'name' : 'cSearchStatus',
+								'value' : 'ALL'
+							});
+
+							break;
+
+						default:
+
+							break;
 						}
 
-					},
-					error : function(e) {
-						alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+						if (messageMonth == null || messageMonth == "") {
+							var nowDate = new Date();
+							var year = nowDate.getFullYear();
+							var month = nowDate.getMonth() + 1;
+							console.log(month);
+							if (month < 10) {
+								month = '0' + month;
+							}
+							console.log(year + "/" + month);
+							messageMonth = year + "/" + month;
+
+							$('#reservation-date-input').val(messageMonth);
+						}
+
+						messageMonth = messageMonth.replace("/", "");
+
+						aoData.push({
+							'name' : 'cSearchDate',
+							'value' : messageMonth
+						});
+
+						console.log("메시지 리스트  aoData");
+						console.log(aoData);
+						console.log("메시지 리스트  aoData");
+
 					}
+
 				});
-			},
-
-			'fnServerParams' : function(aoData) {
-				var searchSelectValue = $('#reservation-search-select').val();
-				var searchSelectText = $(
-						'#reservation-search-select option:selected').text();
-				var searchInputValue = $('#reservation-search-input').val();
-				var messageMonth = $('#reservation-date-input').val();
-				searchSelectValue = searchSelectValue * 1;
-
-				switch (searchSelectValue) {
-				case 0:
-					aoData.push({
-						'name' : 'cSearchStatus',
-						'value' : 'ALL'
-					});
-					break;
-				// msgid
-				case 1:
-					searchSelectText = "msgId";
-					aoData.push({
-						'name' : 'cSearchFilter',
-						'value' : searchSelectText
-					});
-					aoData.push({
-						'name' : 'cSearchContent',
-						'value' : searchInputValue
-					});
-					aoData.push({
-						'name' : 'cSearchStatus',
-						'value' : 'ALL'
-					});
-
-					break;
-				// receiver
-				case 2:
-					searchSelectText = "receiver";
-
-					aoData.push({
-						'name' : 'cSearchFilter',
-						'value' : searchSelectText
-					});
-					aoData.push({
-						'name' : 'cSearchContent',
-						'value' : searchInputValue
-					});
-					aoData.push({
-						'name' : 'cSearchStatus',
-						'value' : 'ALL'
-					});
-
-					break;
-				
-				default:
-
-					break;
-				}
-
-				if (messageMonth == null || messageMonth == "") {
-					var nowDate = new Date();
-					var year = nowDate.getFullYear();
-					var month = nowDate.getMonth() + 1;
-					console.log(month);
-					if (month < 10) {
-						month = '0' + month;
-					}
-					console.log(year + "/" + month);
-					messageMonth = year + "/" + month;
-
-					$('#reservation-date-input').val(messageMonth);
-				}
-
-				messageMonth = messageMonth.replace("/", "");
-
-				aoData.push({
-					'name' : 'cSearchDate',
-					'value' : messageMonth
-				});
-
-				console.log("메시지 리스트  aoData");
-				console.log(aoData);
-				console.log("메시지 리스트  aoData");
-
-			}
-
-		});
 
 $('#reservation-search-btn').click(function() {
 
-
-
 });
 
-function reservationSearch(){
+function reservationSearch() {
 	console.log('reservation search click function..');
 	var formCheck = checkSearchReservation();
 
@@ -165,34 +178,72 @@ function reservationSearch(){
 	}
 }
 
-
 function reservationCheck(source) {
-	  checkboxes = document.getElementsByName('reservatoin-checkbox');
-	  for(var i=0, n=checkboxes.length;i<n;i++) {
-	    checkboxes[i].checked = source.checked;
-	  }
+	checkboxes = document.getElementsByName('reservatoin-checkbox');
+	for (var i = 0, n = checkboxes.length; i < n; i++) {
+		checkboxes[i].checked = source.checked;
 	}
-
-
-
+}
 
 function reservationCancelFunction() {
-	
-	var checkedLength=$('input[name="reservatoin-checkbox"]:checked').length;
-	if(checkedLength==0){
+
+	var checkedLength = $('input[name="reservatoin-checkbox"]:checked').length;
+	var role = sessionStorage.getItem("role");
+	var tokenID = sessionStorage.getItem("token");
+	if (checkedLength == 0) {
 		alert('취소할 메시지를 선택해주세요');
 		return false;
-	}else{
+	} else {
+		var reservationReq = new Object();
+		reservationReq.msgIds = new Array();
 		$('input[name="reservatoin-checkbox"]:checked').each(function() {
-			
-			   if(this.value!="on"){
-				   console.log(this.value);
-			   }
+
+			if (this.value != "on") {
+				console.log(this.value);
+				reservationReq.msgIds.push(this.value);
+			}
+		});
+		reservationReq = JSON.stringify(reservationReq);
+		console.log(JSON.stringify(reservationReq));
+
+		if (confirm("예약 메시지를 취소합니다.") == true) {
+			$.ajax({
+				url : '/v1/pms/adm/' + role + '/messages/cancel',
+				type : 'POST',
+				headers : {
+					'X-Application-Token' : tokenID
+				},
+				contentType : "application/json",
+				dataType : 'json',
+				async : false,
+				data : reservationReq,
+
+				success : function(data) {
+					console.log('메시지 취소 리퀘스트 결과');
+					console.log(data);
+
+					var dataResult = data.result.data;
+					if (dataResult) {
+						alert(dataResult + "건의 예약 메시지를 취소하였습니다.");
+						wrapperFunction('reservationList');
+					} else {
+						alert("예약 메시지 취소에 실패 하였습니다.");
+						wrapperFunction('reservationList');
+					}
+
+				},
+				error : function(data, textStatus, request) {
+					alert("예약 메시지 취소에 실패 하였습니다.");
+					wrapperFunction('reservationList');
+				}
 			});
 
+		} else {
+			return false;
+		}
+
 	}
-	
-	
+
 }
 
 function checkSearchReservation() {

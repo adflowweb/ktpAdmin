@@ -185,14 +185,16 @@ function messageSendUserFormCheck() {
 					alert('예약메세지는 현재 시각기준보다 5분 이상 설정 되어야 합니다.');
 					return false;
 				}
-				return true;
+				
 			}
-			if (confirm("예약이 설정된 시간으로 메세지가 전송됩니다. 확인해 주세요") == true) {
-				return true;
-			} else {
-				return false;
-			}
+			
 
+		}
+		
+		if (confirm("예약이 설정된 시간으로 메세지가 전송됩니다. 확인해 주세요") == true) {
+			return true;
+		} else {
+			return false;
 		}
 
 	}
