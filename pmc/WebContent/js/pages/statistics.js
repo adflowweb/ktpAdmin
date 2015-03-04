@@ -1,5 +1,11 @@
 var statisticsToken = sessionStorage.getItem("token");
 var statisticsRole = sessionStorage.getItem("role");
+$("#statistics-search-date-start-input").prop('disabled', true);
+$("#statistics-search-date-end-input").prop('disabled', true);
+$("#statistics-reservation-search-date-start-input").prop('disabled', true);
+$("#statistics-reservation-search-date-end-input").prop('disabled', true);
+$('#statistics-search-date-month-input').prop('disabled', true);
+$('#statistics-reservation-search-date-month-input').prop('disabled', true);
 
 $.ajax({
 	url : '/v1/pms/adm/' + statisticsRole + '/users',
@@ -63,7 +69,7 @@ var statisticsTable = $('#statistics-datatable')
 				{
 					'bServerSide' : true,
 					'bSort' : false,
-					'dom' : 'T<"clear">lrtip',
+					'dom' : '<"clear">lrtip',
 					'columns' : [ {
 						"data" : "msgId"
 					}, {
@@ -381,7 +387,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 
 					'bServerSide' : true,
 					'bSort' : false,
-					'dom' : 'T<"clear">lrtip',
+					'dom' : '<"clear">lrtip',
 					'columns' : [ {
 						"data" : "msgId"
 					}, {

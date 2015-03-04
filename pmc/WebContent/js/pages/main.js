@@ -151,12 +151,10 @@ function wrapperFunction(data) {
 				
 				if (data === "monthSvc") {
 					sessionStorage.setItem("monitoringStatus", "disable");
-					
 					$('#month-svc-msgcnt-panel-head').hide();
 					$('#month-svc-msgcnt-panel-body').hide();
 					$('#month-svc-ack-panel-head').hide();
 					$('#month-svc-sack-panel-body').hide();
-					
 					$('#month-svc-date-input').prop('disabled', true);
 					$('#month-svc-date-div').datetimepicker({
 						viewMode : 'years',
@@ -167,12 +165,7 @@ function wrapperFunction(data) {
 				}
 
 				if (data === "statistics") {
-
 					sessionStorage.setItem("monitoringStatus", "disable");
-					$("#statistics-search-date-start-input").prop('disabled', true);
-					$("#statistics-search-date-end-input").prop('disabled', true);
-					$("#statistics-reservation-search-date-start-input").prop('disabled', true);
-					$("#statistics-reservation-search-date-end-input").prop('disabled', true);
 					var nowDate = new Date();
 					var today_1 = new Date(nowDate.getFullYear(), nowDate
 							.getMonth(), nowDate.getDate()+1, 0, 0, 0, 0);
@@ -200,8 +193,8 @@ function wrapperFunction(data) {
 						format : 'YYYY/MM',
 						minViewMode : "months"
 					});
-					$('#statistics-search-date-month-input').prop('disabled', true);
-					$('#statistics-reservation-search-date-month-input').prop('disabled', true);
+			
+					
 					
 				}
 
@@ -353,6 +346,7 @@ function sysLogin() {
 	$('#svcadm_message_send_li_second').hide();
 	$('#svc_message_send_li_second').hide();
 	$('#svc_message_list_month_li').hide();	
+	$('#sys_message_list_month_li').show();
 	sessionStorage.setItem("monitoringStatus", "disable");
 }
 // Svc Login
@@ -366,6 +360,7 @@ function svcLogin() {
 	$('#message_send_li').show();
 	$('#sys_message_list_li').hide();
 	$('#svcadm_message_send_li_second').hide();
+	$('#svc_message_list_month_li').show();	
 	$('#sys_message_list_month_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({
@@ -395,6 +390,7 @@ function svcAdmLogin() {
 	$('#sys_monitoring_li').hide();
 	$('#sys_message_list_li').hide();
 	$('#sys_admin_li').hide();
+	$('#svc_message_list_month_li').show();
 	$('#sys_message_list_month_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-date-div').datetimepicker({

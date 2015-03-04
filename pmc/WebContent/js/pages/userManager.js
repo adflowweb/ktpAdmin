@@ -77,7 +77,7 @@ $.ajax({
 		console.log(data);
 
 		if (dataResult) {
-			
+
 			console.log(dataResult);
 			console.log('/v1/pms/adm/sys/users(GET)');
 			if (!data.result.errors) {
@@ -599,6 +599,15 @@ function userOptionFormCheck() {
 			alert('bytes 단위 숫자를 입력해 주세요');
 			$('#user-option-msgsizelimit-input').focus();
 			return false;
+		} else {
+			console.log('엘스');
+			option_msgSizeLimit_input=option_msgSizeLimit_input*1;
+			console.log(option_msgSizeLimit_input);
+	
+			if (option_msgSizeLimit_input > 512000) {
+				alert('512000bytes 를 넘을수 없습니다.');
+				return false;
+			}
 		}
 	}
 	// option_msgSizeLimit_input

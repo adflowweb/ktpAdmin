@@ -77,7 +77,7 @@ function monthSvcSearch() {
 							console.log(dataResult);
 							console.log('/v1/pms/adm/sys/users(GET)');
 							if (!data.result.errors) {
-
+								var monthtableData="";
 								for ( var i in data.result.data) {
 									var successData = data.result.data[i];
 									console.log(successData);
@@ -94,7 +94,7 @@ function monthSvcSearch() {
 									if (successData.msgCntLimit == "-1") {
 										successData.msgCntLimit = "제한없음";
 									}
-									userManagertableData
+									monthtableData
 											.push({
 												"userId" : successData.userId,
 												"Name" : successData.userName,
@@ -112,13 +112,13 @@ function monthSvcSearch() {
 								}
 
 								$('#dataTables-month-svc').dataTable({
-									aaData : userManagertableData,
+									aaData : monthtableData,
 									'bSort' : false,
 									bJQueryUI : true,
 									bDestroy : true,
 									"dom" : 'T<"clear">lrtip',
 									"tableTools" : {
-										"sSwfPath" : "swf/copycsvxlspdf.swf",
+										"sSwfPath" : "swf/csvxlspdf.swf",
 										"aButtons" : [ {
 											"sExtends" : "xls",
 											"sButtonText" : "excel",
@@ -175,7 +175,7 @@ function monthSvcSearch() {
 							console.log(dataResult);
 							console.log('/v1/pms/adm/sys/users(GET)');
 							if (!data.result.errors) {
-
+								var monthAckTableData="";
 								for ( var i in data.result.data) {
 									var successData = data.result.data[i];
 									console.log(successData);
@@ -192,7 +192,7 @@ function monthSvcSearch() {
 									if (successData.msgCntLimit == "-1") {
 										successData.msgCntLimit = "제한없음";
 									}
-									userManagertableData
+									monthAckTableData
 											.push({
 												"userId" : successData.userId,
 												"Name" : successData.userName,
@@ -210,13 +210,13 @@ function monthSvcSearch() {
 								}
 
 								$('#dataTables-month-sys-ack').dataTable({
-									aaData : userManagertableData,
+									aaData : monthAckTableData,
 									'bSort' : false,
 									bJQueryUI : true,
 									bDestroy : true,
 									"dom" : 'T<"clear">lrtip',
 									"tableTools" : {
-										"sSwfPath" : "swf/copycsvxlspdf.swf",
+										"sSwfPath" : "swf/csvxlspdf.swf",
 										"aButtons" : [ {
 											"sExtends" : "xls",
 											"sButtonText" : "excel",

@@ -74,10 +74,11 @@ function monthSearch() {
 
 						if (dataResult) {
 
-							console.log(dataResult);
+							console.log(dataResult.length);
 							console.log('/v1/pms/adm/sys/users(GET)');
 							if (!data.result.errors) {
-
+								$('#month_msgsend_div').text(dataResult.length);
+								var monthTableData=new Array();
 								for ( var i in data.result.data) {
 									var successData = data.result.data[i];
 									console.log(successData);
@@ -94,7 +95,7 @@ function monthSearch() {
 									if (successData.msgCntLimit == "-1") {
 										successData.msgCntLimit = "제한없음";
 									}
-									userManagertableData
+									monthTableData
 											.push({
 												"userId" : successData.userId,
 												"Name" : successData.userName,
@@ -112,13 +113,13 @@ function monthSearch() {
 								}
 
 								$('#dataTables-month-sys').dataTable({
-									aaData : userManagertableData,
+									aaData : monthTableData,
 									'bSort' : false,
 									bJQueryUI : true,
 									bDestroy : true,
 									"dom" : 'T<"clear">lrtip',
 									"tableTools" : {
-										"sSwfPath" : "swf/copycsvxlspdf.swf",
+										"sSwfPath" : "swf/csvxlspdf.swf",
 										"aButtons" : [ {
 											"sExtends" : "xls",
 											"sButtonText" : "excel",
@@ -175,7 +176,8 @@ function monthSearch() {
 							console.log(dataResult);
 							console.log('/v1/pms/adm/sys/users(GET)');
 							if (!data.result.errors) {
-
+								$('#month_msgack_div').text(dataResult.length);
+								var monthAckTableData= new Array();
 								for ( var i in data.result.data) {
 									var successData = data.result.data[i];
 									console.log(successData);
@@ -192,7 +194,7 @@ function monthSearch() {
 									if (successData.msgCntLimit == "-1") {
 										successData.msgCntLimit = "제한없음";
 									}
-									userManagertableData
+									monthAckTableData
 											.push({
 												"userId" : successData.userId,
 												"Name" : successData.userName,
@@ -210,13 +212,13 @@ function monthSearch() {
 								}
 
 								$('#dataTables-month-sys-ack').dataTable({
-									aaData : userManagertableData,
+									aaData : monthAckTableData,
 									'bSort' : false,
 									bJQueryUI : true,
 									bDestroy : true,
 									"dom" : 'T<"clear">lrtip',
 									"tableTools" : {
-										"sSwfPath" : "swf/copycsvxlspdf.swf",
+										"sSwfPath" : "swf/csvxlspdf.swf",
 										"aButtons" : [ {
 											"sExtends" : "xls",
 											"sButtonText" : "excel",
