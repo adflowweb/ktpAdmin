@@ -141,31 +141,46 @@ var statisticsTable = $('#statistics-datatable')
 												switch (dataResult[i].status) {
 												case -99:
 													dataResult[i].status = "발송오류";
+													var dateTime = dataResult[i].updateTime;
+													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
 													break;
 												case -2:
 													dataResult[i].status = "수신자없음";
+													var dateTime = dataResult[i].updateTime;
+													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
 													break;
 												case -1:
 													dataResult[i].status = "허용갯수초과";
+													var dateTime = dataResult[i].updateTime;
+													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
 													break;
 												case 0:
 													dataResult[i].status = "발송중";
+													if(dataResult[i].reservationTime==null){
+														console.log('널일경우 예약 메시지가 아닌데 발송중일경우 업데이트 타임표시');
+														var dateTime = dataResult[i].updateTime;
+														dataResult[i].updateTime = new Date(dateTime).toLocaleString();
+													}else{
+														var dateTime = dataResult[i].reservationTime;
+														dataResult[i].updateTime = new Date(dateTime).toLocaleString()+"(예약)";
+													}
 													break;
 												case 1:
 													dataResult[i].status = "발송됨";
+													var dateTime = dataResult[i].updateTime;
+													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
 													break;
 												case 2:
 													dataResult[i].status = "예약취소됨";
+													var dateTime = dataResult[i].updateTime;
+													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
 													break;
 
 												}
 
 												dataResult[i].resendInterval = dataResult[i].resendInterval
 														+ "분";
-												var dateTime = dataResult[i].updateTime;
-												dataResult[i].updateTime = new Date(
-														dateTime)
-														.toLocaleString();
+									
 
 											}
 

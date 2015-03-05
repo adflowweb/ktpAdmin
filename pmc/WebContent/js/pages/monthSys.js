@@ -24,6 +24,9 @@ $.ajax({
 					var successData = dataResult[i];
 					console.log(successData.role);
 					if (successData.role == "sys") {
+						$("#month-account-select").append(
+								"<option value='" + (i * 1 + 1)
+										+ "'>전체</option>");
 
 					} else if (successData.role == "svc") {
 						$("#month-account-select").append(
@@ -56,203 +59,786 @@ $.ajax({
 function monthSearch() {
 
 	if (monthFormCheck()) {
+		var input_month_value = $('#month-sys-date-input').val();
+		input_month_value = input_month_value.replace("/", "");
+		var accountSelectText = $('#month-account-select option:selected')
+				.text();
 
-		$
-				.ajax({
-					url : '/v1/pms/adm/sys/users',
-					type : 'GET',
-					contentType : "application/json",
-					headers : {
-						'X-Application-Token' : userToken
-					},
-					dataType : 'json',
+		if (accountSelectText == "전체") {
+			var inputMonthValue = $('#month-sys-date-input').val();
+			// /전체 테이블 일반 ,예약
+			$.ajax({
+				url : '/v1/pms/adm/sys/messages/summary/' + input_month_value,
+				type : 'GET',
+				contentType : "application/json",
+				headers : {
+					'X-Application-Token' : monthToken
+				},
+				dataType : 'json',
 
-					async : false,
-					success : function(data) {
-						var dataResult = data.result.data;
-						console.log(data);
+				async : false,
+				success : function(data) {
+					var dataResult = data.result.data;
+					console.log(data);
 
-						if (dataResult) {
+					if (dataResult) {
+						if (!data.result.errors) {
 
-							console.log(dataResult.length);
-							console.log('/v1/pms/adm/sys/users(GET)');
-							if (!data.result.errors) {
-								$('#month_msgsend_div').text(dataResult.length);
-								var monthTableData=new Array();
-								for ( var i in data.result.data) {
-									var successData = data.result.data[i];
-									console.log(successData);
-									if (successData.role == "svc") {
-										successData.role = "서비스";
-									} else if (successData.role == "inf") {
-										successData.role = "Interface Open";
-									} else if (successData.role == "sys") {
-										successData.role = "관리자";
-									} else if (successData.role == "svcadm") {
-										successData.role = "서비스 어드민";
-									}
-
-									if (successData.msgCntLimit == "-1") {
-										successData.msgCntLimit = "제한없음";
-									}
-									monthTableData
-											.push({
-												"userId" : successData.userId,
-												"Name" : successData.userName,
-												"IPFilter" : successData.ipFilters,
-												"role" : successData.role,
-												"msgCnt" : successData.msgCntLimit,
-												"callbackCntLimit" : successData.callbackCntLimit,
-												"callbackMethod" : successData.callbackMethod,
-												"callbackUrl" : successData.callbackUrl,
-												"defaultExpiry" : successData.defaultExpiry,
-												"defaultQos" : successData.defaultQos,
-												"msgSizeLimit" : successData.msgSizeLimit
-											});
-
-								}
-
-								$('#dataTables-month-sys').dataTable({
-									aaData : monthTableData,
-									'bSort' : false,
-									bJQueryUI : true,
-									bDestroy : true,
-									"dom" : 'T<"clear">lrtip',
-									"tableTools" : {
-										"sSwfPath" : "swf/csvxlspdf.swf",
-										"aButtons" : [ {
-											"sExtends" : "xls",
-											"sButtonText" : "excel",
-											"sFileName" : "*.xls"
-										}, "copy", "pdf" ]
-									},
-									aoColumns : [ {
-										mData : 'userId'
-									}, {
-										mData : 'Name'
-									}, {
-										mData : 'IPFilter'
-									}, {
-										mData : 'role'
-									} ]
-								});
-								$('#month-msgcnt-panel-head').show();
-								$('#month-msgcnt-panel-body').show();
-
-							} else {
-
-								alert(data.result.errors[0]);
-							}
-						} else {
-
-							alert('계정 목록을 가지고오는데 실패하였습니다.');
-						}
-
-					},
-					error : function(data, textStatus, request) {
-
-						alert('계정 목록을 가지고오는데 실패하였습니다.');
-					}
-				});
-		
-	////////////////////////////////////////
-		$
-				.ajax({
-					url : '/v1/pms/adm/sys/users',
-					type : 'GET',
-					contentType : "application/json",
-					headers : {
-						'X-Application-Token' : userToken
-					},
-					dataType : 'json',
-
-					async : false,
-					success : function(data) {
-						var dataResult = data.result.data;
-						console.log(data);
-
-						if (dataResult) {
-
+							console.log('조회 결과값');
 							console.log(dataResult);
-							console.log('/v1/pms/adm/sys/users(GET)');
-							if (!data.result.errors) {
-								$('#month_msgack_div').text(dataResult.length);
-								var monthAckTableData= new Array();
-								for ( var i in data.result.data) {
-									var successData = data.result.data[i];
-									console.log(successData);
-									if (successData.role == "svc") {
-										successData.role = "서비스";
-									} else if (successData.role == "inf") {
-										successData.role = "Interface Open";
-									} else if (successData.role == "sys") {
-										successData.role = "관리자";
-									} else if (successData.role == "svcadm") {
-										successData.role = "서비스 어드민";
+							var monthTableData = new Array();
+							var monthTableDataRes = new Array();
+
+							for ( var i in data.result.data) {
+								var successData = data.result.data[i];
+								if (successData.isReservation == false) {
+									var statusD99Cnt = 0;
+									var statusD2Cnt = 0;
+									var statusD1Cnt = 0;
+									var statusP0Cnt = 0;
+									var statusP1Cnt = 0;
+									var statusP2Cnt = 0;
+									var totalMsgCnt = 0;
+									var userId = "";
+									var appAck = 0;
+									var pmaAck = 0;
+									userId = successData.userId;
+									switch (dataResult[i].status) {
+									case -99:
+										// dataResult[i].status =
+										// "발송오류";
+										statusD99Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case -2:
+										// dataResult[i].status =
+										// "수신자없음";
+										statusD2Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case -1:
+										// dataResult[i].status =
+										// "허용갯수초과";
+										statusD1Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case 0:
+										// dataResult[i].status = "발송중";
+										statusP0Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case 1:
+										// dataResult[i].status = "발송됨";
+										console.log('발송됨');
+										statusP1Cnt = successData.msgCnt;
+										appAck = successData.appAckCnt;
+										pmaAck = successData.pmaAckCnt;
+										totalMsgCnt += successData.msgCnt;
+										console.log(statusP1Cnt);
+										break;
+									case 2:
+										// dataResult[i].status =
+										// "예약취소됨";
+										statusP2Cnt = successData.msgCnt;
+										totalMsgCnt = successData.msgCnt;
+										break;
+
 									}
 
-									if (successData.msgCntLimit == "-1") {
-										successData.msgCntLimit = "제한없음";
+									monthTableData.push({
+										"userId" : userId,
+										"totalMsgCnt" : totalMsgCnt,
+										"msgCnt" : statusP1Cnt,
+										"sending" : statusP0Cnt,
+										"limitOver" : statusD1Cnt,
+										"userNotFound" : statusD2Cnt,
+										"serverError" : statusD99Cnt,
+										"pmaAck" : pmaAck,
+										"appAck" : appAck
+									});
+
+								} else {
+									var statusD99Cnt = 0;
+									var statusD2Cnt = 0;
+									var statusD1Cnt = 0;
+									var statusP0Cnt = 0;
+									var statusP1Cnt = 0;
+									var statusP2Cnt = 0;
+									var totalMsgCnt = 0;
+									var userId = "";
+									var appAck = 0;
+									var pmaAck = 0;
+									userId = successData.userId;
+									switch (dataResult[i].status) {
+									case -99:
+										// dataResult[i].status =
+										// "발송오류";
+										statusD99Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case -2:
+										// dataResult[i].status =
+										// "수신자없음";
+										statusD2Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case -1:
+										// dataResult[i].status =
+										// "허용갯수초과";
+										statusD1Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case 0:
+										// dataResult[i].status = "발송중";
+										statusP0Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case 1:
+										// dataResult[i].status = "발송됨";
+										console.log('발송됨');
+										statusP1Cnt = successData.msgCnt;
+										appAck = successData.appAckCnt;
+										pmaAck = successData.pmaAckCnt;
+										totalMsgCnt += successData.msgCnt;
+										console.log(statusP1Cnt);
+										break;
+									case 2:
+										// dataResult[i].status =
+										// "예약취소됨";
+										statusP2Cnt = successData.msgCnt;
+										totalMsgCnt = successData.msgCnt;
+										break;
+
 									}
-									monthAckTableData
-											.push({
-												"userId" : successData.userId,
-												"Name" : successData.userName,
-												"IPFilter" : successData.ipFilters,
-												"role" : successData.role,
-												"msgCnt" : successData.msgCntLimit,
-												"callbackCntLimit" : successData.callbackCntLimit,
-												"callbackMethod" : successData.callbackMethod,
-												"callbackUrl" : successData.callbackUrl,
-												"defaultExpiry" : successData.defaultExpiry,
-												"defaultQos" : successData.defaultQos,
-												"msgSizeLimit" : successData.msgSizeLimit
-											});
+
+									monthTableDataRes.push({
+										"userId" : userId,
+										"totalMsgCnt" : totalMsgCnt,
+										"msgCnt" : statusP1Cnt,
+										"resCancel" : statusP2Cnt,
+										"sending" : statusP0Cnt,
+										"limitOver" : statusD1Cnt,
+										"userNotFound" : statusD2Cnt,
+										"serverError" : statusD99Cnt,
+										"pmaAck" : pmaAck,
+										"appAck" : appAck
+									});
 
 								}
 
-								$('#dataTables-month-sys-ack').dataTable({
-									aaData : monthAckTableData,
-									'bSort' : false,
-									bJQueryUI : true,
-									bDestroy : true,
-									"dom" : 'T<"clear">lrtip',
-									"tableTools" : {
-										"sSwfPath" : "swf/csvxlspdf.swf",
-										"aButtons" : [ {
-											"sExtends" : "xls",
-											"sButtonText" : "excel",
-											"sFileName" : "*.xls"
-										}, "copy", "pdf" ]
-									},
-									aoColumns : [ {
-										mData : 'userId'
-									}, {
-										mData : 'Name'
-									}, {
-										mData : 'IPFilter'
-									}, {
-										mData : 'role'
-									} ]
-								});
-								$('#month-ack-panel-head').show();
-								$('#month-ack-panel-body').show();
-
-							} else {
-
-								alert(data.result.errors[0]);
 							}
+
+							$('#dataTables-month-all-sys').dataTable({
+								aaData : monthTableData,
+								'bSort' : false,
+								bJQueryUI : true,
+								bDestroy : true,
+								"bPaginate" : false,
+								"bInfo" : false,
+								"bLengthChange" : false,
+								"dom" : 'T<"clear">lrtip',
+								"tableTools" : {
+									"sSwfPath" : "swf/csvxlspdf.swf",
+									"aButtons" : [ {
+										"sExtends" : "xls",
+										"sButtonText" : "excel",
+										"sFileName" : "*.xls"
+									}, "copy", "pdf" ]
+								},
+								aoColumns : [ {
+									mData : 'userId'
+								}, {
+									mData : 'msgCnt'
+								}, {
+									mData : 'sending'
+								}, {
+									mData : 'limitOver'
+								}, {
+									mData : 'userNotFound'
+								}, {
+									mData : 'serverError'
+								}, {
+									mData : 'pmaAck'
+								}, {
+									mData : 'appAck'
+								} ]
+							});
+
+							$('#dataTables-month-sys-res-all').dataTable({
+								aaData : monthTableDataRes,
+								'bSort' : false,
+								bJQueryUI : true,
+								bDestroy : true,
+								"bPaginate" : false,
+								"bInfo" : false,
+								"bLengthChange" : false,
+								"dom" : 'T<"clear">lrtip',
+								"tableTools" : {
+									"sSwfPath" : "swf/csvxlspdf.swf",
+									"aButtons" : [ {
+										"sExtends" : "xls",
+										"sButtonText" : "excel",
+										"sFileName" : "*.xls"
+									}, "copy", "pdf" ]
+								},
+								aoColumns : [ {
+									mData : 'userId'
+								}, {
+									mData : 'msgCnt'
+								}, {
+									mData : 'resCancel'
+								}, {
+									mData : 'sending'
+								}, {
+									mData : 'limitOver'
+								}, {
+									mData : 'userNotFound'
+								}, {
+									mData : 'serverError'
+								}, {
+									mData : 'pmaAck'
+								}, {
+									mData : 'appAck'
+								} ]
+							});
+
+							console.log('생성됨');
+
+							$('#month-msgcnt-panel-head').show();
+							$('#month-msgcnt-panel-body').show();
+							$('#month-all-msgcnt-panel-body').show();
+							$('#month-res-all-panel-body').show();
+
 						} else {
 
-							alert('계정 목록을 가지고오는데 실패하였습니다.');
+							alert(data.result.errors[0]);
 						}
+					} else {
 
-					},
-					error : function(data, textStatus, request) {
-
-						alert('계정 목록을 가지고오는데 실패하였습니다.');
+						alert('통계 목록을 가지고오는데 실패하였습니다.');
 					}
-				});
+
+				},
+				error : function(data, textStatus, request) {
+
+					alert('통계 목록을 가지고오는데 실패하였습니다.');
+				}
+			});
+			// 전체 합계 테이블 일반 예약
+			$.ajax({
+				url : '/v1/pms/adm/sys/messages/summary/' + input_month_value,
+				type : 'GET',
+				contentType : "application/json",
+				headers : {
+					'X-Application-Token' : monthToken
+				},
+				dataType : 'json',
+
+				async : false,
+				success : function(data) {
+					var dataResult = data.result.data;
+					console.log(data);
+
+					if (dataResult) {
+
+						console.log(dataResult.length);
+						console.log('/v1/pms/adm/sys/users(GET)');
+						if (!data.result.errors) {
+
+							console.log('조회 결과값');
+							console.log(dataResult);
+							var monthTableData = new Array();
+							var monthResTableData = new Array();
+							var statusD99Cnt = 0;
+							var statusD2Cnt = 0;
+							var statusD1Cnt = 0;
+							var statusP0Cnt = 0;
+							var statusP1Cnt = 0;
+							var statusP2Cnt = 0;
+							var totalMsgCnt = 0;
+							var userId = "";
+							var appAck = 0;
+							var pmaAck = 0;
+							var statusRD99Cnt = 0;
+							var statusRD2Cnt = 0;
+							var statusRD1Cnt = 0;
+							var statusRP0Cnt = 0;
+							var statusRP1Cnt = 0;
+							var statusRP2Cnt = 0;
+							var totalMsgCntR = 0;
+							var userIdR = "";
+							var appAckR = 0;
+							var pmaAckR = 0;
+							for ( var i in data.result.data) {
+								var successData = data.result.data[i];
+
+								console.log(successData);
+
+								if (successData.isReservation == false) {
+									console.log("포문1");
+									userId = successData.userId;
+									console.log('사용자아이디');
+									console.log(userId);
+									switch (dataResult[i].status) {
+									case -99:
+										// dataResult[i].status = "발송오류";
+										statusD99Cnt += successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case -2:
+										// dataResult[i].status = "수신자없음";
+										statusD2Cnt += successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case -1:
+										// dataResult[i].status = "허용갯수초과";
+										statusD1Cnt += successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case 0:
+										// dataResult[i].status = "발송중";
+										statusP0Cnt += successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case 1:
+										// dataResult[i].status = "발송됨";
+										console.log('발송됨');
+										statusP1Cnt += successData.msgCnt;
+										appAck += successData.appAckCnt;
+										pmaAck += successData.pmaAckCnt;
+										totalMsgCnt += successData.msgCnt;
+										console.log(statusP1Cnt);
+										break;
+									case 2:
+										// dataResult[i].status = "예약취소됨";
+										statusP2Cnt += successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+
+									}
+
+								} else {
+									console.log("포문1");
+									userIdR = successData.userId;
+									console.log('사용자아이디');
+									console.log(userId);
+									switch (dataResult[i].status) {
+									case -99:
+										// dataResult[i].status = "발송오류";
+										statusRD99Cnt += successData.msgCnt;
+										totalMsgCntR += successData.msgCnt;
+										break;
+									case -2:
+										// dataResult[i].status = "수신자없음";
+										statusRD2Cnt += successData.msgCnt;
+										totalMsgCntR += successData.msgCnt;
+										break;
+									case -1:
+										// dataResult[i].status = "허용갯수초과";
+										statusRD1Cnt += successData.msgCnt;
+										totalMsgCntR += successData.msgCnt;
+										break;
+									case 0:
+										// dataResult[i].status = "발송중";
+										statusRP0Cnt += successData.msgCnt;
+										totalMsgCntR += successData.msgCnt;
+										break;
+									case 1:
+										// dataResult[i].status = "발송됨";
+										console.log('발송됨');
+										statusRP1Cnt += successData.msgCnt;
+										appAckR += successData.appAckCnt;
+										pmaAckR += successData.pmaAckCnt;
+										totalMsgCntR += successData.msgCnt;
+										console.log(statusRP1Cnt);
+										break;
+									case 2:
+										// dataResult[i].status = "예약취소됨";
+										statusRP2Cnt += successData.msgCnt;
+										totalMsgCntR += successData.msgCnt;
+										break;
+
+									}
+
+								}
+
+							}
+
+							monthTableData.push({
+								"totalMsgCnt" : totalMsgCnt,
+								"msgCnt" : statusP1Cnt,
+								"sending" : statusP0Cnt,
+								"limitOver" : statusD1Cnt,
+								"userNotFound" : statusD2Cnt,
+								"serverError" : statusD99Cnt,
+								"pmaAck" : pmaAck,
+								"appAck" : appAck
+							});
+
+							monthResTableData.push({
+								"totalMsgCnt" : totalMsgCntR,
+								"msgCnt" : statusRP1Cnt,
+								"resCancel" : statusRP2Cnt,
+								"sending" : statusRP0Cnt,
+								"limitOver" : statusRD1Cnt,
+								"userNotFound" : statusRD2Cnt,
+								"serverError" : statusRD99Cnt,
+								"pmaAck" : pmaAckR,
+								"appAck" : appAckR
+							});
+
+							$('#dataTables-month-sys').dataTable({
+								aaData : monthTableData,
+								'bSort' : false,
+								bJQueryUI : true,
+								bDestroy : true,
+								"bInfo" : false,
+								"bPaginate" : false,
+								"bLengthChange" : false,
+								"dom" : 'T<"clear">lrtip',
+								"tableTools" : {
+									"sSwfPath" : "swf/csvxlspdf.swf",
+									"aButtons" : [ {
+										"sExtends" : "xls",
+										"sButtonText" : "excel",
+										"sFileName" : "*.xls"
+									}, "copy", "pdf" ]
+								},
+								aoColumns : [ {
+									mData : 'totalMsgCnt'
+								}, {
+									mData : 'msgCnt'
+								}, {
+									mData : 'sending'
+								}, {
+									mData : 'limitOver'
+								}, {
+									mData : 'userNotFound'
+								}, {
+									mData : 'serverError'
+								}, {
+									mData : 'pmaAck'
+								}, {
+									mData : 'appAck'
+								} ]
+							});
+
+							$('#dataTables-month-sys-res').dataTable({
+								aaData : monthResTableData,
+								'bSort' : false,
+								bJQueryUI : true,
+								bDestroy : true,
+								"bInfo" : false,
+								"bPaginate" : false,
+								"bLengthChange" : false,
+								"dom" : 'T<"clear">lrtip',
+								"tableTools" : {
+									"sSwfPath" : "swf/csvxlspdf.swf",
+									"aButtons" : [ {
+										"sExtends" : "xls",
+										"sButtonText" : "excel",
+										"sFileName" : "*.xls"
+									}, "copy", "pdf" ]
+								},
+								aoColumns : [ {
+									mData : 'totalMsgCnt'
+								}, {
+									mData : 'msgCnt'
+								}, {
+									mData : 'resCancel'
+								}, {
+									mData : 'sending'
+								}, {
+									mData : 'limitOver'
+								}, {
+									mData : 'userNotFound'
+								}, {
+									mData : 'serverError'
+								}, {
+									mData : 'pmaAck'
+								}, {
+									mData : 'appAck'
+								} ]
+							});
+
+							console.log('생성됨');
+							$('#month_msgres_div').text(totalMsgCntR);
+							$('#month_msgsend_div').text(totalMsgCnt);
+							$('#month-msgcnt-panel-head').show();
+							$('#month-msgcnt-panel-body').show();
+							$('#month-res-panel-body').show();
+							$('#month-res-panel-head').show();
+						} else {
+
+							alert(data.result.errors[0]);
+						}
+					} else {
+
+						alert('통계 목록을 가지고오는데 실패하였습니다.');
+					}
+
+				},
+				error : function(data, textStatus, request) {
+
+					alert('통계 목록을 가지고오는데 실패하였습니다.');
+				}
+			});
+		} else {
+			// 선택 일반테이블
+			$.ajax({
+				url : '/v1/pms/adm/sys/messages/summary/' + input_month_value
+						+ "/" + accountSelectText,
+				type : 'GET',
+				contentType : "application/json",
+				headers : {
+					'X-Application-Token' : monthToken
+				},
+				dataType : 'json',
+
+				async : false,
+				success : function(data) {
+					var dataResult = data.result.data;
+					console.log(data);
+
+					if (dataResult) {
+
+						console.log(dataResult.length);
+						console.log('/v1/pms/adm/sys/users(GET)');
+						if (!data.result.errors) {
+
+							console.log('조회 결과값');
+							console.log(dataResult);
+							var monthTableData = new Array();
+							var monthTableDataRes = new Array();
+							var statusD99Cnt = 0;
+							var statusD2Cnt = 0;
+							var statusD1Cnt = 0;
+							var statusP0Cnt = 0;
+							var statusP1Cnt = 0;
+							var statusP2Cnt = 0;
+							var totalMsgCnt = 0;
+							var appAck = 0;
+							var pmaAck = 0;
+							var statusRD99Cnt = 0;
+							var statusRD2Cnt = 0;
+							var statusRD1Cnt = 0;
+							var statusRP0Cnt = 0;
+							var statusRP1Cnt = 0;
+							var statusRP2Cnt = 0;
+							var totalMsgCntR = 0;
+							var appAckR = 0;
+							var pmaAckR = 0;
+							for ( var i in data.result.data) {
+								var successData = data.result.data[i];
+
+								console.log(successData);
+								if (successData.isReservation == false) {
+									console.log("포문1");
+									switch (dataResult[i].status) {
+									case -99:
+										// dataResult[i].status = "발송오류";
+										statusD99Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case -2:
+										// dataResult[i].status = "수신자없음";
+										statusD2Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case -1:
+										// dataResult[i].status = "허용갯수초과";
+										statusD1Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case 0:
+										// dataResult[i].status = "발송중";
+										statusP0Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+									case 1:
+										// dataResult[i].status = "발송됨";
+										console.log('발송됨');
+										statusP1Cnt = successData.msgCnt;
+										appAck = successData.appAckCnt;
+										pmaAck = successData.pmaAckCnt;
+										totalMsgCnt += successData.msgCnt;
+										console.log(statusP1Cnt);
+										break;
+									case 2:
+										// dataResult[i].status = "예약취소됨";
+										statusP2Cnt = successData.msgCnt;
+										totalMsgCnt += successData.msgCnt;
+										break;
+
+									}
+
+								} else {
+									switch (dataResult[i].status) {
+									case -99:
+										// dataResult[i].status = "발송오류";
+										statusRD99Cnt = successData.msgCnt;
+										totalMsgCntR += successData.msgCnt;
+										break;
+									case -2:
+										// dataResult[i].status = "수신자없음";
+										statusRD2Cnt = successData.msgCnt;
+										totalMsgCntR += successData.msgCnt;
+										break;
+									case -1:
+										// dataResult[i].status = "허용갯수초과";
+										statusRD1Cnt = successData.msgCnt;
+										totalMsgCntR += successData.msgCnt;
+										break;
+									case 0:
+										// dataResult[i].status = "발송중";
+										statusRP0Cnt = successData.msgCnt;
+										totalMsgCntR += successData.msgCnt;
+										break;
+									case 1:
+										// dataResult[i].status = "발송됨";
+										console.log('발송됨');
+										statusRP1Cnt = successData.msgCnt;
+										appAckR = successData.appAckCnt;
+										pmaAckR = successData.pmaAckCnt;
+										totalMsgCntR += successData.msgCnt;
+										console.log(statusP1Cnt);
+										break;
+									case 2:
+										// dataResult[i].status = "예약취소됨";
+										statusRP2Cnt = successData.msgCnt;
+										totalMsgCntR += successData.msgCnt;
+										break;
+
+									}
+
+								}
+
+							}
+
+							console.log('테이블 생성전');
+							monthTableData.push({
+								"totalMsgCnt" : totalMsgCnt,
+								"msgCnt" : statusP1Cnt,
+							
+								"sending" : statusP0Cnt,
+								"limitOver" : statusD1Cnt,
+								"userNotFound" : statusD2Cnt,
+								"serverError" : statusD99Cnt,
+								"pmaAck" : pmaAck,
+								"appAck" : appAck
+							});
+
+							monthTableDataRes.push({
+								"totalMsgCnt" : totalMsgCntR,
+								"msgCnt" : statusRP1Cnt,
+								"resCancel" : statusRP2Cnt,
+								"sending" : statusRP0Cnt,
+								"limitOver" : statusRD1Cnt,
+								"userNotFound" : statusRD2Cnt,
+								"serverError" : statusRD99Cnt,
+								"pmaAck" : pmaAckR,
+								"appAck" : appAckR
+							})
+							console.log(monthTableData);
+							console.log('테이블 생성후');
+							$('#dataTables-month-sys').dataTable({
+								aaData : monthTableData,
+								'bSort' : false,
+								bJQueryUI : true,
+								bDestroy : true,
+								"bPaginate" : false,
+								"bInfo" : false,
+								"bLengthChange" : false,
+								"dom" : 'T<"clear">lrtip',
+								"tableTools" : {
+									"sSwfPath" : "swf/csvxlspdf.swf",
+									"aButtons" : [ {
+										"sExtends" : "xls",
+										"sButtonText" : "excel",
+										"sFileName" : "*.xls"
+									}, "copy", "pdf" ]
+								},
+								aoColumns : [ {
+									mData : 'totalMsgCnt'
+								}, {
+									mData : 'msgCnt'
+								}, {
+									mData : 'sending'
+								}, {
+									mData : 'limitOver'
+								}, {
+									mData : 'userNotFound'
+								}, {
+									mData : 'serverError'
+								}, {
+									mData : 'pmaAck'
+								}, {
+									mData : 'appAck'
+								} ]
+							});
+							$('#dataTables-month-sys-res').dataTable({
+								aaData : monthTableDataRes,
+								'bSort' : false,
+								bJQueryUI : true,
+								bDestroy : true,
+								"bPaginate" : false,
+								"bInfo" : false,
+								"bLengthChange" : false,
+								"dom" : 'T<"clear">lrtip',
+								"tableTools" : {
+									"sSwfPath" : "swf/csvxlspdf.swf",
+									"aButtons" : [ {
+										"sExtends" : "xls",
+										"sButtonText" : "excel",
+										"sFileName" : "*.xls"
+									}, "copy", "pdf" ]
+								},
+								aoColumns : [ {
+									mData : 'totalMsgCnt'
+								}, {
+									mData : 'msgCnt'
+								}, {
+									mData : 'resCancel'
+								}, {
+									mData : 'sending'
+								}, {
+									mData : 'limitOver'
+								}, {
+									mData : 'userNotFound'
+								}, {
+									mData : 'serverError'
+								}, {
+									mData : 'pmaAck'
+								}, {
+									mData : 'appAck'
+								} ]
+							});
+							console.log('생성됨');
+							$('#month_msgsend_div').text(totalMsgCnt);
+							$('#month_msgres_div').text(totalMsgCntR);
+							$('#month-all-msgcnt-panel-body').hide();
+							$('#month-res-all-panel-body').hide();
+							$('#month-msgcnt-panel-head').show();
+							$('#month-msgcnt-panel-body').show();
+							$('#month-res-panel-body').show();
+							$('#month-res-panel-head').show();
+
+						} else {
+
+							alert(data.result.errors[0]);
+						}
+					} else {
+
+						alert('통계 목록을 가지고오는데 실패하였습니다.');
+					}
+
+				},
+				error : function(data, textStatus, request) {
+
+					alert('통계 목록을 가지고오는데 실패하였습니다.');
+				}
+			});
+		}
 
 	}
 

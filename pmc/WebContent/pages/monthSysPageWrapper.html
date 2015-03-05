@@ -7,25 +7,6 @@
 <!-- /.row -->
 
 <div class="row">
-
-	<!-- 	<div class="col-lg-6 col-md-3"> -->
-	<!-- 		<div class="panel panel-primary"> -->
-	<!-- 			<div class="panel-heading"> -->
-	<!-- 				<div class="row"> -->
-	<!-- 					<div class="col-xs-3"> -->
-	<!-- 						<i class="fa fa-tasks fa-5x"></i> -->
-	<!-- 					</div> -->
-	<!-- 					<div class="col-xs-9 text-right"> -->
-	<!-- 						<div style="font-size: 4opx;">목록 조회 건수</div> -->
-	<!-- 						<div style="font-size: 40px;" class="huge" id="messageListCnt_div"></div> -->
-	<!-- 					</div> -->
-	<!-- 				</div> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-
-
-
 	<div class="col-lg-12">
 		<div class="panel panel-default">
 			<div style="background-color: aquamarine;" class="panel-heading">월별
@@ -66,7 +47,7 @@
 								<i class="fa fa-comments fa-5x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
-								<div style="font-size: 4opx;">발송 건수</div>
+								<div style="font-size: 4opx;">일반 메시지 발송 건수</div>
 								<div style="font-size: 40px;" class="huge"
 									id="month_msgsend_div"></div>
 							</div>
@@ -74,71 +55,138 @@
 					</div>
 				</div>
 			</div>
+
+			<div id="month-all-msgcnt-panel-body" class="panel-body">
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-hover"
+						id="dataTables-month-all-sys" width="100%">
+
+						<thead>
+
+
+							<tr>
+								<th>계정</th>
+								<th>발송됨</th>
+								<th>발송중</th>
+								<th>허용갯수초과</th>
+								<th>수신자없음</th>
+								<th>발송오류</th>
+								<th>기기 응답</th>
+								<th>사용자 응답</th>
+							</tr>
+						</thead>
+						<tbody id="dataTables-month-all-sys-tbody">
+
+
+
+						</tbody>
+					</table>
+				</div>
+			</div>
 			<div id="month-msgcnt-panel-body" class="panel-body">
-			<div class="table-responsive">
-			<label>발송 건수</label>
-				<table class="table table-striped table-bordered table-hover"
-					id="dataTables-month-sys" width="100%">
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-hover"
+						id="dataTables-month-sys" width="100%">
 
-					<thead>
-						<tr>
-
-							<th>Message Id</th>
-							<th>송신자</th>
-							<th>수신자</th>
-							<th>발송상태</th>
+						<thead>
 
 
-						</tr>
-					</thead>
-					<tbody id="dataTables-month-sys-tbody">
+							<tr>
+								<th>총 발송건수</th>
+								<th>발송됨</th>
+								<th>발송중</th>
+								<th>허용갯수초과</th>
+								<th>수신자없음</th>
+								<th>발송오류</th>
+								<th>기기 응답</th>
+								<th>사용자 응답</th>
+							</tr>
+						</thead>
+						<tbody id="dataTables-month-sys-tbody">
 
 
 
-					</tbody>
-				</table>
+						</tbody>
+					</table>
+				</div>
 			</div>
-			</div>
-			<div id="month-ack-panel-head" class="col-lg-12 col-md-3">
+			<div id="month-res-panel-head" class="col-lg-12 col-md-3">
 				<div class="panel panel-primary">
-					<div style="background-color: cornflowerblue;" class="panel-heading">
+					<div style="background-color: cornflowerblue;"
+						class="panel-heading">
 						<div class="row">
 							<div class="col-xs-3">
-								<i class="fa fa-twitter fa-5x"></i>
+								<i class="fa fa-clock-o fa-5x"></i>
 							</div>
 							<div class="col-xs-9 text-right">
-								<div style="font-size: 4opx;">응답 건수</div>
-								<div style="font-size: 40px;" class="huge" id="month_msgack_div"></div>
+								<div style="font-size: 4opx;">예약 메시지 발송 건수</div>
+								<div style="font-size: 40px;" class="huge" id="month_msgres_div"></div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div id="month-ack-panel-body" class="panel-body">
-			<label>응답 건수</label>
-			<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover"
-					id="dataTables-month-sys-ack" width="100%">
-
-					<thead>
-						<tr>
-
-							<th>Message Id</th>
-							<th>송신자</th>
-							<th>수신자</th>
-							<th>발송상태</th>
-
-
-						</tr>
-					</thead>
-					<tbody id="dataTables-month-ack-tbody">
 
 
 
-					</tbody>
-				</table>
+			<div id="month-res-all-panel-body" class="panel-body">
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-hover"
+						id="dataTables-month-sys-res-all" width="100%">
+
+						<thead>
+							<tr>
+
+								<th>계정</th>
+								<th>발송됨</th>
+								<th>예약취소</th>
+								<th>발송중</th>
+								<th>허용갯수초과</th>
+								<th>수신자없음</th>
+								<th>발송오류</th>
+								<th>기기 응답</th>
+								<th>사용자 응답</th>
+
+
+							</tr>
+						</thead>
+						<tbody id="dataTables-month-res-all-tbody">
+
+
+
+						</tbody>
+					</table>
+				</div>
 			</div>
-		</div>
+			<div id="month-res-panel-body" class="panel-body">
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-hover"
+						id="dataTables-month-sys-res" width="100%">
+
+						<thead>
+							<tr>
+
+								<th>총 예약건수</th>
+								<th>발송됨</th>
+								<th>예약취소</th>
+								<th>발송중</th>
+								<th>허용갯수초과</th>
+								<th>수신자없음</th>
+								<th>발송오류</th>
+								<th>기기 응답</th>
+								<th>사용자 응답</th>
+
+
+							</tr>
+						</thead>
+						<tbody id="dataTables-month-res-tbody">
+
+
+
+						</tbody>
+					</table>
+				</div>
+			</div>
 
 			<!-- /.panel-body -->
 		</div>

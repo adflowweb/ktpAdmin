@@ -138,8 +138,10 @@ function wrapperFunction(data) {
 					sessionStorage.setItem("monitoringStatus", "disable");
 					$('#month-msgcnt-panel-head').hide();
 					$('#month-msgcnt-panel-body').hide();
-					$('#month-ack-panel-head').hide();
-					$('#month-ack-panel-body').hide();
+					$('#month-res-panel-head').hide();
+					$('#month-res-panel-body').hide();
+					$('#month-all-msgcnt-panel-body').hide();
+					$('#month-res-all-panel-body').hide();
 					$('#month-sys-date-input').prop('disabled', true);
 					$('#month-sys-date-div').datetimepicker({
 						viewMode : 'years',
@@ -153,8 +155,8 @@ function wrapperFunction(data) {
 					sessionStorage.setItem("monitoringStatus", "disable");
 					$('#month-svc-msgcnt-panel-head').hide();
 					$('#month-svc-msgcnt-panel-body').hide();
-					$('#month-svc-ack-panel-head').hide();
-					$('#month-svc-sack-panel-body').hide();
+					$('#month-svc-res-panel-head').hide();
+					$('#month-svc-res-panel-body').hide();
 					$('#month-svc-date-input').prop('disabled', true);
 					$('#month-svc-date-div').datetimepicker({
 						viewMode : 'years',

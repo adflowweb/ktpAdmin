@@ -6,9 +6,6 @@ function MessageSendUserFunction() {
 	var role = sessionStorage.getItem("role");
 
 	if (messageSendUserFormCheck()) {
-
-
-
 		var input_messageTarget = $('#message-send-user-target-input').val();
 		var input_messageContent = $('#message-send-user-textarea').val();
 		input_messageContent = utf8_to_b64(input_messageContent);
@@ -45,7 +42,7 @@ function MessageSendUserFunction() {
 			messageData.resendInterval = input_resendInterval;
 		}
 		var messageDataResult = JSON.stringify(messageData);
-		if(utf8ByteLength(messageDataResult)>400000){
+		if(utf8ByteLength(messageDataResult)>512000){
 			console.log(utf8ByteLength(messageDataResult));
 			alert('메시지 사이즈가 너무 큽니다.');
 			return false;
@@ -70,12 +67,13 @@ function MessageSendUserFunction() {
 				if (dataResult) {
 					console.log('/v1/pms/adm/' + role + '/messages(POST)');
 					console.log(dataResult);
-					if(messageData.resendMaxCount){
-						messageData.resendMaxCount=messageData.resendMaxCount*1+1;
-						alert('반복 메시지를 포함하여 총 '+messageData.resendMaxCount+'건을 발송하였습니다.');
-					}else{
-						alert('메시지 1건을 발송하였습니다.');	
-					}
+//					if(messageData.resendMaxCount){
+//						messageData.resendMaxCount=messageData.resendMaxCount*1+1;
+//						alert('반복 메시지를 포함하여 총 '+messageData.resendMaxCount+'건을 발송하였습니다.');
+//					}else{
+//						alert('메시지 1건을 발송하였습니다.');	
+//					}
+					alert('메시지를 발송하였습니다.');	
 					wrapperFunction('MessageSendUser');
 				} else {
 					alert(data.result.errors[0]);
@@ -187,8 +185,7 @@ function messageSendUserFormCheck() {
 				}
 				
 			}
-			
-
+		
 		}
 		
 		if (confirm("예약이 설정된 시간으로 메세지가 전송됩니다. 확인해 주세요") == true) {
