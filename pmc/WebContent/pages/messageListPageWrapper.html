@@ -50,17 +50,36 @@
 			<div class="panel-body">
 
 				<div class="form-group">
-					<label>기간 선택</label> <br />
+					<label>기간 선택</label><br />
 					<div class='input-group date' id='messagelist-date-div'>
 						<input placeholder="기간을 선택해주세요" id="messagelist-date-input"
 							type='text' class="form-control" /> <span
 							class="input-group-addon"><span
 							class="glyphicon glyphicon-calendar"></span> </span>
 					</div>
+					<br /> <label>일별 시작일 <span
+						style="font-size: x-small; font-style: italic; font-weight: lighter;">(일별을
+						설정 하지 않으면  월 단위로 검색됩니다.)</span></label>
+					<div class='input-group date'
+						id='messagelist-search-date-start-div'>
+						<input id="messagelist-search-date-start-input" type='text'
+							class="form-control" /> <span class="input-group-addon"><span
+							class="glyphicon glyphicon-calendar"></span> </span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>일별 종료일 </label>
+					<div class='input-group date' id='messagelist-search-date-end-div'>
+						<input id="messagelist-search-date-end-input" type='text'
+							class="form-control" /> <span class="input-group-addon"><span
+							class="glyphicon glyphicon-calendar"></span> </span>
+					</div>
 				</div>
 				<div class="form-group">
 					<label>검색 항목</label> <select class="form-control"
-						id="messagelist-search-select">
+						id="messagelist-search-select"
+						onchange="javascript:searchSelectChange();">
 						<option value="0">선택</option>
 						<option value="1">발송상태</option>
 						<option value="2">Message Id</option>
@@ -69,10 +88,32 @@
 					</select>
 
 				</div>
+				<div id="messagelist-search-status-select-div" class="form-group"
+					style="display: none;">
+					<label>발송 상태 선택</label> <select class="form-control"
+						id="messagelist-search-status-select">
+						<option value="-99">발송오류</option>
+						<option value="-2">수신자없음</option>
+						<option value="-1">메시지제한</option>
+						<option value="0">발송중</option>
+						<option value="1">발송됨</option>
+						<option value="2">예약취소됨</option>
+					</select>
+
+				</div>
+				<div id="messagelist-search-ack-select-div" class="form-group"
+					style="display: none;">
+					<label>응답 상태 선택</label> <select class="form-control"
+						id="messagelist-search-ack-select">
+						<option value="0">응답없음</option>
+						<option value="1">기기응답</option>
+						<option value="2">사용자응답</option>
+					</select>
+
+				</div>
 
 
-
-				<div class="form-group">
+				<div id="messagelist-input-div" class="form-group">
 					<input type="text" placeholder="검색 내용" class="form-control"
 						id="messagelist-input" />
 				</div>
@@ -89,17 +130,15 @@
 
 						<thead>
 							<tr>
-
-								<th>Message Id</th>
+								<th>발송시간</th>
 								<th>송신자</th>
 								<th>수신자</th>
 								<th>발송상태</th>
-								<th>발송시간</th>
 								<th>응답</th>
 								<th>응답시간</th>
 								<th>반복 메시지 횟수</th>
 								<th>반복 시간</th>
-
+								<th>Message Id</th>
 							</tr>
 						</thead>
 						<tbody id="messageListDataTbody">
@@ -109,6 +148,47 @@
 						</tbody>
 					</table>
 				</div>
+
+			</div>
+			<!-- /.panel-body -->
+		</div>
+
+		<!-- /.panel -->
+	</div>
+
+	<div id="remessage-div" class="col-lg-12" style="display: none;">
+		<div class="panel panel-default">
+			<div style="background-color: aquamarine;" class="panel-heading">메시지
+				상세내용</div>
+			<!-- /.panel-heading -->
+
+
+			<div class="panel-body">
+
+				<div class="form-group">
+					<label>메시지 전송 대상<span
+						style="font-size: x-small; font-style: italic; font-weight: lighter;">(여러
+							대상에게 전송시에 ,로 구분하여 입력해주세요.)</span>
+					</label><br /> <input type="text" class="form-control"
+						id="remessage-send-user-target-input"
+						placeholder="필수       메세지 발송 대상 ex) 01033334444"></input>
+
+				</div>
+
+				<div class="form-group">
+					<label>메시지 내용</label>
+
+					<textarea class="form-control" id="remessage-send-user-textarea"
+						rows="5"> </textarea>
+				
+					<input type="hidden" id="remessage-send-serviceid"/>
+				</div>
+				<input type="button" onclick="javascript:MessageReSendUserFunction();"
+					class="btn btn-default" value="재전송"></input> <input
+					type="button"
+					onclick="javascript:wrapperFunction('messageList');"
+					class="btn btn-default" value="Reset"></input>
+
 
 			</div>
 			<!-- /.panel-body -->

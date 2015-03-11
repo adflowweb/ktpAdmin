@@ -237,29 +237,44 @@ function wrapperFunction(data) {
 
 											var item = data.result.data[i];
 											console.log(item);
-//											var status = "";
-//											if (item.status == 0) {
-//												status = "발송 준비중";
-//											} else if (item.status == 1) {
-//												status = "push 발송됨";
-//											} else {
-//												status = item.status;
-//											}
+											// var status = "";
+											// if (item.status == 0) {
+											// status = "발송 준비중";
+											// } else if (item.status == 1) {
+											// status = "push 발송됨";
+											// } else {
+											// status = item.status;
+											// }
 
 											var dateTime = item.issue;
 
 											var time = new Date(dateTime)
 													.toLocaleString();
+											// 102 keepalive
+											// 103 precheck
+											// 104 firmware update (base64
+											// encoding)
+											// 105 diginfo
+											if (item.type == "102") {
+												item.type="KeepAlive";
+											} else if (item.type = "104") {
+												item.type="FirmwareUpdate";
+											} else if (item.type = "105"){
+												item.type="DIGAccountInfo";
+											}else{
+												itme.type="일반메시지";
+											}
 
-											tableData.push({
-												"MessageId" : item.id,
-												"Sender" : item.sender,
-												"Receiver" : item.receiver,
-//												"qos" : item.qos,
-//												"status" : status,
-												"time" : time
+												tableData.push({
+													"MessageId" : item.id,
+													"Sender" : item.sender,
+													"Receiver" : item.receiver,
+													"goal" : item.type,
+													// "qos" : item.qos,
+													// "status" : status,
+													"time" : time
 
-											});
+												});
 										}
 
 										console.log(tableData);
@@ -275,14 +290,16 @@ function wrapperFunction(data) {
 												mData : 'Sender'
 											}, {
 												mData : 'Receiver'
+											}, {
+												mData : 'goal'
 											},
-//											, {
-//												mData : 'qos'
-//											}
-//											, {
-//												mData : 'status'
-//											},
-											
+											// , {
+											// mData : 'qos'
+											// }
+											// , {
+											// mData : 'status'
+											// },
+
 											{
 												mData : 'time'
 											} ],

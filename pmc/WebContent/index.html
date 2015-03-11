@@ -36,6 +36,7 @@
 <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
 <script src="ckeditor/ckeditor.js"></script>
 <script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
+<script src="js/plugins/flot/jquery.flot.js"></script>
 <script src="js/plugins/morris/morris.js"></script>
 <script src="js/ladda.js"></script>
 <script src="js/spin.js"></script>
@@ -85,49 +86,49 @@
 					<ul class="nav" id="side-menu">
 
 						<li><a href="#"><i class="fa fa-dashboard fa-fw"></i>
-								Dashboard(관리자&서비스) <span class="fa arrow"></a>
+								Dashboard <span class="fa arrow"></a>
 
 							<ul class="nav nav-second-level">
 								<!-- 관리자 메뉴 -->
 								<li id="sys_monitoring_li"><a href="#"
 									onclick="javascript:wrapperFunction('monitoring');">시스템
-										모니터링(관리자)</a></li>
+										모니터링</a></li>
 								<!-- 서비스 메뉴 -->
 								<li id="svc_message_list_li"><a href="#"
 									onclick="javascript:wrapperFunction('messageList');">메시지 발송
-										현황(서비스)</a></li>
+										현황</a></li>
 
 
 								<li id="svc_message_reservation_li"><a href="#"
 									onclick="javascript:wrapperFunction('reservationList');">예약
-										메시지 발송 현황(서비스)</a></li>
+										메시지 발송 현황</a></li>
 								<!-- 서비스 메뉴 -->
 
 								<li id="sys_message_list_li"><a href="#"
 									onclick="javascript:wrapperFunction('statistics');">메시지 발송
-										현황(관리자)</a></li>
+										현황</a></li>
 								<li id="sys_message_list_month_li"><a href="#"
 									onclick="javascript:wrapperFunction('monthSys');">월별
-										통계(관리자)</a></li>
+										통계</a></li>
 								<li id="svc_message_list_month_li"><a href="#"
 									onclick="javascript:wrapperFunction('monthSvc');">월별
-										통계(관리자)</a></li>
+										통계</a></li>
 
 
 							</ul></li>
 
 						<li id="message_send_li"><a href="#"><i
-								class="fa fa-envelope fa-fw"></i> Push Message(서비스 내부) <span
+								class="fa fa-envelope fa-fw"></i> Push Message<span
 								class="fa arrow"></a>
 
 							<ul class="nav nav-second-level">
 								<!-- 기능삭제 -->
 								<li id="svcadm_message_send_li_second"><a href="#"
 									onclick="javascript:wrapperFunction('MessageSendAdm');">메세지
-										전송(서비스내부)</a></li>
+										전송</a></li>
 								<li id="svc_message_send_li_second"><a href="#"
 									onclick="javascript:wrapperFunction('MessageSendUser');">메세지
-										전송(서비스유저)</a></li>
+										전송</a></li>
 
 
 
@@ -135,13 +136,13 @@
 
 							</ul></li>
 						<li id="sys_admin_li"><a href="#"><i
-								class="fa fa-user fa-fw"></i> Admin(관리자)<span class="fa arrow"></span></a>
+								class="fa fa-user fa-fw"></i> Admin<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li><a href="#"
 									onclick="javascript:wrapperFunction('userManager');">계정
-										관리(관리자)</a></li>
+										관리</a></li>
 								<li><a href="#"
-									onclick="javascript:wrapperFunction('userAdd');">계정 등록(관리자)</a>
+									onclick="javascript:wrapperFunction('userAdd');">계정 등록</a>
 								</li>
 
 <!-- 								<li><a href="#" -->

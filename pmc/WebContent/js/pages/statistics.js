@@ -71,7 +71,7 @@ var statisticsTable = $('#statistics-datatable')
 					'bSort' : false,
 					'dom' : '<"clear">lrtip',
 					'columns' : [ {
-						"data" : "msgId"
+						"data" : "updateTime"
 					}, {
 						"data" : "updateId"
 					}, {
@@ -79,15 +79,17 @@ var statisticsTable = $('#statistics-datatable')
 					}, {
 						"data" : "status"
 					}, {
-						"data" : "updateTime"
-					}, {
 						"data" : "pmaAckType"
 					}, {
 						"data" : "pmaAckTime"
 					}, {
-						"data" : "resendMaxCount"
+						"data" : "resendCount"
 					}, {
 						"data" : "resendInterval"
+					}, {
+						"data" : "serviceId"
+					}, {
+						"data" : "msgId"
 					} ],
 					'sPaginationType' : 'full_numbers',
 					'sAjaxSource' : '/v1/pms/adm/' + statisticsRole
@@ -142,45 +144,60 @@ var statisticsTable = $('#statistics-datatable')
 												case -99:
 													dataResult[i].status = "발송오류";
 													var dateTime = dataResult[i].updateTime;
-													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
+													dataResult[i].updateTime = new Date(
+															dateTime)
+															.toLocaleString();
 													break;
 												case -2:
 													dataResult[i].status = "수신자없음";
 													var dateTime = dataResult[i].updateTime;
-													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
+													dataResult[i].updateTime = new Date(
+															dateTime)
+															.toLocaleString();
 													break;
 												case -1:
 													dataResult[i].status = "허용갯수초과";
 													var dateTime = dataResult[i].updateTime;
-													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
+													dataResult[i].updateTime = new Date(
+															dateTime)
+															.toLocaleString();
 													break;
 												case 0:
 													dataResult[i].status = "발송중";
-													if(dataResult[i].reservationTime==null){
-														console.log('널일경우 예약 메시지가 아닌데 발송중일경우 업데이트 타임표시');
+													if (dataResult[i].reservationTime == null) {
+														console
+																.log('널일경우 예약 메시지가 아닌데 발송중일경우 업데이트 타임표시');
 														var dateTime = dataResult[i].updateTime;
-														dataResult[i].updateTime = new Date(dateTime).toLocaleString();
-													}else{
+														dataResult[i].updateTime = new Date(
+																dateTime)
+																.toLocaleString();
+													} else {
 														var dateTime = dataResult[i].reservationTime;
-														dataResult[i].updateTime = new Date(dateTime).toLocaleString()+"(예약)";
+														dataResult[i].updateTime = new Date(
+																dateTime)
+																.toLocaleString()
+																+ "(예약)";
 													}
 													break;
 												case 1:
 													dataResult[i].status = "발송됨";
 													var dateTime = dataResult[i].updateTime;
-													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
+													dataResult[i].updateTime = new Date(
+															dateTime)
+															.toLocaleString();
 													break;
 												case 2:
 													dataResult[i].status = "예약취소됨";
 													var dateTime = dataResult[i].updateTime;
-													dataResult[i].updateTime = new Date(dateTime).toLocaleString();
+													dataResult[i].updateTime = new Date(
+															dateTime)
+															.toLocaleString();
 													break;
 
 												}
 
 												dataResult[i].resendInterval = dataResult[i].resendInterval
 														+ "분";
-									
 
 											}
 
@@ -284,28 +301,13 @@ var statisticsTable = $('#statistics-datatable')
 							break;
 						// status
 						case 1:
-							if (searchInputValue == "발송오류") {
-								searchSelectText = -99 * 1;
-							} else if (searchInputValue == "수신자 없음") {
-								searchSelectText = -2 * 1;
-							} else if (searchInputValue == "허용갯수초과") {
-								searchSelectText = -1 * 1;
-							} else if (searchInputValue == "발송중") {
-								searchSelectText = 1 - 1;
-							} else if (searchInputValue == "발송됨") {
-								console.log(searchSelectText);
-								searchSelectText = 1 * 1;
-							} else if (searchInputValue == "예약취소됨") {
-								searchSelectText = 2 * 1;
-							} else if (searchInputValue !== parseInt(
-									searchInputValue, 10)) {
-								alert('발송 상태 입력이 올바르지 않습니다.');
-								$('#statistics-search-input').focus();
-								return;
-							}
+							var statusValue = $(
+									'#statistics-search-status-select option:selected')
+									.val();
+							// messagelist-search-status-select
 							aoData.push({
 								'name' : 'cSearchStatus',
-								'value' : searchSelectText
+								'value' : statusValue
 							});
 							break;
 						// msgid
@@ -345,22 +347,18 @@ var statisticsTable = $('#statistics-datatable')
 							break;
 						// ack
 						case 4:
+							var ackValue = $(
+									'#statistics-search-ack-select option:selected')
+									.val();
 							searchSelectText = "ack";
-							// search value
-							if (searchInputValue == "응답없음") {
-								searchInputValue = 1 - 1;
-							} else if (searchInputValue == "기기응답") {
-								searchInputValue = 1 * 1;
-							} else if (searchInputValue == "사용자응답") {
-								searchInputValue = 1 * 2;
-							}
+
 							aoData.push({
 								'name' : 'cSearchFilter',
 								'value' : searchSelectText
 							});
 							aoData.push({
 								'name' : 'cSearchContent',
-								'value' : searchInputValue
+								'value' : ackValue
 							});
 							aoData.push({
 								'name' : 'cSearchStatus',
@@ -404,13 +402,15 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 					'bSort' : false,
 					'dom' : '<"clear">lrtip',
 					'columns' : [ {
-						"data" : "msgId"
+						"data" : "reservationTime"
 					}, {
 						"data" : "updateId"
 					}, {
 						"data" : "receiver"
 					}, {
-						"data" : "reservationTime"
+						"data" : "serviceId"
+					}, {
+						"data" : "msgId"
 					} ],
 					'sPaginationType' : 'full_numbers',
 					'sAjaxSource' : '/v1/pms/adm/' + statisticsRole
@@ -493,7 +493,8 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 								'#statistics-reservation-search-date-end-input')
 								.val();
 						var searchMonth = $(
-								'#statistics-reservation-search-date-month-input').val();
+								'#statistics-reservation-search-date-month-input')
+								.val();
 
 						if (searchMonth == null || searchMonth == "") {
 							var nowDate = new Date();
@@ -506,8 +507,8 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 							console.log(year + "/" + month);
 							searchMonth = year + "/" + month;
 
-							$('#statistics-reservation-search-date-month-input').val(
-									searchMonth);
+							$('#statistics-reservation-search-date-month-input')
+									.val(searchMonth);
 						}
 
 						searchMonth = searchMonth.replace("/", "");
@@ -659,7 +660,6 @@ function checkSearchStatistics() {
 	var selectOptionValue = $('#statistics-search-select').val();
 	var inputSearchValue = $('#statistics-search-input').val();
 	var searchDateStart = $('#statistics-search-date-start-input').val();
-
 	var defaultMonth = $('#statistics-search-date-month-input').val();
 
 	// 2015/03
@@ -698,7 +698,7 @@ function checkSearchStatistics() {
 	// return false;
 	// }
 
-	if (selectOptionValue != 0) {
+	if (selectOptionValue == 2 || selectOptionValue == 3) {
 		if (inputSearchValue == null || inputSearchValue == "") {
 			alert('검색할 내용을 입력해 주세요');
 			$('#statistics-search-input').focus();
@@ -737,21 +737,34 @@ function checkSearchStatistics() {
 
 	}
 
-	if (searchDateEnd != null && searchDateEnd != "") {
+}
 
-		if (searchDateStart == null || searchDateStart == "") {
-			alert('검색 시작일을 입력해 주세요');
-			return false;
-		} else {
-			if (searchDateStart >= searchDateEnd) {
-				alert('검색 시작일이 종료일보다 클 수 없습니다');
-				return false;
-			} else {
-				return true;
-			}
-		}
-	} else {
-		return true;
+function searchSelectSysChange() {
+	console.log('메시지 리스트 셀렉트 변경 시');
+	var selectOptionValue = $('#statistics-search-select').val();
+
+	selectOptionValue = selectOptionValue * 1;
+
+	switch (selectOptionValue) {
+	// 발송상태
+	case 1:
+		$('#statistics-input-div').hide();
+		$('#statistics-search-ack-select-div').hide();
+		$('#statistics-search-status-select-div').show();
+		break;
+
+	// 응답상태
+	case 4:
+		$('#statistics-input-div').hide();
+		$('#statistics-search-ack-select-div').show();
+		$('#statistics-search-status-select-div').hide();
+
+		break;
+	default:
+		$('#statistics-input-div').show();
+		$('#statistics-search-ack-select-div').hide();
+		$('#statistics-search-status-select-div').hide();
+		break;
 	}
 
 }
@@ -779,7 +792,8 @@ function checkReservationSearch() {
 
 	var selectOptionValue = $('#statistics-reservation-search-select').val();
 	var inputSearchValue = $('#statistics-reservation-search-input').val();
-	var defaultMonth = $('#statistics-reservation-search-date-month-input').val();
+	var defaultMonth = $('#statistics-reservation-search-date-month-input')
+			.val();
 
 	// 2015/03
 	console.log('서브스트링');
@@ -793,8 +807,7 @@ function checkReservationSearch() {
 		defaultMonth = defaultMonth.substring(5);
 		defaultMonth = defaultMonth - 1;
 	}
-	
-	
+
 	var searchDateStart = $('#statistics-reservation-search-date-start-input')
 			.val();
 	searchDateStart = dateFormating(searchDateStart);

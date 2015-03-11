@@ -63,12 +63,30 @@ function monthSearch() {
 		input_month_value = input_month_value.replace("/", "");
 		var accountSelectText = $('#month-account-select option:selected')
 				.text();
+		var searchDateStart = $('#monthsys-search-date-start-input').val();
+		var searchDateEnd = $('#monthsys-search-date-end-input').val();
+		var ajaxUrl = "";
+		searchDateStart = dateFormating(searchDateStart);
+		searchDateEnd = dateFormating(searchDateEnd);
+		if (searchDateStart) {
+			console.log('상세검색데이터');
+			searchDateStart = searchDateStart.toISOString();
+			searchDateEnd = searchDateEnd.toISOString();
+			ajaxUrl = '/v1/pms/adm/sys/messages/summary/' + input_month_value
+					+ "?cSearchDateStart=" + searchDateStart
+					+ "&cSearchDateEnd=" + searchDateEnd;
+		} else {
+			console.log('상세검색데이터 없음');
+			ajaxUrl = '/v1/pms/adm/sys/messages/summary/' + input_month_value;
+		}
+
+	
 
 		if (accountSelectText == "전체") {
-			var inputMonthValue = $('#month-sys-date-input').val();
+
 			// /전체 테이블 일반 ,예약
 			$.ajax({
-				url : '/v1/pms/adm/sys/messages/summary/' + input_month_value,
+				url : ajaxUrl,
 				type : 'GET',
 				contentType : "application/json",
 				headers : {
@@ -241,9 +259,9 @@ function monthSearch() {
 									"sSwfPath" : "swf/csvxlspdf.swf",
 									"aButtons" : [ {
 										"sExtends" : "xls",
-										"sButtonText" : "excel",
-										"sFileName" : "*.xls"
-									}, "copy", "pdf" ]
+										"sButtonText" : "csv",
+										"sFileName" : "*.csv"
+									}, "copy" ]
 								},
 								aoColumns : [ {
 									mData : 'userId'
@@ -277,9 +295,9 @@ function monthSearch() {
 									"sSwfPath" : "swf/csvxlspdf.swf",
 									"aButtons" : [ {
 										"sExtends" : "xls",
-										"sButtonText" : "excel",
-										"sFileName" : "*.xls"
-									}, "copy", "pdf" ]
+										"sButtonText" : "csv",
+										"sFileName" : "*.csv"
+									}, "copy" ]
 								},
 								aoColumns : [ {
 									mData : 'userId'
@@ -326,7 +344,7 @@ function monthSearch() {
 			});
 			// 전체 합계 테이블 일반 예약
 			$.ajax({
-				url : '/v1/pms/adm/sys/messages/summary/' + input_month_value,
+				url : ajaxUrl,
 				type : 'GET',
 				contentType : "application/json",
 				headers : {
@@ -500,9 +518,9 @@ function monthSearch() {
 									"sSwfPath" : "swf/csvxlspdf.swf",
 									"aButtons" : [ {
 										"sExtends" : "xls",
-										"sButtonText" : "excel",
-										"sFileName" : "*.xls"
-									}, "copy", "pdf" ]
+										"sButtonText" : "csv",
+										"sFileName" : "*.csv"
+									}, "copy" ]
 								},
 								aoColumns : [ {
 									mData : 'totalMsgCnt'
@@ -536,9 +554,9 @@ function monthSearch() {
 									"sSwfPath" : "swf/csvxlspdf.swf",
 									"aButtons" : [ {
 										"sExtends" : "xls",
-										"sButtonText" : "excel",
-										"sFileName" : "*.xls"
-									}, "copy", "pdf" ]
+										"sButtonText" : "csv",
+										"sFileName" : "*.csv"
+									}, "copy" ]
 								},
 								aoColumns : [ {
 									mData : 'totalMsgCnt'
@@ -586,7 +604,7 @@ function monthSearch() {
 		} else {
 			// 선택 일반테이블
 			$.ajax({
-				url : '/v1/pms/adm/sys/messages/summary/' + input_month_value
+				url : ajaxUrl
 						+ "/" + accountSelectText,
 				type : 'GET',
 				contentType : "application/json",
@@ -719,7 +737,7 @@ function monthSearch() {
 							monthTableData.push({
 								"totalMsgCnt" : totalMsgCnt,
 								"msgCnt" : statusP1Cnt,
-							
+
 								"sending" : statusP0Cnt,
 								"limitOver" : statusD1Cnt,
 								"userNotFound" : statusD2Cnt,
@@ -754,9 +772,9 @@ function monthSearch() {
 									"sSwfPath" : "swf/csvxlspdf.swf",
 									"aButtons" : [ {
 										"sExtends" : "xls",
-										"sButtonText" : "excel",
-										"sFileName" : "*.xls"
-									}, "copy", "pdf" ]
+										"sButtonText" : "csv",
+										"sFileName" : "*.csv"
+									}, "copy" ]
 								},
 								aoColumns : [ {
 									mData : 'totalMsgCnt'
@@ -789,9 +807,9 @@ function monthSearch() {
 									"sSwfPath" : "swf/csvxlspdf.swf",
 									"aButtons" : [ {
 										"sExtends" : "xls",
-										"sButtonText" : "excel",
-										"sFileName" : "*.xls"
-									}, "copy", "pdf" ]
+										"sButtonText" : "csv",
+										"sFileName" : "*.csv"
+									}, "copy" ]
 								},
 								aoColumns : [ {
 									mData : 'totalMsgCnt'
@@ -848,7 +866,8 @@ function monthFormCheck() {
 
 	var selectOptionValue = $('#month-account-select').val();
 	var inputMonthValue = $('#month-sys-date-input').val();
-
+	var searchDateStart = $('#monthsys-search-date-start-input').val();
+	var searchDateEnd = $('#monthsys-search-date-end-input').val();
 	inputMonthValue = compactTrim(inputMonthValue);
 	console.log(inputMonthValue);
 	if (selectOptionValue != 0) {
@@ -877,6 +896,60 @@ function monthFormCheck() {
 	if (inputMonthValue == null | inputMonthValue == "") {
 		alert('검색할 기간 입력해 주세요');
 		return false;
+	}
+	if (inputMonthValue.substring(5, 6) == 0) {
+		inputMonthValue = inputMonthValue.substring(6);
+		inputMonthValue = inputMonthValue - 1;
+		console.log('기본달');
+		console.log(inputMonthValue - 1);
+	} else {
+		inputMonthValue = inputMonthValue.substring(5);
+		inputMonthValue = inputMonthValue - 1;
+	}
+	searchDateStart = dateFormating(searchDateStart);
+
+	if (typeof searchDateStart === undefined
+			|| typeof searchDateStart === 'undefined') {
+		console.log("dsearchDateStart id undefined ");
+		searchDateStart = "";
+	}
+
+	searchDateEnd = dateFormating(searchDateEnd);
+	if (typeof searchDateEnd === undefined
+			|| typeof searchDateEnd === 'undefined') {
+		console.log("dsearchDateEnd.....");
+		searchDateEnd = "";
+	}
+
+	if (searchDateStart != null && searchDateStart != "") {
+		console.log('검색 시작 종료 로그');
+		console.log(searchDateStart);
+		console.log(searchDateEnd);
+		if (searchDateEnd == null || searchDateEnd == "") {
+			alert('검색 종료일을 입력해 주세요');
+			return false;
+		} else {
+			if (searchDateStart >= searchDateEnd) {
+				alert('검색 시작일이 종료일보다 클 수 없습니다');
+				return false;
+			} else if (searchDateStart.getMonth() === searchDateEnd.getMonth()
+					&& inputMonthValue === searchDateEnd.getMonth()
+					&& inputMonthValue === searchDateStart.getMonth()) {
+				console.log(searchDateStart.getMonth());
+				console.log('같은월');
+				return true;
+			} else if (searchDateStart.getMonth() !== searchDateEnd.getMonth()
+					|| inputMonthValue !== searchDateEnd.getMonth()
+					|| inputMonthValue !== searchDateStart.getMonth()) {
+				console.log('다른월');
+				alert('같은 달에서만 검색이 가능합니다');
+				return false;
+			} else {
+				return true;
+			}
+
+		}
+
 	}
 
 	return true;

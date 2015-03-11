@@ -55,152 +55,243 @@ $(document).ready(
 // Page wrapperfunction
 function wrapperFunction(data) {
 
-	$("#page-wrapper").load(
-			"pages/" + data + "PageWrapper.html",
-			function() {
+	$("#page-wrapper")
+			.load(
+					"pages/" + data + "PageWrapper.html",
+					function() {
 
-				if (data === "userManager") {
-					sessionStorage.setItem("monitoringStatus", "disable");
-				}
+						if (data === "userManager") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+						}
 
-				if (data === "MessageSendAdm") {
+						if (data === "MessageSendAdm") {
 
-					sessionStorage.setItem("monitoringStatus", "disable");
-					var nowDate = new Date();
-					var today = new Date(nowDate.getFullYear(), nowDate
-							.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-					var today_30 = new Date(nowDate.getFullYear(), nowDate
-							.getMonth(), nowDate.getDate() + 30, 0, 0, 0, 0);
-					$('#message-send-reservation-div').datetimepicker().data(
-							"DateTimePicker").setMinDate(today);
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+							var nowDate = new Date();
+							var today = new Date(nowDate.getFullYear(), nowDate
+									.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+							var today_30 = new Date(nowDate.getFullYear(),
+									nowDate.getMonth(), nowDate.getDate() + 30,
+									0, 0, 0, 0);
+							$('#message-send-reservation-div').datetimepicker()
+									.data("DateTimePicker").setMinDate(today);
 
-					$('#message-send-reservation-div').datetimepicker().data(
-							"DateTimePicker").setMaxDate(today_30);
-					$("#message-send-reservationdate-input").prop('disabled', true);
-					$("#message-send-contentType-select").prop('disabled', true);
-				}
-				
-				if (data === "MessageSendUser") {
+							$('#message-send-reservation-div').datetimepicker()
+									.data("DateTimePicker")
+									.setMaxDate(today_30);
+							$("#message-send-reservationdate-input").prop(
+									'disabled', true);
+							$("#message-send-contentType-select").prop(
+									'disabled', true);
+						}
 
-					sessionStorage.setItem("monitoringStatus", "disable");
-					var nowDate = new Date();
-					var today = new Date(nowDate.getFullYear(), nowDate
-							.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-					var today_30 = new Date(nowDate.getFullYear(), nowDate
-							.getMonth(), nowDate.getDate() + 30, 0, 0, 0, 0);
-					$('#message-send-user-reservation-div').datetimepicker().data(
-							"DateTimePicker").setMinDate(today);
+						if (data === "MessageSendUser") {
 
-					$('#message-send-user-reservation-div').datetimepicker().data(
-							"DateTimePicker").setMaxDate(today_30);
-					$("#message-send-user-reservationdate-input").prop('disabled', true);
-				}
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+							var nowDate = new Date();
+							var today = new Date(nowDate.getFullYear(), nowDate
+									.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+							var today_30 = new Date(nowDate.getFullYear(),
+									nowDate.getMonth(), nowDate.getDate() + 30,
+									0, 0, 0, 0);
+							$('#message-send-user-reservation-div')
+									.datetimepicker().data("DateTimePicker")
+									.setMinDate(today);
 
-				if (data === "monitoring") {
+							$('#message-send-user-reservation-div')
+									.datetimepicker().data("DateTimePicker")
+									.setMaxDate(today_30);
+							$("#message-send-user-reservationdate-input").prop(
+									'disabled', true);
+						}
 
-					var element = document.createElement("script");
-					element.src = "js/pages/monitoring.js";
-					document.body.appendChild(element);
-					sessionStorage.setItem("monitoringStatus", "enable");
+						if (data === "monitoring") {
 
-				}
+							var element = document.createElement("script");
+							element.src = "js/pages/monitoring.js";
+							document.body.appendChild(element);
+							sessionStorage
+									.setItem("monitoringStatus", "enable");
 
-				if (data === "messageList") {
-					sessionStorage.setItem("monitoringStatus", "disable");
-					$('#messagelist-date-div').datetimepicker({
-						viewMode : 'years',
-						format : 'YYYY/MM',
-						minViewMode : "months"
+						}
+
+						if (data === "messageList") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+
+							var nowDate = new Date();
+							var today_1 = new Date(nowDate.getFullYear(),
+									nowDate.getMonth(), nowDate.getDate() + 1,
+									0, 0, 0, 0);
+
+							$('#messagelist-search-date-start-div')
+									.datetimepicker().data("DateTimePicker")
+									.setMaxDate(today_1);
+
+							$('#messagelist-search-date-end-div')
+									.datetimepicker().data("DateTimePicker")
+									.setMaxDate(today_1);
+
+							$('#messagelist-date-div').datetimepicker({
+								viewMode : 'years',
+								format : 'YYYY/MM',
+								minViewMode : "months",
+								pickTime : false
+							});
+							$('#messagelist-date-input').prop('disabled', true);
+
+						}
+
+						if (data === "reservationList") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+
+							// var nowDate = new Date();
+							// var today_1 = new Date(nowDate.getFullYear(),
+							// nowDate
+							// .getMonth(), nowDate.getDate() + 60, 0, 0, 0, 0);
+
+							$('#reservation-search-date-start-div')
+									.datetimepicker({
+
+									});
+
+							$('#reservation-search-date-end-div')
+									.datetimepicker({
+
+									});
+
+							$('#reservation-date-div').datetimepicker({
+								viewMode : 'years',
+								format : 'YYYY/MM',
+								minViewMode : 'months',
+								pickTime : false
+							});
+							$('#reservation-date-input').prop('disabled', true);
+						}
+
+						if (data === "userAdd") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+						}
+						if (data === "userManager") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+						}
+
+						if (data === "monthSys") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+							$('#month-msgcnt-panel-head').hide();
+							$('#month-msgcnt-panel-body').hide();
+							$('#month-res-panel-head').hide();
+							$('#month-res-panel-body').hide();
+							$('#month-all-msgcnt-panel-body').hide();
+							$('#month-res-all-panel-body').hide();
+							$('#month-sys-date-input').prop('disabled', true);
+							$('#monthsys-search-date-start-input').prop(
+									'disabled', true);
+							$('#monthsys-search-date-end-input').prop(
+									'disabled', true);
+							var nowDate = new Date();
+							var today_1 = new Date(nowDate.getFullYear(),
+									nowDate.getMonth(), nowDate.getDate() + 1,
+									0, 0, 0, 0);
+
+							$('#monthsys-search-date-start-div')
+									.datetimepicker().data("DateTimePicker")
+									.setMaxDate(today_1);
+
+							$('#monthsys-search-date-end-div').datetimepicker(
+									{});
+
+							$('#month-sys-date-div').datetimepicker({
+								viewMode : 'years',
+								format : 'YYYY/MM',
+								minViewMode : "months",
+								pickTime : false
+							});
+							// month-sys-date-div
+						}
+
+						if (data === "monthSvc") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+							$('#month-svc-msgcnt-panel-head').hide();
+							$('#month-svc-msgcnt-panel-body').hide();
+							$('#month-svc-res-panel-head').hide();
+							$('#month-svc-res-panel-body').hide();
+							$('#month-svc-date-input').prop('disabled', true);
+							$('#monthsvc-search-date-start-input').prop(
+									'disabled', true);
+							$('#monthsvc-search-date-end-input').prop(
+									'disabled', true);
+							var nowDate = new Date();
+							var today_1 = new Date(nowDate.getFullYear(),
+									nowDate.getMonth(), nowDate.getDate() + 1,
+									0, 0, 0, 0);
+
+							$('#monthsvc-search-date-start-div')
+									.datetimepicker({});
+
+							$('#monthsvc-search-date-end-div').datetimepicker(
+									{})
+
+							$('#month-svc-date-div').datetimepicker({
+								viewMode : 'years',
+								format : 'YYYY/MM',
+								minViewMode : "months",
+								pickTime : false
+							});
+							// month-sys-date-div
+						}
+
+						if (data === "statistics") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+							var nowDate = new Date();
+							var today_1 = new Date(nowDate.getFullYear(),
+									nowDate.getMonth(), nowDate.getDate() + 1,
+									0, 0, 0, 0);
+
+							$('#statistics-search-date-start-div')
+									.datetimepicker().data("DateTimePicker")
+									.setMaxDate(today_1);
+
+							$('#statistics-search-date-end-div')
+									.datetimepicker().data("DateTimePicker")
+									.setMaxDate(today_1);
+
+							$('#statistics-reservation-search-date-start-div')
+									.datetimepicker({
+
+									});
+
+							$('#statistics-reservation-search-date-end-div')
+									.datetimepicker({
+
+									});
+							$('#statistics-search-date-month-div')
+									.datetimepicker({
+										viewMode : 'years',
+										format : 'YYYY/MM',
+										minViewMode : "months",
+										pickTime : false
+									});
+							$('#statistics-reservation-search-date-month-div')
+									.datetimepicker({
+										viewMode : 'years',
+										format : 'YYYY/MM',
+										minViewMode : "months",
+										pickTime : false
+									});
+
+						}
+
 					});
-					$('#messagelist-date-input').prop('disabled', true);
-
-				}
-
-				if (data === "reservationList") {
-					sessionStorage.setItem("monitoringStatus", "disable");
-
-					$('#reservation-date-div').datetimepicker({
-						viewMode : 'years',
-						format : 'YYYY/MM',
-						minViewMode : 'months'
-					});
-					$('#reservation-date-input').prop('disabled', true);
-				}
-
-				if (data === "userAdd") {
-					sessionStorage.setItem("monitoringStatus", "disable");
-				}
-				if (data === "userManager") {
-					sessionStorage.setItem("monitoringStatus", "disable");
-				}
-				
-				if (data === "monthSys") {
-					sessionStorage.setItem("monitoringStatus", "disable");
-					$('#month-msgcnt-panel-head').hide();
-					$('#month-msgcnt-panel-body').hide();
-					$('#month-res-panel-head').hide();
-					$('#month-res-panel-body').hide();
-					$('#month-all-msgcnt-panel-body').hide();
-					$('#month-res-all-panel-body').hide();
-					$('#month-sys-date-input').prop('disabled', true);
-					$('#month-sys-date-div').datetimepicker({
-						viewMode : 'years',
-						format : 'YYYY/MM',
-						minViewMode : "months"
-					});
-					//month-sys-date-div
-				}
-				
-				if (data === "monthSvc") {
-					sessionStorage.setItem("monitoringStatus", "disable");
-					$('#month-svc-msgcnt-panel-head').hide();
-					$('#month-svc-msgcnt-panel-body').hide();
-					$('#month-svc-res-panel-head').hide();
-					$('#month-svc-res-panel-body').hide();
-					$('#month-svc-date-input').prop('disabled', true);
-					$('#month-svc-date-div').datetimepicker({
-						viewMode : 'years',
-						format : 'YYYY/MM',
-						minViewMode : "months"
-					});
-					//month-sys-date-div
-				}
-
-				if (data === "statistics") {
-					sessionStorage.setItem("monitoringStatus", "disable");
-					var nowDate = new Date();
-					var today_1 = new Date(nowDate.getFullYear(), nowDate
-							.getMonth(), nowDate.getDate()+1, 0, 0, 0, 0);
-
-					$('#statistics-search-date-start-div').datetimepicker()
-							.data("DateTimePicker").setMaxDate(today_1);
-
-					$('#statistics-search-date-end-div').datetimepicker().data(
-							"DateTimePicker").setMaxDate(today_1);
-
-					$('#statistics-reservation-search-date-start-div')
-							.datetimepicker().data("DateTimePicker")
-							.setMaxDate(today_1);
-
-					$('#statistics-reservation-search-date-end-div')
-							.datetimepicker().data("DateTimePicker")
-							.setMaxDate(today_1);
-					$('#statistics-search-date-month-div').datetimepicker({
-						viewMode : 'years',
-						format : 'YYYY/MM',
-						minViewMode : "months"
-					});
-					$('#statistics-reservation-search-date-month-div').datetimepicker({
-						viewMode : 'years',
-						format : 'YYYY/MM',
-						minViewMode : "months"
-					});
-			
-					
-					
-				}
-
-			});
 }
 
 // Login
@@ -241,7 +332,7 @@ function loginFunction(atag) {
 		async : false,
 		data : loginReq,
 		success : function(data) {
-		
+
 			var dataResult = data.result.data;
 			if (dataResult) {
 				console.log('/v1/pms/adm/cmm/auth(POST)');
@@ -326,7 +417,7 @@ function logoutFunction() {
 
 // Date ValidateDate Check
 function validateDate(input_reservation) {
-	//car la pi alba 
+	// car la pi alba
 	var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
 	return date_regex.test(input_reservation);
 }
@@ -347,7 +438,7 @@ function sysLogin() {
 	$('#sys_message_list_li').show();
 	$('#svcadm_message_send_li_second').hide();
 	$('#svc_message_send_li_second').hide();
-	$('#svc_message_list_month_li').hide();	
+	$('#svc_message_list_month_li').hide();
 	$('#sys_message_list_month_li').show();
 	sessionStorage.setItem("monitoringStatus", "disable");
 }
@@ -362,13 +453,23 @@ function svcLogin() {
 	$('#message_send_li').show();
 	$('#sys_message_list_li').hide();
 	$('#svcadm_message_send_li_second').hide();
-	$('#svc_message_list_month_li').show();	
+	$('#svc_message_list_month_li').show();
 	$('#sys_message_list_month_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
+	var nowDate = new Date();
+	var today_1 = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate
+			.getDate() + 1, 0, 0, 0, 0);
+	$('#messagelist-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(today_1);
+
+	$('#messagelist-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(today_1);
+
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',
 		format : 'YYYY/MM',
-		minViewMode : "months"
+		minViewMode : "months",
+		pickTime : false
 	});
 
 	$('#messagelist-date-input').prop('disabled', true);
@@ -395,10 +496,20 @@ function svcAdmLogin() {
 	$('#svc_message_list_month_li').show();
 	$('#sys_message_list_month_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
+	var nowDate = new Date();
+	var today_1 = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate
+			.getDate() + 1, 0, 0, 0, 0);
+	$('#messagelist-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(today_1);
+
+	$('#messagelist-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(today_1);
+
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',
 		format : 'YYYY/MM',
-		minViewMode : "months"
+		minViewMode : "months",
+		pickTime : false
 	});
 
 	$('#messagelist-date-input').prop('disabled', true);
@@ -481,7 +592,6 @@ function GetContents() {
 
 }
 
-
 // CKEDITOR Plain Text
 function ckGetPlainText() {
 	var html = CKEDITOR.instances.input_messageContent.getSnapshot();
@@ -501,23 +611,23 @@ function utf8ByteLength(str) {
 	return match ? (escapedStr.length - match.length * 2) : escapedStr.length;
 }
 
-//Date Formating
+// Date Formating
 Date.prototype.yyyymmdd = function() {
 	var yyyy = this.getFullYear().toString();
-	var mm = (this.getMonth() + 1).toString(); 
+	var mm = (this.getMonth() + 1).toString();
 	var dd = this.getDate().toString();
 	var hour = this.getHours().toString();
 	var minute = this.getMinutes().toString();
 	return yyyy + "/" + (mm[1] ? mm : "0" + mm[0]) + "/"
 			+ (dd[1] ? dd : "0" + dd[0]) + " "
 			+ (hour[1] ? hour : "0" + hour[0]) + ":"
-			+ (minute[1] ? minute : "0" + minute[0]); 
+			+ (minute[1] ? minute : "0" + minute[0]);
 };
 
 $.ajaxSetup({
 	statusCode : {
 		200 : function() {
-			
+
 		},
 		401 : function(data) {
 			alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");

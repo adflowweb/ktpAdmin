@@ -38,6 +38,21 @@
 							class="input-group-addon"><span
 							class="glyphicon glyphicon-calendar"></span> </span>
 					</div>
+					<br /> <label>일별 시작일 </label>
+					<div class='input-group date'
+						id='reservation-search-date-start-div'>
+						<input id="reservation-search-date-start-input" type='text'
+							class="form-control" /> <span class="input-group-addon"><span
+							class="glyphicon glyphicon-calendar"></span> </span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>일별 종료일 </label>
+					<div class='input-group date' id='reservation-search-date-end-div'>
+						<input id="reservation-search-date-end-input" type='text'
+							class="form-control" /> <span class="input-group-addon"><span
+							class="glyphicon glyphicon-calendar"></span> </span>
+					</div>
 				</div>
 				<div class="form-group">
 					<label>검색 항목</label> <select class="form-control"
@@ -48,15 +63,15 @@
 					</select>
 
 				</div>
-		
+
 				<div class="form-group">
 					<input type="text" placeholder="검색 내용" class="form-control"
-						id="reservation-search-input"/>
+						id="reservation-search-input" />
 				</div>
 				<div class="form-group">
-				<input type="button" onclick="javascript:reservationSearch()"
-						class="btn btn-default" value="Search"></input>
-					<input type="button"
+					<input type="button" onclick="javascript:reservationSearch()"
+						class="btn btn-default" value="Search"></input> <input
+						type="button"
 						onclick="javascript:wrapperFunction('reservationList');"
 						class="btn btn-default" value="Reset"></input>
 				</div>
@@ -70,9 +85,12 @@
 								<th><input name="reservatoin-checkbox"
 									id="reservaton-checkbox-id" onclick="reservationCheck(this)"
 									type="checkbox" />&nbsp;Message Id</th>
+								<th>예약발송 시간</th>
 								<th>송신자</th>
 								<th>수신자</th>
-								<th>예약발송 시간</th>
+
+
+
 
 							</tr>
 						</thead>

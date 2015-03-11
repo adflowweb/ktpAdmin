@@ -3082,6 +3082,7 @@ TableTools.DEFAULTS = {
 	"sSwfPath":        "../swf/copy_csv_xls_pdf.swf",
 	"sRowSelect":      "none",
 	"sRowSelector":    "tr",
+	
 	"sSelectedClass":  null,
 	"fnPreRowSelect":  null,
 	"fnRowSelected":   null,
