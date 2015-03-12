@@ -58,9 +58,9 @@ $.ajax({
 			pmsHeapFree = pmsHeapFree.toFixed(1);
 			pmsDiskUsed = item.disk[0].used;
 			pmsTps=item.tps;
-			pmsDiskUsed11 = item.disk[1].used;
+			pmsDiskUsed11 = item.disk[11].used;
 			pmsDiskFree = item.disk[0].avail;
-			pmsDiskFree11 = item.disk[1].avail;
+			pmsDiskFree11 = item.disk[11].avail;
 			pmsDiskUsed = pmsDiskUsed.slice(0, -1);
 			pmsDiskFree = pmsDiskFree.slice(0, -1);
 			pmsDiskUsed11 = pmsDiskUsed11.slice(0, -1);
@@ -71,10 +71,11 @@ $.ajax({
 			pmsDiskFree11 *= 1;
 			pmsDiskUsed = pmsDiskUsed + pmsDiskUsed11;
 			pmsDiskFree = pmsDiskFree + pmsDiskFree11;
-			moveData.push([ 0, 0 ]);
-			moveData.push([ 1, pmsTps*1 ]);
 			tpsData.push(0);
-			tpsData.push(pmsCombined);
+			moveData.push([ 0, tpsData[0]]);
+			tpsData.push(pmsTps*1);
+			moveData.push([ 1, tpsData[1]]);
+			
 			pmsCombined = pmsCombined.toFixed(1);
 			pmsIdle = pmsIdle.toFixed(1);
 
@@ -96,6 +97,14 @@ series = [ {
 	},
 	resize : true
 } ];
+var tpsGraphMax=100;
+for(var i in tpsData){
+	if(tpsData[i]>100){
+		tpsGraphMax=tpsData[i]+100;
+	}else{
+		tpsGraphMax=100;
+	}
+}
 
 var plot = $
 		.plot(
@@ -136,7 +145,7 @@ var plot = $
 					},
 					yaxis : {
 						min : 0,
-						max : 110
+						max : tpsGraphMax
 					},
 					legend : {
 						show : true
@@ -194,12 +203,13 @@ var morrisDatadisk = Morris.Donut({
 });
 
 var monitoringInterval = setInterval(function() {
-
-
-
 	
+	for(var i in tpsData){
+		if(tpsData[i]>tpsGraphMax){
+			tpsGraphMax=tpsData[i]+100;
+		}
+	}
 
-	
 	var monitoringStatus = sessionStorage.getItem("monitoringStatus");
 	console.log('monitoring status');
 	console.log(monitoringStatus);
@@ -207,7 +217,7 @@ var monitoringInterval = setInterval(function() {
 		var moveCount=sessionStorage.getItem("moveCount");
 		moveCount=moveCount*1+1;
 		sessionStorage.setItem("moveCount", moveCount);
-		if(moveCount>600){
+		if(moveCount>599){
 			moveCount=600*1;
 			sessionStorage.setItem("moveCount", moveCount);
 		}
@@ -243,9 +253,9 @@ var monitoringInterval = setInterval(function() {
 					pmsHeapUsed = pmsHeapUsed.toFixed(1);
 					pmsHeapFree = pmsHeapFree.toFixed(1);
 					pmsDiskUsed = item.disk[0].used;
-					pmsDiskUsed11 = item.disk[1].used;
+					pmsDiskUsed11 = item.disk[11].used;
 					pmsDiskFree = item.disk[0].avail;
-					pmsDiskFree11 = item.disk[1].avail;
+					pmsDiskFree11 = item.disk[11].avail;
 					pmsDiskUsed = pmsDiskUsed.slice(0, -1);
 					pmsDiskFree = pmsDiskFree.slice(0, -1);
 					pmsDiskUsed11 = pmsDiskUsed11.slice(0, -1);
@@ -261,10 +271,8 @@ var monitoringInterval = setInterval(function() {
 					console.log(pmsDiskUsed);
 					console.log(pmsDiskFree);
 					console.log('disk end');
-					if(moveCount>600){
+					if(moveCount>599){
 						tpsData=tpsData.slice(1);
-						console.log('tpsData');
-						console.log(tpsData);
 						moveData=[];						
 						for(var i=0; i<moveCount;i++){
 							moveData.push([i,tpsData[i]]);
@@ -324,7 +332,7 @@ var monitoringInterval = setInterval(function() {
 										},
 										yaxis : {
 											min : 0,
-											max : 110
+											max : tpsGraphMax
 										},
 										legend : {
 											show : true

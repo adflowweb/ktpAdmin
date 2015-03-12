@@ -69,6 +69,7 @@ var statisticsTable = $('#statistics-datatable')
 				{
 					'bServerSide' : true,
 					'bSort' : false,
+					"pageLength" : 25,
 					'dom' : '<"clear">lrtip',
 					'columns' : [ {
 						"data" : "updateTime"
@@ -82,6 +83,10 @@ var statisticsTable = $('#statistics-datatable')
 						"data" : "pmaAckType"
 					}, {
 						"data" : "pmaAckTime"
+					}, {
+						"data" : "appAckType"
+					}, {
+						"data" : "appAckTime"
 					}, {
 						"data" : "resendCount"
 					}, {
@@ -121,23 +126,27 @@ var statisticsTable = $('#statistics-datatable')
 													.text(
 															data.result.data.recordsTotal);
 											for ( var i in dataResult) {
-												if (dataResult[i].pmaAckType == null) {
-													dataResult[i].pmaAckType = "응답없음";
-												} else {
-													if (dataResult[i].appAckType != null) {
-														dataResult[i].pmaAckType = "사용자응답";
-														var dateTime = dataResult[i].appAckTime;
-														dataResult[i].pmaAckTime = new Date(
-																dateTime)
-																.toLocaleString();
-													} else {
-														dataResult[i].pmaAckType = "기기응답";
-														var dateTime = dataResult[i].pmaAckTime;
-														dataResult[i].pmaAckTime = new Date(
-																dateTime)
-																.toLocaleString();
-													}
 
+												if (dataResult[i].pmaAckType == null) {
+
+													dataResult[i].pmaAckType = '응답없음';
+												} else {
+													dataResult[i].pmaAckType = '기기응답';
+													var dateTime = dataResult[i].pmaAckTime;
+													dataResult[i].pmaAckTime = new Date(
+															dateTime)
+															.toLocaleString();
+												}
+
+												if (dataResult[i].appAckType == null) {
+
+													dataResult[i].appAckType = '응답없음';
+												} else {
+													dataResult[i].appAckType = '사용자응답';
+													var dateTime = dataResult[i].appAckTime;
+													dataResult[i].appAckTime = new Date(
+															dateTime)
+															.toLocaleString();
 												}
 
 												switch (dataResult[i].status) {
@@ -400,6 +409,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 
 					'bServerSide' : true,
 					'bSort' : false,
+					"pageLength" : 25,
 					'dom' : '<"clear">lrtip',
 					'columns' : [ {
 						"data" : "reservationTime"
@@ -736,7 +746,7 @@ function checkSearchStatistics() {
 		}
 
 	}
-
+	return true;
 }
 
 function searchSelectSysChange() {
@@ -766,6 +776,69 @@ function searchSelectSysChange() {
 		$('#statistics-search-status-select-div').hide();
 		break;
 	}
+
+}
+
+$("#statistics-search-date-month-div").on("dp.change", function(e) {
+	setTimeout(changeDateInputStatistics, 500);
+
+});
+
+// statistics-reservation-search-date-month-div
+
+$("#statistics-reservation-search-date-month-div").on("dp.change", function(e) {
+	setTimeout(changeDateInputStatisticsR, 500);
+
+});
+
+function changeDateInputStatisticsR() {
+	var messagelist_Picker = $(
+			"#statistics-reservation-search-date-month-input").val();
+	var messageList_Result = [];
+	messageList_Result = messagelist_Picker.split("/");
+	$('#statistics-reservation-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#statistics-reservation-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setDate(
+			chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#statistics-reservation-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setMinDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#statistics-reservation-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(
+			chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#statistics-reservation-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setMinDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#statistics-reservation-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(
+			chageDateL(messageList_Result[0], messageList_Result[1]));
+
+}
+
+function changeDateInputStatistics() {
+	var messagelist_Picker = $("#statistics-search-date-month-input").val();
+	var messageList_Result = [];
+	messageList_Result = messagelist_Picker.split("/");
+	$('#statistics-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#statistics-search-date-end-div').datetimepicker()
+			.data("DateTimePicker").setDate(
+					chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#statistics-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setMinDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#statistics-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(
+			chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#statistics-search-date-end-div').datetimepicker()
+			.data("DateTimePicker").setMinDate(
+					chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#statistics-search-date-end-div').datetimepicker()
+			.data("DateTimePicker").setMaxDate(
+					chageDateL(messageList_Result[0], messageList_Result[1]));
 
 }
 

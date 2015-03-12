@@ -80,8 +80,6 @@ function monthSearch() {
 			ajaxUrl = '/v1/pms/adm/sys/messages/summary/' + input_month_value;
 		}
 
-	
-
 		if (accountSelectText == "전체") {
 
 			// /전체 테이블 일반 ,예약
@@ -251,6 +249,7 @@ function monthSearch() {
 								'bSort' : false,
 								bJQueryUI : true,
 								bDestroy : true,
+								"pageLength": 25,
 								"bPaginate" : false,
 								"bInfo" : false,
 								"bLengthChange" : false,
@@ -287,6 +286,7 @@ function monthSearch() {
 								'bSort' : false,
 								bJQueryUI : true,
 								bDestroy : true,
+								"pageLength": 25,
 								"bPaginate" : false,
 								"bInfo" : false,
 								"bLengthChange" : false,
@@ -511,6 +511,7 @@ function monthSearch() {
 								bJQueryUI : true,
 								bDestroy : true,
 								"bInfo" : false,
+								"pageLength": 25,
 								"bPaginate" : false,
 								"bLengthChange" : false,
 								"dom" : 'T<"clear">lrtip',
@@ -547,6 +548,7 @@ function monthSearch() {
 								bJQueryUI : true,
 								bDestroy : true,
 								"bInfo" : false,
+								"pageLength": 25,
 								"bPaginate" : false,
 								"bLengthChange" : false,
 								"dom" : 'T<"clear">lrtip',
@@ -604,8 +606,7 @@ function monthSearch() {
 		} else {
 			// 선택 일반테이블
 			$.ajax({
-				url : ajaxUrl
-						+ "/" + accountSelectText,
+				url : ajaxUrl + "/" + accountSelectText,
 				type : 'GET',
 				contentType : "application/json",
 				headers : {
@@ -764,6 +765,7 @@ function monthSearch() {
 								'bSort' : false,
 								bJQueryUI : true,
 								bDestroy : true,
+								"pageLength": 25,
 								"bPaginate" : false,
 								"bInfo" : false,
 								"bLengthChange" : false,
@@ -800,6 +802,7 @@ function monthSearch() {
 								bJQueryUI : true,
 								bDestroy : true,
 								"bPaginate" : false,
+								"pageLength": 25,
 								"bInfo" : false,
 								"bLengthChange" : false,
 								"dom" : 'T<"clear">lrtip',
@@ -859,6 +862,35 @@ function monthSearch() {
 		}
 
 	}
+
+}
+
+$("#month-sys-date-div").on("dp.change", function(e) {
+	setTimeout(changeDateInputMonthSv, 500);
+
+});
+
+function changeDateInputMonthSv() {
+	var messagelist_Picker = $("#month-sys-date-input").val();
+	var messageList_Result = [];
+	messageList_Result = messagelist_Picker.split("/");
+	$('#monthsys-search-date-start-div').datetimepicker()
+			.data("DateTimePicker").setDate(
+					chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#monthsys-search-date-end-div').datetimepicker().data("DateTimePicker")
+			.setDate(chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#monthsys-search-date-start-div').datetimepicker()
+			.data("DateTimePicker").setMinDate(
+					chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#monthsys-search-date-start-div').datetimepicker()
+			.data("DateTimePicker").setMaxDate(
+					chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#monthsys-search-date-end-div').datetimepicker().data("DateTimePicker")
+			.setMinDate(
+					chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#monthsys-search-date-end-div').datetimepicker().data("DateTimePicker")
+			.setMaxDate(
+					chageDateL(messageList_Result[0], messageList_Result[1]));
 
 }
 

@@ -122,18 +122,22 @@ function wrapperFunction(data) {
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
 
-							var nowDate = new Date();
-							var today_1 = new Date(nowDate.getFullYear(),
-									nowDate.getMonth(), nowDate.getDate() + 1,
-									0, 0, 0, 0);
-
 							$('#messagelist-search-date-start-div')
-									.datetimepicker().data("DateTimePicker")
-									.setMaxDate(today_1);
+									.datetimepicker({
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayF(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
+
+									});
 
 							$('#messagelist-search-date-end-div')
-									.datetimepicker().data("DateTimePicker")
-									.setMaxDate(today_1);
+									.datetimepicker({
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayL(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
+									});
 
 							$('#messagelist-date-div').datetimepicker({
 								viewMode : 'years',
@@ -149,27 +153,30 @@ function wrapperFunction(data) {
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
 
-							// var nowDate = new Date();
-							// var today_1 = new Date(nowDate.getFullYear(),
-							// nowDate
-							// .getMonth(), nowDate.getDate() + 60, 0, 0, 0, 0);
-
 							$('#reservation-search-date-start-div')
 									.datetimepicker({
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayF(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
 
 									});
 
 							$('#reservation-search-date-end-div')
 									.datetimepicker({
-
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayL(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
 									});
 
 							$('#reservation-date-div').datetimepicker({
 								viewMode : 'years',
 								format : 'YYYY/MM',
-								minViewMode : 'months',
+								minViewMode : "months",
 								pickTime : false
 							});
+
 							$('#reservation-date-input').prop('disabled', true);
 						}
 
@@ -196,23 +203,29 @@ function wrapperFunction(data) {
 									'disabled', true);
 							$('#monthsys-search-date-end-input').prop(
 									'disabled', true);
-							var nowDate = new Date();
-							var today_1 = new Date(nowDate.getFullYear(),
-									nowDate.getMonth(), nowDate.getDate() + 1,
-									0, 0, 0, 0);
 
 							$('#monthsys-search-date-start-div')
-									.datetimepicker().data("DateTimePicker")
-									.setMaxDate(today_1);
+									.datetimepicker({
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayF(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
 
-							$('#monthsys-search-date-end-div').datetimepicker(
-									{});
+									});
+
+							$('#monthsys-search-date-end-div').datetimepicker({
+								format : "YYYY/MM/DD hh:mm a",
+								defaultDate : getCurrentDayL(),
+								minDate : getCurrentDayF(),
+								maxDate : getCurrentDayL()
+							});
 
 							$('#month-sys-date-div').datetimepicker({
 								viewMode : 'years',
 								format : 'YYYY/MM',
 								minViewMode : "months",
-								pickTime : false
+								pickTime : false,
+								defaultDate : getCurrentDayF(),
 							});
 							// month-sys-date-div
 						}
@@ -229,22 +242,29 @@ function wrapperFunction(data) {
 									'disabled', true);
 							$('#monthsvc-search-date-end-input').prop(
 									'disabled', true);
-							var nowDate = new Date();
-							var today_1 = new Date(nowDate.getFullYear(),
-									nowDate.getMonth(), nowDate.getDate() + 1,
-									0, 0, 0, 0);
-
+							// ////////////////////////
 							$('#monthsvc-search-date-start-div')
-									.datetimepicker({});
+									.datetimepicker({
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayF(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
 
-							$('#monthsvc-search-date-end-div').datetimepicker(
-									{})
+									});
+
+							$('#monthsvc-search-date-end-div').datetimepicker({
+								format : "YYYY/MM/DD hh:mm a",
+								defaultDate : getCurrentDayL(),
+								minDate : getCurrentDayF(),
+								maxDate : getCurrentDayL()
+							});
 
 							$('#month-svc-date-div').datetimepicker({
 								viewMode : 'years',
 								format : 'YYYY/MM',
 								minViewMode : "months",
-								pickTime : false
+								pickTime : false,
+								defaultDate : getCurrentDayF()
 							});
 							// month-sys-date-div
 						}
@@ -258,35 +278,51 @@ function wrapperFunction(data) {
 									0, 0, 0, 0);
 
 							$('#statistics-search-date-start-div')
-									.datetimepicker().data("DateTimePicker")
-									.setMaxDate(today_1);
+									.datetimepicker({
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayF(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
+									});
 
 							$('#statistics-search-date-end-div')
-									.datetimepicker().data("DateTimePicker")
-									.setMaxDate(today_1);
+									.datetimepicker({
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayL(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
+									});
 
 							$('#statistics-reservation-search-date-start-div')
 									.datetimepicker({
-
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayF(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
 									});
 
 							$('#statistics-reservation-search-date-end-div')
 									.datetimepicker({
-
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayL(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
 									});
 							$('#statistics-search-date-month-div')
 									.datetimepicker({
 										viewMode : 'years',
 										format : 'YYYY/MM',
 										minViewMode : "months",
-										pickTime : false
+										pickTime : false,
+										defaultDate : getCurrentDayF()
 									});
 							$('#statistics-reservation-search-date-month-div')
 									.datetimepicker({
 										viewMode : 'years',
 										format : 'YYYY/MM',
 										minViewMode : "months",
-										pickTime : false
+										pickTime : false,
+										defaultDate : getCurrentDayF()
 									});
 
 						}
@@ -456,14 +492,20 @@ function svcLogin() {
 	$('#svc_message_list_month_li').show();
 	$('#sys_message_list_month_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
-	var nowDate = new Date();
-	var today_1 = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate
-			.getDate() + 1, 0, 0, 0, 0);
-	$('#messagelist-search-date-start-div').datetimepicker().data(
-			"DateTimePicker").setMaxDate(today_1);
+	$('#messagelist-search-date-start-div').datetimepicker({
+		format : "YYYY/MM/DD hh:mm a",
+		defaultDate : getCurrentDayF(),
+		minDate : getCurrentDayF(),
+		maxDate : getCurrentDayL()
 
-	$('#messagelist-search-date-end-div').datetimepicker().data(
-			"DateTimePicker").setMaxDate(today_1);
+	});
+
+	$('#messagelist-search-date-end-div').datetimepicker({
+		format : "YYYY/MM/DD hh:mm a",
+		defaultDate : getCurrentDayL(),
+		minDate : getCurrentDayF(),
+		maxDate : getCurrentDayL()
+	});
 
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',
@@ -496,14 +538,20 @@ function svcAdmLogin() {
 	$('#svc_message_list_month_li').show();
 	$('#sys_message_list_month_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
-	var nowDate = new Date();
-	var today_1 = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate
-			.getDate() + 1, 0, 0, 0, 0);
-	$('#messagelist-search-date-start-div').datetimepicker().data(
-			"DateTimePicker").setMaxDate(today_1);
+	$('#messagelist-search-date-start-div').datetimepicker({
+		format : "YYYY/MM/DD hh:mm a",
+		defaultDate : getCurrentDayF(),
+		minDate : getCurrentDayF(),
+		maxDate : getCurrentDayL()
 
-	$('#messagelist-search-date-end-div').datetimepicker().data(
-			"DateTimePicker").setMaxDate(today_1);
+	});
+
+	$('#messagelist-search-date-end-div').datetimepicker({
+		format : "YYYY/MM/DD hh:mm a",
+		defaultDate : getCurrentDayL(),
+		minDate : getCurrentDayF(),
+		maxDate : getCurrentDayL()
+	});
 
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',
@@ -521,48 +569,74 @@ function svcAdmLogin() {
  */
 function dateFormating(value) {
 	console.log('dateFor');
+	// 2014/02/0112:00am
 	console.log(value);
 	var result = compactTrim(value);
-	if (result.length == 16) {
-		var month = result.substring(0, 2);
-		console.log('달', month);
-		console.log(month);
-		var day = result.substring(3, 5);
-		console.log(day);
-		var year = result.substring(6, 10);
-
-		var hour = result.substring(10, 11);
-		console.log(hour);
-		var minute = result.substring(12, 14);
-		var amPm = result.substring(14, 16);
-		if (amPm === 'PM') {
-			hour *= 1;
-			hour = hour + 12;
-		}
-		console.log(hour);
-		value = new Date(year, month - 1, day, hour, minute);
-		console.log(value);
-		return value;
+	// 06/12/2014 06:27PM
+	var year = result.substring(0, 4);
+	var month = result.substring(5, 7);
+	var day = result.substring(8, 10);
+	var hour = result.substring(10, 12);
+	console.log(hour);
+	var minute = result.substring(13, 15);
+	var amPm = result.substring(15, 17);
+	if (amPm === 'PM') {
+		hour *= 1;
+		hour = hour + 12;
 	}
+	console.log(hour);
+	value = new Date(year, month - 1, day, hour, minute);
+	console.log(value);
+	return value;
 
-	if (result.length == 17) {
-		// 06/12/2014 06:27PM
-		var month = result.substring(0, 2);
-		var day = result.substring(3, 5);
-		var year = result.substring(6, 10);
-		var hour = result.substring(10, 12);
-		console.log(hour);
-		var minute = result.substring(13, 15);
-		var amPm = result.substring(15, 17);
-		if (amPm === 'PM') {
-			hour *= 1;
-			hour = hour + 12;
-		}
-		console.log(hour);
-		value = new Date(year, month - 1, day, hour, minute);
-		console.log(value);
-		return value;
-	}
+}
+
+function chageDateF(year, month) {
+	console.log(year);
+	var defaultFirstDay = new Date(year, month, 1);
+	var nowYear = defaultFirstDay.getFullYear();
+	var nowMonth = defaultFirstDay.getMonth();
+	var firstDay = defaultFirstDay.getDate();
+	console.log('changeDateF');
+	console.log(nowYear + "/" + nowMonth + "/" + firstDay);
+	return nowYear + "/" + nowMonth + "/" + firstDay;
+}
+
+function chageDateL(year, month) {
+
+	var defaultLastDay = new Date(year, month, 0);
+	var nowYear = defaultLastDay.getFullYear();
+	var nowMonth = defaultLastDay.getMonth();
+	console.log('마지막날');
+	console.log(nowMonth);
+	nowMonth = nowMonth * 1 + 1;
+	var lastDay = defaultLastDay.getDate();
+	return nowYear + "/" + nowMonth + "/" + lastDay;
+}
+
+// getCurrent First Day
+function getCurrentDayF() {
+	var nowDate = new Date();
+	var defaultFirstDay = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+	var nowYear = defaultFirstDay.getFullYear();
+	var nowMonth = defaultFirstDay.getMonth();
+	nowMonth = nowMonth * 1 + 1;
+	var firstDay = defaultFirstDay.getDate();
+
+	return nowYear + "/" + nowMonth + "/" + firstDay;
+
+}
+
+// getCurrent Last Day
+function getCurrentDayL() {
+	var nowDate = new Date();
+	var defaultLastDay = new Date(nowDate.getFullYear(),
+			nowDate.getMonth() + 1, 0);
+	var nowYear = defaultLastDay.getFullYear();
+	var nowMonth = defaultLastDay.getMonth() + 1;
+	var lastDay = defaultLastDay.getDate();
+	return nowYear + "/" + nowMonth + "/" + lastDay;
+
 }
 
 // utf8_to_b64(str)

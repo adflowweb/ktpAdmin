@@ -6,7 +6,7 @@ function monthSvcSearch() {
 	if (monthSvcFormCheck()) {
 		var input_month_value = $('#month-svc-date-input').val();
 		input_month_value = input_month_value.replace("/", "");
-		
+
 		var searchDateStart = $('#monthsvc-search-date-start-input').val();
 		var searchDateEnd = $('#monthsvc-search-date-end-input').val();
 		var ajaxUrl = "";
@@ -15,15 +15,15 @@ function monthSvcSearch() {
 		if (searchDateStart) {
 			searchDateStart = searchDateStart.toISOString();
 			searchDateEnd = searchDateEnd.toISOString();
-			ajaxUrl = '/v1/pms/adm/'+monthSvcRole+'/messages/summary/' + input_month_value
-					+ "?cSearchDateStart=" + searchDateStart
-					+ "&cSearchDateEnd=" + searchDateEnd;
+			ajaxUrl = '/v1/pms/adm/' + monthSvcRole + '/messages/summary/'
+					+ input_month_value + "?cSearchDateStart="
+					+ searchDateStart + "&cSearchDateEnd=" + searchDateEnd;
 		} else {
 			console.log('상세검색데이터 없음');
-			ajaxUrl = '/v1/pms/adm/'+monthSvcRole+'/messages/summary/' + input_month_value;
+			ajaxUrl = '/v1/pms/adm/' + monthSvcRole + '/messages/summary/'
+					+ input_month_value;
 		}
-		
-		
+
 		//
 		// 선택 일반테이블
 		$.ajax({
@@ -149,7 +149,7 @@ function monthSvcSearch() {
 						monthTableData.push({
 							"totalMsgCnt" : totalMsgCnt,
 							"msgCnt" : statusP1Cnt,
-					
+
 							"sending" : statusP0Cnt,
 							"limitOver" : statusD1Cnt,
 							"userNotFound" : statusD2Cnt,
@@ -174,6 +174,7 @@ function monthSvcSearch() {
 							aaData : monthTableData,
 							'bSort' : false,
 							bJQueryUI : true,
+							"pageLength" : 25,
 							bDestroy : true,
 							"bPaginate" : false,
 							"bInfo" : false,
@@ -191,7 +192,7 @@ function monthSvcSearch() {
 								mData : 'totalMsgCnt'
 							}, {
 								mData : 'msgCnt'
-							},  {
+							}, {
 								mData : 'sending'
 							}, {
 								mData : 'limitOver'
@@ -211,6 +212,7 @@ function monthSvcSearch() {
 							bJQueryUI : true,
 							bDestroy : true,
 							"bPaginate" : false,
+							"pageLength": 25,
 							"bInfo" : false,
 							"bLengthChange" : false,
 							"dom" : 'T<"clear">lrtip',
@@ -268,16 +270,42 @@ function monthSvcSearch() {
 
 }
 
-function monthSvcFormCheck() {
+$("#month-svc-date-div").on("dp.change", function(e) {
+	setTimeout(changeDateInputMonthSv, 500);
 
+});
+
+function changeDateInputMonthSv() {
+	var messagelist_Picker = $("#month-svc-date-input").val();
+	var messageList_Result = [];
+	messageList_Result = messagelist_Picker.split("/");
+	$('#monthsvc-search-date-start-div').datetimepicker()
+			.data("DateTimePicker").setDate(
+					chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#monthsvc-search-date-end-div').datetimepicker().data("DateTimePicker")
+			.setDate(chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#monthsvc-search-date-start-div').datetimepicker()
+			.data("DateTimePicker").setMinDate(
+					chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#monthsvc-search-date-start-div').datetimepicker()
+			.data("DateTimePicker").setMaxDate(
+					chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#monthsvc-search-date-end-div').datetimepicker().data("DateTimePicker")
+			.setMinDate(
+					chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#monthsvc-search-date-end-div').datetimepicker().data("DateTimePicker")
+			.setMaxDate(
+					chageDateL(messageList_Result[0], messageList_Result[1]));
+
+}
+
+function monthSvcFormCheck() {
 
 	var inputMonthValue = $('#month-svc-date-input').val();
 	var searchDateStart = $('#monthsvc-search-date-start-input').val();
 	var searchDateEnd = $('#monthsvc-search-date-end-input').val();
 	inputMonthValue = compactTrim(inputMonthValue);
 	console.log(inputMonthValue);
-
-
 
 	if (inputMonthValue == null | inputMonthValue == "") {
 		alert('검색할 기간 입력해 주세요');

@@ -7,7 +7,8 @@ var reservationListTable = $('#reservation-datatable')
 				{
 					'bSort' : false,
 					'bServerSide' : true,
-					'bFilter':false,
+					'bFilter' : false,
+					"pageLength": 25,
 					// 'dom' : 'T<"clear">lrtip',
 					'columns' : [ {
 						"data" : "msgId"
@@ -198,9 +199,35 @@ var reservationListTable = $('#reservation-datatable')
 
 				});
 
-$('#reservation-search-btn').click(function() {
+$("#reservation-date-div").on("dp.change", function(e) {
+	setTimeout(changeDateInputRes, 500);
 
 });
+
+function changeDateInputRes() {
+	var messagelist_Picker = $("#reservation-date-input").val();
+	var messageList_Result = []
+	messageList_Result = messagelist_Picker.split("/");
+	$('#reservation-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#reservation-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setDate(
+			chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#reservation-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setMinDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#reservation-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(
+			chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#reservation-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setMinDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#reservation-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(
+			chageDateL(messageList_Result[0], messageList_Result[1]));
+
+}
 
 function reservationSearch() {
 	console.log('reservation search click function..');

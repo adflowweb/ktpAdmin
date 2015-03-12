@@ -44,13 +44,44 @@ $
 			}
 		});
 
+$("#messagelist-date-div").on("dp.change", function(e) {
+	setTimeout(changeDateInput, 500);
+
+});
+
+function changeDateInput() {
+	var messagelist_Picker = $("#messagelist-date-input").val();
+	var messageList_Result = [];
+	messageList_Result = messagelist_Picker.split("/");
+	$('#messagelist-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#messagelist-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setDate(
+			chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#messagelist-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setMinDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#messagelist-search-date-start-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(
+			chageDateL(messageList_Result[0], messageList_Result[1]));
+	$('#messagelist-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setMinDate(
+			chageDateF(messageList_Result[0], messageList_Result[1]));
+	$('#messagelist-search-date-end-div').datetimepicker().data(
+			"DateTimePicker").setMaxDate(
+			chageDateL(messageList_Result[0], messageList_Result[1]));
+
+}
+
 var messageTable = $('#dataTables-messageList')
 		.dataTable(
 				{
 
 					'bSort' : false,
 					'bServerSide' : true,
-					'bFilter':false,
+					'bFilter' : false,
+					"pageLength" : 25,
 					'columns' : [ {
 						"data" : "updateTime"
 					}, {
@@ -63,6 +94,10 @@ var messageTable = $('#dataTables-messageList')
 						"data" : "pmaAckType"
 					}, {
 						"data" : "pmaAckTime"
+					}, {
+						"data" : "appAckType"
+					}, {
+						"data" : "appAckTime"
 					}, {
 						"data" : "resendCount"
 					}, {
@@ -105,22 +140,25 @@ var messageTable = $('#dataTables-messageList')
 												if (dataResult[i].pmaAckType == null) {
 
 													dataResult[i].pmaAckType = '응답없음';
-												} else {
-													if (dataResult[i].appAckType != null) {
-														dataResult[i].pmaAckType = "사용자응답";
-														var dateTime = dataResult[i].appAckTime;
-														dataResult[i].pmaAckTime = new Date(
-																dateTime)
-																.toLocaleString();
-													} else {
-														dataResult[i].pmaAckType = "기기응답";
-														var dateTime = dataResult[i].pmaAckTime;
-														dataResult[i].pmaAckTime = new Date(
-																dateTime)
-																.toLocaleString();
-													}
+												}else{
+													dataResult[i].pmaAckType = '기기응답';
+													var dateTime = dataResult[i].pmaAckTime;
+													dataResult[i].pmaAckTime = new Date(
+															dateTime)
+															.toLocaleString();
+												} 
+												
+												if (dataResult[i].appAckType == null) {
 
-												}
+													dataResult[i].appAckType = '응답없음';
+												}else{
+													dataResult[i].appAckType = '사용자응답';
+													var dateTime = dataResult[i].appAckTime;
+													dataResult[i].appAckTime = new Date(
+															dateTime)
+															.toLocaleString();
+												} 
+												
 
 												switch (dataResult[i].status) {
 												case -99:

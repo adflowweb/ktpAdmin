@@ -10,7 +10,6 @@ var diskUsed;
 var diskUsed11;
 var diskFree;
 var diskFree11;
-var tps;
 
 
 
@@ -71,7 +70,7 @@ if(monitoringInterval){
 				diskUsed=diskUsed+diskUsed11;
 				diskFree=diskFree+diskFree11;
 				
-				tps=item.tps;
+			
 				combined=combined.toFixed(1);
 				idle=idle.toFixed(1);
 				
@@ -146,14 +145,7 @@ if(monitoringInterval){
 	});
 	//tps
 
-	var morrisDataTps=Morris.Donut({
-		element : 'morris-donut-chart-tps',
-		data : [ {
-			label : "TPS",
-			value : tps
-		}],
-		resize : true
-	});
+
 	
 	var monitoringInterval=setInterval(function() {
 		console.log('!!!');
@@ -244,11 +236,7 @@ if(monitoringInterval){
 					label : "Disk free",
 					value : diskFree
 				} ]);
-				//morrisDataTps
-				morrisDataTps.setData([ {
-					label : "TPS",
-					value : tps
-				} ]);
+	
 			} else {
 				console.log('server errors');
 			}
