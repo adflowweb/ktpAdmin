@@ -123,8 +123,9 @@ var messageTable = $('#dataTables-messageList')
 
 									success : function(data) {
 										console.log(data);
-										var dataResult = data.result.data;
-										if (dataResult) {
+
+										if (!data.result.errors) {
+											var dataResult = data.result.data;
 											console.log('/v1/pms/adm/'
 													+ messageListRole
 													+ '/messages(GET)');
@@ -140,25 +141,24 @@ var messageTable = $('#dataTables-messageList')
 												if (dataResult[i].pmaAckType == null) {
 
 													dataResult[i].pmaAckType = '응답없음';
-												}else{
+												} else {
 													dataResult[i].pmaAckType = '기기응답';
 													var dateTime = dataResult[i].pmaAckTime;
 													dataResult[i].pmaAckTime = new Date(
 															dateTime)
 															.toLocaleString();
-												} 
-												
+												}
+
 												if (dataResult[i].appAckType == null) {
 
 													dataResult[i].appAckType = '응답없음';
-												}else{
+												} else {
 													dataResult[i].appAckType = '사용자응답';
 													var dateTime = dataResult[i].appAckTime;
 													dataResult[i].appAckTime = new Date(
 															dateTime)
 															.toLocaleString();
-												} 
-												
+												}
 
 												switch (dataResult[i].status) {
 												case -99:
@@ -362,32 +362,38 @@ var messageTable = $('#dataTables-messageList')
 							'name' : 'cSearchDate',
 							'value' : messageMonth
 						});
+						console.log("시작일 테스트")
+						console.log(searchDateStart);
 
-						searchDateStart = dateFormating(searchDateStart);
-						// 시작일
-						if (searchDateStart) {
-							console.log('검색 시작일');
-							console.log(searchDateStart);
-							searchDateStart = searchDateStart.toISOString();
-							console.log(searchDateStart);
-							aoData.push({
-								'name' : 'cSearchDateStart',
-								'value' : searchDateStart
-							});
+						if (searchDateStart != "") {
+							searchDateStart = dateFormating(searchDateStart);
+							// 시작일
+							if (searchDateStart) {
+								console.log('검색 시작일');
+								console.log(searchDateStart);
+								searchDateStart = searchDateStart.toISOString();
+								console.log(searchDateStart);
+								aoData.push({
+									'name' : 'cSearchDateStart',
+									'value' : searchDateStart
+								});
+							}
 						}
 
-						searchDateEnd = dateFormating(searchDateEnd);
+						if (searchDateEnd != "") {
+							searchDateEnd = dateFormating(searchDateEnd);
 
-						// 종료일
-						if (searchDateEnd) {
-							console.log('검색 종ㄹ');
-							console.log(searchDateEnd);
-							searchDateEnd = searchDateEnd.toISOString();
-							console.log(searchDateEnd);
-							aoData.push({
-								'name' : 'cSearchDateEnd',
-								'value' : searchDateEnd
-							});
+							// 종료일
+							if (searchDateEnd) {
+								console.log('검색 종ㄹ');
+								console.log(searchDateEnd);
+								searchDateEnd = searchDateEnd.toISOString();
+								console.log(searchDateEnd);
+								aoData.push({
+									'name' : 'cSearchDateEnd',
+									'value' : searchDateEnd
+								});
+							}
 						}
 
 						console.log("메시지 리스트  aoData");
@@ -408,7 +414,7 @@ $('#dataTables-messageList tbody')
 					}).get();
 
 					for ( var i in messageListResult) {
-						if (messageListResult[i].msgId == tableClickData[8]) {
+						if (messageListResult[i].msgId == tableClickData[10]) {
 							$('#remessage-send-user-target-input').val(
 									messageListResult[i].receiver);
 
@@ -515,8 +521,8 @@ function MessageReSendUserFunction() {
 
 					success : function(data) {
 
-						var dataResult = data.result.data;
-						if (dataResult) {
+						if (!data.result.errors) {
+							var dataResult = data.result.data;
 							console.log('/v1/pms/adm/' + messageListRole
 									+ '/messages(POST)');
 							console.log(dataResult);
@@ -573,8 +579,8 @@ function MessageReSendUserFunction() {
 
 					success : function(data) {
 
-						var dataResult = data.result.data;
-						if (dataResult) {
+						if (!data.result.errors) {
+							var dataResult = data.result.data;
 							console.log('/v1/pms/adm/' + messageListRole
 									+ '/messages(POST)');
 							console.log(dataResult);

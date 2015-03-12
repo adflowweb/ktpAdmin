@@ -73,73 +73,66 @@ $.ajax({
 
 	async : false,
 	success : function(data) {
-		var dataResult = data.result.data;
-		console.log(data);
 
-		if (dataResult) {
-
+		if (!data.result.errors) {
+			var dataResult = data.result.data;
+			console.log(data);
 			console.log(dataResult);
 			console.log('/v1/pms/adm/sys/users(GET)');
-			if (!data.result.errors) {
-
-				for ( var i in data.result.data) {
-					var successData = data.result.data[i];
-					console.log(successData);
-					if (successData.role == "svc") {
-						successData.role = "서비스";
-					} else if (successData.role == "inf") {
-						successData.role = "Interface Open";
-					} else if (successData.role == "sys") {
-						successData.role = "관리자";
-					} else if (successData.role == "svcadm") {
-						successData.role = "서비스 어드민";
-					}
-
-					if (successData.msgCntLimit == "-1") {
-						successData.msgCntLimit = "제한없음";
-					}
-					userManagertableData.push({
-						"userId" : successData.userId,
-						"Name" : successData.userName,
-						"IPFilter" : successData.ipFilters,
-						"role" : successData.role,
-						"msgCnt" : successData.msgCntLimit,
-						"callbackCntLimit" : successData.callbackCntLimit,
-						"callbackMethod" : successData.callbackMethod,
-						"callbackUrl" : successData.callbackUrl,
-						"defaultExpiry" : successData.defaultExpiry,
-						"defaultQos" : successData.defaultQos,
-						"msgSizeLimit" : successData.msgSizeLimit
-					});
-
+			for ( var i in data.result.data) {
+				var successData = data.result.data[i];
+				console.log(successData);
+				if (successData.role == "svc") {
+					successData.role = "서비스";
+				} else if (successData.role == "inf") {
+					successData.role = "Interface Open";
+				} else if (successData.role == "sys") {
+					successData.role = "관리자";
+				} else if (successData.role == "svcadm") {
+					successData.role = "서비스 어드민";
 				}
 
-				$('#dataTables-usermanager').dataTable({
-					bJQueryUI : true,
-					bDestroy : true,
-					aaData : userManagertableData,
-					bScrollCollapse : true,
-					"pageLength": 25,
-					scrollX : true,
-					autoWidth : false,
-					'bSort' : false,
-					aoColumns : [ {
-						mData : 'userId'
-					}, {
-						mData : 'Name'
-					}, {
-						mData : 'IPFilter'
-					}, {
-						mData : 'role'
-					}, {
-						mData : 'msgCnt'
-					} ]
+				if (successData.msgCntLimit == "-1") {
+					successData.msgCntLimit = "제한없음";
+				}
+				userManagertableData.push({
+					"userId" : successData.userId,
+					"Name" : successData.userName,
+					"IPFilter" : successData.ipFilters,
+					"role" : successData.role,
+					"msgCnt" : successData.msgCntLimit,
+					"callbackCntLimit" : successData.callbackCntLimit,
+					"callbackMethod" : successData.callbackMethod,
+					"callbackUrl" : successData.callbackUrl,
+					"defaultExpiry" : successData.defaultExpiry,
+					"defaultQos" : successData.defaultQos,
+					"msgSizeLimit" : successData.msgSizeLimit
 				});
 
-			} else {
-
-				alert(data.result.errors[0]);
 			}
+
+			$('#dataTables-usermanager').dataTable({
+				bJQueryUI : true,
+				bDestroy : true,
+				aaData : userManagertableData,
+				bScrollCollapse : true,
+				"pageLength" : 25,
+				scrollX : true,
+				autoWidth : false,
+				'bSort' : false,
+				aoColumns : [ {
+					mData : 'userId'
+				}, {
+					mData : 'Name'
+				}, {
+					mData : 'IPFilter'
+				}, {
+					mData : 'role'
+				}, {
+					mData : 'msgCnt'
+				} ]
+			});
+
 		} else {
 
 			alert('계정 목록을 가지고오는데 실패하였습니다.');
@@ -292,21 +285,14 @@ function userUpdateFunction() {
 					console.log("Ajax Data:" + data.result);
 					var dataResult = data.result.data;
 
-					if (dataResult) {
-						if (!data.result.errors) {
-							console.log('/v1/pms/adm/sys/users/' + id_input
-									+ '(PUT)');
-							console.log(dataResult);
-							alert('걔정 정보를 변경 하였습니다.');
-							wrapperFunction('userManager');
-						} else {
-
-							alert(data.result.errors[0]);
-							wrapperFunction('userManager');
-						}
+					if (!data.result.errors) {
+						console.log('/v1/pms/adm/sys/users/' + id_input
+								+ '(PUT)');
+						alert('걔정 정보를 변경 하였습니다.');
+						wrapperFunction('userManager');
 					} else {
 
-						alert('계정 변경에  실패하였습니다.');
+						alert('계정 변경에 실패하였습니다.');
 						wrapperFunction('userManager');
 					}
 
@@ -385,24 +371,17 @@ function userOptionUpdateFunction() {
 
 				async : false,
 				success : function(data) {
-					console.log(data);
-					var dataResult = data.result.data;
 
-					if (dataResult) {
-						if (!data.result.errors) {
-							console.log('/v1/pms/adm/sys/users/' + id_input
-									+ '(PUT)');
-							console.log(dataResult);
-							alert('옵션 정보를 변경 하였습니다.');
-							wrapperFunction('userManager');
-						} else {
-
-							alert(data.result.errors[0]);
-							wrapperFunction('userManager');
-						}
+					if (!data.result.errors) {
+						console.log(data);
+						var dataResult = data.result.data;
+						console.log('/v1/pms/adm/sys/users/' + id_input
+								+ '(PUT)');
+						console.log(dataResult);
+						alert('옵션 정보를 변경 하였습니다.');
+						wrapperFunction('userManager');
 					} else {
-
-						alert('옵션 변경에  실패하였습니다.');
+						alert('옵션 변경에 실패하였습니다.');
 						wrapperFunction('userManager');
 					}
 
@@ -437,23 +416,17 @@ function userDeleteFunction() {
 
 				async : false,
 				success : function(data) {
-					var dataResult = data.result.data;
 
-					if (dataResult) {
-						if (!data.result.errors) {
-							console.log('/v1/pms/adm/sys/users/' + id_input
-									+ '(DELETE)');
-							console.log(dataResult);
-							alert('계정 정보를 삭제 하였습니다.');
-							wrapperFunction('userManager');
-						} else {
-
-							alert(data.result.errors[0]);
-							wrapperFunction('userManager');
-						}
+					if (!data.result.errors) {
+						var dataResult = data.result.data;
+						console.log('/v1/pms/adm/sys/users/' + id_input
+								+ '(DELETE)');
+						console.log(dataResult);
+						alert('계정 정보를 삭제 하였습니다.');
+						wrapperFunction('userManager');
 					} else {
 
-						alert('계정 삭제에  실패하였습니다.');
+						alert('계정 삭제에 실패하였습니다.');
 						wrapperFunction('userManager');
 					}
 
@@ -602,9 +575,9 @@ function userOptionFormCheck() {
 			return false;
 		} else {
 			console.log('엘스');
-			option_msgSizeLimit_input=option_msgSizeLimit_input*1;
+			option_msgSizeLimit_input = option_msgSizeLimit_input * 1;
 			console.log(option_msgSizeLimit_input);
-	
+
 			if (option_msgSizeLimit_input > 512000) {
 				alert('512000bytes 를 넘을수 없습니다.');
 				return false;

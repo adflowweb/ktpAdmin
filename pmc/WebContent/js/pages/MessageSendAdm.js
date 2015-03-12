@@ -84,8 +84,9 @@ function MessageSendFunction() {
 
 			success : function(data) {
 				
-				var dataResult=data.result.data;
-				if (dataResult) {
+				
+				if (!data.result.errors) {
+					var dataResult=data.result.data;
 					console.log('/v1/pms/adm/' + role + '/messages(POST)');
 					console.log(dataResult);
 //					if(messageData.resendMaxCount){

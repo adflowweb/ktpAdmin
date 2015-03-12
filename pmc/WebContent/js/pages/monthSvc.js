@@ -10,9 +10,10 @@ function monthSvcSearch() {
 		var searchDateStart = $('#monthsvc-search-date-start-input').val();
 		var searchDateEnd = $('#monthsvc-search-date-end-input').val();
 		var ajaxUrl = "";
-		searchDateStart = dateFormating(searchDateStart);
-		searchDateEnd = dateFormating(searchDateEnd);
-		if (searchDateStart) {
+
+		if (searchDateStart!="") {
+			searchDateStart = dateFormating(searchDateStart);
+			searchDateEnd = dateFormating(searchDateEnd);
 			searchDateStart = searchDateStart.toISOString();
 			searchDateEnd = searchDateEnd.toISOString();
 			ajaxUrl = '/v1/pms/adm/' + monthSvcRole + '/messages/summary/'
@@ -37,10 +38,11 @@ function monthSvcSearch() {
 
 			async : false,
 			success : function(data) {
-				var dataResult = data.result.data;
-				console.log(data);
-				if (dataResult) {
+				
+		
 					if (!data.result.errors) {
+						var dataResult = data.result.data;
+						console.log(data);
 						var monthTableData = new Array();
 						var monthTableDataRes = new Array();
 						var statusD99Cnt = 0;
@@ -253,12 +255,9 @@ function monthSvcSearch() {
 						$('#month-svc-res-panel-head').show();
 					} else {
 
-						alert(data.result.errors[0]);
+						alert('통계 목록을 가지고오는데 실패하였습니다.');
 					}
-				} else {
-
-					alert('통계 목록을 가지고오는데 실패하였습니다.');
-				}
+				
 
 			},
 			error : function(data, textStatus, request) {

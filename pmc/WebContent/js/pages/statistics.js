@@ -113,8 +113,10 @@ var statisticsTable = $('#statistics-datatable')
 									data : aoData,
 
 									success : function(data) {
-										var dataResult = data.result.data.data;
-										if (dataResult) {
+										console.log(data);
+
+										if (!data.result.errors) {
+											var dataResult = data.result.data.data;
 											console.log('/v1/pms/adm/'
 													+ statisticsRole
 													+ '/messages(GET)');
@@ -214,15 +216,13 @@ var statisticsTable = $('#statistics-datatable')
 											fnCallback(data.result.data);
 
 										} else {
-											// alert('발송 메시지 목록을 가지고 오는데 실패
-											// 하였습니다.');
+											alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
 
 										}
 
 									},
 									error : function(e) {
-										// alert('발송 메시지 목록을 가지고 오는데 실패
-										// 하였습니다.');
+										alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
 									}
 								});
 					},
@@ -271,31 +271,38 @@ var statisticsTable = $('#statistics-datatable')
 						});
 						//						
 
-						searchDateStart = dateFormating(searchDateStart);
-						// 시작일
-						if (searchDateStart) {
-							console.log('검색 시작일');
-							console.log(searchDateStart);
-							searchDateStart = searchDateStart.toISOString();
-							console.log(searchDateStart);
-							aoData.push({
-								'name' : 'cSearchDateStart',
-								'value' : searchDateStart
-							});
+						console.log("시작일 테스트")
+						console.log(searchDateStart);
+
+						if (searchDateStart != "") {
+							searchDateStart = dateFormating(searchDateStart);
+							// 시작일
+							if (searchDateStart) {
+								console.log('검색 시작일');
+								console.log(searchDateStart);
+								searchDateStart = searchDateStart.toISOString();
+								console.log(searchDateStart);
+								aoData.push({
+									'name' : 'cSearchDateStart',
+									'value' : searchDateStart
+								});
+							}
 						}
 
-						searchDateEnd = dateFormating(searchDateEnd);
+						if (searchDateEnd != "") {
+							searchDateEnd = dateFormating(searchDateEnd);
 
-						// 종료일
-						if (searchDateEnd) {
-							console.log('검색 종ㄹ');
-							console.log(searchDateEnd);
-							searchDateEnd = searchDateEnd.toISOString();
-							console.log(searchDateEnd);
-							aoData.push({
-								'name' : 'cSearchDateEnd',
-								'value' : searchDateEnd
-							});
+							// 종료일
+							if (searchDateEnd) {
+								console.log('검색 종ㄹ');
+								console.log(searchDateEnd);
+								searchDateEnd = searchDateEnd.toISOString();
+								console.log(searchDateEnd);
+								aoData.push({
+									'name' : 'cSearchDateEnd',
+									'value' : searchDateEnd
+								});
+							}
 						}
 						// 검색 조건 서치 vlaue
 						console.log('검색조건');
@@ -438,8 +445,9 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 									data : aoData,
 
 									success : function(data) {
-										var dataResult = data.result.data.data;
-										if (dataResult) {
+
+										if (!data.result.errors) {
+											var dataResult = data.result.data.data;
 											console
 													.log('/v1/pms/adm/'
 															+ statisticsRole
@@ -466,15 +474,13 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 											fnCallback(data.result.data);
 
 										} else {
-											// alert('예약 메시지 목록을 가지고 오는데 실패
-											// 하였습니다.');
+											alert('예약 메시지 목록을 가지고 오는데 실패하였습니다.');
 
 										}
 
 									},
 									error : function(e) {
-										// alert('예약 메시지 목록을 가지고 오는데 실패
-										// 하였습니다.');
+										alert('예약 메시지 목록을 가지고 오는데 실패 하였습니다.');
 									}
 								});
 					},
@@ -528,25 +534,38 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 							'value' : searchMonth
 						});
 
-						searchDateStart = dateFormating(searchDateStart);
-						// 시작일
-						if (searchDateStart) {
-							searchDateStart = searchDateStart.toISOString();
-							aoData.push({
-								'name' : 'cSearchDateStart',
-								'value' : searchDateStart
-							});
+						console.log("시작일 테스트")
+						console.log(searchDateStart);
+
+						if (searchDateStart != "") {
+							searchDateStart = dateFormating(searchDateStart);
+							// 시작일
+							if (searchDateStart) {
+								console.log('검색 시작일');
+								console.log(searchDateStart);
+								searchDateStart = searchDateStart.toISOString();
+								console.log(searchDateStart);
+								aoData.push({
+									'name' : 'cSearchDateStart',
+									'value' : searchDateStart
+								});
+							}
 						}
 
-						searchDateEnd = dateFormating(searchDateEnd);
+						if (searchDateEnd != "") {
+							searchDateEnd = dateFormating(searchDateEnd);
 
-						// 종료일
-						if (searchDateEnd) {
-							searchDateEnd = searchDateEnd.toISOString();
-							aoData.push({
-								'name' : 'cSearchDateEnd',
-								'value' : searchDateEnd
-							});
+							// 종료일
+							if (searchDateEnd) {
+								console.log('검색 종ㄹ');
+								console.log(searchDateEnd);
+								searchDateEnd = searchDateEnd.toISOString();
+								console.log(searchDateEnd);
+								aoData.push({
+									'name' : 'cSearchDateEnd',
+									'value' : searchDateEnd
+								});
+							}
 						}
 						// 검색 조건 서치 vlaue
 						console.log('검색조건');
@@ -843,21 +862,11 @@ function changeDateInputStatistics() {
 }
 
 function statisticsDateReset() {
-	$("#statistics-search-date-start-input").val("");
-	$("#statistics-search-date-end-input").val("");
-	$('#statistics-search-input').val("");
-	$("#statistics-account-select option:eq(0)").attr("selected", "selected");
-	$("#statistics-search-select option:eq(0)").attr("selected", "selected");
-
+	wrapperFunction('statistics');
 }
 
 function statisticsReservationReset() {
-	$("#statistics-reservation-search-date-start-input").val("");
-	$("#statistics-reservation-search-date-end-input").val("");
-	$("#statistics-reservation-account-select option:eq(0)").attr("selected",
-			"selected");
-	$("#statistics-reservation-search-select option:eq(0)").attr("selected",
-			"selected");
+	wrapperFunction('statistics');
 }
 
 // reservationList Check Form

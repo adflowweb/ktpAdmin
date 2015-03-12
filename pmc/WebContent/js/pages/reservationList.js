@@ -8,7 +8,7 @@ var reservationListTable = $('#reservation-datatable')
 					'bSort' : false,
 					'bServerSide' : true,
 					'bFilter' : false,
-					"pageLength": 25,
+					"pageLength" : 25,
 					// 'dom' : 'T<"clear">lrtip',
 					'columns' : [ {
 						"data" : "msgId"
@@ -35,8 +35,10 @@ var reservationListTable = $('#reservation-datatable')
 									data : aoData,
 
 									success : function(data) {
-										var dataResult = data.result.data.data;
-										if (dataResult) {
+
+										if (!data.result.errors) {
+											console.log(data);
+											var dataResult = data.result.data.data;
 											console
 													.log('/v1/pms/adm/'
 															+ reservationListRole
@@ -164,31 +166,38 @@ var reservationListTable = $('#reservation-datatable')
 							'value' : messageMonth
 						});
 
-						searchDateStart = dateFormating(searchDateStart);
-						// 시작일
-						if (searchDateStart) {
-							console.log('검색 시작일');
-							console.log(searchDateStart);
-							searchDateStart = searchDateStart.toISOString();
-							console.log(searchDateStart);
-							aoData.push({
-								'name' : 'cSearchDateStart',
-								'value' : searchDateStart
-							});
+						console.log("시작일 테스트")
+						console.log(searchDateStart);
+
+						if (searchDateStart != "") {
+							searchDateStart = dateFormating(searchDateStart);
+							// 시작일
+							if (searchDateStart) {
+								console.log('검색 시작일');
+								console.log(searchDateStart);
+								searchDateStart = searchDateStart.toISOString();
+								console.log(searchDateStart);
+								aoData.push({
+									'name' : 'cSearchDateStart',
+									'value' : searchDateStart
+								});
+							}
 						}
 
-						searchDateEnd = dateFormating(searchDateEnd);
+						if (searchDateEnd != "") {
+							searchDateEnd = dateFormating(searchDateEnd);
 
-						// 종료일
-						if (searchDateEnd) {
-							console.log('검색 종ㄹ');
-							console.log(searchDateEnd);
-							searchDateEnd = searchDateEnd.toISOString();
-							console.log(searchDateEnd);
-							aoData.push({
-								'name' : 'cSearchDateEnd',
-								'value' : searchDateEnd
-							});
+							// 종료일
+							if (searchDateEnd) {
+								console.log('검색 종ㄹ');
+								console.log(searchDateEnd);
+								searchDateEnd = searchDateEnd.toISOString();
+								console.log(searchDateEnd);
+								aoData.push({
+									'name' : 'cSearchDateEnd',
+									'value' : searchDateEnd
+								});
+							}
 						}
 
 						console.log("메시지 리스트  aoData");
@@ -265,10 +274,16 @@ function reservationCancelFunction() {
 				reservationReq.msgIds.push(this.value);
 			}
 		});
+		console.log(reservationReq.msgIds.length);
+		if (reservationReq.msgIds.length == 0) {
+			alert('취소할 대상이 없습니다.');
+			return false;
+		}
 		reservationReq = JSON.stringify(reservationReq);
 		console.log(JSON.stringify(reservationReq));
 
 		if (confirm("예약 메시지를 취소합니다.") == true) {
+
 			$.ajax({
 				url : '/v1/pms/adm/' + role + '/messages/cancel',
 				type : 'POST',
@@ -281,11 +296,11 @@ function reservationCancelFunction() {
 				data : reservationReq,
 
 				success : function(data) {
-					console.log('메시지 취소 리퀘스트 결과');
-					console.log(data);
 
-					var dataResult = data.result.data;
-					if (dataResult) {
+					if (!data.result.errors) {
+						console.log('메시지 취소 리퀘스트 결과');
+						console.log(data);
+						var dataResult = data.result.data;
 						alert(dataResult + "건의 예약 메시지를 취소하였습니다.");
 						wrapperFunction('reservationList');
 					} else {

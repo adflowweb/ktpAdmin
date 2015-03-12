@@ -61,25 +61,18 @@ function userAddFunction() {
 
 				async : false,
 				success : function(data) {
-
-					var dataResult = data.result.data;
-
-					if (dataResult) {
 						if (!data.result.errors) {
+							var dataResult = data.result.data;
 							console.log(dataResult);
 							console.log('/v1/pms/adm/sys/users(POST)');
 							alert(data.result.data.userId + "를 생성 하였습니다.");
 							wrapperFunction('userAdd');
 						} else {
 
-							alert(data.result.errors[0]);
+							alert('계정 등록에 실패하였습니다.');
 							wrapperFunction('userAdd');
 						}
-					} else {
-
-						alert('계정 등록에  실패하였습니다.');
-						wrapperFunction('userAdd');
-					}
+					
 
 				},
 				error : function(data, textStatus, request) {

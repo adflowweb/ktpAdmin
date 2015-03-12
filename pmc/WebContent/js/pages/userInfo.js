@@ -13,9 +13,10 @@ $.ajax({
 
 	success : function(data) {
 		console.log(data);
-		var dataResult = data.result.data;
-		if (dataResult) {
+		
+	
 			if (!data.result.errors) {
+				var dataResult = data.result.data;
 				console.log( '/v1/pms/adm/' + userInfoRole + '/account(GET)');
 				console.log(dataResult);
 				$('#userInfo-id-input').val(dataResult.userId);
@@ -23,12 +24,9 @@ $.ajax({
 				$('#userInfo-token-input').val(dataResult.applicationToken);
 			} else {
 
-				alert(data.result.errors[0]);
+				alert('계정 목록을 가지고오는데 실패하였습니다.');
 			}
-		} else {
-
-			// alert('계정 목록을 가지고오는데 실패하였습니다.');
-		}
+	
 
 	},
 	error : function(data, textStatus, request) {

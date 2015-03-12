@@ -111,7 +111,7 @@ function wrapperFunction(data) {
 						if (data === "monitoring") {
 
 							var element = document.createElement("script");
-							element.src = "js/pages/monitoring.js";
+							element.src = "js/pages/pmsmonitoring.js";
 							document.body.appendChild(element);
 							sessionStorage
 									.setItem("monitoringStatus", "enable");
@@ -580,7 +580,7 @@ function dateFormating(value) {
 	console.log(hour);
 	var minute = result.substring(13, 15);
 	var amPm = result.substring(15, 17);
-	if (amPm === 'PM') {
+	if (amPm === 'pm') {
 		hour *= 1;
 		hour = hour + 12;
 	}
