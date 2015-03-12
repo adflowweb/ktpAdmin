@@ -611,7 +611,7 @@ function chageDateL(year, month) {
 	console.log(nowMonth);
 	nowMonth = nowMonth * 1 + 1;
 	var lastDay = defaultLastDay.getDate();
-	return nowYear + "/" + nowMonth + "/" + lastDay;
+	return nowYear + "/" + nowMonth + "/" + lastDay+"/23:59";
 }
 
 // getCurrent First Day
@@ -635,7 +635,7 @@ function getCurrentDayL() {
 	var nowYear = defaultLastDay.getFullYear();
 	var nowMonth = defaultLastDay.getMonth() + 1;
 	var lastDay = defaultLastDay.getDate();
-	return nowYear + "/" + nowMonth + "/" + lastDay;
+	return nowYear + "/" + nowMonth + "/" + lastDay+"/23:59";
 
 }
 

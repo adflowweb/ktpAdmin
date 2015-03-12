@@ -91,17 +91,18 @@ function pccResend() {
 						console.log(data.result.success);
 						if (data.result.info) {
 							alert('keep Alive Time 을 전송 하였습니다.');
-						
+							wrapperFunction('messageList');
 
 						} else {
 							alert("메세지 전송에 실패 하였습니다");
-					
+							wrapperFunction('messageList');
 
 						}
 
 					},
 					error : function(data, textStatus, request) {
 						alert('전송실패');
+						wrapperFunction('messageList');
 					}
 				});
 
@@ -126,17 +127,18 @@ function pccResend() {
 						console.log(data.result.success);
 						if (data.result.info) {
 							alert('F/W 공지를 발송하였습니다.');
-			
+							wrapperFunction('messageList');
 
 						} else {
 							alert("메세지 전송에 실패 하였습니다");
-				
+							wrapperFunction('messageList');
 
 						}
 
 					},
 					error : function(data, textStatus, request) {
 						alert('전송실패');
+						wrapperFunction('messageList');
 					}
 				});
 			} else if (type_input = "105") {
@@ -160,10 +162,12 @@ function pccResend() {
 						console.log(data.result.success);
 						if (data.result.info) {
 							alert('F/W 공지를 발송하였습니다.');
+							wrapperFunction('messageList');
 						
 
 						} else {
 							alert("메세지 전송에 실패 하였습니다");
+							wrapperFunction('messageList');
 			
 
 						}
@@ -171,6 +175,7 @@ function pccResend() {
 					},
 					error : function(data, textStatus, request) {
 						alert('전송실패');
+						wrapperFunction('messageList');
 					}
 				});
 			
