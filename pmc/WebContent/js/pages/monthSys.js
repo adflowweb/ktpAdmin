@@ -583,10 +583,14 @@ function monthSearch() {
 					alert('통계 목록을 가지고오는데 실패하였습니다.');
 				}
 			});
-		} else {
+		} else {//input_month_value
 			// 선택 일반테이블
+				ajaxUrl = '/v1/pms/adm/sys/messages/summary/'+input_month_value+'/' + accountSelectText
+					+ "?cSearchDateStart=" + searchDateStart
+					+ "&cSearchDateEnd=" + searchDateEnd;
+			
 			$.ajax({
-				url : ajaxUrl + "/" + accountSelectText,
+				url :ajaxUrl  ,
 				type : 'GET',
 				contentType : "application/json",
 				headers : {
