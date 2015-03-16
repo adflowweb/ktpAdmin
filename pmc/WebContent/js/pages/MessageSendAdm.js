@@ -30,17 +30,15 @@ function MessageSendFunction() {
 
 		if (contentType == 1) {
 			contentType = "application/base64";
-		} 
-		var dateResult = dateFormating(input_reservation);
+		}
+		var dateResult = "";
 
-		if (input_reservation) {
+		if (input_reservation != "") {
+			console.log("예약 시간이 있음");
+			dateResult = dateFormating(input_reservation);
 			dateResult = dateResult.toISOString();
 		}
-		if (typeof dateResult === undefined
-				|| typeof dateResult === 'undefined') {
-			console.log("date Result is..undefined.....");
-			dateResult = "";
-		}
+
 		input_messageTarget = input_messageTarget.split(",");
 		var messageData = new Object();
 
@@ -49,9 +47,9 @@ function MessageSendFunction() {
 		messageData.serviceId = input_messageService;
 		messageData.contentType = contentType;
 		messageData.ack = ackcheck;
-		messageData.msgType=input_messageType;
+		messageData.msgType = input_messageType;
 		messageData.qos = qos;
-		messageData.expiry=input_messageExpire;
+		messageData.expiry = input_messageExpire;
 		if (dateResult != "") {
 			messageData.reservationTime = dateResult;
 			console.log("테스트:" + messageData.reservationTime);
@@ -64,8 +62,8 @@ function MessageSendFunction() {
 			messageData.resendInterval = input_resendInterval;
 		}
 		var messageDataResult = JSON.stringify(messageData);
-		
-		if(utf8ByteLength(messageDataResult)>512000){
+
+		if (utf8ByteLength(messageDataResult) > 512000) {
 			alert('메시지 사이즈가 너무 큽니다.');
 			return false;
 		}
@@ -83,19 +81,19 @@ function MessageSendFunction() {
 			data : messageDataResult,
 
 			success : function(data) {
-				
-				
+
 				if (!data.result.errors) {
-					var dataResult=data.result.data;
+					var dataResult = data.result.data;
 					console.log('/v1/pms/adm/' + role + '/messages(POST)');
 					console.log(dataResult);
-//					if(messageData.resendMaxCount){
-//						messageData.resendMaxCount=messageData.resendMaxCount*1+1;
-//						alert('반복 메시지를 포함하여 총 '+messageData.resendMaxCount+'건을 발송하였습니다.');
-//					}else{
-//						alert('메시지를 발송하였습니다.');	
-//					}
-					alert('메시지를 발송하였습니다.');	
+					// if(messageData.resendMaxCount){
+					// messageData.resendMaxCount=messageData.resendMaxCount*1+1;
+					// alert('반복 메시지를 포함하여 총 '+messageData.resendMaxCount+'건을
+					// 발송하였습니다.');
+					// }else{
+					// alert('메시지를 발송하였습니다.');
+					// }
+					alert('메시지를 발송하였습니다.');
 					wrapperFunction('MessageSendAdm');
 				} else {
 					alert("메시지 전송에 실패 하였습니다.");
@@ -217,29 +215,19 @@ function messageSendFormCheck() {
 			return false;
 		}
 	} else {
-		
+
 		if (input_reservation) { // 예약 메세지
 			var convertDate = input_reservation;
 			input_reservation = compactTrim(input_reservation);
-			input_reservation = input_reservation.substring(0, 10);
-			var validateDateResult = validateDate(input_reservation);
 
-			if (!validateDateResult) {
-				alert('입렵하신 예약 날짜가 형식에 맞지 않습니다.');
+			convertDate = dateFormating(convertDate);
+			var nowDateTime = new Date();
+			var nowTime = nowDateTime.getTime() + 300000;
+			var convertPickerTime = convertDate.getTime();
+			if (nowTime > convertPickerTime) {
+				alert('예약메세지는 현재 시각기준보다 5분 이상 설정 되어야 합니다.');
 				return false;
-			} else {
-
-				convertDate = dateFormating(convertDate);
-				var nowDateTime = new Date();
-				var nowTime = nowDateTime.getTime() + 300000;
-				var convertPickerTime = convertDate.getTime();
-				if (nowTime > convertPickerTime) {
-					alert('예약메세지는 현재 시각기준보다 5분 이상 설정 되어야 합니다.');
-					return false;
-				}
-				
 			}
-		
 
 		}
 		if (confirm("예약이 설정된 시간으로 메세지가 전송됩니다. 확인해 주세요") == true) {

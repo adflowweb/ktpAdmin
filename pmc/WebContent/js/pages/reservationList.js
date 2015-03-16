@@ -366,10 +366,12 @@ function checkSearchReservation() {
 	// return false;
 	// }
 
-	if (selectOptionValue == 2 || selectOptionValue == 3) {
+	
+	
+	if (selectOptionValue == 1 || selectOptionValue == 2) {
 		if (inputSearchValue == null || inputSearchValue == "") {
 			alert('검색할 내용을 입력해 주세요');
-			$('#statistics-search-input').focus();
+			$('#reservation-search-input').focus();
 			return false;
 		}
 	}

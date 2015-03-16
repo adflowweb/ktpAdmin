@@ -72,15 +72,11 @@ function wrapperFunction(data) {
 							var nowDate = new Date();
 							var today = new Date(nowDate.getFullYear(), nowDate
 									.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-							var today_30 = new Date(nowDate.getFullYear(),
-									nowDate.getMonth(), nowDate.getDate() + 30,
-									0, 0, 0, 0);
-							$('#message-send-reservation-div').datetimepicker()
-									.data("DateTimePicker").setMinDate(today);
 
-							$('#message-send-reservation-div').datetimepicker()
-									.data("DateTimePicker")
-									.setMaxDate(today_30);
+							$('#message-send-reservation-div').datetimepicker({
+								format : "YYYY/MM/DD hh:mm a",
+								minDate : today
+							});
 							$("#message-send-reservationdate-input").prop(
 									'disabled', true);
 							$("#message-send-contentType-select").prop(
@@ -94,16 +90,12 @@ function wrapperFunction(data) {
 							var nowDate = new Date();
 							var today = new Date(nowDate.getFullYear(), nowDate
 									.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-							var today_30 = new Date(nowDate.getFullYear(),
-									nowDate.getMonth(), nowDate.getDate() + 30,
-									0, 0, 0, 0);
-							$('#message-send-user-reservation-div')
-									.datetimepicker().data("DateTimePicker")
-									.setMinDate(today);
 
 							$('#message-send-user-reservation-div')
-									.datetimepicker().data("DateTimePicker")
-									.setMaxDate(today_30);
+									.datetimepicker({
+										format : "YYYY/MM/DD hh:mm a",
+										minDate : today
+									});
 							$("#message-send-user-reservationdate-input").prop(
 									'disabled', true);
 						}
@@ -611,7 +603,7 @@ function chageDateL(year, month) {
 	console.log(nowMonth);
 	nowMonth = nowMonth * 1 + 1;
 	var lastDay = defaultLastDay.getDate();
-	return nowYear + "/" + nowMonth + "/" + lastDay+"/23:59";
+	return nowYear + "/" + nowMonth + "/" + lastDay + "/23:59";
 }
 
 // getCurrent First Day
@@ -635,7 +627,7 @@ function getCurrentDayL() {
 	var nowYear = defaultLastDay.getFullYear();
 	var nowMonth = defaultLastDay.getMonth() + 1;
 	var lastDay = defaultLastDay.getDate();
-	return nowYear + "/" + nowMonth + "/" + lastDay+"/23:59";
+	return nowYear + "/" + nowMonth + "/" + lastDay + "/23:59";
 
 }
 

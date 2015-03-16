@@ -666,6 +666,7 @@ $("#statistics-account-select").change(function() {
 	$('#statistics-search-date-end-input').val("");
 	$('#statistics-search-input').val("");
 	$("#statistics-search-select option:eq(0)").attr("selected", "selected");
+	setTimeout(changeDateInputStatistics, 500);
 	statisticsTable.fnFilter();
 
 });
@@ -679,6 +680,7 @@ $("#statistics-reservation-account-select").change(
 			$('#statistics-reservation-search-input').val("");
 			$("#statistics-reservation-search-select option:eq(0)").attr(
 					"selected", "selected");
+			setTimeout(changeDateInputStatisticsR, 500);
 			statisticsReservationTable.fnFilter();
 
 		});
