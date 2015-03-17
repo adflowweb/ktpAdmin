@@ -116,8 +116,8 @@ $.ajax({
 				bDestroy : true,
 				aaData : userManagertableData,
 				bScrollCollapse : true,
-				"pageLength" : 25,
 				scrollX : true,
+				"pageLength" : 25,
 				autoWidth : false,
 				'bSort' : false,
 				aoColumns : [ {
