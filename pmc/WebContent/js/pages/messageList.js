@@ -628,6 +628,184 @@ function resendFormCheck() {
 	return true;
 }
 
+function messageListCsvExport() {
+
+	var searchSelectValue = $('#messagelist-search-select').val();
+	var searchSelectText = $('#messagelist-search-select option:selected')
+			.text();
+	var searchInputValue = $('#messagelist-input').val();
+	var searchDateStart = $('#messagelist-search-date-start-input').val();
+	var searchDateEnd = $('#messagelist-search-date-end-input').val();
+	var messageMonth = $('#messagelist-date-input').val();
+
+	var requestUrl = '?';
+	var csvCSearchStatus = "";
+	if (messageMonth == null || messageMonth == "") {
+		var nowDate = new Date();
+		var year = nowDate.getFullYear();
+		var month = nowDate.getMonth() + 1;
+		console.log(month);
+		if (month < 10) {
+			month = '0' + month;
+		}
+		console.log(year + "/" + month);
+		messageMonth = year + "/" + month;
+	}
+
+	messageMonth = messageMonth.replace("/", "");
+
+	requestUrl = requestUrl + 'cSearchDate=' + messageMonth;
+
+	if (searchDateStart != "") {
+		searchDateStart = dateFormating(searchDateStart);
+		// 시작일
+		if (searchDateStart) {
+			console.log('검색 시작일');
+			console.log(searchDateStart);
+			searchDateStart = searchDateStart.toISOString();
+			console.log(searchDateStart);
+
+			requestUrl = requestUrl + '&cSearchDateStart=' + searchDateStart;
+		}
+	}
+
+	if (searchDateEnd != "") {
+		searchDateEnd = dateFormating(searchDateEnd);
+
+		// 종료일
+		if (searchDateEnd) {
+			console.log('검색 종ㄹ');
+			console.log(searchDateEnd);
+			searchDateEnd = searchDateEnd.toISOString();
+			console.log(searchDateEnd);
+
+			requestUrl = requestUrl + '&cSearchDateEnd=' + searchDateEnd;
+		}
+	}
+	// 검색 조건 서치 vlaue
+
+	searchSelectValue = searchSelectValue * 1;
+
+	switch (searchSelectValue) {
+	case 0:
+		csvCSearchStatus = 'ALL';
+		requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
+		break;
+	// status
+	case 1:
+		var statusValue = $('#statistics-search-status-select option:selected')
+				.val();
+
+		requestUrl = requestUrl + '&cSearchStatus=' + statusValue;
+
+		break;
+	// msgid
+	case 2:
+		searchSelectText = "msgId";
+		requestUrl = requestUrl + '&cSearchFilter=' + searchSelectText;
+		requestUrl = requestUrl + '&cSearchContent=' + searchInputValue;
+		csvCSearchStatus = "ALL";
+		requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
+		break;
+	// receiver
+	case 3:
+		searchSelectText = "receiver";
+		requestUrl = requestUrl + '&cSearchFilter=' + searchSelectText;
+		requestUrl = requestUrl + '&cSearchContent=' + searchInputValue;
+		csvCSearchStatus = "ALL";
+		requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
+
+		break;
+	// ack
+	case 4:
+		var ackValue = $('#statistics-search-ack-select option:selected').val();
+		searchSelectText = "ack";
+		csvCSearchStatus = "ALL";
+		requestUrl = requestUrl + '&cSearchFilter=' + searchSelectText;
+		requestUrl = requestUrl + '&cSearchContent=' + ackValue;
+		requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
+		break;
+
+	default:
+
+		break;
+	}
+
+
+
+	var xmlhttp = new XMLHttpRequest();
+
+	xmlhttp.onreadystatechange = function() {
+
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			console.log("CSV Content:");
+
+			console.log(xmlhttp.responseText);
+
+			if (navigator.userAgent.indexOf('MSIE') !== -1
+					|| navigator.appVersion.indexOf('Trident/') > 0) {
+				// MSIE
+				console.log('IE!!');
+				var a = document.createElement('a');
+				if (window.navigator.msSaveOrOpenBlob) {
+					// var fileData = encodeURI(xmlhttp.responseText);
+					blobObject = new Blob([ xmlhttp.responseText ]);
+					a.onclick = function() {
+						window.navigator.msSaveOrOpenBlob(blobObject,
+								'message.csv');
+					}
+				}
+				a.appendChild(document.createTextNode('Click to Download'));
+				document.body.appendChild(a);
+				a.click();
+			} else {
+				var isSafari = /Safari/.test(navigator.userAgent)
+						&& /Apple Computer/.test(navigator.vendor);
+				if (isSafari) {
+					console.log('사파리');
+					var a = document.createElement('a');
+					a.href = 'data:attachment/csv,'
+							+ encodeURI(xmlhttp.responseText);
+					// a.target = '_blank';
+					// a.download = 'message.csv';
+					document.body.appendChild(a);
+					var evObj = document.createEvent('MouseEvents');
+					evObj.initMouseEvent('click', true, true, window);
+					a.dispatchEvent(evObj);
+				} else {
+					console.log('크롬 파이어 폭스');
+					var a = document.createElement('a');
+					a.href = 'data:attachment/csv,'
+							+ encodeURI(xmlhttp.responseText);
+					a.target = '_blank';
+					a.download = 'message.csv';
+					document.body.appendChild(a);
+					a.click();
+				}
+
+			}
+
+		} else if (xmlhttp.status == 401) {
+			alert('파일 다운로드에 실패 하였습니다(권한없음)');
+			return false;
+		} else if (xmlhttp.status == 500) {
+			alert('파일 다운로드에 실패 하였습니다(서버 문제)');
+			return false;
+		} else if (xmlhttp.status == 404) {
+			alert('파일 다운로드에 실패 하였습니다(Not Found)');
+			return false;
+		}
+	};
+
+	console.log("Open.");
+	xmlhttp.open("GET", '/v1/pms/adm/' + messageListRole + '/messages/csv'
+			+ requestUrl, true);
+	xmlhttp.setRequestHeader("X-Application-Token", messageListToken);
+
+	xmlhttp.send();
+
+}
+
 function checkSearch() {
 
 	var selectOptionValue = $('#messagelist-search-select').val();

@@ -91,7 +91,8 @@
 
 					<br /> <label>일별 시작일<span
 						style="font-size: x-small; font-style: italic; font-weight: lighter;">(일별을
-						설정 하지 않으면  월 단위로 검색됩니다.)</span> </label>
+							설정 하지 않으면 월 단위로 검색됩니다.)</span>
+					</label>
 					<div class='input-group date' id='statistics-search-date-start-div'>
 						<input id="statistics-search-date-start-input" type='text'
 							class="form-control" /> <span class="input-group-addon"><span
@@ -138,9 +139,10 @@
 						</tbody>
 					</table>
 				</div>
-				<!-- 				<input type="button" onclick="javascript:excelExportFunction();" -->
-				<!-- 					class="btn btn-default" value="엑셀로 저장하기" -->
-				<!-- 					id="statistics-excel-input"></input> -->
+				<div class="form-group">
+					<input type="button" onclick="javascript:statisticsCsvExport()"
+						class="btn btn-default" value="csv 파일로  다운로드"></input>
+				</div>
 			</div>
 			<!-- /.panel-body -->
 		</div>
@@ -213,7 +215,7 @@
 
 					<br /> <label>일별 시작일 <span
 						style="font-size: x-small; font-style: italic; font-weight: lighter;">(일별을
-						설정 하지 않으면  월 단위로 검색됩니다.)</span></label>
+							설정 하지 않으면 월 단위로 검색됩니다.)</span></label>
 					<div class='input-group date'
 						id='statistics-reservation-search-date-start-div'>
 						<input id="statistics-reservation-search-date-start-input"
@@ -258,6 +260,7 @@
 
 						</tbody>
 					</table>
+
 				</div>
 
 
@@ -269,7 +272,6 @@
 	</div>
 
 </div>
-
 
 
 
