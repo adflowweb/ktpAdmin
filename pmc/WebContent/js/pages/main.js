@@ -52,7 +52,7 @@ $(document).ready(
 
 		});
 
-// Page wrapperfunction
+// page wrapperFunction
 function wrapperFunction(data) {
 
 	$("#page-wrapper")
@@ -219,7 +219,7 @@ function wrapperFunction(data) {
 								pickTime : false,
 								defaultDate : getCurrentDayF(),
 							});
-							// month-sys-date-div
+
 						}
 
 						if (data === "monthSvc") {
@@ -234,7 +234,6 @@ function wrapperFunction(data) {
 									'disabled', true);
 							$('#monthsvc-search-date-end-input').prop(
 									'disabled', true);
-							// ////////////////////////
 							$('#monthsvc-search-date-start-div')
 									.datetimepicker({
 										format : "YYYY/MM/DD hh:mm a",
@@ -258,17 +257,12 @@ function wrapperFunction(data) {
 								pickTime : false,
 								defaultDate : getCurrentDayF()
 							});
-							// month-sys-date-div
+
 						}
 
 						if (data === "statistics") {
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
-							var nowDate = new Date();
-							var today_1 = new Date(nowDate.getFullYear(),
-									nowDate.getMonth(), nowDate.getDate() + 1,
-									0, 0, 0, 0);
-
 							$('#statistics-search-date-start-div')
 									.datetimepicker({
 										format : "YYYY/MM/DD hh:mm a",
@@ -322,14 +316,13 @@ function wrapperFunction(data) {
 					});
 }
 
-// Login
+// login
 var ladda_object = "";
 function loginFunction(atag) {
-
 	ladda_object = Ladda.create(atag);
 	var loginId = $('#loginId').val();
 	var loginPass = $('#loginPass').val();
-
+	// formCheck
 	if (loginId == null || loginId == "") {
 		alert("아이디 입력해주세요");
 		$('#loginId').focus();
@@ -360,76 +353,63 @@ function loginFunction(atag) {
 		async : false,
 		data : loginReq,
 		success : function(data) {
+			if (!data.result.errors) {
+				var dataResult = data.result.data;
+				var role = data.result.data.role;
+				var token = data.result.data.token;
+				var userId = data.result.data.userId;
 
-			var dataResult = data.result.data;
-			if (dataResult) {
-				console.log('/v1/pms/adm/cmm/auth(POST)');
-				console.log(dataResult);
-				if (!data.result.errors) {
-					var role = data.result.data.role;
-					var token = data.result.data.token;
-					var userId = data.result.data.userId;
+				sessionStorage.setItem("role", role);
+				sessionStorage.setItem("token", token);
+				sessionStorage.setItem("userId", userId);
 
-					sessionStorage.setItem("role", role);
-					sessionStorage.setItem("token", token);
-					sessionStorage.setItem("userId", userId);
+				var userRole = sessionStorage.getItem("role");
+				if (userRole == "sys") {
 
-					var userRole = sessionStorage.getItem("role");
-					console.log("userRole:" + userRole);
-					if (userRole == "sys") {
+					$("#page-wrapper").load(
+							"pages/userManagerPageWrapper.html", function() {
+								sysLogin();
+							});
+				} else if (userRole == "svc") {
+					$("#page-wrapper").load(
+							"pages/messageListPageWrapper.html", function() {
+								svcLogin();
+							});
 
-						$("#page-wrapper").load(
-								"pages/userManagerPageWrapper.html",
-								function() {
-									sysLogin();
-								});
-					} else if (userRole == "svc") {
-						$("#page-wrapper").load(
-								"pages/messageListPageWrapper.html",
-								function() {
-									svcLogin();
-								});
+				} else if (userRole == "inf") {
 
-					} else if (userRole == "inf") {
+					infLogin();
 
-						infLogin();
+				} else if (userRole = "svcadm") {
+					$("#page-wrapper").load(
+							"pages/messageListPageWrapper.html", function() {
+								svcAdmLogin();
 
-					} else if (userRole = "svcadm") {
-						$("#page-wrapper").load(
-								"pages/messageListPageWrapper.html",
-								function() {
-									svcAdmLogin();
+							});
 
-								});
-
-					}
-
-				} else {
-
-					alert(data.result.errors[0]);
 				}
+
 			} else {
-				console.log(data.result.errors[0]);
-				alert('로그인에 실패 하였습니다.');
+
+				alert(data.result.errors[0]);
 			}
 
 		},
 		error : function(data, textStatus, request) {
 
 			alert('로그인에 실패 하였습니다.');
-			console.log(data);
-			console.log(textStatus);
+
 		}
 	});
 
 }
 
-// User Info
+// userInfo
 function userInfo() {
 	var userID = sessionStorage.getItem("userId");
 	alert(userID + "으로 로그인 중입니다.");
 }
-// Log out
+// logOut
 function logoutFunction() {
 	if (confirm("로그아웃 하시 겠습니까??") == true) { // 확인
 		sessionStorage.removeItem("token");
@@ -445,16 +425,15 @@ function logoutFunction() {
 
 // Date ValidateDate Check
 function validateDate(input_reservation) {
-	// car la pi alba
 	var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
 	return date_regex.test(input_reservation);
 }
 
-// CompactTrim
+// compactTrim
 function compactTrim(value) {
 	return value.replace(/(\s*)/g, "");
 }
-// Sys Login
+// sysLogin
 function sysLogin() {
 	$('#ul_userInfo').show();
 	$('.navbar-static-side').show();
@@ -470,7 +449,7 @@ function sysLogin() {
 	$('#sys_message_list_month_li').show();
 	sessionStorage.setItem("monitoringStatus", "disable");
 }
-// Svc Login
+// svcLogin
 function svcLogin() {
 	$('#ul_userInfo').show();
 	$('.navbar-static-side').show();
@@ -509,13 +488,13 @@ function svcLogin() {
 	$('#messagelist-date-input').prop('disabled', true);
 
 }
-// Inf Login
+// inf Login
 function infLogin() {
 	sessionStorage.removeItem("token");
 	alert('해당 계정은 page를 제공 하지 않습니다. 다른 아이디로 로그인하세요!');
 
 }
-// Svc Admin Login
+// svcAdmin Login
 function svcAdmLogin() {
 	console.log('pcbs start');
 	$('#ul_userInfo').show();
@@ -556,15 +535,9 @@ function svcAdmLogin() {
 
 }
 
-/*
- * DateFormating 06/12/20146:27PM
- */
+// dateFormating
 function dateFormating(value) {
-	console.log('dateFor');
-	// 2014/02/0112:00am
-	console.log(value);
 	var result = compactTrim(value);
-	// 06/12/2014 06:27PM
 	var year = result.substring(0, 4);
 	var month = result.substring(5, 7);
 	var day = result.substring(8, 10);
@@ -576,31 +549,25 @@ function dateFormating(value) {
 		hour *= 1;
 		hour = hour + 12;
 	}
-	console.log(hour);
 	value = new Date(year, month - 1, day, hour, minute);
-	console.log(value);
 	return value;
 
 }
 
+// setFirstDay
 function chageDateF(year, month) {
-	console.log(year);
 	var defaultFirstDay = new Date(year, month, 1);
 	var nowYear = defaultFirstDay.getFullYear();
 	var nowMonth = defaultFirstDay.getMonth();
 	var firstDay = defaultFirstDay.getDate();
-	console.log('changeDateF');
-	console.log(nowYear + "/" + nowMonth + "/" + firstDay);
 	return nowYear + "/" + nowMonth + "/" + firstDay;
 }
 
+// set Last Day
 function chageDateL(year, month) {
-
 	var defaultLastDay = new Date(year, month, 0);
 	var nowYear = defaultLastDay.getFullYear();
 	var nowMonth = defaultLastDay.getMonth();
-	console.log('마지막날');
-	console.log(nowMonth);
 	nowMonth = nowMonth * 1 + 1;
 	var lastDay = defaultLastDay.getDate();
 	return nowYear + "/" + nowMonth + "/" + lastDay + "/23:59";
@@ -614,7 +581,6 @@ function getCurrentDayF() {
 	var nowMonth = defaultFirstDay.getMonth();
 	nowMonth = nowMonth * 1 + 1;
 	var firstDay = defaultFirstDay.getDate();
-
 	return nowYear + "/" + nowMonth + "/" + firstDay;
 
 }
@@ -651,24 +617,24 @@ var guid = (function() {
 	};
 })();
 
-// CKEDITOR Get Contents
-function GetContents() {
-	var editor = CKEDITOR.instances.input_messageContent;
-	return editor.getData();
-
-}
-
-// CKEDITOR Plain Text
-function ckGetPlainText() {
-	var html = CKEDITOR.instances.input_messageContent.getSnapshot();
-	var dom = document.createElement("DIV");
-	dom.innerHTML = html;
-	var plain_text = (dom.textContent || dom.innerText);
-	console.log(plain_text);
-	return plain_text;
-}
-
+//// CKEDITOR Get Contents
+//function GetContents() {
+//	var editor = CKEDITOR.instances.input_messageContent;
+//	return editor.getData();
 //
+//}
+//
+//// CKEDITOR Plain Text
+//function ckGetPlainText() {
+//	var html = CKEDITOR.instances.input_messageContent.getSnapshot();
+//	var dom = document.createElement("DIV");
+//	dom.innerHTML = html;
+//	var plain_text = (dom.textContent || dom.innerText);
+//	console.log(plain_text);
+//	return plain_text;
+//}
+
+// utf8 to base64
 function utf8ByteLength(str) {
 	if (!str)
 		return 0;
@@ -689,7 +655,7 @@ Date.prototype.yyyymmdd = function() {
 			+ (hour[1] ? hour : "0" + hour[0]) + ":"
 			+ (minute[1] ? minute : "0" + minute[0]);
 };
-
+// ajax status code
 $.ajaxSetup({
 	statusCode : {
 		200 : function() {

@@ -1,7 +1,12 @@
+//getToken
 var reservationListToken = sessionStorage.getItem("token");
+//getRole
 var reservationListRole = sessionStorage.getItem("role");
+//reservationInput disable
 $("#reservation-search-date-start-input").prop('disabled', true);
+//reseravationInput disable
 $("#reservation-search-date-end-input").prop('disabled', true);
+//createReservation Table
 var reservationListTable = $('#reservation-datatable')
 		.dataTable(
 				{
@@ -208,11 +213,12 @@ var reservationListTable = $('#reservation-datatable')
 
 				});
 
+//dp.change check
 $("#reservation-date-div").on("dp.change", function(e) {
 	setTimeout(changeDateInputRes, 500);
 
 });
-
+//dateChange
 function changeDateInputRes() {
 	var messagelist_Picker = $("#reservation-date-input").val();
 	var messageList_Result = []
@@ -237,7 +243,7 @@ function changeDateInputRes() {
 			chageDateL(messageList_Result[0], messageList_Result[1]));
 
 }
-
+//searchBtn Click
 function reservationSearch() {
 	console.log('reservation search click function..');
 	var formCheck = checkSearchReservation();
@@ -249,6 +255,7 @@ function reservationSearch() {
 	}
 }
 
+//checkBox Check
 function reservationCheck(source) {
 	checkboxes = document.getElementsByName('reservatoin-checkbox');
 	for (var i = 0, n = checkboxes.length; i < n; i++) {
@@ -256,8 +263,8 @@ function reservationCheck(source) {
 	}
 }
 
+//reservation Cancel
 function reservationCancelFunction() {
-
 	var checkedLength = $('input[name="reservatoin-checkbox"]:checked').length;
 	var role = sessionStorage.getItem("role");
 	var tokenID = sessionStorage.getItem("token");
@@ -323,6 +330,7 @@ function reservationCancelFunction() {
 
 }
 
+//formCheck
 function checkSearchReservation() {
 
 	var selectOptionValue = $('#reservation-search-select').val();
@@ -409,6 +417,7 @@ function checkSearchReservation() {
 
 }
 
+//cancelForm Check
 function cancelFormCheck() {
 	var input_reservationCancelID = $('#reservation-cancel-input').val();
 	if (input_reservationCancelID == null || input_reservationCancelID == "") {

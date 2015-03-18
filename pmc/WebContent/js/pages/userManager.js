@@ -1,3 +1,4 @@
+//getToken
 var userToken = sessionStorage.getItem("token");
 var userManagertableData = [];
 $("#user-id-input").prop('disabled', true);
@@ -16,11 +17,11 @@ $("#user-option-div").hide();
 $("#user-account-input").hide();
 $("#user-option-input").hide();
 
+//inputChange Check
 $('#user-account-input').change(function() {
 	console.log("체크 변경");
 	if ($(this).is(":checked")) {
 		console.log("조건문 체크 변경");
-
 		$("#user-name-input").prop('disabled', false);
 		$("#user-ipfilter-input").prop('disabled', false);
 		$("#user-role-select").prop('disabled', false);
@@ -37,8 +38,8 @@ $('#user-account-input').change(function() {
 
 });
 
-// <input name="user-account-input" id="user-account-input" type="checkbox">계정
 
+//inputChange Check
 $('#user-option-input').change(function() {
 	console.log("체크 변경");
 	if ($(this).is(":checked")) {
@@ -61,7 +62,7 @@ $('#user-option-input').change(function() {
 	}
 
 });
-
+//getAccount Info
 $.ajax({
 	url : '/v1/pms/adm/sys/users',
 	type : 'GET',
@@ -144,7 +145,7 @@ $.ajax({
 		alert('계정 목록을 가지고오는데 실패하였습니다.');
 	}
 });
-
+//selectChange Check
 $('#user-role-select').change(function() {
 	var selectValue = $("#user-role-select option:selected").val();
 	if (selectValue == 2) {
@@ -154,6 +155,7 @@ $('#user-role-select').change(function() {
 	}
 });
 
+//tableClick
 $('#dataTables-usermanager tbody')
 		.on(
 				'click',
@@ -223,7 +225,7 @@ $('#dataTables-usermanager tbody')
 					}
 
 				});
-
+//userUpdate
 function userUpdateFunction() {
 	console.log("update...admin");
 
@@ -309,7 +311,7 @@ function userUpdateFunction() {
 
 	}
 }
-
+//userOptionUpdate
 function userOptionUpdateFunction() {
 	console.log("update...admin");
 	var checkForm = userOptionFormCheck();
@@ -398,7 +400,7 @@ function userOptionUpdateFunction() {
 
 	}
 }
-
+//userDelete
 function userDeleteFunction() {
 	console.log("update...admin");
 	var checkForm = userDeleteFormCheck();
@@ -444,7 +446,7 @@ function userDeleteFunction() {
 
 	}
 }
-
+//formChekc
 function userDeleteFormCheck() {
 	var id_input = $('#user-id-input').val();
 
@@ -458,7 +460,7 @@ function userDeleteFormCheck() {
 
 }
 
-// form null check
+//formCheck
 function userUpdateFormCheck() {
 
 	var id_input = $('#user-id-input').val();
@@ -530,7 +532,7 @@ function userUpdateFormCheck() {
 	return true;
 
 }
-
+//formCheck
 function userOptionFormCheck() {
 	var option_expiry_input = $('#user-option-expiry-input').val();
 	var option_callback_url_input = $('#user-option-callback-url-input').val();
@@ -590,13 +592,13 @@ function userOptionFormCheck() {
 
 }
 
-function utf8ByteLength(str) {
-	if (!str)
-		return 0;
-	var escapedStr = encodeURI(str);
-	var match = escapedStr.match(/%/g);
-	return match ? (escapedStr.length - match.length * 2) : escapedStr.length;
-}
+//function utf8ByteLength(str) {
+//	if (!str)
+//		return 0;
+//	var escapedStr = encodeURI(str);
+//	var match = escapedStr.match(/%/g);
+//	return match ? (escapedStr.length - match.length * 2) : escapedStr.length;
+//}
 
 /**
  * @function: getBytesWithUnit()

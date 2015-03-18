@@ -1,3 +1,4 @@
+//getToken
 var pmsMonitokenID = sessionStorage.getItem("token");
 var pmsCombined;
 var pmsIdle;
@@ -13,8 +14,6 @@ var pmsDiskFree11;
 var pmsTps;
 sessionStorage.setItem("moveCount", 1);
 var pmsMovecontainer = $("#monitoring-transaction-second");
-
-
 var moveData = [];
 var tpsData =[];
 if (monitoringInterval) {
@@ -22,7 +21,7 @@ if (monitoringInterval) {
 	sessionStorage.setItem("moveCount", 1);
 	clearInterval(monitoringInterval);
 }
-
+//getServerInfo
 $.ajax({
 	url : '/v1/pms/adm/sys/server',
 	type : 'GET',
@@ -105,7 +104,7 @@ for(var i in tpsData){
 		tpsGraphMax=100;
 	}
 }
-
+//plot chart (tps chart)
 var plot = $
 		.plot(
 				pmsMovecontainer,
@@ -151,7 +150,7 @@ var plot = $
 						show : true
 					}
 				});
-
+//cpu chart
 var morrisDataCpu = Morris.Donut({
 	element : 'morris-donut-chart-cpu',
 	data : [ {
@@ -165,6 +164,7 @@ var morrisDataCpu = Morris.Donut({
 	resize : true
 });
 
+//memory chart
 var morrisDataMemory = Morris.Donut({
 	element : 'morris-donut-chart-memory',
 	data : [ {
@@ -178,6 +178,7 @@ var morrisDataMemory = Morris.Donut({
 	resize : true
 });
 
+//heap chart
 var morrisDataheap = Morris.Donut({
 	element : 'morris-donut-chart-heap',
 	data : [ {
@@ -190,6 +191,7 @@ var morrisDataheap = Morris.Donut({
 	resize : true
 });
 
+//dist chart
 var morrisDatadisk = Morris.Donut({
 	element : 'morris-donut-chart-disk',
 	data : [ {
@@ -202,6 +204,7 @@ var morrisDatadisk = Morris.Donut({
 	resize : true
 });
 
+//interval
 var monitoringInterval = setInterval(function() {
 	
 	for(var i in tpsData){

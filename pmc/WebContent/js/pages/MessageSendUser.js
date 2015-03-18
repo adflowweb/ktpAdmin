@@ -1,6 +1,6 @@
+//messageSend
 function MessageSendUserFunction() {
 
-	console.log('메시지 발송 시작');
 	var tokenID = sessionStorage.getItem("token");
 	var role = sessionStorage.getItem("role");
 
@@ -93,7 +93,7 @@ function MessageSendUserFunction() {
 
 }
 
-// form null check
+//formCheck
 function messageSendUserFormCheck() {
 
 	var input_messageTarget = $('#message-send-user-target-input').val();

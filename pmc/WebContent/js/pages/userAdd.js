@@ -1,3 +1,4 @@
+//selectChange Check
 $('#add-role-select').change(function() {
 	var selectValue = $("#add-role-select option:selected").val();
 	if (selectValue == 2) {
@@ -6,7 +7,7 @@ $('#add-role-select').change(function() {
 		$('#add-messagecount-div').hide();
 	}
 });
-
+//userAdd
 function userAddFunction() {
 	var formCheck = userAddFormCheck();
 	var userToken = sessionStorage.getItem("token");
@@ -89,7 +90,7 @@ function userAddFunction() {
 
 }
 
-// form null check
+//formChekc
 function userAddFormCheck() {
 	var id_input = $('#add-id-input').val();
 	var password_input = $('#add-password-input').val();

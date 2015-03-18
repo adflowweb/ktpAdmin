@@ -1,4 +1,6 @@
+//getToken
 var statisticsToken = sessionStorage.getItem("token");
+// getRole
 var statisticsRole = sessionStorage.getItem("role");
 $("#statistics-search-date-start-input").prop('disabled', true);
 $("#statistics-search-date-end-input").prop('disabled', true);
@@ -7,6 +9,7 @@ $("#statistics-reservation-search-date-end-input").prop('disabled', true);
 $('#statistics-search-date-month-input').prop('disabled', true);
 $('#statistics-reservation-search-date-month-input').prop('disabled', true);
 
+// getAccount Info
 $.ajax({
 	url : '/v1/pms/adm/' + statisticsRole + '/users',
 	type : 'GET',
@@ -63,7 +66,7 @@ $.ajax({
 	}
 });
 
-// create messageList
+// create messageList(systemAdmin)
 var statisticsTable = $('#statistics-datatable')
 		.dataTable(
 				{
@@ -411,7 +414,7 @@ var statisticsTable = $('#statistics-datatable')
 
 				});
 
-// create reservationMessageList
+// create reservationTable(sysAdmin)
 var statisticsReservationTable = $('#statistics-reservation-datatable')
 		.dataTable(
 				{
@@ -638,6 +641,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 
 				});
 
+// searchBtn Click
 function statisticsDateSearch() {
 	console.log('statisticsDateSearch');
 	var formCheck = checkSearchStatistics();
@@ -649,6 +653,7 @@ function statisticsDateSearch() {
 	}
 }
 
+// searchBtn Click
 function statisticsReservationSearch() {
 	console.log('target click function..');
 	var formCheck = checkReservationSearch();
@@ -660,6 +665,7 @@ function statisticsReservationSearch() {
 	}
 }
 
+// accountChange Check
 $("#statistics-account-select").change(function() {
 	console.log('계정 변경');
 
@@ -680,6 +686,7 @@ $("#statistics-account-select").change(function() {
 
 });
 
+// accountChange Check
 $("#statistics-reservation-account-select").change(
 		function() {
 
@@ -779,6 +786,7 @@ function checkSearchStatistics() {
 	return true;
 }
 
+// selectChange Check
 function searchSelectSysChange() {
 	console.log('메시지 리스트 셀렉트 변경 시');
 	var selectOptionValue = $('#statistics-search-select').val();
@@ -809,18 +817,18 @@ function searchSelectSysChange() {
 
 }
 
+// dp.change Check
 $("#statistics-search-date-month-div").on("dp.change", function(e) {
 	setTimeout(changeDateInputStatistics, 500);
 
 });
 
-// statistics-reservation-search-date-month-div
-
+// dp.change Check
 $("#statistics-reservation-search-date-month-div").on("dp.change", function(e) {
 	setTimeout(changeDateInputStatisticsR, 500);
 
 });
-
+// dateChange
 function changeDateInputStatisticsR() {
 	var messagelist_Picker = $(
 			"#statistics-reservation-search-date-month-input").val();
@@ -846,7 +854,7 @@ function changeDateInputStatisticsR() {
 			chageDateL(messageList_Result[0], messageList_Result[1]));
 
 }
-
+// dateChange
 function changeDateInputStatistics() {
 	var messagelist_Picker = $("#statistics-search-date-month-input").val();
 	var messageList_Result = [];
@@ -871,7 +879,7 @@ function changeDateInputStatistics() {
 					chageDateL(messageList_Result[0], messageList_Result[1]));
 
 }
-
+// exportCsv
 function statisticsCsvExport() {
 
 	var messageCount = $('#statisticsListCnt_div').text();
@@ -882,211 +890,220 @@ function statisticsCsvExport() {
 		return false;
 	}
 
-	if (confirm("총 " + messageCount + "건에 대해서 csv 파일로 다운로드 하시겠습니까?") == true) {
-		var accountSelectValue = $('#statistics-account-select').val();
-		var searchSelectValue = $('#statistics-search-select').val();
-		var searchSelectText = $('#statistics-search-select option:selected')
-				.text();
-		var accountSelectText = $('#statistics-account-select option:selected')
-				.text();
-		var searchInputValue = $('#statistics-search-input').val();
-		var searchDateStart = $('#statistics-search-date-start-input').val();
-		var searchDateEnd = $('#statistics-search-date-end-input').val();
-		var searchMonth = $('#statistics-search-date-month-input').val();
-
-		var requestUrl = '?';
-		var csvCSearchStatus = "";
-		if (searchMonth == null || searchMonth == "") {
-			var nowDate = new Date();
-			var year = nowDate.getFullYear();
-			var month = nowDate.getMonth() + 1;
-			console.log(month);
-			if (month < 10) {
-				month = '0' + month;
-			}
-			console.log(year + "/" + month);
-			searchMonth = year + "/" + month;
-		}
-
-		searchMonth = searchMonth.replace("/", "");
-
-		requestUrl = requestUrl + 'cSearchDate=' + searchMonth;
-
-		if (searchDateStart != "") {
-			searchDateStart = dateFormating(searchDateStart);
-			// 시작일
-			if (searchDateStart) {
-				console.log('검색 시작일');
-				console.log(searchDateStart);
-				searchDateStart = searchDateStart.toISOString();
-				console.log(searchDateStart);
-
-				requestUrl = requestUrl + '&cSearchDateStart='
-						+ searchDateStart;
-			}
-		}
-
-		if (searchDateEnd != "") {
-			searchDateEnd = dateFormating(searchDateEnd);
-
-			// 종료일
-			if (searchDateEnd) {
-				console.log('검색 종ㄹ');
-				console.log(searchDateEnd);
-				searchDateEnd = searchDateEnd.toISOString();
-				console.log(searchDateEnd);
-
-				requestUrl = requestUrl + '&cSearchDateEnd=' + searchDateEnd;
-			}
-		}
-		// 검색 조건 서치 vlaue
-
-		searchSelectValue = searchSelectValue * 1;
-
-		switch (searchSelectValue) {
-		case 0:
-			csvCSearchStatus = 'ALL';
-			requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
-			break;
-		// status
-		case 1:
-			var statusValue = $(
-					'#statistics-search-status-select option:selected').val();
-
-			requestUrl = requestUrl + '&cSearchStatus=' + statusValue;
-
-			break;
-		// msgid
-		case 2:
-			searchSelectText = "msgId";
-			requestUrl = requestUrl + '&cSearchFilter=' + searchSelectText;
-			requestUrl = requestUrl + '&cSearchContent=' + searchInputValue;
-			csvCSearchStatus = "ALL";
-			requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
-			break;
-		// receiver
-		case 3:
-			searchSelectText = "receiver";
-			requestUrl = requestUrl + '&cSearchFilter=' + searchSelectText;
-			requestUrl = requestUrl + '&cSearchContent=' + searchInputValue;
-			csvCSearchStatus = "ALL";
-			requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
-
-			break;
-		// ack
-		case 4:
-			var ackValue = $('#statistics-search-ack-select option:selected')
+	if (messageCount <= 10000) {
+		if (confirm("총 " + messageCount + "건에 대해서 csv 파일로 다운로드 하시겠습니까?") == true) {
+			var accountSelectValue = $('#statistics-account-select').val();
+			var searchSelectValue = $('#statistics-search-select').val();
+			var searchSelectText = $(
+					'#statistics-search-select option:selected').text();
+			var accountSelectText = $(
+					'#statistics-account-select option:selected').text();
+			var searchInputValue = $('#statistics-search-input').val();
+			var searchDateStart = $('#statistics-search-date-start-input')
 					.val();
-			searchSelectText = "ack";
-			csvCSearchStatus = "ALL";
-			requestUrl = requestUrl + '&cSearchFilter=' + searchSelectText;
-			requestUrl = requestUrl + '&cSearchContent=' + ackValue;
-			requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
-			break;
+			var searchDateEnd = $('#statistics-search-date-end-input').val();
+			var searchMonth = $('#statistics-search-date-month-input').val();
 
-		default:
+			var requestUrl = '?';
+			var csvCSearchStatus = "";
+			if (searchMonth == null || searchMonth == "") {
+				var nowDate = new Date();
+				var year = nowDate.getFullYear();
+				var month = nowDate.getMonth() + 1;
+				console.log(month);
+				if (month < 10) {
+					month = '0' + month;
+				}
+				console.log(year + "/" + month);
+				searchMonth = year + "/" + month;
+			}
 
-			break;
-		}
+			searchMonth = searchMonth.replace("/", "");
 
-		// 계정을 선택 했을경우
+			requestUrl = requestUrl + 'cSearchDate=' + searchMonth;
 
-		if (accountSelectValue != 0) {
+			if (searchDateStart != "") {
+				searchDateStart = dateFormating(searchDateStart);
+				// 시작일
+				if (searchDateStart) {
+					console.log('검색 시작일');
+					console.log(searchDateStart);
+					searchDateStart = searchDateStart.toISOString();
+					console.log(searchDateStart);
 
-			requestUrl = requestUrl + '&userId=' + accountSelectText;
-		}
+					requestUrl = requestUrl + '&cSearchDateStart='
+							+ searchDateStart;
+				}
+			}
 
-		var xmlhttp = new XMLHttpRequest();
+			if (searchDateEnd != "") {
+				searchDateEnd = dateFormating(searchDateEnd);
 
-		xmlhttp.onreadystatechange = function() {
+				// 종료일
+				if (searchDateEnd) {
+					console.log('검색 종ㄹ');
+					console.log(searchDateEnd);
+					searchDateEnd = searchDateEnd.toISOString();
+					console.log(searchDateEnd);
 
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				console.log("CSV Content:");
+					requestUrl = requestUrl + '&cSearchDateEnd='
+							+ searchDateEnd;
+				}
+			}
+			// 검색 조건 서치 vlaue
 
-				console.log(xmlhttp.responseText);
+			searchSelectValue = searchSelectValue * 1;
 
-				if (navigator.userAgent.indexOf('MSIE') !== -1
-						|| navigator.appVersion.indexOf('Trident/') > 0) {
-					// MSIE
-					console.log('IE!!');
-					var a = document.createElement('a');
-					if (window.navigator.msSaveOrOpenBlob) {
-						// var fileData = encodeURI(xmlhttp.responseText);
-						blobObject = new Blob([ xmlhttp.responseText ]);
-						a.onclick = function() {
-							window.navigator.msSaveOrOpenBlob(blobObject,
-									'message.csv');
+			switch (searchSelectValue) {
+			case 0:
+				csvCSearchStatus = 'ALL';
+				requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
+				break;
+			// status
+			case 1:
+				var statusValue = $(
+						'#statistics-search-status-select option:selected')
+						.val();
+
+				requestUrl = requestUrl + '&cSearchStatus=' + statusValue;
+
+				break;
+			// msgid
+			case 2:
+				searchSelectText = "msgId";
+				requestUrl = requestUrl + '&cSearchFilter=' + searchSelectText;
+				requestUrl = requestUrl + '&cSearchContent=' + searchInputValue;
+				csvCSearchStatus = "ALL";
+				requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
+				break;
+			// receiver
+			case 3:
+				searchSelectText = "receiver";
+				requestUrl = requestUrl + '&cSearchFilter=' + searchSelectText;
+				requestUrl = requestUrl + '&cSearchContent=' + searchInputValue;
+				csvCSearchStatus = "ALL";
+				requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
+
+				break;
+			// ack
+			case 4:
+				var ackValue = $(
+						'#statistics-search-ack-select option:selected').val();
+				searchSelectText = "ack";
+				csvCSearchStatus = "ALL";
+				requestUrl = requestUrl + '&cSearchFilter=' + searchSelectText;
+				requestUrl = requestUrl + '&cSearchContent=' + ackValue;
+				requestUrl = requestUrl + '&cSearchStatus=' + csvCSearchStatus;
+				break;
+
+			default:
+
+				break;
+			}
+
+			// 계정을 선택 했을경우
+
+			if (accountSelectValue != 0) {
+
+				requestUrl = requestUrl + '&userId=' + accountSelectText;
+			}
+
+			var xmlhttp = new XMLHttpRequest();
+
+			xmlhttp.onreadystatechange = function() {
+
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					console.log("CSV Content:");
+
+					// console.log(xmlhttp.responseText);
+
+					if (navigator.userAgent.indexOf('MSIE') !== -1
+							|| navigator.appVersion.indexOf('Trident/') > 0) {
+						// MSIE
+						console.log('IE!!');
+						var a = document.createElement('a');
+						if (window.navigator.msSaveOrOpenBlob) {
+							// var fileData = encodeURI(xmlhttp.responseText);
+							blobObject = new Blob([ xmlhttp.responseText ]);
+							a.onclick = function() {
+								window.navigator.msSaveOrOpenBlob(blobObject,
+										'message.csv');
+							}
 						}
-					}
-					a.appendChild(document.createTextNode('Click to Download'));
-					document.body.appendChild(a);
-					a.click();
-				} else {
-					var isSafari = /Safari/.test(navigator.userAgent)
-							&& /Apple Computer/.test(navigator.vendor);
-					if (isSafari) {
-						console.log('사파리');
-						var a = document.createElement('a');
-						a.href = 'data:attachment/csv,'
-								+ encodeURI(xmlhttp.responseText);
-						// a.target = '_blank';
-						// a.download = 'message.csv';
-						document.body.appendChild(a);
-						var evObj = document.createEvent('MouseEvents');
-						evObj.initMouseEvent('click', true, true, window);
-						a.dispatchEvent(evObj);
-					} else {
-						console.log('크롬 파이어 폭스');
-						var a = document.createElement('a');
-						a.href = 'data:attachment/csv,'
-								+ encodeURI(xmlhttp.responseText);
-						a.target = '_blank';
-						a.download = 'message.csv';
+						a.appendChild(document
+								.createTextNode('Click to Download'));
 						document.body.appendChild(a);
 						a.click();
+					} else {
+						var isSafari = /Safari/.test(navigator.userAgent)
+								&& /Apple Computer/.test(navigator.vendor);
+						if (isSafari) {
+							console.log('사파리');
+							var a = document.createElement('a');
+							a.href = 'data:attachment/csv,'
+									+ encodeURI(xmlhttp.responseText);
+							// a.target = '_blank';
+							// a.download = 'message.csv';
+							document.body.appendChild(a);
+							var evObj = document.createEvent('MouseEvents');
+							evObj.initMouseEvent('click', true, true, window);
+							a.dispatchEvent(evObj);
+						} else {
+							console.log('크롬 파이어 폭스');
+							var a = document.createElement('a');
+							a.href = 'data:attachment/csv,'
+									+ encodeURI(xmlhttp.responseText);
+							a.target = '_blank';
+							a.download = 'message.csv';
+							document.body.appendChild(a);
+							a.click();
+						}
+
 					}
 
+				} else if (xmlhttp.status == 401) {
+					alert('파일 다운로드에 실패 하였습니다(권한없음)');
+					return false;
+				} else if (xmlhttp.status == 500) {
+					alert('파일 다운로드에 실패 하였습니다(서버 문제)');
+					return false;
+				} else if (xmlhttp.status == 404) {
+					alert('파일 다운로드에 실패 하였습니다(Not Found)');
+					return false;
 				}
+			};
 
-			} else if (xmlhttp.status == 401) {
-				alert('파일 다운로드에 실패 하였습니다(권한없음)');
-				return false;
-			} else if (xmlhttp.status == 500) {
-				alert('파일 다운로드에 실패 하였습니다(서버 문제)');
-				return false;
-			} else if (xmlhttp.status == 404) {
-				alert('파일 다운로드에 실패 하였습니다(Not Found)');
-				return false;
-			}
-		};
+			console.log("Open.");
+			xmlhttp.open("GET", '/v1/pms/adm/' + statisticsRole
+					+ '/messages/csv' + requestUrl, true);
+			xmlhttp.setRequestHeader("X-Application-Token", statisticsToken);
 
-		console.log("Open.");
-		xmlhttp.open("GET", '/v1/pms/adm/' + statisticsRole + '/messages/csv'
-				+ requestUrl, true);
-		xmlhttp.setRequestHeader("X-Application-Token", statisticsToken);
-
-		xmlhttp.send();
-		return true;
+			xmlhttp.send();
+			return true;
+		}
+	} else {
+		alert('다운로드는 10000개 목록까지 가능합니다');
+		return false;
 	}
 
 }
-
+// reset
 function statisticsDateReset() {
 	wrapperFunction('statistics');
 }
 
-function toBinaryString(data) {
-	var ret = [];
-	var len = data.length;
-	var byte;
-	for (var i = 0; i < len; i++) {
-		byte = (data.charCodeAt(i) & 0xFF) >>> 0;
-		ret.push(String.fromCharCode(byte));
-	}
-
-	return ret.join('');
-}
-
+// function toBinaryString(data) {
+// var ret = [];
+// var len = data.length;
+// var byte;
+// for (var i = 0; i < len; i++) {
+// byte = (data.charCodeAt(i) & 0xFF) >>> 0;
+// ret.push(String.fromCharCode(byte));
+// }
+//
+// return ret.join('');
+// }
+// reset
 function statisticsReservationReset() {
 	wrapperFunction('statistics');
 }

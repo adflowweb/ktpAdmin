@@ -1,6 +1,8 @@
+//getToken
 var monthToken = sessionStorage.getItem("token");
+//getRole
 var monthRole = sessionStorage.getItem("role");
-
+//getAccountInfo
 $.ajax({
 	url : '/v1/pms/adm/' + monthRole + '/users',
 	type : 'GET',
@@ -48,8 +50,8 @@ $.ajax({
 	}
 });
 
+//getStatistics(System Admin)
 function monthSearch() {
-
 	if (monthFormCheck()) {
 		var input_month_value = $('#month-sys-date-input').val();
 		input_month_value = input_month_value.replace("/", "");
@@ -75,7 +77,6 @@ function monthSearch() {
 
 		if (accountSelectText == "전체") {
 
-			// /전체 테이블 일반 ,예약
 			$.ajax({
 				url : ajaxUrl,
 				type : 'GET',
@@ -583,8 +584,8 @@ function monthSearch() {
 					alert('통계 목록을 가지고오는데 실패하였습니다.');
 				}
 			});
-		} else {//input_month_value
-			// 선택 일반테이블
+		} else {
+	
 				ajaxUrl = '/v1/pms/adm/sys/messages/summary/'+input_month_value+'/' + accountSelectText
 					+ "?cSearchDateStart=" + searchDateStart
 					+ "&cSearchDateEnd=" + searchDateEnd;
@@ -842,11 +843,13 @@ function monthSearch() {
 
 }
 
+//dp.change check
 $("#month-sys-date-div").on("dp.change", function(e) {
 	setTimeout(changeDateInputMonthSv, 500);
 
 });
 
+//changeDate
 function changeDateInputMonthSv() {
 	var messagelist_Picker = $("#month-sys-date-input").val();
 	var messageList_Result = [];
@@ -871,8 +874,8 @@ function changeDateInputMonthSv() {
 
 }
 
+//formCheck
 function monthFormCheck() {
-
 	var selectOptionValue = $('#month-account-select').val();
 	var inputMonthValue = $('#month-sys-date-input').val();
 	var searchDateStart = $('#monthsys-search-date-start-input').val();

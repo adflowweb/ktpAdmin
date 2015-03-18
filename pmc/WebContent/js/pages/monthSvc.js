@@ -1,8 +1,10 @@
+//getToken
 var monthSvcToken = sessionStorage.getItem("token");
+//getRole
 var monthSvcRole = sessionStorage.getItem("role");
 
+//getStatistics(Service)
 function monthSvcSearch() {
-
 	if (monthSvcFormCheck()) {
 		var input_month_value = $('#month-svc-date-input').val();
 		input_month_value = input_month_value.replace("/", "");
@@ -25,8 +27,7 @@ function monthSvcSearch() {
 					+ input_month_value;
 		}
 
-		//
-		// 선택 일반테이블
+
 		$.ajax({
 			url : ajaxUrl,
 			type : 'GET',
@@ -269,11 +270,14 @@ function monthSvcSearch() {
 
 }
 
+
+//dp.change check
 $("#month-svc-date-div").on("dp.change", function(e) {
 	setTimeout(changeDateInputMonthSv, 500);
 
 });
 
+//chage date
 function changeDateInputMonthSv() {
 	var messagelist_Picker = $("#month-svc-date-input").val();
 	var messageList_Result = [];
@@ -298,6 +302,8 @@ function changeDateInputMonthSv() {
 
 }
 
+
+//formCheck
 function monthSvcFormCheck() {
 
 	var inputMonthValue = $('#month-svc-date-input').val();

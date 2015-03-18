@@ -1,16 +1,14 @@
+//disableInput
 $("#message-send-messageType-input").prop('disabled', true);
-function MessageSendFunction() {
 
-	console.log('메시지 발송 시작');
+// messageSend
+function MessageSendFunction() {
 	var tokenID = sessionStorage.getItem("token");
 	var role = sessionStorage.getItem("role");
 	var ackcheck = false;
 	if (messageSendFormCheck()) {
-
 		if ($("input:checkbox[id='message-send-ackckeck-input']")
 				.is(":checked") == true) {
-
-			console.log('ack ckeck true');
 			ackcheck = true;
 		}
 
@@ -34,7 +32,6 @@ function MessageSendFunction() {
 		var dateResult = "";
 
 		if (input_reservation != "") {
-			console.log("예약 시간이 있음");
 			dateResult = dateFormating(input_reservation);
 			dateResult = dateResult.toISOString();
 		}
@@ -52,7 +49,6 @@ function MessageSendFunction() {
 		messageData.expiry = input_messageExpire;
 		if (dateResult != "") {
 			messageData.reservationTime = dateResult;
-			console.log("테스트:" + messageData.reservationTime);
 		}
 
 		if (input_resendCount != "") {
@@ -67,7 +63,6 @@ function MessageSendFunction() {
 			alert('메시지 사이즈가 너무 큽니다.');
 			return false;
 		}
-		console.log(messageDataResult);
 
 		$.ajax({
 			url : '/v1/pms/adm/' + role + '/messages',
@@ -111,9 +106,8 @@ function MessageSendFunction() {
 
 }
 
-// form null check
+// formCheck
 function messageSendFormCheck() {
-
 	var input_messageTarget = $('#message-send-target-input').val();
 	var input_messageService = $('#message-send-service-input').val();
 	var input_messageType = $('#message-send-messageType-input').val();

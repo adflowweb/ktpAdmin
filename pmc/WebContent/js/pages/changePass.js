@@ -1,4 +1,4 @@
-// Change Password
+//changePassword
 function changePassword() {
 	var checkForm = changePassFormCheck();
 	if (checkForm) {
@@ -39,15 +39,12 @@ function changePassword() {
 				success : function(data) {
 					dataInfo=data.result.info;
 					if (dataInfo) {
-						console.log(urlReq + '/account/sec(PUT)');
-						console.log(dataInfo);
 						alert('비밀 번호를 변경하였습니다');
 						var daddy = window.self;
 						daddy.opener = window.self;
 						daddy.close();
 
 					} else {
-						console.log(data.result.errors[0]);
 						if (data.result.errors[0] == "패스워드 변경 실패2") {
 							alert('기존 비밀 번호가 맞지 않습니다');
 						} else if (data.result.errors[0] == "패스워드 변경 실패1") {
@@ -71,7 +68,7 @@ function changePassword() {
 
 }
 
-// Form Check
+//formCheck
 function changePassFormCheck() {
 
 	var input_changePassword = $('#change-currentpass-input').val();
@@ -88,8 +85,6 @@ function changePassFormCheck() {
 		$('#change-newpass-input').focus();
 		return false;
 	} else {
-		console.log('pass');
-		console.log(input_newPassWord.length);
 		if (input_newPassWord.length < 8 || input_newPassWord.length > 20) {
 			alert('패스워드는 8자 에서 20자이하로 입력하세요');
 			$('#change-newpass-input').focus();
