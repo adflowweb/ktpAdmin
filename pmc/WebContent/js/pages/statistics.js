@@ -23,41 +23,35 @@ $.ajax({
 	success : function(data) {
 
 		var dataResult = data.result.data;
-		console.log(data);
-		if (dataResult) {
-			console.log('/v1/pms/adm/' + statisticsRole + '/users');
-			console.log(dataResult);
-			if (!data.result.errors) {
 
-				for ( var i in data.result.data) {
-					var successData = dataResult[i];
-					console.log(successData.role);
-					if (successData.role == "sys") {
+		if (!data.result.errors) {
 
-					} else if (successData.role == "svc") {
-						$("#statistics-account-select").append(
-								"<option value='" + (i * 1 + 1) + "'>"
-										+ successData.userId + "</option>");
-						$("#statistics-reservation-account-select").append(
-								"<option value='" + (i * 1 + 1) + "'>"
-										+ successData.userId + "</option>");
-					} else if (successData.role == "svcadm") {
-						$("#statistics-account-select").append(
-								"<option value='" + (i * 1 + 1) + "'>"
-										+ successData.userId + "</option>");
-						$("#statistics-reservation-account-select").append(
-								"<option value='" + (i * 1 + 1) + "'>"
-										+ successData.userId + "</option>");
-					}
+			for ( var i in data.result.data) {
+				var successData = dataResult[i];
 
+				if (successData.role == "sys") {
+
+				} else if (successData.role == "svc") {
+					$("#statistics-account-select").append(
+							"<option value='" + (i * 1 + 1) + "'>"
+									+ successData.userId + "</option>");
+					$("#statistics-reservation-account-select").append(
+							"<option value='" + (i * 1 + 1) + "'>"
+									+ successData.userId + "</option>");
+				} else if (successData.role == "svcadm") {
+					$("#statistics-account-select").append(
+							"<option value='" + (i * 1 + 1) + "'>"
+									+ successData.userId + "</option>");
+					$("#statistics-reservation-account-select").append(
+							"<option value='" + (i * 1 + 1) + "'>"
+									+ successData.userId + "</option>");
 				}
 
-			} else {
-
-				alert(data.result.errors[0]);
 			}
+
 		} else {
 
+			alert(data.result.errors[0]);
 		}
 
 	},
@@ -118,14 +112,10 @@ var statisticsTable = $('#statistics-datatable')
 									data : aoData,
 
 									success : function(data) {
-										console.log(data);
 
 										if (!data.result.errors) {
 											var dataResult = data.result.data.data;
-											console.log('/v1/pms/adm/'
-													+ statisticsRole
-													+ '/messages(GET)');
-											console.log(dataResult);
+
 											// $('#reservationListCnt_div')
 											// .text(
 											// data.result.data.recordsTotal);
@@ -181,8 +171,7 @@ var statisticsTable = $('#statistics-datatable')
 												case 0:
 													dataResult[i].status = "발송중";
 													if (dataResult[i].reservationTime == null) {
-														console
-																.log('널일경우 예약 메시지가 아닌데 발송중일경우 업데이트 타임표시');
+
 														var dateTime = dataResult[i].updateTime;
 														dataResult[i].updateTime = new Date(
 																dateTime)
@@ -257,11 +246,11 @@ var statisticsTable = $('#statistics-datatable')
 							var nowDate = new Date();
 							var year = nowDate.getFullYear();
 							var month = nowDate.getMonth() + 1;
-							console.log(month);
+
 							if (month < 10) {
 								month = '0' + month;
 							}
-							console.log(year + "/" + month);
+
 							searchMonth = year + "/" + month;
 
 							$('#statistics-search-date-month-input').val(
@@ -276,17 +265,13 @@ var statisticsTable = $('#statistics-datatable')
 						});
 						//						
 
-						console.log("시작일 테스트")
-						console.log(searchDateStart);
-
 						if (searchDateStart != "") {
 							searchDateStart = dateFormating(searchDateStart);
 							// 시작일
 							if (searchDateStart) {
-								console.log('검색 시작일');
-								console.log(searchDateStart);
+
 								searchDateStart = searchDateStart.toISOString();
-								console.log(searchDateStart);
+
 								aoData.push({
 									'name' : 'cSearchDateStart',
 									'value' : searchDateStart
@@ -299,10 +284,9 @@ var statisticsTable = $('#statistics-datatable')
 
 							// 종료일
 							if (searchDateEnd) {
-								console.log('검색 종ㄹ');
-								console.log(searchDateEnd);
+
 								searchDateEnd = searchDateEnd.toISOString();
-								console.log(searchDateEnd);
+
 								aoData.push({
 									'name' : 'cSearchDateEnd',
 									'value' : searchDateEnd
@@ -310,8 +294,7 @@ var statisticsTable = $('#statistics-datatable')
 							}
 						}
 						// 검색 조건 서치 vlaue
-						console.log('검색조건');
-						console.log(searchInputValue);
+
 						searchSelectValue = searchSelectValue * 1;
 						switch (searchSelectValue) {
 						case 0:
@@ -392,8 +375,7 @@ var statisticsTable = $('#statistics-datatable')
 
 							break;
 						}
-						console.log('일반 계정 ');
-						console.log(accountSelectValue);
+
 						// 계정을 선택 했을경우
 						if (accountSelectValue != 0) {
 							aoData.push({
@@ -407,9 +389,6 @@ var statisticsTable = $('#statistics-datatable')
 						// 'value' : defaultMonth
 						// });
 
-						console.log('서치 일반 데이터');
-						console.log(aoData);
-						console.log('서치 일반 데이터');
 					}
 
 				});
@@ -453,11 +432,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 
 										if (!data.result.errors) {
 											var dataResult = data.result.data.data;
-											console
-													.log('/v1/pms/adm/'
-															+ statisticsRole
-															+ '/messages/reservations(GET)');
-											console.log(dataResult);
+
 											$(
 													'#statisticsList-reservation-Cnt_div')
 													.text(
@@ -465,8 +440,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 											for ( var i in dataResult) {
 
 												var dateTime = dataResult[i].reservationTime;
-												console.log("dateTime:"
-														+ dateTime);
+
 												if (dateTime != null) {
 													dataResult[i].reservationTime = new Date(
 															dateTime)
@@ -521,11 +495,11 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 							var nowDate = new Date();
 							var year = nowDate.getFullYear();
 							var month = nowDate.getMonth() + 1;
-							console.log(month);
+
 							if (month < 10) {
 								month = '0' + month;
 							}
-							console.log(year + "/" + month);
+
 							searchMonth = year + "/" + month;
 
 							$('#statistics-reservation-search-date-month-input')
@@ -539,17 +513,13 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 							'value' : searchMonth
 						});
 
-						console.log("시작일 테스트")
-						console.log(searchDateStart);
-
 						if (searchDateStart != "") {
 							searchDateStart = dateFormating(searchDateStart);
 							// 시작일
 							if (searchDateStart) {
-								console.log('검색 시작일');
-								console.log(searchDateStart);
+
 								searchDateStart = searchDateStart.toISOString();
-								console.log(searchDateStart);
+
 								aoData.push({
 									'name' : 'cSearchDateStart',
 									'value' : searchDateStart
@@ -560,21 +530,17 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 						if (searchDateEnd != "") {
 							searchDateEnd = dateFormating(searchDateEnd);
 
-							// 종료일
 							if (searchDateEnd) {
-								console.log('검색 종ㄹ');
-								console.log(searchDateEnd);
+
 								searchDateEnd = searchDateEnd.toISOString();
-								console.log(searchDateEnd);
+
 								aoData.push({
 									'name' : 'cSearchDateEnd',
 									'value' : searchDateEnd
 								});
 							}
 						}
-						// 검색 조건 서치 vlaue
-						console.log('검색조건');
-						console.log(searchInputValue);
+
 						searchSelectValue = searchSelectValue * 1;
 						switch (searchSelectValue) {
 						case 0:
@@ -623,9 +589,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 
 							break;
 						}
-						console.log("예약 계정 선택 값");
-						console.log(accountSelectValue);
-						// 계정을 선택 했을경우
+
 						if (accountSelectValue != 0) {
 							aoData.push({
 								'name' : 'userId',
@@ -633,41 +597,32 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 							});
 						}
 
-						console.log('예약 서치 데이터');
-						console.log(aoData);
-						console.log('예약 서치 데이터');
-
 					}
 
 				});
 
 // searchBtn Click
 function statisticsDateSearch() {
-	console.log('statisticsDateSearch');
+
 	var formCheck = checkSearchStatistics();
 
 	if (formCheck) {
 		statisticsTable.fnFilter();
-	} else {
-		console.log('검색항목 선택 안함!!');
 	}
 }
 
 // searchBtn Click
 function statisticsReservationSearch() {
-	console.log('target click function..');
+
 	var formCheck = checkReservationSearch();
 
 	if (formCheck) {
 		statisticsReservationTable.fnFilter();
-	} else {
-		console.log('검색항목 선택 안함!!');
 	}
 }
 
 // accountChange Check
 $("#statistics-account-select").change(function() {
-	console.log('계정 변경');
 
 	$('#statistics-account-select').val();
 	$('#statistics-search-date-start-input').val("");
@@ -709,14 +664,10 @@ function checkSearchStatistics() {
 	var searchDateStart = $('#statistics-search-date-start-input').val();
 	var defaultMonth = $('#statistics-search-date-month-input').val();
 
-	// 2015/03
-	console.log('서브스트링');
-	console.log(defaultMonth.substring(5, 6));
 	if (defaultMonth.substring(5, 6) == 0) {
 		defaultMonth = defaultMonth.substring(6);
 		defaultMonth = defaultMonth - 1;
-		console.log('기본달');
-		console.log(defaultMonth - 1);
+
 	} else {
 		defaultMonth = defaultMonth.substring(5);
 		defaultMonth = defaultMonth - 1;
@@ -725,7 +676,7 @@ function checkSearchStatistics() {
 
 	if (typeof searchDateStart === undefined
 			|| typeof searchDateStart === 'undefined') {
-		console.log("dsearchDateStart id undefined ");
+
 		searchDateStart = "";
 	}
 
@@ -734,11 +685,9 @@ function checkSearchStatistics() {
 	searchDateEnd = dateFormating(searchDateEnd);
 	if (typeof searchDateEnd === undefined
 			|| typeof searchDateEnd === 'undefined') {
-		console.log("dsearchDateEnd.....");
+
 		searchDateEnd = "";
 	}
-
-	console.log('selectOptjionValue:' + selectOptionValue);
 
 	// if (selectOptionValue == 0) {
 	// alert('검색할 항목을 선택해 주세요');
@@ -754,9 +703,7 @@ function checkSearchStatistics() {
 	}
 
 	if (searchDateStart != null && searchDateStart != "") {
-		console.log('검색 시작 종료 로그');
-		console.log(searchDateStart);
-		console.log(searchDateEnd);
+
 		if (searchDateEnd == null || searchDateEnd == "") {
 			alert('검색 종료일을 입력해 주세요');
 			return false;
@@ -767,13 +714,12 @@ function checkSearchStatistics() {
 			} else if (searchDateStart.getMonth() === searchDateEnd.getMonth()
 					&& defaultMonth === searchDateEnd.getMonth()
 					&& defaultMonth === searchDateStart.getMonth()) {
-				console.log(searchDateStart.getMonth());
-				console.log('같은월');
+
 				return true;
 			} else if (searchDateStart.getMonth() !== searchDateEnd.getMonth()
 					|| defaultMonth !== searchDateEnd.getMonth()
 					|| defaultMonth !== searchDateStart.getMonth()) {
-				console.log('다른월');
+
 				alert('같은 달에서만 검색이 가능합니다');
 				return false;
 			} else {
@@ -788,7 +734,7 @@ function checkSearchStatistics() {
 
 // selectChange Check
 function searchSelectSysChange() {
-	console.log('메시지 리스트 셀렉트 변경 시');
+
 	var selectOptionValue = $('#statistics-search-select').val();
 
 	selectOptionValue = selectOptionValue * 1;
@@ -910,11 +856,11 @@ function statisticsCsvExport() {
 				var nowDate = new Date();
 				var year = nowDate.getFullYear();
 				var month = nowDate.getMonth() + 1;
-				console.log(month);
+
 				if (month < 10) {
 					month = '0' + month;
 				}
-				console.log(year + "/" + month);
+
 				searchMonth = year + "/" + month;
 			}
 
@@ -926,10 +872,8 @@ function statisticsCsvExport() {
 				searchDateStart = dateFormating(searchDateStart);
 				// 시작일
 				if (searchDateStart) {
-					console.log('검색 시작일');
-					console.log(searchDateStart);
+
 					searchDateStart = searchDateStart.toISOString();
-					console.log(searchDateStart);
 
 					requestUrl = requestUrl + '&cSearchDateStart='
 							+ searchDateStart;
@@ -941,10 +885,8 @@ function statisticsCsvExport() {
 
 				// 종료일
 				if (searchDateEnd) {
-					console.log('검색 종ㄹ');
-					console.log(searchDateEnd);
+
 					searchDateEnd = searchDateEnd.toISOString();
-					console.log(searchDateEnd);
 
 					requestUrl = requestUrl + '&cSearchDateEnd='
 							+ searchDateEnd;
@@ -1013,14 +955,13 @@ function statisticsCsvExport() {
 			xmlhttp.onreadystatechange = function() {
 
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					console.log("CSV Content:");
 
 					// console.log(xmlhttp.responseText);
 
 					if (navigator.userAgent.indexOf('MSIE') !== -1
 							|| navigator.appVersion.indexOf('Trident/') > 0) {
 						// MSIE
-						console.log('IE!!');
+
 						var a = document.createElement('a');
 						if (window.navigator.msSaveOrOpenBlob) {
 							// var fileData = encodeURI(xmlhttp.responseText);
@@ -1038,7 +979,7 @@ function statisticsCsvExport() {
 						var isSafari = /Safari/.test(navigator.userAgent)
 								&& /Apple Computer/.test(navigator.vendor);
 						if (isSafari) {
-							console.log('사파리');
+
 							var a = document.createElement('a');
 							a.href = 'data:attachment/csv,'
 									+ encodeURI(xmlhttp.responseText);
@@ -1049,7 +990,7 @@ function statisticsCsvExport() {
 							evObj.initMouseEvent('click', true, true, window);
 							a.dispatchEvent(evObj);
 						} else {
-							console.log('크롬 파이어 폭스');
+
 							var a = document.createElement('a');
 							a.href = 'data:attachment/csv,'
 									+ encodeURI(xmlhttp.responseText);
@@ -1073,7 +1014,6 @@ function statisticsCsvExport() {
 				}
 			};
 
-			console.log("Open.");
 			xmlhttp.open("GET", '/v1/pms/adm/' + statisticsRole
 					+ '/messages/csv' + requestUrl, true);
 			xmlhttp.setRequestHeader("X-Application-Token", statisticsToken);
@@ -1116,14 +1056,10 @@ function checkReservationSearch() {
 	var defaultMonth = $('#statistics-reservation-search-date-month-input')
 			.val();
 
-	// 2015/03
-	console.log('서브스트링');
-	console.log(defaultMonth.substring(5, 6));
 	if (defaultMonth.substring(5, 6) == 0) {
 		defaultMonth = defaultMonth.substring(6);
 		defaultMonth = defaultMonth - 1;
-		console.log('기본달');
-		console.log(defaultMonth - 1);
+
 	} else {
 		defaultMonth = defaultMonth.substring(5);
 		defaultMonth = defaultMonth - 1;
@@ -1135,7 +1071,7 @@ function checkReservationSearch() {
 
 	if (typeof searchDateStart === undefined
 			|| typeof searchDateStart === 'undefined') {
-		console.log("dsearchDateStart id undefined ");
+
 		searchDateStart = "";
 	}
 
@@ -1145,11 +1081,9 @@ function checkReservationSearch() {
 	searchDateEnd = dateFormating(searchDateEnd);
 	if (typeof searchDateEnd === undefined
 			|| typeof searchDateEnd === 'undefined') {
-		console.log("dsearchDateEnd.....");
+
 		searchDateEnd = "";
 	}
-
-	console.log('selectOptjionValue:' + selectOptionValue);
 
 	if (selectOptionValue != 0) {
 		if (inputSearchValue == null || inputSearchValue == "") {
@@ -1158,7 +1092,6 @@ function checkReservationSearch() {
 			return false;
 		}
 	} else if (inputSearchValue != null && inputSearchValue != "") {
-		console.log(inputSearchValue);
 
 		if (selectOptionValue == 0) {
 			alert('검색 항목을 선택해주세요');
@@ -1169,9 +1102,7 @@ function checkReservationSearch() {
 	}
 
 	if (searchDateStart != null && searchDateStart != "") {
-		console.log('검색 시작 종료 로그');
-		console.log(searchDateStart);
-		console.log(searchDateEnd);
+
 		if (searchDateEnd == null || searchDateEnd == "") {
 			alert('검색 종료일을 입력해 주세요');
 			return false;
@@ -1182,13 +1113,12 @@ function checkReservationSearch() {
 			} else if (searchDateStart.getMonth() === searchDateEnd.getMonth()
 					&& defaultMonth === searchDateEnd.getMonth()
 					&& defaultMonth === searchDateStart.getMonth()) {
-				console.log(searchDateStart.getMonth());
-				console.log('같은월');
+
 				return true;
 			} else if (searchDateStart.getMonth() !== searchDateEnd.getMonth()
 					|| defaultMonth !== searchDateEnd.getMonth()
 					|| defaultMonth !== searchDateStart.getMonth()) {
-				console.log('다른월');
+
 				alert('같은 달에서만 검색이 가능합니다');
 				return false;
 			} else {

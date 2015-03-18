@@ -1,12 +1,12 @@
 //getToken
 var reservationListToken = sessionStorage.getItem("token");
-//getRole
+// getRole
 var reservationListRole = sessionStorage.getItem("role");
-//reservationInput disable
+// reservationInput disable
 $("#reservation-search-date-start-input").prop('disabled', true);
-//reseravationInput disable
+// reseravationInput disable
 $("#reservation-search-date-end-input").prop('disabled', true);
-//createReservation Table
+// createReservation Table
 var reservationListTable = $('#reservation-datatable')
 		.dataTable(
 				{
@@ -42,13 +42,9 @@ var reservationListTable = $('#reservation-datatable')
 									success : function(data) {
 
 										if (!data.result.errors) {
-											console.log(data);
+
 											var dataResult = data.result.data.data;
-											console
-													.log('/v1/pms/adm/'
-															+ reservationListRole
-															+ '/messages/reservations(GET)');
-											console.log(dataResult);
+
 											if (dataResult.length == 0) {
 												$("#reservaton-checkbox-id")
 														.hide();
@@ -62,8 +58,7 @@ var reservationListTable = $('#reservation-datatable')
 														+ dataResult[i].msgId
 														+ '"/>&nbsp;'
 														+ dataResult[i].msgId;
-												console.log("dateTime:"
-														+ dateTime);
+
 												if (dateTime != null) {
 													dataResult[i].reservationTime = new Date(
 															dateTime)
@@ -154,11 +149,11 @@ var reservationListTable = $('#reservation-datatable')
 							var nowDate = new Date();
 							var year = nowDate.getFullYear();
 							var month = nowDate.getMonth() + 1;
-							console.log(month);
+
 							if (month < 10) {
 								month = '0' + month;
 							}
-							console.log(year + "/" + month);
+
 							messageMonth = year + "/" + month;
 
 							$('#reservation-date-input').val(messageMonth);
@@ -171,17 +166,13 @@ var reservationListTable = $('#reservation-datatable')
 							'value' : messageMonth
 						});
 
-						console.log("시작일 테스트")
-						console.log(searchDateStart);
-
 						if (searchDateStart != "") {
 							searchDateStart = dateFormating(searchDateStart);
 							// 시작일
 							if (searchDateStart) {
-								console.log('검색 시작일');
-								console.log(searchDateStart);
+
 								searchDateStart = searchDateStart.toISOString();
-								console.log(searchDateStart);
+
 								aoData.push({
 									'name' : 'cSearchDateStart',
 									'value' : searchDateStart
@@ -194,10 +185,9 @@ var reservationListTable = $('#reservation-datatable')
 
 							// 종료일
 							if (searchDateEnd) {
-								console.log('검색 종ㄹ');
-								console.log(searchDateEnd);
+
 								searchDateEnd = searchDateEnd.toISOString();
-								console.log(searchDateEnd);
+
 								aoData.push({
 									'name' : 'cSearchDateEnd',
 									'value' : searchDateEnd
@@ -205,20 +195,16 @@ var reservationListTable = $('#reservation-datatable')
 							}
 						}
 
-						console.log("메시지 리스트  aoData");
-						console.log(aoData);
-						console.log("메시지 리스트  aoData");
-
 					}
 
 				});
 
-//dp.change check
+// dp.change check
 $("#reservation-date-div").on("dp.change", function(e) {
 	setTimeout(changeDateInputRes, 500);
 
 });
-//dateChange
+// dateChange
 function changeDateInputRes() {
 	var messagelist_Picker = $("#reservation-date-input").val();
 	var messageList_Result = []
@@ -243,19 +229,19 @@ function changeDateInputRes() {
 			chageDateL(messageList_Result[0], messageList_Result[1]));
 
 }
-//searchBtn Click
+// searchBtn Click
 function reservationSearch() {
-	console.log('reservation search click function..');
+
 	var formCheck = checkSearchReservation();
 
 	if (formCheck) {
 		reservationListTable.fnFilter();
 	} else {
-		console.log('검색항목 선택 안함!!');
+
 	}
 }
 
-//checkBox Check
+// checkBox Check
 function reservationCheck(source) {
 	checkboxes = document.getElementsByName('reservatoin-checkbox');
 	for (var i = 0, n = checkboxes.length; i < n; i++) {
@@ -263,7 +249,7 @@ function reservationCheck(source) {
 	}
 }
 
-//reservation Cancel
+// reservation Cancel
 function reservationCancelFunction() {
 	var checkedLength = $('input[name="reservatoin-checkbox"]:checked').length;
 	var role = sessionStorage.getItem("role");
@@ -277,17 +263,16 @@ function reservationCancelFunction() {
 		$('input[name="reservatoin-checkbox"]:checked').each(function() {
 
 			if (this.value != "on") {
-				console.log(this.value);
+
 				reservationReq.msgIds.push(this.value);
 			}
 		});
-		console.log(reservationReq.msgIds.length);
+
 		if (reservationReq.msgIds.length == 0) {
 			alert('취소할 대상이 없습니다.');
 			return false;
 		}
 		reservationReq = JSON.stringify(reservationReq);
-		console.log(JSON.stringify(reservationReq));
 
 		if (confirm("예약 메시지를 취소합니다.") == true) {
 
@@ -305,8 +290,7 @@ function reservationCancelFunction() {
 				success : function(data) {
 
 					if (!data.result.errors) {
-						console.log('메시지 취소 리퀘스트 결과');
-						console.log(data);
+
 						var dataResult = data.result.data;
 						alert(dataResult + "건의 예약 메시지를 취소하였습니다.");
 						wrapperFunction('reservationList');
@@ -330,7 +314,7 @@ function reservationCancelFunction() {
 
 }
 
-//formCheck
+// formCheck
 function checkSearchReservation() {
 
 	var selectOptionValue = $('#reservation-search-select').val();
@@ -338,14 +322,10 @@ function checkSearchReservation() {
 	var searchDateStart = $('#reservation-search-date-start-input').val();
 	var defaultMonth = $('#reservation-date-input').val();
 
-	// 2015/03
-	console.log('서브스트링');
-	console.log(defaultMonth.substring(5, 6));
 	if (defaultMonth.substring(5, 6) == 0) {
 		defaultMonth = defaultMonth.substring(6);
 		defaultMonth = defaultMonth - 1;
-		console.log('기본달');
-		console.log(defaultMonth - 1);
+
 	} else {
 		defaultMonth = defaultMonth.substring(5);
 		defaultMonth = defaultMonth - 1;
@@ -354,7 +334,7 @@ function checkSearchReservation() {
 
 	if (typeof searchDateStart === undefined
 			|| typeof searchDateStart === 'undefined') {
-		console.log("dsearchDateStart id undefined ");
+
 		searchDateStart = "";
 	}
 
@@ -363,19 +343,15 @@ function checkSearchReservation() {
 	searchDateEnd = dateFormating(searchDateEnd);
 	if (typeof searchDateEnd === undefined
 			|| typeof searchDateEnd === 'undefined') {
-		console.log("dsearchDateEnd.....");
+
 		searchDateEnd = "";
 	}
-
-	console.log('selectOptjionValue:' + selectOptionValue);
 
 	// if (selectOptionValue == 0) {
 	// alert('검색할 항목을 선택해 주세요');
 	// return false;
 	// }
 
-	
-	
 	if (selectOptionValue == 1 || selectOptionValue == 2) {
 		if (inputSearchValue == null || inputSearchValue == "") {
 			alert('검색할 내용을 입력해 주세요');
@@ -385,9 +361,7 @@ function checkSearchReservation() {
 	}
 
 	if (searchDateStart != null && searchDateStart != "") {
-		console.log('검색 시작 종료 로그');
-		console.log(searchDateStart);
-		console.log(searchDateEnd);
+
 		if (searchDateEnd == null || searchDateEnd == "") {
 			alert('검색 종료일을 입력해 주세요');
 			return false;
@@ -398,13 +372,12 @@ function checkSearchReservation() {
 			} else if (searchDateStart.getMonth() === searchDateEnd.getMonth()
 					&& defaultMonth === searchDateEnd.getMonth()
 					&& defaultMonth === searchDateStart.getMonth()) {
-				console.log(searchDateStart.getMonth());
-				console.log('같은월');
+
 				return true;
 			} else if (searchDateStart.getMonth() !== searchDateEnd.getMonth()
 					|| defaultMonth !== searchDateEnd.getMonth()
 					|| defaultMonth !== searchDateStart.getMonth()) {
-				console.log('다른월');
+
 				alert('같은 달에서만 검색이 가능합니다');
 				return false;
 			} else {
@@ -417,7 +390,7 @@ function checkSearchReservation() {
 
 }
 
-//cancelForm Check
+// cancelForm Check
 function cancelFormCheck() {
 	var input_reservationCancelID = $('#reservation-cancel-input').val();
 	if (input_reservationCancelID == null || input_reservationCancelID == "") {

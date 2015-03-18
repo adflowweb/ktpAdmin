@@ -1,8 +1,8 @@
 //getToken
 var userInfoToken = sessionStorage.getItem("token");
-//getRole
+// getRole
 var userInfoRole = sessionStorage.getItem("role");
-//getAccount Info
+// getAccount Info
 $.ajax({
 	url : '/v1/pms/adm/' + userInfoRole + '/account',
 	type : 'GET',
@@ -14,29 +14,25 @@ $.ajax({
 	async : false,
 
 	success : function(data) {
-		console.log(data);
-		
-	
-			if (!data.result.errors) {
-				var dataResult = data.result.data;
-				console.log( '/v1/pms/adm/' + userInfoRole + '/account(GET)');
-				console.log(dataResult);
-				$('#userInfo-id-input').val(dataResult.userId);
-				$('#userInfo-name-input').val(dataResult.userName);
-				$('#userInfo-token-input').val(dataResult.applicationToken);
-			} else {
 
-				alert('계정 목록을 가지고오는데 실패하였습니다.');
-			}
-	
+		if (!data.result.errors) {
+			var dataResult = data.result.data;
+
+			$('#userInfo-id-input').val(dataResult.userId);
+			$('#userInfo-name-input').val(dataResult.userName);
+			$('#userInfo-token-input').val(dataResult.applicationToken);
+		} else {
+
+			alert('계정 목록을 가지고오는데 실패하였습니다.');
+		}
 
 	},
 	error : function(data, textStatus, request) {
-		console.log(data);
+
 		// alert('계정 목록을 가지고오는데 실패하였습니다.');
 	}
 });
-//confirm
+// confirm
 function userInfoConfirm() {
 	var daddy = window.self;
 	daddy.opener = window.self;

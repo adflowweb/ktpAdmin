@@ -7,7 +7,7 @@ $('#add-role-select').change(function() {
 		$('#add-messagecount-div').hide();
 	}
 });
-//userAdd
+// userAdd
 function userAddFunction() {
 	var formCheck = userAddFormCheck();
 	var userToken = sessionStorage.getItem("token");
@@ -19,9 +19,9 @@ function userAddFunction() {
 			var role_select = $("#add-role-select option:selected").val();
 			var roleValue = "";
 			var message_count_input = $('#add-user-message-input').val();
-			console.log(message_count_input);
-			if(message_count_input==null||message_count_input==""){
-				message_count_input=-1*1;
+
+			if (message_count_input == null || message_count_input == "") {
+				message_count_input = -1 * 1;
 			}
 			var ip_filter_input = $('#add-ipfilter-input').val();
 			role_select = role_select * 1;
@@ -48,7 +48,6 @@ function userAddFunction() {
 			userAdd.role = roleValue;
 			userAdd.ipFilters = ip_filter_input;
 			var userAddReq = JSON.stringify(userAdd);
-			console.log(userAddReq);
 
 			$.ajax({
 				url : '/v1/pms/adm/sys/users',
@@ -62,18 +61,16 @@ function userAddFunction() {
 
 				async : false,
 				success : function(data) {
-						if (!data.result.errors) {
-							var dataResult = data.result.data;
-							console.log(dataResult);
-							console.log('/v1/pms/adm/sys/users(POST)');
-							alert(data.result.data.userId + "를 생성 하였습니다.");
-							wrapperFunction('userAdd');
-						} else {
+					if (!data.result.errors) {
+						var dataResult = data.result.data;
 
-							alert('계정 등록에 실패하였습니다.');
-							wrapperFunction('userAdd');
-						}
-					
+						alert(data.result.data.userId + "를 생성 하였습니다.");
+						wrapperFunction('userAdd');
+					} else {
+
+						alert('계정 등록에 실패하였습니다.');
+						wrapperFunction('userAdd');
+					}
 
 				},
 				error : function(data, textStatus, request) {
@@ -90,7 +87,7 @@ function userAddFunction() {
 
 }
 
-//formChekc
+// formChekc
 function userAddFormCheck() {
 	var id_input = $('#add-id-input').val();
 	var password_input = $('#add-password-input').val();
@@ -103,8 +100,7 @@ function userAddFormCheck() {
 		$('#add-id-input').focus();
 		return false;
 	} else {
-		console.log('id');
-		console.log(id_input.length);
+
 		if (id_input.length < 4 || id_input.length > 20) {
 			alert('아이디는 4자 에서 20자이하로 입력하세요');
 			$('#add-id-input').focus();
@@ -118,8 +114,7 @@ function userAddFormCheck() {
 		$('#add-password-input').focus();
 		return false;
 	} else {
-		console.log('pass');
-		console.log(password_input.length);
+
 		if (password_input.length < 8 || password_input.length > 20) {
 			alert('패스워드는 8자 에서 20자이하로 입력하세요');
 			$('#add-password-input').focus();

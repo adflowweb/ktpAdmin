@@ -496,7 +496,7 @@ function infLogin() {
 }
 // svcAdmin Login
 function svcAdmLogin() {
-	console.log('pcbs start');
+
 	$('#ul_userInfo').show();
 	$('.navbar-static-side').show();
 	$('#message_send_li').show();
@@ -542,7 +542,7 @@ function dateFormating(value) {
 	var month = result.substring(5, 7);
 	var day = result.substring(8, 10);
 	var hour = result.substring(10, 12);
-	console.log(hour);
+
 	var minute = result.substring(13, 15);
 	var amPm = result.substring(15, 17);
 	if (amPm === 'pm') {
@@ -617,22 +617,22 @@ var guid = (function() {
 	};
 })();
 
-//// CKEDITOR Get Contents
-//function GetContents() {
-//	var editor = CKEDITOR.instances.input_messageContent;
-//	return editor.getData();
+// // CKEDITOR Get Contents
+// function GetContents() {
+// var editor = CKEDITOR.instances.input_messageContent;
+// return editor.getData();
 //
-//}
+// }
 //
-//// CKEDITOR Plain Text
-//function ckGetPlainText() {
-//	var html = CKEDITOR.instances.input_messageContent.getSnapshot();
-//	var dom = document.createElement("DIV");
-//	dom.innerHTML = html;
-//	var plain_text = (dom.textContent || dom.innerText);
-//	console.log(plain_text);
-//	return plain_text;
-//}
+// // CKEDITOR Plain Text
+// function ckGetPlainText() {
+// var html = CKEDITOR.instances.input_messageContent.getSnapshot();
+// var dom = document.createElement("DIV");
+// dom.innerHTML = html;
+// var plain_text = (dom.textContent || dom.innerText);
+// console.log(plain_text);
+// return plain_text;
+// }
 
 // utf8 to base64
 function utf8ByteLength(str) {

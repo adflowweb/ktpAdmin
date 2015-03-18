@@ -14,15 +14,12 @@ function MessageSendUserFunction() {
 		var input_resendInterval = $('#message-send-user-resendInterval-input')
 				.val();
 		var dateResult = "";
-		
-		
+
 		if (input_reservation != "") {
-			console.log("예약 시간이 있음");
+
 			dateResult = dateFormating(input_reservation);
 			dateResult = dateResult.toISOString();
 		}
-
-		
 
 		input_messageTarget = input_messageTarget.split(",");
 		var messageData = new Object();
@@ -32,7 +29,7 @@ function MessageSendUserFunction() {
 		messageData.contentType = "application/base64";
 		if (dateResult != "") {
 			messageData.reservationTime = dateResult;
-			console.log("테스트:" + messageData.reservationTime);
+
 		}
 
 		if (input_resendCount != "") {
@@ -43,12 +40,10 @@ function MessageSendUserFunction() {
 		}
 		var messageDataResult = JSON.stringify(messageData);
 		if (utf8ByteLength(messageDataResult) > 512000) {
-			console.log(utf8ByteLength(messageDataResult));
+
 			alert('메시지 사이즈가 너무 큽니다.');
 			return false;
 		}
-		console.log(utf8ByteLength(messageDataResult));
-		console.log(messageDataResult);
 
 		$.ajax({
 			url : '/v1/pms/adm/' + role + '/messages',
@@ -65,8 +60,7 @@ function MessageSendUserFunction() {
 
 				if (!data.result.errors) {
 					var dataResult = data.result.data;
-					console.log('/v1/pms/adm/' + role + '/messages(POST)');
-					console.log(dataResult);
+
 					// if(messageData.resendMaxCount){
 					// messageData.resendMaxCount=messageData.resendMaxCount*1+1;
 					// alert('반복 메시지를 포함하여 총 '+messageData.resendMaxCount+'건을
@@ -93,7 +87,7 @@ function MessageSendUserFunction() {
 
 }
 
-//formCheck
+// formCheck
 function messageSendUserFormCheck() {
 
 	var input_messageTarget = $('#message-send-user-target-input').val();
@@ -103,11 +97,8 @@ function messageSendUserFormCheck() {
 			.val();
 
 	var input_reservation = $('#message-send-user-reservationdate-input').val();
-	console.log("메세지 내용");
+
 	input_messageContent = compactTrim(input_messageContent);
-	console.log("여기");
-	console.log(input_messageContent);
-	console.log(input_reservation);
 
 	if (input_messageTarget == null || input_messageTarget == "") {
 		alert("메세지 보낼 대상을 입력해주세요");
@@ -166,9 +157,9 @@ function messageSendUserFormCheck() {
 
 		if (input_reservation) { // 예약 메세지
 			var convertDate = input_reservation;
-			console.log('여가');
+
 			input_reservation = compactTrim(input_reservation);
-			console.log('여가');
+
 			input_reservation = input_reservation.substring(0, 10);
 
 			convertDate = dateFormating(convertDate);

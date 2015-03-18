@@ -1,8 +1,8 @@
 //getToken
 var monthToken = sessionStorage.getItem("token");
-//getRole
+// getRole
 var monthRole = sessionStorage.getItem("role");
-//getAccountInfo
+// getAccountInfo
 $.ajax({
 	url : '/v1/pms/adm/' + monthRole + '/users',
 	type : 'GET',
@@ -18,10 +18,10 @@ $.ajax({
 		if (!data.result.errors) {
 
 			var dataResult = data.result.data;
-			console.log(data);
+
 			for ( var i in data.result.data) {
 				var successData = dataResult[i];
-				console.log(successData.role);
+
 				if (successData.role == "sys") {
 					$("#month-account-select").append(
 							"<option value='" + (i * 1 + 1) + "'>전체</option>");
@@ -50,7 +50,7 @@ $.ajax({
 	}
 });
 
-//getStatistics(System Admin)
+// getStatistics(System Admin)
 function monthSearch() {
 	if (monthFormCheck()) {
 		var input_month_value = $('#month-sys-date-input').val();
@@ -61,8 +61,8 @@ function monthSearch() {
 		var searchDateEnd = $('#monthsys-search-date-end-input').val();
 		var ajaxUrl = "";
 
-		if (searchDateStart!="") {
-			console.log('상세검색데이터');
+		if (searchDateStart != "") {
+
 			searchDateStart = dateFormating(searchDateStart);
 			searchDateEnd = dateFormating(searchDateEnd);
 			searchDateStart = searchDateStart.toISOString();
@@ -71,7 +71,7 @@ function monthSearch() {
 					+ "?cSearchDateStart=" + searchDateStart
 					+ "&cSearchDateEnd=" + searchDateEnd;
 		} else {
-			console.log('상세검색데이터 없음');
+
 			ajaxUrl = '/v1/pms/adm/sys/messages/summary/' + input_month_value;
 		}
 
@@ -91,9 +91,7 @@ function monthSearch() {
 
 					if (!data.result.errors) {
 						var dataResult = data.result.data;
-						console.log(data);
-						console.log('조회 결과값');
-						console.log(dataResult);
+
 						var monthTableData = new Array();
 						var monthTableDataRes = new Array();
 
@@ -137,12 +135,12 @@ function monthSearch() {
 									break;
 								case 1:
 									// dataResult[i].status = "발송됨";
-									console.log('발송됨');
+
 									statusP1Cnt = successData.msgCnt;
 									appAck = successData.appAckCnt;
 									pmaAck = successData.pmaAckCnt;
 									totalMsgCnt += successData.msgCnt;
-									console.log(statusP1Cnt);
+
 									break;
 								case 2:
 									// dataResult[i].status =
@@ -203,12 +201,12 @@ function monthSearch() {
 									break;
 								case 1:
 									// dataResult[i].status = "발송됨";
-									console.log('발송됨');
+
 									statusP1Cnt = successData.msgCnt;
 									appAck = successData.appAckCnt;
 									pmaAck = successData.pmaAckCnt;
 									totalMsgCnt += successData.msgCnt;
-									console.log(statusP1Cnt);
+
 									break;
 								case 2:
 									// dataResult[i].status =
@@ -312,8 +310,6 @@ function monthSearch() {
 							} ]
 						});
 
-						console.log('생성됨');
-
 						$('#month-msgcnt-panel-head').show();
 						$('#month-msgcnt-panel-body').show();
 						$('#month-all-msgcnt-panel-body').show();
@@ -345,11 +341,7 @@ function monthSearch() {
 
 					if (!data.result.errors) {
 						var dataResult = data.result.data;
-						console.log(data)
-						console.log(dataResult.length);
-						console.log('/v1/pms/adm/sys/users(GET)');
-						console.log('조회 결과값');
-						console.log(dataResult);
+
 						var monthTableData = new Array();
 						var monthResTableData = new Array();
 						var statusD99Cnt = 0;
@@ -375,13 +367,10 @@ function monthSearch() {
 						for ( var i in data.result.data) {
 							var successData = data.result.data[i];
 
-							console.log(successData);
-
 							if (successData.isReservation == false) {
-								console.log("포문1");
+
 								userId = successData.userId;
-								console.log('사용자아이디');
-								console.log(userId);
+
 								switch (dataResult[i].status) {
 								case -99:
 									// dataResult[i].status = "발송오류";
@@ -405,12 +394,12 @@ function monthSearch() {
 									break;
 								case 1:
 									// dataResult[i].status = "발송됨";
-									console.log('발송됨');
+
 									statusP1Cnt += successData.msgCnt;
 									appAck += successData.appAckCnt;
 									pmaAck += successData.pmaAckCnt;
 									totalMsgCnt += successData.msgCnt;
-									console.log(statusP1Cnt);
+
 									break;
 								case 2:
 									// dataResult[i].status = "예약취소됨";
@@ -421,10 +410,9 @@ function monthSearch() {
 								}
 
 							} else {
-								console.log("포문1");
+
 								userIdR = successData.userId;
-								console.log('사용자아이디');
-								console.log(userId);
+
 								switch (dataResult[i].status) {
 								case -99:
 									// dataResult[i].status = "발송오류";
@@ -448,12 +436,12 @@ function monthSearch() {
 									break;
 								case 1:
 									// dataResult[i].status = "발송됨";
-									console.log('발송됨');
+
 									statusRP1Cnt += successData.msgCnt;
 									appAckR += successData.appAckCnt;
 									pmaAckR += successData.pmaAckCnt;
 									totalMsgCntR += successData.msgCnt;
-									console.log(statusRP1Cnt);
+
 									break;
 								case 2:
 									// dataResult[i].status = "예약취소됨";
@@ -566,7 +554,6 @@ function monthSearch() {
 							} ]
 						});
 
-						console.log('생성됨');
 						$('#month_msgres_div').text(totalMsgCntR);
 						$('#month_msgsend_div').text(totalMsgCnt);
 						$('#month-msgcnt-panel-head').show();
@@ -585,13 +572,13 @@ function monthSearch() {
 				}
 			});
 		} else {
-	
-				ajaxUrl = '/v1/pms/adm/sys/messages/summary/'+input_month_value+'/' + accountSelectText
-					+ "?cSearchDateStart=" + searchDateStart
-					+ "&cSearchDateEnd=" + searchDateEnd;
-			
+
+			ajaxUrl = '/v1/pms/adm/sys/messages/summary/' + input_month_value
+					+ '/' + accountSelectText + "?cSearchDateStart="
+					+ searchDateStart + "&cSearchDateEnd=" + searchDateEnd;
+
 			$.ajax({
-				url :ajaxUrl  ,
+				url : ajaxUrl,
 				type : 'GET',
 				contentType : "application/json",
 				headers : {
@@ -604,11 +591,7 @@ function monthSearch() {
 
 					if (!data.result.errors) {
 						var dataResult = data.result.data;
-						console.log(data);
-						console.log(dataResult.length);
-						console.log('/v1/pms/adm/sys/users(GET)');
-						console.log('조회 결과값');
-						console.log(dataResult);
+
 						var monthTableData = new Array();
 						var monthTableDataRes = new Array();
 						var statusD99Cnt = 0;
@@ -632,9 +615,8 @@ function monthSearch() {
 						for ( var i in data.result.data) {
 							var successData = data.result.data[i];
 
-							console.log(successData);
 							if (successData.isReservation == false) {
-								console.log("포문1");
+
 								switch (dataResult[i].status) {
 								case -99:
 									// dataResult[i].status = "발송오류";
@@ -658,12 +640,12 @@ function monthSearch() {
 									break;
 								case 1:
 									// dataResult[i].status = "발송됨";
-									console.log('발송됨');
+
 									statusP1Cnt = successData.msgCnt;
 									appAck = successData.appAckCnt;
 									pmaAck = successData.pmaAckCnt;
 									totalMsgCnt += successData.msgCnt;
-									console.log(statusP1Cnt);
+
 									break;
 								case 2:
 									// dataResult[i].status = "예약취소됨";
@@ -697,12 +679,12 @@ function monthSearch() {
 									break;
 								case 1:
 									// dataResult[i].status = "발송됨";
-									console.log('발송됨');
+
 									statusRP1Cnt = successData.msgCnt;
 									appAckR = successData.appAckCnt;
 									pmaAckR = successData.pmaAckCnt;
 									totalMsgCntR += successData.msgCnt;
-									console.log(statusP1Cnt);
+
 									break;
 								case 2:
 									// dataResult[i].status = "예약취소됨";
@@ -716,7 +698,6 @@ function monthSearch() {
 
 						}
 
-						console.log('테이블 생성전');
 						monthTableData.push({
 							"totalMsgCnt" : totalMsgCnt,
 							"msgCnt" : statusP1Cnt,
@@ -739,9 +720,8 @@ function monthSearch() {
 							"serverError" : statusRD99Cnt,
 							"pmaAck" : pmaAckR,
 							"appAck" : appAckR
-						})
-						console.log(monthTableData);
-						console.log('테이블 생성후');
+						});
+
 						$('#dataTables-month-sys').dataTable({
 							aaData : monthTableData,
 							'bSort' : false,
@@ -816,7 +796,7 @@ function monthSearch() {
 								mData : 'appAck'
 							} ]
 						});
-						console.log('생성됨');
+
 						$('#month_msgsend_div').text(totalMsgCnt);
 						$('#month_msgres_div').text(totalMsgCntR);
 						$('#month-all-msgcnt-panel-body').hide();
@@ -843,13 +823,13 @@ function monthSearch() {
 
 }
 
-//dp.change check
+// dp.change check
 $("#month-sys-date-div").on("dp.change", function(e) {
 	setTimeout(changeDateInputMonthSv, 500);
 
 });
 
-//changeDate
+// changeDate
 function changeDateInputMonthSv() {
 	var messagelist_Picker = $("#month-sys-date-input").val();
 	var messageList_Result = [];
@@ -874,14 +854,14 @@ function changeDateInputMonthSv() {
 
 }
 
-//formCheck
+// formCheck
 function monthFormCheck() {
 	var selectOptionValue = $('#month-account-select').val();
 	var inputMonthValue = $('#month-sys-date-input').val();
 	var searchDateStart = $('#monthsys-search-date-start-input').val();
 	var searchDateEnd = $('#monthsys-search-date-end-input').val();
 	inputMonthValue = compactTrim(inputMonthValue);
-	console.log(inputMonthValue);
+
 	if (selectOptionValue != 0) {
 
 		if (inputMonthValue == null || inputMonthValue == "") {
@@ -891,7 +871,6 @@ function monthFormCheck() {
 		}
 
 	} else if (inputMonthValue != null && inputMonthValue != "") {
-		console.log(inputMonthValue);
 
 		if (selectOptionValue == 0) {
 			alert('검색 계정 선택해주세요');
@@ -912,8 +891,7 @@ function monthFormCheck() {
 	if (inputMonthValue.substring(5, 6) == 0) {
 		inputMonthValue = inputMonthValue.substring(6);
 		inputMonthValue = inputMonthValue - 1;
-		console.log('기본달');
-		console.log(inputMonthValue - 1);
+
 	} else {
 		inputMonthValue = inputMonthValue.substring(5);
 		inputMonthValue = inputMonthValue - 1;
@@ -922,21 +900,19 @@ function monthFormCheck() {
 
 	if (typeof searchDateStart === undefined
 			|| typeof searchDateStart === 'undefined') {
-		console.log("dsearchDateStart id undefined ");
+
 		searchDateStart = "";
 	}
 
 	searchDateEnd = dateFormating(searchDateEnd);
 	if (typeof searchDateEnd === undefined
 			|| typeof searchDateEnd === 'undefined') {
-		console.log("dsearchDateEnd.....");
+
 		searchDateEnd = "";
 	}
 
 	if (searchDateStart != null && searchDateStart != "") {
-		console.log('검색 시작 종료 로그');
-		console.log(searchDateStart);
-		console.log(searchDateEnd);
+
 		if (searchDateEnd == null || searchDateEnd == "") {
 			alert('검색 종료일을 입력해 주세요');
 			return false;
@@ -947,13 +923,12 @@ function monthFormCheck() {
 			} else if (searchDateStart.getMonth() === searchDateEnd.getMonth()
 					&& inputMonthValue === searchDateEnd.getMonth()
 					&& inputMonthValue === searchDateStart.getMonth()) {
-				console.log(searchDateStart.getMonth());
-				console.log('같은월');
+
 				return true;
 			} else if (searchDateStart.getMonth() !== searchDateEnd.getMonth()
 					|| inputMonthValue !== searchDateEnd.getMonth()
 					|| inputMonthValue !== searchDateStart.getMonth()) {
-				console.log('다른월');
+
 				alert('같은 달에서만 검색이 가능합니다');
 				return false;
 			} else {

@@ -79,8 +79,6 @@ function MessageSendFunction() {
 
 				if (!data.result.errors) {
 					var dataResult = data.result.data;
-					console.log('/v1/pms/adm/' + role + '/messages(POST)');
-					console.log(dataResult);
 					// if(messageData.resendMaxCount){
 					// messageData.resendMaxCount=messageData.resendMaxCount*1+1;
 					// alert('반복 메시지를 포함하여 총 '+messageData.resendMaxCount+'건을
@@ -118,7 +116,6 @@ function messageSendFormCheck() {
 	var input_reservation = $('#message-send-reservationdate-input').val();
 
 	input_messageContent = compactTrim(input_messageContent);
-	console.log(input_messageContent);
 
 	if (input_messageTarget == null || input_messageTarget == "") {
 		alert("메세지 보낼 대상을 입력해주세요");

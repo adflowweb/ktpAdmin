@@ -17,11 +17,11 @@ $("#user-option-div").hide();
 $("#user-account-input").hide();
 $("#user-option-input").hide();
 
-//inputChange Check
+// inputChange Check
 $('#user-account-input').change(function() {
-	console.log("체크 변경");
+
 	if ($(this).is(":checked")) {
-		console.log("조건문 체크 변경");
+
 		$("#user-name-input").prop('disabled', false);
 		$("#user-ipfilter-input").prop('disabled', false);
 		$("#user-role-select").prop('disabled', false);
@@ -38,12 +38,11 @@ $('#user-account-input').change(function() {
 
 });
 
-
-//inputChange Check
+// inputChange Check
 $('#user-option-input').change(function() {
-	console.log("체크 변경");
+
 	if ($(this).is(":checked")) {
-		console.log("조건문 체크 변경");
+
 		$("#user-option-callback-cntlimit-input").prop('disabled', false);
 		$("#user-option-callback-method-input").prop('disabled', false);
 		$("#user-option-callback-url-input").prop('disabled', false);
@@ -62,7 +61,7 @@ $('#user-option-input').change(function() {
 	}
 
 });
-//getAccount Info
+// getAccount Info
 $.ajax({
 	url : '/v1/pms/adm/sys/users',
 	type : 'GET',
@@ -77,12 +76,10 @@ $.ajax({
 
 		if (!data.result.errors) {
 			var dataResult = data.result.data;
-			console.log(data);
-			console.log(dataResult);
-			console.log('/v1/pms/adm/sys/users(GET)');
+
 			for ( var i in data.result.data) {
 				var successData = data.result.data[i];
-				console.log(successData);
+
 				if (successData.role == "svc") {
 					successData.role = "서비스";
 				} else if (successData.role == "inf") {
@@ -145,7 +142,7 @@ $.ajax({
 		alert('계정 목록을 가지고오는데 실패하였습니다.');
 	}
 });
-//selectChange Check
+// selectChange Check
 $('#user-role-select').change(function() {
 	var selectValue = $("#user-role-select option:selected").val();
 	if (selectValue == 2) {
@@ -155,7 +152,7 @@ $('#user-role-select').change(function() {
 	}
 });
 
-//tableClick
+// tableClick
 $('#dataTables-usermanager tbody')
 		.on(
 				'click',
@@ -190,11 +187,10 @@ $('#dataTables-usermanager tbody')
 													+ "("
 													+ userManagertableData[i].msgSizeLimit
 													+ ")");
-							console.log("기본 QOS");
-							console.log(userManagertableData[i].defaultQos);
+
 							userManagertableData[i].defaultQos = userManagertableData[i].defaultQos * 1;
 							if (userManagertableData[i].defaultQos == 2) {
-								console.log("이프문");
+
 								$('#user-option-qos-select  option:eq(0)')
 										.attr("selected", "selected");
 							} else {
@@ -225,9 +221,8 @@ $('#dataTables-usermanager tbody')
 					}
 
 				});
-//userUpdate
+// userUpdate
 function userUpdateFunction() {
-	console.log("update...admin");
 
 	var checkForm = userUpdateFormCheck();
 	if (checkForm) {
@@ -244,22 +239,22 @@ function userUpdateFunction() {
 			var userChange = new Object();
 			switch (role_select) {
 			case 1:
-				console.log("sys");
+
 				roleValue = "sys";
 				userChange.msgCntLimit = -1 * 1;
 				break;
 			case 2:
-				console.log("svc");
+
 				roleValue = "svc";
 				userChange.msgCntLimit = message_count_input;
 				break;
 			case 3:
-				console.log("svcadm");
+
 				roleValue = "svcadm";
 				userChange.msgCntLimit = -1 * 1;
 				break;
 			case 4:
-				console.log("inf");
+
 				roleValue = "inf";
 				userChange.msgCntLimit = -1 * 1;
 				break;
@@ -270,7 +265,6 @@ function userUpdateFunction() {
 			userChange.role = roleValue;
 			userChange.ipFilters = ip_filter_input;
 			var userChangeReq = JSON.stringify(userChange);
-			console.log(userChangeReq);
 
 			$.ajax({
 				url : '/v1/pms/adm/sys/users/' + id_input,
@@ -284,12 +278,10 @@ function userUpdateFunction() {
 
 				async : false,
 				success : function(data) {
-					console.log("Ajax Data:" + data.result);
-					var dataResult = data.result.data;
 
 					if (!data.result.errors) {
-						console.log('/v1/pms/adm/sys/users/' + id_input
-								+ '(PUT)');
+						var dataResult = data.result.data;
+
 						alert('걔정 정보를 변경 하였습니다.');
 						wrapperFunction('userManager');
 					} else {
@@ -311,13 +303,13 @@ function userUpdateFunction() {
 
 	}
 }
-//userOptionUpdate
+// userOptionUpdate
 function userOptionUpdateFunction() {
-	console.log("update...admin");
+
 	var checkForm = userOptionFormCheck();
-	console.log(checkForm);
+
 	if (checkForm) {
-		console.log('test');
+
 		if (confirm("옵션값을 변경 하시겠습니까?") == true) {
 			var id_input = $('#user-id-input').val();
 			var option_expiry_input = $('#user-option-expiry-input').val();
@@ -332,9 +324,7 @@ function userOptionUpdateFunction() {
 					.val();
 			var option_msgSizeLimit_input = $('#user-option-msgsizelimit-input')
 					.val();
-			console.log('테스트 사이즈');
-			console.log(getBytesWithUnit(option_msgSizeLimit_input));
-			console.log('테스트 사이즈');
+
 			// bytesToSize
 			option_qos_select = option_qos_select * 1;
 			switch (option_qos_select) {
@@ -343,7 +333,7 @@ function userOptionUpdateFunction() {
 
 				break;
 			case 1:
-				console.log(option_qos_select);
+
 				option_qos_select = 2 * 1;
 				break;
 
@@ -359,7 +349,6 @@ function userOptionUpdateFunction() {
 			userOption.msgSizeLimit = option_msgSizeLimit_input;
 			userOption.options = true;
 			var userOptionReq = JSON.stringify(userOption);
-			console.log(userOptionReq);
 
 			$.ajax({
 				url : '/v1/pms/adm/sys/users/' + id_input,
@@ -375,11 +364,9 @@ function userOptionUpdateFunction() {
 				success : function(data) {
 
 					if (!data.result.errors) {
-						console.log(data);
+
 						var dataResult = data.result.data;
-						console.log('/v1/pms/adm/sys/users/' + id_input
-								+ '(PUT)');
-						console.log(dataResult);
+
 						alert('옵션 정보를 변경 하였습니다.');
 						wrapperFunction('userManager');
 					} else {
@@ -400,9 +387,9 @@ function userOptionUpdateFunction() {
 
 	}
 }
-//userDelete
+// userDelete
 function userDeleteFunction() {
-	console.log("update...admin");
+
 	var checkForm = userDeleteFormCheck();
 	if (checkForm) {
 		var id_input = $('#user-id-input').val();
@@ -421,9 +408,7 @@ function userDeleteFunction() {
 
 					if (!data.result.errors) {
 						var dataResult = data.result.data;
-						console.log('/v1/pms/adm/sys/users/' + id_input
-								+ '(DELETE)');
-						console.log(dataResult);
+
 						alert('계정 정보를 삭제 하였습니다.');
 						wrapperFunction('userManager');
 					} else {
@@ -446,7 +431,7 @@ function userDeleteFunction() {
 
 	}
 }
-//formChekc
+// formChekc
 function userDeleteFormCheck() {
 	var id_input = $('#user-id-input').val();
 
@@ -460,7 +445,7 @@ function userDeleteFormCheck() {
 
 }
 
-//formCheck
+// formCheck
 function userUpdateFormCheck() {
 
 	var id_input = $('#user-id-input').val();
@@ -473,8 +458,7 @@ function userUpdateFormCheck() {
 		$('#user-id-input').focus();
 		return false;
 	} else {
-		console.log('id');
-		console.log(id_input.length);
+
 		if (id_input.length < 4 || id_input.length > 20) {
 			alert('아이디는 4자 에서 20자이하로 입력하세요');
 			$('#user-id-input').focus();
@@ -532,7 +516,7 @@ function userUpdateFormCheck() {
 	return true;
 
 }
-//formCheck
+// formCheck
 function userOptionFormCheck() {
 	var option_expiry_input = $('#user-option-expiry-input').val();
 	var option_callback_url_input = $('#user-option-callback-url-input').val();
@@ -576,9 +560,8 @@ function userOptionFormCheck() {
 			$('#user-option-msgsizelimit-input').focus();
 			return false;
 		} else {
-			console.log('엘스');
+
 			option_msgSizeLimit_input = option_msgSizeLimit_input * 1;
-			console.log(option_msgSizeLimit_input);
 
 			if (option_msgSizeLimit_input > 512000) {
 				alert('512000bytes 를 넘을수 없습니다.');
@@ -592,13 +575,13 @@ function userOptionFormCheck() {
 
 }
 
-//function utf8ByteLength(str) {
-//	if (!str)
-//		return 0;
-//	var escapedStr = encodeURI(str);
-//	var match = escapedStr.match(/%/g);
-//	return match ? (escapedStr.length - match.length * 2) : escapedStr.length;
-//}
+// function utf8ByteLength(str) {
+// if (!str)
+// return 0;
+// var escapedStr = encodeURI(str);
+// var match = escapedStr.match(/%/g);
+// return match ? (escapedStr.length - match.length * 2) : escapedStr.length;
+// }
 
 /**
  * @function: getBytesWithUnit()
