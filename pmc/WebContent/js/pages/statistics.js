@@ -4,8 +4,8 @@ var statisticsToken = sessionStorage.getItem("token");
 var statisticsRole = sessionStorage.getItem("role");
 $("#statistics-search-date-start-input").prop('disabled', true);
 $("#statistics-search-date-end-input").prop('disabled', true);
-$("#statistics-reservation-search-date-start-input").prop('disabled', true);
-$("#statistics-reservation-search-date-end-input").prop('disabled', true);
+// $("#statistics-reservation-search-date-start-input").prop('disabled', true);
+// $("#statistics-reservation-search-date-end-input").prop('disabled', true);
 $('#statistics-search-date-month-input').prop('disabled', true);
 $('#statistics-reservation-search-date-month-input').prop('disabled', true);
 
@@ -432,7 +432,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 
 										if (!data.result.errors) {
 											var dataResult = data.result.data.data;
-
+											console.log(dataResult);
 											$(
 													'#statisticsList-reservation-Cnt_div')
 													.text(
@@ -481,12 +481,12 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 						var searchInputValue = $(
 								'#statistics-reservation-search-input').val();
 
-						var searchDateStart = $(
-								'#statistics-reservation-search-date-start-input')
-								.val();
-						var searchDateEnd = $(
-								'#statistics-reservation-search-date-end-input')
-								.val();
+						// var searchDateStart = $(
+						// '#statistics-reservation-search-date-start-input')
+						// .val();
+						// var searchDateEnd = $(
+						// '#statistics-reservation-search-date-end-input')
+						// .val();
 						var searchMonth = $(
 								'#statistics-reservation-search-date-month-input')
 								.val();
@@ -513,33 +513,33 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 							'value' : searchMonth
 						});
 
-						if (searchDateStart != "") {
-							searchDateStart = dateFormating(searchDateStart);
-							// 시작일
-							if (searchDateStart) {
+						// if (searchDateStart != "") {
+						// searchDateStart = dateFormating(searchDateStart);
+						// // 시작일
+						// if (searchDateStart) {
+						//
+						// searchDateStart = searchDateStart.toISOString();
+						//
+						// aoData.push({
+						// 'name' : 'cSearchDateStart',
+						// 'value' : searchDateStart
+						// });
+						// }
+						// }
 
-								searchDateStart = searchDateStart.toISOString();
-
-								aoData.push({
-									'name' : 'cSearchDateStart',
-									'value' : searchDateStart
-								});
-							}
-						}
-
-						if (searchDateEnd != "") {
-							searchDateEnd = dateFormating(searchDateEnd);
-
-							if (searchDateEnd) {
-
-								searchDateEnd = searchDateEnd.toISOString();
-
-								aoData.push({
-									'name' : 'cSearchDateEnd',
-									'value' : searchDateEnd
-								});
-							}
-						}
+						// if (searchDateEnd != "") {
+						// searchDateEnd = dateFormating(searchDateEnd);
+						//
+						// if (searchDateEnd) {
+						//
+						// searchDateEnd = searchDateEnd.toISOString();
+						//
+						// aoData.push({
+						// 'name' : 'cSearchDateEnd',
+						// 'value' : searchDateEnd
+						// });
+						// }
+						// }
 
 						searchSelectValue = searchSelectValue * 1;
 						switch (searchSelectValue) {
@@ -646,8 +646,8 @@ $("#statistics-reservation-account-select").change(
 		function() {
 
 			$('#statistics-reservation-account-select').val();
-			$('#statistics-reservation-search-date-start-input').val("");
-			$('#statistics-reservation-search-date-end-input').val("");
+//			$('#statistics-reservation-search-date-start-input').val("");
+//			$('#statistics-reservation-search-date-end-input').val("");
 			$('#statistics-reservation-search-input').val("");
 			$("#statistics-reservation-search-select option:eq(0)").attr(
 					"selected", "selected");
@@ -770,36 +770,37 @@ $("#statistics-search-date-month-div").on("dp.change", function(e) {
 });
 
 // dp.change Check
-$("#statistics-reservation-search-date-month-div").on("dp.change", function(e) {
-	setTimeout(changeDateInputStatisticsR, 500);
-
-});
-// dateChange
-function changeDateInputStatisticsR() {
-	var messagelist_Picker = $(
-			"#statistics-reservation-search-date-month-input").val();
-	var messageList_Result = [];
-	messageList_Result = messagelist_Picker.split("/");
-	$('#statistics-reservation-search-date-start-div').datetimepicker().data(
-			"DateTimePicker").setDate(
-			chageDateF(messageList_Result[0], messageList_Result[1]));
-	$('#statistics-reservation-search-date-end-div').datetimepicker().data(
-			"DateTimePicker").setDate(
-			chageDateL(messageList_Result[0], messageList_Result[1]));
-	$('#statistics-reservation-search-date-start-div').datetimepicker().data(
-			"DateTimePicker").setMinDate(
-			chageDateF(messageList_Result[0], messageList_Result[1]));
-	$('#statistics-reservation-search-date-start-div').datetimepicker().data(
-			"DateTimePicker").setMaxDate(
-			chageDateL(messageList_Result[0], messageList_Result[1]));
-	$('#statistics-reservation-search-date-end-div').datetimepicker().data(
-			"DateTimePicker").setMinDate(
-			chageDateF(messageList_Result[0], messageList_Result[1]));
-	$('#statistics-reservation-search-date-end-div').datetimepicker().data(
-			"DateTimePicker").setMaxDate(
-			chageDateL(messageList_Result[0], messageList_Result[1]));
-
-}
+// $("#statistics-reservation-search-date-month-div").on("dp.change",
+// function(e) {
+// setTimeout(changeDateInputStatisticsR, 500);
+//
+// });
+// // dateChange
+// function changeDateInputStatisticsR() {
+// var messagelist_Picker = $(
+// "#statistics-reservation-search-date-month-input").val();
+// var messageList_Result = [];
+// messageList_Result = messagelist_Picker.split("/");
+// $('#statistics-reservation-search-date-start-div').datetimepicker().data(
+// "DateTimePicker").setDate(
+// chageDateF(messageList_Result[0], messageList_Result[1]));
+// $('#statistics-reservation-search-date-end-div').datetimepicker().data(
+// "DateTimePicker").setDate(
+// chageDateL(messageList_Result[0], messageList_Result[1]));
+// $('#statistics-reservation-search-date-start-div').datetimepicker().data(
+// "DateTimePicker").setMinDate(
+// chageDateF(messageList_Result[0], messageList_Result[1]));
+// $('#statistics-reservation-search-date-start-div').datetimepicker().data(
+// "DateTimePicker").setMaxDate(
+// chageDateL(messageList_Result[0], messageList_Result[1]));
+// $('#statistics-reservation-search-date-end-div').datetimepicker().data(
+// "DateTimePicker").setMinDate(
+// chageDateF(messageList_Result[0], messageList_Result[1]));
+// $('#statistics-reservation-search-date-end-div').datetimepicker().data(
+// "DateTimePicker").setMaxDate(
+// chageDateL(messageList_Result[0], messageList_Result[1]));
+//
+// }
 // dateChange
 function changeDateInputStatistics() {
 	var messagelist_Picker = $("#statistics-search-date-month-input").val();
@@ -1065,25 +1066,25 @@ function checkReservationSearch() {
 		defaultMonth = defaultMonth - 1;
 	}
 
-	var searchDateStart = $('#statistics-reservation-search-date-start-input')
-			.val();
-	searchDateStart = dateFormating(searchDateStart);
+//	var searchDateStart = $('#statistics-reservation-search-date-start-input')
+//			.val();
+//	searchDateStart = dateFormating(searchDateStart);
+//
+//	if (typeof searchDateStart === undefined
+//			|| typeof searchDateStart === 'undefined') {
+//
+//		searchDateStart = "";
+//	}
 
-	if (typeof searchDateStart === undefined
-			|| typeof searchDateStart === 'undefined') {
-
-		searchDateStart = "";
-	}
-
-	var searchDateEnd = $('#statistics-reservation-search-date-end-input')
-			.val();
-
-	searchDateEnd = dateFormating(searchDateEnd);
-	if (typeof searchDateEnd === undefined
-			|| typeof searchDateEnd === 'undefined') {
-
-		searchDateEnd = "";
-	}
+	// var searchDateEnd = $('#statistics-reservation-search-date-end-input')
+	// .val();
+	//
+	// searchDateEnd = dateFormating(searchDateEnd);
+	// if (typeof searchDateEnd === undefined
+	// || typeof searchDateEnd === 'undefined') {
+	//
+	// searchDateEnd = "";
+	//	}
 
 	if (selectOptionValue != 0) {
 		if (inputSearchValue == null || inputSearchValue == "") {
@@ -1101,49 +1102,52 @@ function checkReservationSearch() {
 
 	}
 
-	if (searchDateStart != null && searchDateStart != "") {
+//	if (searchDateStart != null && searchDateStart != "") {
+//
+//		if (searchDateEnd == null || searchDateEnd == "") {
+//			alert('검색 종료일을 입력해 주세요');
+//			return false;
+//		} else {
+//			if (searchDateStart >= searchDateEnd) {
+//				alert('검색 시작일이 종료일보다 클 수 없습니다');
+//				return false;
+//			} else if (searchDateStart.getMonth() === searchDateEnd.getMonth()
+//					&& defaultMonth === searchDateEnd.getMonth()
+//					&& defaultMonth === searchDateStart.getMonth()) {
+//
+//				return true;
+//			} else if (searchDateStart.getMonth() !== searchDateEnd.getMonth()
+//					|| defaultMonth !== searchDateEnd.getMonth()
+//					|| defaultMonth !== searchDateStart.getMonth()) {
+//
+//				alert('같은 달에서만 검색이 가능합니다');
+//				return false;
+//			} else {
+//				return true;
+//			}
+//
+//		}
+//
+//	}
 
-		if (searchDateEnd == null || searchDateEnd == "") {
-			alert('검색 종료일을 입력해 주세요');
-			return false;
-		} else {
-			if (searchDateStart >= searchDateEnd) {
-				alert('검색 시작일이 종료일보다 클 수 없습니다');
-				return false;
-			} else if (searchDateStart.getMonth() === searchDateEnd.getMonth()
-					&& defaultMonth === searchDateEnd.getMonth()
-					&& defaultMonth === searchDateStart.getMonth()) {
-
-				return true;
-			} else if (searchDateStart.getMonth() !== searchDateEnd.getMonth()
-					|| defaultMonth !== searchDateEnd.getMonth()
-					|| defaultMonth !== searchDateStart.getMonth()) {
-
-				alert('같은 달에서만 검색이 가능합니다');
-				return false;
-			} else {
-				return true;
-			}
-
-		}
-
-	}
-
-	if (searchDateEnd != null && searchDateEnd != "") {
-
-		if (searchDateStart == null || searchDateStart == "") {
-			alert('검색 시작일을 입력해 주세요');
-			return false;
-		} else {
-			if (searchDateStart >= searchDateEnd) {
-				alert('검색 시작일이 종료일보다 클 수 없습니다');
-				return false;
-			} else {
-				return true;
-			}
-		}
-	} else {
-		return true;
-	}
+	// if (searchDateEnd != null && searchDateEnd != "") {
+	//
+	// if (searchDateStart == null || searchDateStart == "") {
+	// alert('검색 시작일을 입력해 주세요');
+	// return false;
+	// } else {
+	// if (searchDateStart >= searchDateEnd) {
+	// alert('검색 시작일이 종료일보다 클 수 없습니다');
+	// return false;
+	// } else {
+	// return true;
+	// }
+	// }
+	// } else {
+	// return true;
+	// }
+	console.log("예약 서치 폼체크");
+	return true;
+	
 
 }

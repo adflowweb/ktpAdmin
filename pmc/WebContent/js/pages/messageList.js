@@ -529,7 +529,7 @@ function MessageReSendUserFunction() {
 				alert('메시지 사이즈가 너무 큽니다.');
 				return false;
 			}
-
+		
 			if (confirm("해당 내용으로 메시지를 재전송 하시겠습니까?.") == true) {
 				$.ajax({
 					url : '/v1/pms/adm/' + messageListRole + '/messages',
@@ -620,7 +620,7 @@ function messageListCsvExport() {
 				if (month < 10) {
 					month = '0' + month;
 				}
-
+				
 				messageMonth = year + "/" + month;
 			}
 

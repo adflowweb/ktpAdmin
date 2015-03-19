@@ -145,22 +145,22 @@ function wrapperFunction(data) {
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
 
-							$('#reservation-search-date-start-div')
-									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
-										defaultDate : getCurrentDayF(),
-										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
-
-									});
-
-							$('#reservation-search-date-end-div')
-									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
-										defaultDate : getCurrentDayL(),
-										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
-									});
+							// $('#reservation-search-date-start-div')
+							// .datetimepicker({
+							// format : "YYYY/MM/DD hh:mm a",
+							// defaultDate : getCurrentDayF(),
+							// minDate : getCurrentDayF(),
+							// maxDate : getCurrentDayL()
+							//
+							// });
+							//
+							// $('#reservation-search-date-end-div')
+							// .datetimepicker({
+							// format : "YYYY/MM/DD hh:mm a",
+							// defaultDate : getCurrentDayL(),
+							// minDate : getCurrentDayF(),
+							// maxDate : getCurrentDayL()
+							// });
 
 							$('#reservation-date-div').datetimepicker({
 								viewMode : 'years',
@@ -279,21 +279,21 @@ function wrapperFunction(data) {
 										maxDate : getCurrentDayL()
 									});
 
-							$('#statistics-reservation-search-date-start-div')
-									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
-										defaultDate : getCurrentDayF(),
-										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
-									});
-
-							$('#statistics-reservation-search-date-end-div')
-									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
-										defaultDate : getCurrentDayL(),
-										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
-									});
+							// $('#statistics-reservation-search-date-start-div')
+							// .datetimepicker({
+							// format : "YYYY/MM/DD hh:mm a",
+							// defaultDate : getCurrentDayF(),
+							// minDate : getCurrentDayF(),
+							// maxDate : getCurrentDayL()
+							// });
+							//
+							// $('#statistics-reservation-search-date-end-div')
+							// .datetimepicker({
+							// format : "YYYY/MM/DD hh:mm a",
+							// defaultDate : getCurrentDayL(),
+							// minDate : getCurrentDayF(),
+							// maxDate : getCurrentDayL()
+							// });
 							$('#statistics-search-date-month-div')
 									.datetimepicker({
 										viewMode : 'years',
@@ -563,14 +563,29 @@ function chageDateF(year, month) {
 	return nowYear + "/" + nowMonth + "/" + firstDay;
 }
 
-// set Last Day
+// lastDay for ie
+// function chageDateLIE(year, month) {
+// var defaultLastDay = new Date(year, month, 0);
+// var nowYear = defaultLastDay.getFullYear();
+// var nowMonth = defaultLastDay.getMonth();
+// nowMonth = nowMonth * 1 + 1;
+// var lastDay = defaultLastDay.getDate();
+// console.log('날짜 테스');
+// //02/28/2015 23:59
+// return nowMonth + "/" + lastDay + "/" + nowYear + " 23:59";
+// }
+
+// setLastDay
 function chageDateL(year, month) {
 	var defaultLastDay = new Date(year, month, 0);
 	var nowYear = defaultLastDay.getFullYear();
 	var nowMonth = defaultLastDay.getMonth();
 	nowMonth = nowMonth * 1 + 1;
 	var lastDay = defaultLastDay.getDate();
-	return nowYear + "/" + nowMonth + "/" + lastDay + "/23:59";
+	console.log('날짜 테스');
+	// return nowYear + "/" + nowMonth + "/" + lastDay + "/23:59";
+	return moment(nowMonth + "/" + lastDay + "/" + nowYear + " 23:59");
+
 }
 
 // getCurrent First Day
@@ -593,8 +608,8 @@ function getCurrentDayL() {
 	var nowYear = defaultLastDay.getFullYear();
 	var nowMonth = defaultLastDay.getMonth() + 1;
 	var lastDay = defaultLastDay.getDate();
-	return nowYear + "/" + nowMonth + "/" + lastDay + "/23:59";
-
+	// return nowYear + "/" + nowMonth + "/" + lastDay + "/23:59";
+	return moment(nowYear + "/" + nowMonth + "/" + lastDay + " 23:59");
 }
 
 // utf8_to_b64(str)
