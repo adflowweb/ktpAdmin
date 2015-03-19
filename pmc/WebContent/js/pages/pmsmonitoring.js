@@ -65,28 +65,34 @@ $.ajax({
 
 			if (item.disk[0].used.indexOf("G") > -1) {
 				pmsDiskUsed *= 1;
-			} else {
+			} else if (item.disk[0].used.indexOf("M") > -1) {
 				pmsDiskUsed *= 0.001;
-			}
-
-			if (item.disk[0].avail.indexOf("G") > -1) {
-				pmsDiskFree *= 1;
-
-			} else {
-				pmsDiskFree *= 0.001;
+			} else if (item.disk[0].used.indexOf("K") > -1) {
+				pmsDiskUsed *= 0.000001;
 			}
 
 			if (item.disk[11].used.indexOf("G") > -1) {
 				pmsDiskUsed11 *= 1;
-			} else {
+			} else if (item.disk[11].used.indexOf("M") > -1) {
 				pmsDiskUsed11 *= 0.001;
+			} else if (item.disk[11].used.indexOf("K") > -1) {
+				pmsDiskUsed11 *= 0.000001;
+			}
+
+			if (item.disk[0].avail.indexOf("G") > -1) {
+				pmsDiskFree *= 1;
+			} else if (item.disk[0].avail.indexOf("M") > -1) {
+				pmsDiskFree *= 0.001;
+			} else if (item.disk[0].avail.indexOf("K") > -1) {
+				pmsDiskFree *= 0.000001;
 			}
 
 			if (item.disk[11].avail.indexOf("G") > -1) {
 				pmsDiskFree11 *= 1;
-
-			} else {
+			} else if (item.disk[11].avail.indexOf("M") > -1) {
 				pmsDiskFree11 *= 0.001;
+			} else if (item.disk[11].avail.indexOf("K") > -1) {
+				pmsDiskFree11 *= 0.000001;
 			}
 
 			pmsDiskUsed = pmsDiskUsed + pmsDiskUsed11;
@@ -287,28 +293,34 @@ var monitoringInterval = setInterval(
 
 									if (item.disk[0].used.indexOf("G") > -1) {
 										pmsDiskUsed *= 1;
-									} else {
+									} else if (item.disk[0].used.indexOf("M") > -1) {
 										pmsDiskUsed *= 0.001;
-									}
-
-									if (item.disk[0].avail.indexOf("G") > -1) {
-										pmsDiskFree *= 1;
-
-									} else {
-										pmsDiskFree *= 0.001;
+									} else if (item.disk[0].used.indexOf("K") > -1) {
+										pmsDiskUsed *= 0.000001;
 									}
 
 									if (item.disk[11].used.indexOf("G") > -1) {
 										pmsDiskUsed11 *= 1;
-									} else {
+									} else if (item.disk[11].used.indexOf("M") > -1) {
 										pmsDiskUsed11 *= 0.001;
+									} else if (item.disk[11].used.indexOf("K") > -1) {
+										pmsDiskUsed11 *= 0.000001;
+									}
+
+									if (item.disk[0].avail.indexOf("G") > -1) {
+										pmsDiskFree *= 1;
+									} else if (item.disk[0].avail.indexOf("M") > -1) {
+										pmsDiskFree *= 0.001;
+									} else if (item.disk[0].avail.indexOf("K") > -1) {
+										pmsDiskFree *= 0.000001;
 									}
 
 									if (item.disk[11].avail.indexOf("G") > -1) {
 										pmsDiskFree11 *= 1;
-
-									} else {
+									} else if (item.disk[11].avail.indexOf("M") > -1) {
 										pmsDiskFree11 *= 0.001;
+									} else if (item.disk[11].avail.indexOf("K") > -1) {
+										pmsDiskFree11 *= 0.000001;
 									}
 
 									pmsDiskUsed = pmsDiskUsed + pmsDiskUsed11;
