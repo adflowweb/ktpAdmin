@@ -7,11 +7,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Push Server Admin</title>
+<title>Push Configuration Center</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>PushServer Admin</title>
+<title>Push Configuration Center</title>
 
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="font-awesome/css/font-awesome.css" rel="stylesheet">

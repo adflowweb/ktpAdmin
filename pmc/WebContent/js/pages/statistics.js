@@ -139,7 +139,7 @@ var statisticsTable = $('#statistics-datatable')
 
 													dataResult[i].appAckType = '응답없음';
 												} else {
-													dataResult[i].appAckType = '사용자응답';
+													dataResult[i].appAckType = '유저응답';
 													var dateTime = dataResult[i].appAckTime;
 													dataResult[i].appAckTime = new Date(
 															dateTime)

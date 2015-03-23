@@ -79,10 +79,12 @@ var messageTable = $('#dataTables-messageList')
 					'bServerSide' : true,
 					'bFilter' : false,
 					bScrollCollapse : true,
+					// "autoWidth" : false,
 					scrollX : true,
+
 					"pageLength" : 25,
 					'columns' : [ {
-						"data" : "updateTime"
+						"data" : "updateTime",'sClass': 'one-line'
 					}, {
 						"data" : "updateId"
 					}, {
@@ -146,7 +148,7 @@ var messageTable = $('#dataTables-messageList')
 
 													dataResult[i].appAckType = '응답없음';
 												} else {
-													dataResult[i].appAckType = '사용자응답';
+													dataResult[i].appAckType = '유저응답';
 													var dateTime = dataResult[i].appAckTime;
 													dataResult[i].appAckTime = new Date(
 															dateTime)
@@ -401,6 +403,8 @@ $('#dataTables-messageList tbody')
 
 				});
 
+
+
 // selectChange
 function searchSelectChange() {
 	var selectOptionValue = $('#messagelist-search-select').val();
@@ -529,7 +533,7 @@ function MessageReSendUserFunction() {
 				alert('메시지 사이즈가 너무 큽니다.');
 				return false;
 			}
-		
+
 			if (confirm("해당 내용으로 메시지를 재전송 하시겠습니까?.") == true) {
 				$.ajax({
 					url : '/v1/pms/adm/' + messageListRole + '/messages',
@@ -620,7 +624,7 @@ function messageListCsvExport() {
 				if (month < 10) {
 					month = '0' + month;
 				}
-				
+
 				messageMonth = year + "/" + month;
 			}
 

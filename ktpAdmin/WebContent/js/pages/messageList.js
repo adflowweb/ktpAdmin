@@ -36,11 +36,13 @@ $('#dataTables-example tbody').on('click', 'tr', function() {
 				$("#pcc-resend-sender-input").val(item.sender);
 				$("#pcc-resend-receiver-input").val(item.receiver);
 				$('#pcc-resend-realtype-input').val(item.type);
-				if (item.type == "102") {
+				
+				item.type=item.type*1;
+				if (item.type == 102) {
 					item.type = "KeepAlive";
-				} else if (item.type = "104") {
+				} else if (item.type == 104) {
 					item.type = "FirmwareUpdate";
-				} else if (item.type = "105") {
+				} else if (item.type == 105) {
 					item.type = "DIGAccountInfo";
 				} else {
 					itme.type = "일반메시지";

@@ -150,7 +150,6 @@ function monthSvcSearch() {
 					monthTableData.push({
 						"totalMsgCnt" : totalMsgCnt,
 						"msgCnt" : statusP1Cnt,
-
 						"sending" : statusP0Cnt,
 						"limitOver" : statusD1Cnt,
 						"userNotFound" : statusD2Cnt,
