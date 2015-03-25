@@ -1509,11 +1509,11 @@ th {
 
 .table-striped>tbody>tr:nth-child(odd)>td,.table-striped>tbody>tr:nth-child(odd)>th
 	{
-	background-color:
+	background-color:aqua;
 }
 
 .table-hover>tbody>tr:hover>td,.table-hover>tbody>tr:hover>th {
-	background-color: #f5f5f5
+	background-color: #f9f9f9
 }
 
 table col[class*=col-] {

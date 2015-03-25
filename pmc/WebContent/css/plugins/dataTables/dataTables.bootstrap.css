@@ -14,7 +14,6 @@ table.dataTable tbody th,table.dataTable tbody td {
 
 
 
-
 div.dataTables_length label {
 	float: left;
 	text-align: left;
@@ -190,6 +189,7 @@ div.DTTT_print_info h6 {
 	font-weight: normal;
 	line-height: 28px;
 }
+
 
 div.DTTT_print_info p {
 	font-size: 14px;

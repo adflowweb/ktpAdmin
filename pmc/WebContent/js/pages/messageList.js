@@ -84,7 +84,8 @@ var messageTable = $('#dataTables-messageList')
 
 					"pageLength" : 25,
 					'columns' : [ {
-						"data" : "updateTime",'sClass': 'one-line'
+						"data" : "updateTime",
+						'sClass' : 'one-line'
 					}, {
 						"data" : "updateId"
 					}, {
@@ -380,6 +381,7 @@ $('#dataTables-messageList tbody')
 				'tr',
 				function() {
 					$('#remessage-div').show();
+					var messageListContent = "";
 					var tableClickData = $(this).children("td").map(function() {
 						return $(this).text();
 					}).get();
@@ -390,11 +392,13 @@ $('#dataTables-messageList tbody')
 									messageListResult[i].receiver);
 
 							if (messageListResult[i].contentType == "application/base64") {
-								messageListResult[i].content = b64_to_utf8(messageListResult[i].content);
+								messageListContent = b64_to_utf8(messageListResult[i].content);
+								// messageListResult[i].content =
+								// b64_to_utf8(messageListResult[i].content);
 							}
 
 							$('#remessage-send-user-textarea').val(
-									messageListResult[i].content);
+									messageListContent);
 							$('#remessage-send-serviceid').val(
 									messageListResult[i].serviceId);
 						}
@@ -402,8 +406,6 @@ $('#dataTables-messageList tbody')
 					}
 
 				});
-
-
 
 // selectChange
 function searchSelectChange() {
