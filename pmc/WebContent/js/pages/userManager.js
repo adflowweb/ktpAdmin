@@ -104,7 +104,8 @@ $.ajax({
 					"callbackUrl" : successData.callbackUrl,
 					"defaultExpiry" : successData.defaultExpiry,
 					"defaultQos" : successData.defaultQos,
-					"msgSizeLimit" : successData.msgSizeLimit
+					"msgSizeLimit" : successData.msgSizeLimit,
+					"applicationKey" : successData.applicationToken
 				});
 
 			}
@@ -128,6 +129,8 @@ $.ajax({
 					mData : 'role'
 				}, {
 					mData : 'msgCnt'
+				}, {
+					mData : 'applicationKey'
 				} ]
 			});
 
