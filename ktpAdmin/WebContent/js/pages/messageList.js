@@ -163,7 +163,7 @@ function pccResend() {
 						console.log(data);
 						console.log(data.result.success);
 						if (data.result.info) {
-							alert('F/W 공지를 발송하였습니다.');
+							alert('DIGAccount Info를 발송하였습니다.');
 							wrapperFunction('messageList');
 						
 
