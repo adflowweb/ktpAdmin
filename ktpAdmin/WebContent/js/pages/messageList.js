@@ -108,7 +108,7 @@ function pccResend() {
 					}
 				});
 
-			} else if (type_input = "104") {
+			} else if (type_input == "104") {
 				content_input=utf8_to_b64(content_input);
 				$.ajax({
 					url : '/v1/devices/fwInfo',
@@ -143,7 +143,7 @@ function pccResend() {
 						wrapperFunction('messageList');
 					}
 				});
-			} else if (type_input = "105") {
+			} else if (type_input == "105") {
 				content_input=utf8_to_b64(content_input);
 				$.ajax({
 					url : '/v1/users/digAccountInfo',
