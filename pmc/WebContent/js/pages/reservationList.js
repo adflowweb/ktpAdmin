@@ -162,13 +162,29 @@ var reservationListTable = $('#reservation-datatable')
 							$('#reservation-date-input').val(messageMonth);
 						}
 
+						var reservationStartDate="";
+						var reservationEndDate="";
+						var reservationMonth=messageMonth.split('/');
+						
+						reservationStartDate = new Date(reservationMonth[0], reservationMonth[1]-1, 1).toISOString();
+						reservationEndDate=new Date(reservationMonth[0], reservationMonth[1], 0).toISOString();
+						console.log('예약메시지 시작 끝');
+						console.log(reservationStartDate);
+						console.log(reservationEndDate);
 						messageMonth = messageMonth.replace("/", "");
 
+						
+						
 						aoData.push({
 							'name' : 'cSearchDate',
 							'value' : messageMonth
 						});
 
+						
+					
+						
+						
+					
 //						if (searchDateStart != "") {
 //							searchDateStart = dateFormating(searchDateStart);
 //							// 시작일

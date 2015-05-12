@@ -96,8 +96,8 @@ p{
 }
 
 .navbar-top-links .dropdown-user {
-    right: 0;
-    left: auto;
+    margin-left: -59px;
+    margin-left: auto;
 }
 
 /* Sidebar Menu Styles */

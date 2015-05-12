@@ -7,35 +7,45 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="panel panel-default">
-			<div style="background-color: aquamarine;" class="panel-heading">메시지 전송</div>
+			<div class="panel-heading">메시지 전송</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 
 
 				<div class="form-group">
 					<label>메시지 전송 대상<span
-						style="font-size: x-small; font-style: italic; font-weight: lighter;">(여러
-							대상에게 전송시에 ,로 구분하여 입력해주세요.)</span>
+						style="font-size: x-small; font-style: italic;  font-weight: bold;">(여러
+							대상에게 전송시에 ,로 구분하여 입력해주세요!!무전 번호를 부분 입력시 생략된 번호는 계정에 발급된 무전번호가 붙게 됩니다!)</span>
 					</label><br /> <input type="text" class="form-control"
 						id="message-send-user-target-input"
-						placeholder="필수       메세지 발송 대상 ex) 01033334444"></input>
+						placeholder="필수       개인무전번호 전체입력 또는 부분입력 ! ex) 82*00*0000 or 00*0000 or 0000 "></input>
 
 				</div>
-	
-					<div class="form-group">
-					<label>반복 메시지 횟수<span
-						style="font-size: x-small; font-style: italic; font-weight: lighter;">(설정시 반복 휫수 +1 건의 메시지가 발송 됩니다.)</span></label> <input class="form-control"
-						id="message-send-user-resendCount-input" placeholder="옵션       반복 횟수 (최대 10건)">
+
+				<div class="form-group">
+					<input id="message-send-user-repeat-check" type="checkbox" onclick="repeatCheck(this)" /><label>&nbsp; 반복
+						메시지 횟수<span
+						style="font-size: x-small; font-style: italic; font-weight: lighter;">(설정시
+							반복 휫수 +1 건의 메시지가 발송 됩니다.)</span>
+					</label> <input class="form-control"
+						id="message-send-user-resendCount-input"
+						placeholder="옵션       반복 횟수 (최대 10건)" disabled="disabled">
 				</div>
-					<div class="form-group">
+				<div class="form-group">
 					<label>반복 시간</label> <input class="form-control"
-						id="message-send-user-resendInterval-input" placeholder="옵션       반복 시간(분 단위)">
+						id="message-send-user-resendInterval-input"
+						placeholder="옵션       반복 시간(분 단위)" disabled="disabled">
 				</div>
 
 				<div class="form-group">
 					<label>메시지 내용</label>
 
-					<textarea class="form-control" id="message-send-user-textarea" rows="5"> </textarea>
+					<textarea class="form-control" id="message-send-user-textarea"
+						rows="5"> </textarea>
+					<p>
+						<strong id="message-send-length-strong">0</strong>/<span>140</span>byte
+					</p>
+
 
 				</div>
 
@@ -44,7 +54,8 @@
 						style="font-size: x-small; font-style: italic; font-weight: lighter;">(설정하지
 							않으면 즉시 발송됩니다.)</span>
 					</label>
-					<div class='input-group date' id='message-send-user-reservation-div'>
+					<div class='input-group date'
+						id='message-send-user-reservation-div'>
 						<input id="message-send-user-reservationdate-input" type='text'
 							class="form-control" /> <span class="input-group-addon"><span
 							class="glyphicon glyphicon-calendar"></span> </span>
@@ -55,7 +66,8 @@
 
 				<input type="button" onclick="javascript:MessageSendUserFunction();"
 					class="btn btn-default" value="Message Send"></input> <input
-					type="button" onclick="javascript:wrapperFunction('MessageSendUser');"
+					type="button"
+					onclick="javascript:wrapperFunction('MessageSendUser');"
 					class="btn btn-default" value="Reset"></input>
 
 			</div>

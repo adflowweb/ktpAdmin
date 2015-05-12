@@ -122,12 +122,12 @@ function monthSearch() {
 									statusD2Cnt = successData.msgCnt;
 									totalMsgCnt += successData.msgCnt;
 									break;
-								case -1:
+						/*		case -1:
 									// dataResult[i].status =
 									// "허용갯수초과";
 									statusD1Cnt = successData.msgCnt;
 									totalMsgCnt += successData.msgCnt;
-									break;
+									break;*/
 								case 0:
 									// dataResult[i].status = "발송중";
 									statusP0Cnt = successData.msgCnt;
@@ -156,7 +156,7 @@ function monthSearch() {
 									"totalMsgCnt" : totalMsgCnt,
 									"msgCnt" : statusP1Cnt,
 									"sending" : statusP0Cnt,
-									"limitOver" : statusD1Cnt,
+									/*"limitOver" : statusD1Cnt,*/
 									"userNotFound" : statusD2Cnt,
 									"serverError" : statusD99Cnt,
 									"pmaAck" : pmaAck,
@@ -188,12 +188,12 @@ function monthSearch() {
 									statusD2Cnt = successData.msgCnt;
 									totalMsgCnt += successData.msgCnt;
 									break;
-								case -1:
+					/*			case -1:
 									// dataResult[i].status =
 									// "허용갯수초과";
 									statusD1Cnt = successData.msgCnt;
 									totalMsgCnt += successData.msgCnt;
-									break;
+									break;*/
 								case 0:
 									// dataResult[i].status = "발송중";
 									statusP0Cnt = successData.msgCnt;
@@ -223,7 +223,7 @@ function monthSearch() {
 									"msgCnt" : statusP1Cnt,
 									"resCancel" : statusP2Cnt,
 									"sending" : statusP0Cnt,
-									"limitOver" : statusD1Cnt,
+								/*	"limitOver" : statusD1Cnt,*/
 									"userNotFound" : statusD2Cnt,
 									"serverError" : statusD99Cnt,
 									"pmaAck" : pmaAck,
@@ -258,9 +258,11 @@ function monthSearch() {
 								mData : 'msgCnt'
 							}, {
 								mData : 'sending'
-							}, {
+							}, 
+					/*		{
 								mData : 'limitOver'
-							}, {
+							},*/
+							{
 								mData : 'userNotFound'
 							}, {
 								mData : 'serverError'
@@ -297,9 +299,11 @@ function monthSearch() {
 								mData : 'resCancel'
 							}, {
 								mData : 'sending'
-							}, {
+							},
+						/*	{
 								mData : 'limitOver'
-							}, {
+							},*/
+							{
 								mData : 'userNotFound'
 							}, {
 								mData : 'serverError'
@@ -382,11 +386,11 @@ function monthSearch() {
 									statusD2Cnt += successData.msgCnt;
 									totalMsgCnt += successData.msgCnt;
 									break;
-								case -1:
+				/*				case -1:
 									// dataResult[i].status = "허용갯수초과";
 									statusD1Cnt += successData.msgCnt;
 									totalMsgCnt += successData.msgCnt;
-									break;
+									break;*/
 								case 0:
 									// dataResult[i].status = "발송중";
 									statusP0Cnt += successData.msgCnt;
@@ -424,11 +428,11 @@ function monthSearch() {
 									statusRD2Cnt += successData.msgCnt;
 									totalMsgCntR += successData.msgCnt;
 									break;
-								case -1:
+						/*		case -1:
 									// dataResult[i].status = "허용갯수초과";
 									statusRD1Cnt += successData.msgCnt;
 									totalMsgCntR += successData.msgCnt;
-									break;
+									break;*/
 								case 0:
 									// dataResult[i].status = "발송중";
 									statusRP0Cnt += successData.msgCnt;
@@ -459,7 +463,7 @@ function monthSearch() {
 							"totalMsgCnt" : totalMsgCnt,
 							"msgCnt" : statusP1Cnt,
 							"sending" : statusP0Cnt,
-							"limitOver" : statusD1Cnt,
+						/*	"limitOver" : statusD1Cnt,*/
 							"userNotFound" : statusD2Cnt,
 							"serverError" : statusD99Cnt,
 							"pmaAck" : pmaAck,
@@ -471,7 +475,7 @@ function monthSearch() {
 							"msgCnt" : statusRP1Cnt,
 							"resCancel" : statusRP2Cnt,
 							"sending" : statusRP0Cnt,
-							"limitOver" : statusRD1Cnt,
+						/*	"limitOver" : statusRD1Cnt,*/
 							"userNotFound" : statusRD2Cnt,
 							"serverError" : statusRD99Cnt,
 							"pmaAck" : pmaAckR,
@@ -502,9 +506,11 @@ function monthSearch() {
 								mData : 'msgCnt'
 							}, {
 								mData : 'sending'
-							}, {
+							}, 
+					/*		{
 								mData : 'limitOver'
-							}, {
+							},*/
+							{
 								mData : 'userNotFound'
 							}, {
 								mData : 'serverError'
@@ -541,9 +547,11 @@ function monthSearch() {
 								mData : 'resCancel'
 							}, {
 								mData : 'sending'
-							}, {
+							},
+						/*	{
 								mData : 'limitOver'
-							}, {
+							},*/
+							{
 								mData : 'userNotFound'
 							}, {
 								mData : 'serverError'
@@ -628,11 +636,11 @@ function monthSearch() {
 									statusD2Cnt = successData.msgCnt;
 									totalMsgCnt += successData.msgCnt;
 									break;
-								case -1:
+			/*					case -1:
 									// dataResult[i].status = "허용갯수초과";
 									statusD1Cnt = successData.msgCnt;
 									totalMsgCnt += successData.msgCnt;
-									break;
+									break;*/
 								case 0:
 									// dataResult[i].status = "발송중";
 									statusP0Cnt = successData.msgCnt;
@@ -667,11 +675,11 @@ function monthSearch() {
 									statusRD2Cnt = successData.msgCnt;
 									totalMsgCntR += successData.msgCnt;
 									break;
-								case -1:
+						/*		case -1:
 									// dataResult[i].status = "허용갯수초과";
 									statusRD1Cnt = successData.msgCnt;
 									totalMsgCntR += successData.msgCnt;
-									break;
+									break;*/
 								case 0:
 									// dataResult[i].status = "발송중";
 									statusRP0Cnt = successData.msgCnt;
@@ -703,7 +711,7 @@ function monthSearch() {
 							"msgCnt" : statusP1Cnt,
 
 							"sending" : statusP0Cnt,
-							"limitOver" : statusD1Cnt,
+					/*		"limitOver" : statusD1Cnt,*/
 							"userNotFound" : statusD2Cnt,
 							"serverError" : statusD99Cnt,
 							"pmaAck" : pmaAck,
@@ -715,7 +723,7 @@ function monthSearch() {
 							"msgCnt" : statusRP1Cnt,
 							"resCancel" : statusRP2Cnt,
 							"sending" : statusRP0Cnt,
-							"limitOver" : statusRD1Cnt,
+					/*		"limitOver" : statusRD1Cnt,*/
 							"userNotFound" : statusRD2Cnt,
 							"serverError" : statusRD99Cnt,
 							"pmaAck" : pmaAckR,
@@ -746,9 +754,11 @@ function monthSearch() {
 								mData : 'msgCnt'
 							}, {
 								mData : 'sending'
-							}, {
+							},
+						/*	{
 								mData : 'limitOver'
-							}, {
+							},*/
+							{
 								mData : 'userNotFound'
 							}, {
 								mData : 'serverError'
@@ -784,9 +794,11 @@ function monthSearch() {
 								mData : 'resCancel'
 							}, {
 								mData : 'sending'
-							}, {
+							}, 
+						/*	{
 								mData : 'limitOver'
-							}, {
+							}, */
+							{
 								mData : 'userNotFound'
 							}, {
 								mData : 'serverError'

@@ -90,15 +90,12 @@ $.ajax({
 					successData.role = "서비스 어드민";
 				}
 
-				if (successData.msgCntLimit == "-1") {
-					successData.msgCntLimit = "제한없음";
-				}
 				userManagertableData.push({
 					"userId" : successData.userId,
 					"Name" : successData.userName,
 					"IPFilter" : successData.ipFilters,
 					"role" : successData.role,
-					"msgCnt" : successData.msgCntLimit,
+
 					"callbackCntLimit" : successData.callbackCntLimit,
 					"callbackMethod" : successData.callbackMethod,
 					"callbackUrl" : successData.callbackUrl,
@@ -128,8 +125,6 @@ $.ajax({
 				}, {
 					mData : 'role'
 				}, {
-					mData : 'msgCnt'
-				}, {
 					mData : 'applicationKey'
 				} ]
 			});
@@ -146,14 +141,14 @@ $.ajax({
 	}
 });
 // selectChange Check
-$('#user-role-select').change(function() {
-	var selectValue = $("#user-role-select option:selected").val();
-	if (selectValue == 2) {
-		$('#user-messagecount-div').show();
-	} else {
-		$('#user-messagecount-div').hide();
-	}
-});
+// $('#user-role-select').change(function() {
+// var selectValue = $("#user-role-select option:selected").val();
+// if (selectValue == 2) {
+// $('#user-messagecount-div').show();
+// } else {
+// $('#user-messagecount-div').hide();
+// }
+// });
 
 // tableClick
 $('#dataTables-usermanager tbody')
@@ -207,20 +202,20 @@ $('#dataTables-usermanager tbody')
 					if (tableData[3] == "관리자") {
 						$("#user-role-select option:eq(1)").attr("selected",
 								"selected");
-						$('#user-messagecount-div').hide();
+						// $('#user-messagecount-div').hide();
 					} else if (tableData[3] == "서비스") {
 						$("#user-role-select option:eq(2)").attr("selected",
 								"selected");
-						$('#user-messagecount-div').show();
+						// $('#user-messagecount-div').show();
 						$('#user-message-input').val(tableData[4]);
 					} else if (tableData[3] == "Interface Open") {
 						$("#user-role-select option:eq(4)").attr("selected",
 								"selected");
-						$('#user-messagecount-div').hide();
+						// $('#user-messagecount-div').hide();
 					} else if (tableData[3] == "서비스 어드민") {
 						$("#user-role-select option:eq(3)").attr("selected",
 								"selected");
-						$('#user-messagecount-div').hide();
+						// $('#user-messagecount-div').hide();
 					}
 
 				});
@@ -237,29 +232,29 @@ function userUpdateFunction() {
 			var role_select = $("#user-role-select option:selected").val();
 
 			var roleValue = "";
-			var message_count_input = $('#user-message-input').val();
+			// var message_count_input = $('#user-message-input').val();
 			role_select = role_select * 1;
 			var userChange = new Object();
 			switch (role_select) {
 			case 1:
 
 				roleValue = "sys";
-				userChange.msgCntLimit = -1 * 1;
+				// userChange.msgCntLimit = -1 * 1;
 				break;
 			case 2:
 
 				roleValue = "svc";
-				userChange.msgCntLimit = message_count_input;
+				// userChange.msgCntLimit = message_count_input;
 				break;
 			case 3:
 
 				roleValue = "svcadm";
-				userChange.msgCntLimit = -1 * 1;
+				// userChange.msgCntLimit = -1 * 1;
 				break;
 			case 4:
 
 				roleValue = "inf";
-				userChange.msgCntLimit = -1 * 1;
+				// userChange.msgCntLimit = -1 * 1;
 				break;
 			}
 
@@ -500,22 +495,23 @@ function userUpdateFormCheck() {
 	if (role_select == 0) {
 		alert('권한을 선택해 주세요');
 		return false;
-	} else if (role_select == 2) {
-
-		if (message_count_input == null || message_count_input == "") {
-			alert('메시지 전송 제한건수를 입력해주세요');
-			$('#user-message-input').focus();
-			return false;
-		} else {
-			var num_check = /^[0-9]*$/;
-			if (!num_check.test(message_count_input)) {
-				alert('숫자를 입력해 주세요');
-				$('#user-message-input').focus();
-				return false;
-			}
-		}
-
 	}
+	// else if (role_select == 2) {
+	//
+	// if (message_count_input == null || message_count_input == "") {
+	// alert('메시지 전송 제한건수를 입력해주세요');
+	// $('#user-message-input').focus();
+	// return false;
+	// } else {
+	// var num_check = /^[0-9]*$/;
+	// if (!num_check.test(message_count_input)) {
+	// alert('숫자를 입력해 주세요');
+	// $('#user-message-input').focus();
+	// return false;
+	// }
+	// }
+	//
+	// }
 	return true;
 
 }

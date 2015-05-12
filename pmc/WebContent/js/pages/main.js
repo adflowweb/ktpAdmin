@@ -72,10 +72,14 @@ function wrapperFunction(data) {
 							var nowDate = new Date();
 							var today = new Date(nowDate.getFullYear(), nowDate
 									.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+							var today_30 = new Date(nowDate.getFullYear(),
+									nowDate.getMonth(), nowDate.getDate() + 30,
+									0, 0, 0, 0);
 
 							$('#message-send-reservation-div').datetimepicker({
 								format : "YYYY/MM/DD hh:mm a",
-								minDate : today
+								minDate : today,
+								maxDate : today_30
 							});
 							$("#message-send-reservationdate-input").prop(
 									'disabled', true);
@@ -90,14 +94,18 @@ function wrapperFunction(data) {
 							var nowDate = new Date();
 							var today = new Date(nowDate.getFullYear(), nowDate
 									.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-
+							var today_30 = new Date(nowDate.getFullYear(),
+									nowDate.getMonth(), nowDate.getDate() + 30,
+									0, 0, 0, 0);
 							$('#message-send-user-reservation-div')
 									.datetimepicker({
 										format : "YYYY/MM/DD hh:mm a",
-										minDate : today
+										minDate : today,
+										maxDate : today_30
 									});
 							$("#message-send-user-reservationdate-input").prop(
 									'disabled', true);
+
 						}
 
 						if (data === "monitoring") {
@@ -354,11 +362,20 @@ function loginFunction(atag) {
 		data : loginReq,
 		success : function(data) {
 			if (!data.result.errors) {
+				console.log('로그인 데이터');
+				console.log(data);
 				var dataResult = data.result.data;
 				var role = data.result.data.role;
 				var token = data.result.data.token;
 				var userId = data.result.data.userId;
-
+				var ufmi = data.result.data.ufmi;
+				var groupTopic=data.result.data.groupTopic;
+				if (ufmi != null) {
+					sessionStorage.setItem("ufmi", ufmi);
+				}
+				if (groupTopic != null) {
+					sessionStorage.setItem("groupTopic", groupTopic);
+				}
 				sessionStorage.setItem("role", role);
 				sessionStorage.setItem("token", token);
 				sessionStorage.setItem("userId", userId);
@@ -391,7 +408,7 @@ function loginFunction(atag) {
 
 			} else {
 
-				alert(data.result.errors[0]);
+				alert('로그인에 실패 하였습니다.');
 			}
 
 		},
@@ -416,6 +433,8 @@ function logoutFunction() {
 		sessionStorage.removeItem("userId");
 		sessionStorage.removeItem("role");
 		sessionStorage.removeItem("monitoringStatus");
+		sessionStorage.removeItem("groupTopic");
+		sessionStorage.removeItem("ufmi");
 		window.location.reload();
 	} else {
 		return;
@@ -657,6 +676,23 @@ function utf8ByteLength(str) {
 	var match = escapedStr.match(/%/g);
 	return match ? (escapedStr.length - match.length * 2) : escapedStr.length;
 }
+
+String.prototype.byteLength = function() {
+	var l = 0;
+
+	for (var idx = 0; idx < this.length; idx++) {
+		var c = escape(this.charAt(idx));
+
+		if (c.length == 1)
+			l++;
+		else if (c.indexOf("%u") != -1)
+			l += 2;
+		else if (c.indexOf("%") != -1)
+			l += c.length / 3;
+	}
+
+	return l;
+};
 
 // Date Formating
 Date.prototype.yyyymmdd = function() {

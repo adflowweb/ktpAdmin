@@ -1,12 +1,12 @@
 //selectChange Check
-$('#add-role-select').change(function() {
-	var selectValue = $("#add-role-select option:selected").val();
-	if (selectValue == 2) {
-		$('#add-messagecount-div').show();
-	} else {
-		$('#add-messagecount-div').hide();
-	}
-});
+//$('#add-role-select').change(function() {
+//	var selectValue = $("#add-role-select option:selected").val();
+//	if (selectValue == 2) {
+//		$('#add-messagecount-div').show();
+//	} else {
+//		$('#add-messagecount-div').hide();
+//	}
+//});
 // userAdd
 function userAddFunction() {
 	var formCheck = userAddFormCheck();
@@ -18,11 +18,11 @@ function userAddFunction() {
 			var name_input = $('#add-name-input').val();
 			var role_select = $("#add-role-select option:selected").val();
 			var roleValue = "";
-			var message_count_input = $('#add-user-message-input').val();
+			// var message_count_input = $('#add-user-message-input').val();
 
-			if (message_count_input == null || message_count_input == "") {
-				message_count_input = -1 * 1;
-			}
+			// if (message_count_input == null || message_count_input == "") {
+			// message_count_input = -1 * 1;
+			// }
 			var ip_filter_input = $('#add-ipfilter-input').val();
 			role_select = role_select * 1;
 			switch (role_select) {
@@ -44,7 +44,7 @@ function userAddFunction() {
 			userAdd.userId = id_input;
 			userAdd.password = password_input;
 			userAdd.userName = name_input;
-			userAdd.msgCntLimit = message_count_input;
+			// userAdd.msgCntLimit = message_count_input;
 			userAdd.role = roleValue;
 			userAdd.ipFilters = ip_filter_input;
 			var userAddReq = JSON.stringify(userAdd);
@@ -93,7 +93,7 @@ function userAddFormCheck() {
 	var password_input = $('#add-password-input').val();
 	var name_input = $('#add-name-input').val();
 	var role_select = $("#add-role-select option:selected").val();
-	var message_count_input = $('#add-user-message-input').val();
+	// var message_count_input = $('#add-user-message-input').val();
 	var ip_filter_input = $('#add-ipfilter-input').val();
 	if (id_input == null || id_input == "") {
 		alert('아이디를  입력해 주세요');
@@ -153,21 +153,22 @@ function userAddFormCheck() {
 	if (role_select == 0) {
 		alert('권한을 선택해 주세요');
 		return false;
-	} else if (role_select == 2) {
-
-		if (message_count_input == null || message_count_input == "") {
-			alert('메시지 전송 제한건수를 입력해주세요');
-			$('#add-user-message-input').focus();
-			return false;
-		} else {
-			var num_check = /^[0-9]*$/;
-			if (!num_check.test(message_count_input)) {
-				alert('숫자를 입력해 주세요');
-				$('#add-user-message-input').focus();
-				return false;
-			}
-		}
-
 	}
+	// else if (role_select == 2) {
+	//
+	// if (message_count_input == null || message_count_input == "") {
+	// alert('메시지 전송 제한건수를 입력해주세요');
+	// $('#add-user-message-input').focus();
+	// return false;
+	// } else {
+	// var num_check = /^[0-9]*$/;
+	// if (!num_check.test(message_count_input)) {
+	// alert('숫자를 입력해 주세요');
+	// $('#add-user-message-input').focus();
+	// return false;
+	// }
+	// }
+	//
+	// }
 	return true;
 }
