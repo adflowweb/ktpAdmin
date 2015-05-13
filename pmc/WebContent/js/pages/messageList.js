@@ -364,40 +364,45 @@ $('#dataTables-messageList tbody')
 				'tr',
 				function() {
 					if (messageListResult.length > 0) {
+						if (confirm("해당 메시지의 본문 내용을 보시겠습니까?")==true) {
+							$('#remessage-div').show();
+							var messageListContent = "";
+							var tableClickData = $(this).children("td").map(
+									function() {
+										return $(this).text();
+									}).get();
+							for ( var i in messageListResult) {
+								if (messageListResult[i].msgId == tableClickData[10]) {
+									$('#remessage-send-user-target-input').val(
+											messageListResult[i].receiver);
 
-						$('#remessage-div').show();
-						var messageListContent = "";
-						var tableClickData = $(this).children("td").map(
-								function() {
-									return $(this).text();
-								}).get();
-						for ( var i in messageListResult) {
-							if (messageListResult[i].msgId == tableClickData[10]) {
-								$('#remessage-send-user-target-input').val(
-										messageListResult[i].receiver);
+									if (messageListResult[i].contentType == "application/base64") {
+										messageListContent = b64_to_utf8(messageListResult[i].content);
+										// messageListResult[i].content =
+										// b64_to_utf8(messageListResult[i].content);
+									}
 
-								if (messageListResult[i].contentType == "application/base64") {
-									messageListContent = b64_to_utf8(messageListResult[i].content);
-									// messageListResult[i].content =
-									// b64_to_utf8(messageListResult[i].content);
+									$('#remessage-send-user-textarea').val(
+											messageListContent);
+									if (messageListRole == "svc") {
+										$('#remessage-send-p').show();
+										messageListContent = messageListContent
+												.trim();
+										$('#remessage-send-length-strong')
+												.text(
+														messageListContent
+																.Length());
+									} else {
+										$('#remessage-send-p').hide();
+									}
+									$('#remessage-send-serviceid').val(
+											messageListResult[i].serviceId);
 								}
 
-								$('#remessage-send-user-textarea').val(
-										messageListContent);
-								if (messageListRole == "svc") {
-									$('#remessage-send-p').show();
-									messageListContent = messageListContent
-											.trim();
-									$('#remessage-send-length-strong').text(
-											messageListContent.Length());
-								} else {
-									$('#remessage-send-p').hide();
-								}
-								$('#remessage-send-serviceid').val(
-										messageListResult[i].serviceId);
 							}
-
+							$('#remessage-send-user-textarea').focus();
 						}
+
 					}
 				});
 
@@ -473,60 +478,28 @@ function MessageReSendUserFunction() {
 			messageData.content = messageContent;
 			messageData.contentType = "application/base64";
 
-			// 전송 대상 체크
-			var p2Numtemp = [];
-			for (var i = 0; i <= 4; i++) {
-				for (var j = 0; j <= 9; j++) {
-					if (i == 4) {
-						if (j < 2) {
-							p2Numtemp.push("" + i + j);
-						}
-					} else {
-						p2Numtemp.push("" + i + j);
-					}
-
-				}
-			}
+			var p2Numtemp = p2numArray();
+	
 			var svcUfmi = sessionStorage.getItem("ufmi");
 			console.log(svcUfmi);
-			var p2ufmi = svcUfmi;
-			var svcFirstIndex = svcUfmi.indexOf('*') * 1;
-			var svcLastIndex = svcUfmi.lastIndexOf('*') * 1;
-			var svcTotalLength = svcUfmi.length * 1;
-			var pVersion = "";
-			// // p1check
-			if (svcUfmi.substring(0, 2) == "82"
-					&& svcFirstIndex + 1 < svcLastIndex
-					&& svcLastIndex - svcFirstIndex < 8
-					&& svcLastIndex + 1 < svcTotalLength
-					&& svcTotalLength - svcLastIndex < 8) {
-				pVersion = "p1";
-				svcUfmi = svcUfmi.substring(0, svcTotalLength + 1);
-				console.log('자른 무전번호');
-				console.log(svcUfmi);
-			} else if (!svcUfmi.substring(0, 2) !== "82"
-					&& svcFirstIndex + 1 < svcLastIndex
-					&& svcLastIndex - svcFirstIndex < 6
-					&& svcLastIndex + 1 < svcTotalLength
-					&& svcTotalLength - svcLastIndex < 6) {
-				pVersion = "p2";
-				svcUfmi = svcUfmi.substring(0, svcLastIndex + 1);
-				p2ufmi = svcUfmi.substring(0, svcFirstIndex + 1);
-				console.log('자른 무전번호');
-				console.log(svcUfmi);
-				console.log(p2ufmi);
-			}
+			var checkResult = new ufmiVerCheck(svcUfmi);
 
-			if (pVersion == "p1") {
+			var ufmiVer = checkResult.ufmiVer;
+			var firstIndex = checkResult.firstIndex;
+			var lastIndex = checkResult.lastIndex;
+
+			console.log(ufmiVer);
+			console.log(firstIndex);
+			console.log(lastIndex);
+
+			if (ufmiVer == "p1") {
 				console.log('피원');
 				for ( var i in messageData.receivers) {
 					var inputReceiverNum = messageData.receivers[i].split('*');
 					var inputNumLength = inputReceiverNum.length;
 					var num_check = /^[0-9]*$/;
 					switch (inputNumLength) {
-					// 별 이 없음
 					case 1:
-						//
 						if (!num_check.test(inputReceiverNum[0])
 								|| inputReceiverNum[0].length > 6) {
 							console.log(inputReceiverNum[0].length);
@@ -534,29 +507,24 @@ function MessageReSendUserFunction() {
 							$('#message-send-user-target-input').focus();
 							return false;
 						}
-						messageData.receivers[i] = svcUfmi
+						messageData.receivers[i] = lastIndex
 								+ inputReceiverNum[0];
-
-						console.log("실제 전송번호");
-						console.log(messageData.receivers[i]);
-
 						break;
-					// 별 1개 면 6자리 6자리체크 82* 붙여줌
+
 					case 2:
 						if (!num_check.test(inputReceiverNum[0])
 								|| inputReceiverNum[0].length > 6
 								|| !num_check.test(inputReceiverNum[1])
 								|| inputReceiverNum[1].length > 6) {
-							console.log(inputReceiverNum[0].length);
-							console.log(inputReceiverNum[1].length);
+
 							alert('82번호 생략시 1~6자리*1~6자리 형태로 입력! ex)100*1234');
 							$('#message-send-user-target-input').focus();
 							return false;
 						}
 
-						messageData.receivers[i] = "82*" + inputReceiverNum[0]
-								+ "*" + inputReceiverNum[1];
-						console.log("실제 전송번호");
+						messageData.receivers[i] = firstIndex
+								+ inputReceiverNum[0] + "*"
+								+ inputReceiverNum[1];
 						console.log(messageData.receivers[i]);
 
 						break;
@@ -612,7 +580,7 @@ function MessageReSendUserFunction() {
 			}
 
 			// p2
-			if (pVersion == "p2") {
+			if (ufmiVer == "p2") {
 				console.log('피투');
 				// 01~41 push
 
@@ -633,7 +601,7 @@ function MessageReSendUserFunction() {
 							$('#message-send-user-target-input').focus();
 							return false;
 						}
-						messageData.receivers[i] = svcUfmi
+						messageData.receivers[i] = lastIndex
 								+ inputReceiverNum[0];
 
 						console.log("실제 전송번호");
@@ -648,13 +616,14 @@ function MessageReSendUserFunction() {
 								|| inputReceiverNum[1].length > 4) {
 							console.log(inputReceiverNum[0].length);
 							console.log(inputReceiverNum[1].length);
-							alert('82번호 생략시 1~4자리*1~4자리 형태로 입력! ex)100*1234');
+							alert('첫번째 무전 번호 생략시 1~4자리*1~4자리 형태로 입력! ex)100*1234');
 							$('#message-send-user-target-input').focus();
 							return false;
 						}
 
-						messageData.receivers[i] = p2ufmi + inputReceiverNum[0]
-								+ "*" + inputReceiverNum[1];
+						messageData.receivers[i] = firstIndex
+								+ inputReceiverNum[0] + "*"
+								+ inputReceiverNum[1];
 						console.log("실제 전송번호");
 						console.log(messageData.receivers[i]);
 
@@ -815,6 +784,215 @@ function MessageReSendUserFunction() {
 
 }
 
+
+$('#remessage-send-user-target-input').bind('input keyup paste', function() {
+	setTimeout(reSendUfmiCheckTime, 0);
+});
+
+
+function reSendUfmiCheckTime(){
+	//$('#message-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+	console.log('무전번호 체크');
+	var input_messageTarget = $('#remessage-send-user-target-input').val();
+	if (input_messageTarget == null || input_messageTarget == "") {
+		$('#remessage-send-user-ufmi-span').text("");
+		return false;
+	}
+	input_messageTarget = input_messageTarget.split(",");
+	var p2Numtemp = p2numArray();
+	var svcUfmi = sessionStorage.getItem("ufmi");
+	var checkResult = new ufmiVerCheck(svcUfmi);
+	var ufmiVer = checkResult.ufmiVer;
+	var firstIndex = checkResult.firstIndex;
+	var lastIndex = checkResult.lastIndex;
+
+	if (ufmiVer == "p1") {
+		console.log('피원');
+		for ( var i in input_messageTarget) {
+			var inputReceiverNum = input_messageTarget[i].split('*');
+			var inputNumLength = inputReceiverNum.length;
+			var num_check = /^[0-9]*$/;
+			switch (inputNumLength) {
+			case 1:
+				if (!num_check.test(inputReceiverNum[0])
+						|| inputReceiverNum[0].length > 6) {
+					console.log(inputReceiverNum[0].length);
+					alert('개인번호만 입력시 1~6자리 숫자만 입력. ex)1234');
+					$('#remessage-send-user-target-input').focus();
+					return false;
+				}
+				input_messageTarget[i] = lastIndex + inputReceiverNum[0];
+
+				console.log(input_messageTarget[i]);
+				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				break;
+
+			case 2:
+				if (!num_check.test(inputReceiverNum[0])
+						|| inputReceiverNum[0].length > 6
+						|| !num_check.test(inputReceiverNum[1])
+						|| inputReceiverNum[1].length > 6) {
+
+				
+					$('#remessage-send-user-target-input').focus();
+					return false;
+				}
+
+				input_messageTarget[i] = firstIndex + inputReceiverNum[0]
+						+ "*" + inputReceiverNum[1];
+				console.log(input_messageTarget[i]);
+				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				break;
+			// 별 2개이면 p1 p2 체크
+			case 3:
+				if (inputReceiverNum[0].length > 2) {
+					
+					$('#remessage-send-user-target-input').focus();
+					return false;
+				}
+				var p2Substring = inputReceiverNum[0].substring(0, 2);
+				var check = false;
+				// 00~41 check
+				for (var j = 0; j < p2Numtemp.length; j++) {
+					if (p2Substring == p2Numtemp[j]) {
+						check = true;
+					}
+				}
+
+				if (inputReceiverNum[0].substring(0, 2) == "82"
+						&& inputReceiverNum[1].length < 7
+						&& num_check.test(inputReceiverNum[1])
+						&& inputReceiverNum[2].length < 7
+						&& num_check.test(inputReceiverNum[2])) {
+					console.log('p1 번호 ');
+				} else if (check && inputReceiverNum[1].length < 5
+						&& num_check.test(inputReceiverNum[1])
+						&& inputReceiverNum[2].length < 5
+						&& num_check.test(inputReceiverNum[2])) {
+					console.log('p2 번호');
+
+				} else {
+				
+					$('#remessage-send-user-target-input').focus();
+					return false;
+				}
+				console.log('발송 무전번호');
+				input_messageTarget[i] = inputReceiverNum[0] + "*"
+						+ inputReceiverNum[1] + "*" + inputReceiverNum[2];
+				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+
+				break;
+
+			default:
+				
+				$('#remessage-send-user-target-input').focus();
+				return false;
+				break;
+			}
+		}
+
+	}
+
+	// p2
+	if (ufmiVer == "p2") {
+		console.log('피투');
+		// 01~41 push
+
+	
+
+		for ( var i in input_messageTarget) {
+
+			var inputReceiverNum = input_messageTarget[i].split('*');
+			var inputNumLength = inputReceiverNum.length;
+			var num_check = /^[0-9]*$/;
+			switch (inputNumLength) {
+			case 1:
+				console.log('케이스 1');
+				if (!num_check.test(inputReceiverNum[0])
+						|| inputReceiverNum[0].length > 4) {
+					console.log(inputReceiverNum[0].length);
+					
+					$('#remessage-send-user-target-input').focus();
+					return false;
+				}
+				input_messageTarget[i] = lastIndex + inputReceiverNum[0];
+
+				console.log("실제 전송번호");
+				console.log(input_messageTarget[i]);
+				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				break;
+			case 2:
+				console.log('케이스 2');
+				if (!num_check.test(inputReceiverNum[0])
+						|| inputReceiverNum[0].length > 4
+						|| !num_check.test(inputReceiverNum[1])
+						|| inputReceiverNum[1].length > 4) {
+					console.log(inputReceiverNum[0].length);
+					console.log(inputReceiverNum[1].length);
+				
+					$('#remessage-send-user-target-input').focus();
+					return false;
+				}
+
+				input_messageTarget[i] = firstIndex + inputReceiverNum[0]
+						+ "*" + inputReceiverNum[1];
+				console.log("실제 전송번호");
+				console.log(input_messageTarget[i]);
+				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				break;
+
+			case 3:
+				console.log('케이스 3');
+				if (inputReceiverNum[0].length > 2) {
+				
+					$('#remessage-send-user-target-input').focus();
+					return false;
+				}
+				var p2Substring = inputReceiverNum[0].substring(0, 2);
+				var check = false;
+				// 00~41 check
+				for (var j = 0; j < p2Numtemp.length; j++) {
+					if (p2Substring == p2Numtemp[j]) {
+						check = true;
+					}
+				}
+
+				if (inputReceiverNum[0].substring(0, 2) == "82"
+						&& inputReceiverNum[1].length < 7
+						&& num_check.test(inputReceiverNum[1])
+						&& inputReceiverNum[2].length < 7
+						&& num_check.test(inputReceiverNum[2])) {
+					console.log('p1 번호 ');
+				} else if (check && inputReceiverNum[1].length < 5
+						&& num_check.test(inputReceiverNum[1])
+						&& inputReceiverNum[2].length < 5
+						&& num_check.test(inputReceiverNum[2])) {
+					console.log('p2 번호');
+
+				} else {
+					
+					$('#remessage-send-user-target-input').focus();
+					return false;
+				}
+				console.log('발송 무전번호');
+				input_messageTarget[i] = inputReceiverNum[0] + "*"
+						+ inputReceiverNum[1] + "*" + inputReceiverNum[2];
+				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				break;
+
+			default:
+			
+				$('#remessage-send-user-target-input').focus();
+				return false;
+				break;
+			}
+		}
+	}// p2
+
+	console.log('무전번호 체크');
+}
+
+
 // message-send-user-textarea
 $('#remessage-send-user-textarea').bind('input keyup paste', function() {
 	if (messageListRole == "svc") {
@@ -866,7 +1044,7 @@ function resendFormCheck() {
 
 // exportCsv
 function messageListCsvExport() {
-	
+
 	var messageCount = $('#hidden-messageListCnt').val();
 	messageCount = messageCount * 1;
 

@@ -372,7 +372,7 @@ function loginFunction(atag) {
 				var groupTopic = data.result.data.groupTopic;
 				if (ufmi != null) {
 					sessionStorage.setItem("ufmi", ufmi);
-				
+
 				}
 				if (groupTopic != null) {
 					sessionStorage.setItem("groupTopic", groupTopic);
@@ -468,8 +468,7 @@ function sysLogin() {
 	$('#svc_message_list_month_li').hide();
 	$('#sys_message_list_month_li').show();
 	sessionStorage.setItem("monitoringStatus", "disable");
-	
-	
+
 }
 // svcLogin
 function svcLogin() {
@@ -655,6 +654,67 @@ var guid = (function() {
 	};
 })();
 
+var p2numArray = function() {
+	var p2Numtemp = [];
+	for (var i = 0; i <= 4; i++) {
+		for (var j = 0; j <= 9; j++) {
+			if (i == 4) {
+				if (j < 2) {
+					p2Numtemp.push("" + i + j);
+				}
+			} else {
+				p2Numtemp.push("" + i + j);
+			}
+
+		}
+	}
+	return p2Numtemp;
+};
+
+var ufmiVerCheck = function(ufmi) {
+	this.ufmi = ufmi;
+	console.log('ufmiVer체크 펑션');
+	console.log(ufmi);
+	var ufmiVer = "";
+	var firstIndex = "";
+	var lastIndex = "";
+
+	var ufmiFirstIndex = ufmi.indexOf('*') * 1;
+	var ufmiLastIndex = ufmi.lastIndexOf('*') * 1;
+	var ufmiTotalLength = ufmi.length * 1;
+
+	// // p1check
+	if (ufmi.substring(0, 2) == "82" && ufmiFirstIndex + 1 < ufmiLastIndex
+			&& ufmiLastIndex - ufmiFirstIndex < 8
+			&& ufmiLastIndex + 1 < ufmiTotalLength
+			&& ufmiTotalLength - ufmiLastIndex < 8) {
+		ufmiVer = "p1";
+		firstIndex = ufmi.substring(0, ufmiFirstIndex + 1);
+		lastIndex = ufmi.substring(0, ufmiLastIndex + 1);
+		console.log('p1 자른 무전번호');
+		console.log(firstIndex);
+		console.log(lastIndex);
+	} else if (!ufmi.substring(0, 2) !== "82"
+			&& ufmiFirstIndex + 1 < ufmiLastIndex
+			&& ufmiLastIndex - ufmiFirstIndex < 6
+			&& ufmiLastIndex + 1 < ufmiTotalLength
+			&& ufmiTotalLength - ufmiLastIndex < 6) {
+		ufmiVer = "p2";
+		firstIndex = ufmi.substring(0, ufmiFirstIndex + 1);
+		lastIndex = ufmi.substring(0, ufmiLastIndex + 1);
+		console.log('p2 자른 무전번호');
+		console.log(firstIndex);
+		console.log(lastIndex);
+	}
+
+	return {
+		ufmiVer : ufmiVer,
+		firstIndex : firstIndex,
+		lastIndex : lastIndex
+	};
+
+};
+
 // // CKEDITOR Get Contents
 // function GetContents() {
 // var editor = CKEDITOR.instances.input_messageContent;
@@ -702,7 +762,7 @@ String.Length = function(arg) {
 	} else {
 		if (typeof (arg) != "string") {
 			throw "Property or Arguments was not 'String' Types.";
-		}else{
+		} else {
 			return arg.Length();
 		}
 	}
