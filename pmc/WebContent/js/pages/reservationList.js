@@ -175,14 +175,20 @@ var reservationListTable = $('#reservation-datatable')
 
 						
 						
-						aoData.push({
-							'name' : 'cSearchDate',
-							'value' : messageMonth
-						});
+//						aoData.push({
+//							'name' : 'cSearchDate',
+//							'value' : messageMonth
+//						});
 
-						
-					
-						
+						aoData.push({
+							'name' : 'cSearchDateStart',
+							'value' : reservationStartDate
+						});
+//					
+						aoData.push({
+							'name' : 'cSearchDateEnd',
+							'value' : reservationEndDate
+						});
 						
 					
 //						if (searchDateStart != "") {

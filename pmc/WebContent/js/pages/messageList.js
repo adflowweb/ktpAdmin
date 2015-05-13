@@ -110,8 +110,8 @@ var messageTable = $('#dataTables-messageList')
 
 										if (!data.result.errors) {
 											var dataResult = data.result.data;
-											$('#messageListCnt_div')
-													.text(
+											$('#hidden-messageListCnt')
+													.val(
 															data.result.data.recordsTotal);
 											dataResult = data.result.data.data;
 											messageListResult = dataResult;
@@ -389,7 +389,7 @@ $('#dataTables-messageList tbody')
 									messageListContent = messageListContent
 											.trim();
 									$('#remessage-send-length-strong').text(
-											messageListContent.byteLength());
+											messageListContent.Length());
 								} else {
 									$('#remessage-send-p').hide();
 								}
@@ -711,6 +711,11 @@ function MessageReSendUserFunction() {
 
 			// end 전송대상 체크
 
+			// var contentLength=$('#remessage-send-length-strong').text();
+			// messageData.contentLength=contentLength;
+			// console.log('메시지 전송전 길이');
+			// console.log(messageData.contentLength);
+
 			var messageDataResult = JSON.stringify(messageData);
 
 			/*
@@ -823,8 +828,8 @@ function contentReSendLengthCheck() {
 
 	var input_messageContent = $('#remessage-send-user-textarea').val();
 	input_messageContent = input_messageContent.trim();
-	console.log(input_messageContent.byteLength());
-	var strongLength = input_messageContent.byteLength();
+	console.log(input_messageContent.Length());
+	var strongLength = input_messageContent.Length();
 	if (strongLength > 140) {
 		$('#remessage-send-length-strong').text(strongLength);
 
@@ -861,7 +866,8 @@ function resendFormCheck() {
 
 // exportCsv
 function messageListCsvExport() {
-	var messageCount = $('#messageListCnt_div').text();
+	
+	var messageCount = $('#hidden-messageListCnt').val();
 	messageCount = messageCount * 1;
 
 	if (messageCount == 0) {

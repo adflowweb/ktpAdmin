@@ -14,13 +14,14 @@ $.ajax({
 	async : false,
 
 	success : function(data) {
-
+		console.log('성공');
 		if (!data.result.errors) {
 			var dataResult = data.result.data;
-
+			console.log(dataResult);
 			$('#userInfo-id-input').val(dataResult.userId);
 			$('#userInfo-name-input').val(dataResult.userName);
-			$('#userInfo-token-input').val(dataResult.applicationToken);
+		//	$('#userInfo-token-input').val(dataResult.applicationToken);
+			$('#userInfo-phone-input').val(dataResult.ufmi);
 		} else {
 
 			alert('계정 목록을 가지고오는데 실패하였습니다.');

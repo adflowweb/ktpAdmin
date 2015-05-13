@@ -369,9 +369,10 @@ function loginFunction(atag) {
 				var token = data.result.data.token;
 				var userId = data.result.data.userId;
 				var ufmi = data.result.data.ufmi;
-				var groupTopic=data.result.data.groupTopic;
+				var groupTopic = data.result.data.groupTopic;
 				if (ufmi != null) {
 					sessionStorage.setItem("ufmi", ufmi);
+				
 				}
 				if (groupTopic != null) {
 					sessionStorage.setItem("groupTopic", groupTopic);
@@ -467,10 +468,13 @@ function sysLogin() {
 	$('#svc_message_list_month_li').hide();
 	$('#sys_message_list_month_li').show();
 	sessionStorage.setItem("monitoringStatus", "disable");
+	
+	
 }
 // svcLogin
 function svcLogin() {
 	$('#ul_userInfo').show();
+	$('#change_pw_li').hide();
 	$('.navbar-static-side').show();
 	$('#sys_monitoring_li').hide();
 	$('#sys_admin_li').hide();
@@ -505,7 +509,7 @@ function svcLogin() {
 	});
 
 	$('#messagelist-date-input').prop('disabled', true);
-
+	$('#phone_span').text(sessionStorage.getItem('ufmi'));
 }
 // inf Login
 function infLogin() {
@@ -677,22 +681,54 @@ function utf8ByteLength(str) {
 	return match ? (escapedStr.length - match.length * 2) : escapedStr.length;
 }
 
-String.prototype.byteLength = function() {
-	var l = 0;
+String.prototype.Length = function() {
+	var len = 0;
+	var arg = arguments[0] == undefined ? this.toString() : arguments[0];
+	for (var i = 0; i < arg.length; i++) {
+		var _ch = arg[i].charCodeAt();
+		if (_ch >= 0x0080 && _ch <= 0xFFFF) {
+			len += 2;
+		} else {
+			len++;
+		}
 
-	for (var idx = 0; idx < this.length; idx++) {
-		var c = escape(this.charAt(idx));
-
-		if (c.length == 1)
-			l++;
-		else if (c.indexOf("%u") != -1)
-			l += 2;
-		else if (c.indexOf("%") != -1)
-			l += c.length / 3;
 	}
-
-	return l;
+	return len;
 };
+
+String.Length = function(arg) {
+	if (arg == undefined || arg == null) {
+		throw "Property or Arguments was Nerver Null"
+	} else {
+		if (typeof (arg) != "string") {
+			throw "Property or Arguments was not 'String' Types.";
+		}else{
+			return arg.Length();
+		}
+	}
+};
+
+// function getUTF8Length(s) {
+// var len = 0;
+// for (var i = 0; i < s.length; i++) {
+// var code = s.charCodeAt(i);
+// if (code <= 0x7f) {
+// len += 1;
+// } else if (code <= 0x7ff) {
+// len += 2;
+// } else if (code >= 0xd800 && code <= 0xdfff) {
+// // Surrogate pair: These take 4 bytes in UTF-8 and 2 chars in UCS-2
+// // (Assume next char is the other [valid] half and just skip it)
+// len += 4;
+// i++;
+// } else if (code < 0xffff) {
+// len += 3;
+// } else {
+// len += 4;
+// }
+// }
+// return len;
+// }
 
 // Date Formating
 Date.prototype.yyyymmdd = function() {

@@ -61,9 +61,11 @@
 			</div>
 
 			<ul id="ul_userInfo" class="nav navbar-top-links navbar-right">
+			
 				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
+					data-toggle="dropdown" href="#"><span id="phone_span"></span> <i class="fa fa-user fa-fw"></i>
 						<i class="fa fa-caret-down"></i>
+							
 				</a>
 					<ul class="dropdown-menu dropdown-user">
 						<!-- 						<li><a href="#" onclick="javascript:userInfo();"><i -->
@@ -71,9 +73,9 @@
 						<li><a href="pages/userInfo.html"
 							onclick="window.open(this.href,'user Info', 'width=650,height=450'); return false;"><i
 								class="fa fa-user fa-fw"></i> User Profile</a></li>
-				<!-- 		<li><a href="pages/changePass.html"
+						<li id="change_pw_li"><a href="pages/changePass.html"
 							onclick="window.open(this.href,'change password', 'width=650,height=450'); return false;"><i
-								class="fa fa-gear fa-fw"></i> Change Password</a></li> -->
+								class="fa fa-gear fa-fw"></i> Change Password</a></li>
 						<li><a href="#" onclick="javascript:logoutFunction();"><i
 								class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 
@@ -101,7 +103,7 @@
 
 								<li id="svc_message_reservation_li"><a href="#"
 									onclick="javascript:wrapperFunction('reservationList');">예약
-										메시지 발송 현황</a></li>
+										메시지  현황</a></li>
 								<!-- 서비스 메뉴 -->
 
 								<li id="sys_message_list_li"><a href="#"
