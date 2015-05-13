@@ -364,7 +364,7 @@ $('#dataTables-messageList tbody')
 				'tr',
 				function() {
 					if (messageListResult.length > 0) {
-						if (confirm("해당 메시지의 본문 내용을 보시겠습니까?")==true) {
+						if (confirm("해당 메시지의 본문 내용을 보시겠습니까?") == true) {
 							$('#remessage-div').show();
 							var messageListContent = "";
 							var tableClickData = $(this).children("td").map(
@@ -479,7 +479,7 @@ function MessageReSendUserFunction() {
 			messageData.contentType = "application/base64";
 
 			var p2Numtemp = p2numArray();
-	
+
 			var svcUfmi = sessionStorage.getItem("ufmi");
 			console.log(svcUfmi);
 			var checkResult = new ufmiVerCheck(svcUfmi);
@@ -495,6 +495,12 @@ function MessageReSendUserFunction() {
 			if (ufmiVer == "p1") {
 				console.log('피원');
 				for ( var i in messageData.receivers) {
+					if (messageData.receivers[i].length == 0) {
+						console.log('리시버 길이 0');
+						alert('올바른 무전 번호를 입력하세요');
+						$('#remessage-send-user-target-input').focus();
+						return false;
+					}
 					var inputReceiverNum = messageData.receivers[i].split('*');
 					var inputNumLength = inputReceiverNum.length;
 					var num_check = /^[0-9]*$/;
@@ -504,7 +510,7 @@ function MessageReSendUserFunction() {
 								|| inputReceiverNum[0].length > 6) {
 							console.log(inputReceiverNum[0].length);
 							alert('개인번호만 입력시 1~6자리 숫자만 입력. ex)1234');
-							$('#message-send-user-target-input').focus();
+							$('#remessage-send-user-target-input').focus();
 							return false;
 						}
 						messageData.receivers[i] = lastIndex
@@ -518,7 +524,7 @@ function MessageReSendUserFunction() {
 								|| inputReceiverNum[1].length > 6) {
 
 							alert('82번호 생략시 1~6자리*1~6자리 형태로 입력! ex)100*1234');
-							$('#message-send-user-target-input').focus();
+							$('#remessage-send-user-target-input').focus();
 							return false;
 						}
 
@@ -532,7 +538,7 @@ function MessageReSendUserFunction() {
 					case 3:
 						if (inputReceiverNum[0].length > 2) {
 							alert('무전번호의 첫자리는 2자리숫자로 입력!');
-							$('#message-send-user-target-input').focus();
+							$('#remessage-send-user-target-input').focus();
 							return false;
 						}
 						var p2Substring = inputReceiverNum[0].substring(0, 2);
@@ -558,7 +564,7 @@ function MessageReSendUserFunction() {
 
 						} else {
 							alert('올바른 무전 번호를 입력해주세요!');
-							$('#message-send-user-target-input').focus();
+							$('#remessage-send-user-target-input').focus();
 							return false;
 						}
 						console.log('발송 무전번호');
@@ -571,7 +577,7 @@ function MessageReSendUserFunction() {
 
 					default:
 						alert('올바른 무전 번호를 입력해주세요!');
-						$('#message-send-user-target-input').focus();
+						$('#remessage-send-user-target-input').focus();
 						return false;
 						break;
 					}
@@ -587,6 +593,12 @@ function MessageReSendUserFunction() {
 				console.log(messageData.receivers);
 
 				for ( var i in messageData.receivers) {
+					if (messageData.receivers[i].length == 0) {
+						console.log('리시버 길이 0');
+						alert('올바른 무전 번호를 입력하세요');
+						$('#remessage-send-user-target-input').focus();
+						return false;
+					}
 
 					var inputReceiverNum = messageData.receivers[i].split('*');
 					var inputNumLength = inputReceiverNum.length;
@@ -598,7 +610,7 @@ function MessageReSendUserFunction() {
 								|| inputReceiverNum[0].length > 4) {
 							console.log(inputReceiverNum[0].length);
 							alert('개인번호만 입력시 1자리에서~4자리 숫자만 입력. ex)1234');
-							$('#message-send-user-target-input').focus();
+							$('#remessage-send-user-target-input').focus();
 							return false;
 						}
 						messageData.receivers[i] = lastIndex
@@ -617,7 +629,7 @@ function MessageReSendUserFunction() {
 							console.log(inputReceiverNum[0].length);
 							console.log(inputReceiverNum[1].length);
 							alert('첫번째 무전 번호 생략시 1~4자리*1~4자리 형태로 입력! ex)100*1234');
-							$('#message-send-user-target-input').focus();
+							$('#remessage-send-user-target-input').focus();
 							return false;
 						}
 
@@ -633,7 +645,7 @@ function MessageReSendUserFunction() {
 						console.log('케이스 3');
 						if (inputReceiverNum[0].length > 2) {
 							alert('무전번호의 첫자리는 2자리숫자로 입력!');
-							$('#message-send-user-target-input').focus();
+							$('#remessage-send-user-target-input').focus();
 							return false;
 						}
 						var p2Substring = inputReceiverNum[0].substring(0, 2);
@@ -659,7 +671,7 @@ function MessageReSendUserFunction() {
 
 						} else {
 							alert('올바른 무전 번호를 입력해주세요!');
-							$('#message-send-user-target-input').focus();
+							$('#remessage-send-user-target-input').focus();
 							return false;
 						}
 						console.log('발송 무전번호');
@@ -671,7 +683,7 @@ function MessageReSendUserFunction() {
 
 					default:
 						alert('올바른 무전 번호를 입력해주세요!');
-						$('#message-send-user-target-input').focus();
+						$('#remessage-send-user-target-input').focus();
 						return false;
 						break;
 					}
@@ -784,14 +796,13 @@ function MessageReSendUserFunction() {
 
 }
 
-
 $('#remessage-send-user-target-input').bind('input keyup paste', function() {
 	setTimeout(reSendUfmiCheckTime, 0);
 });
 
-
-function reSendUfmiCheckTime(){
-	//$('#message-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+function reSendUfmiCheckTime() {
+	// $('#message-send-user-ufmi-span').text("실제 전송번호:" +
+	// input_messageTarget[i]);
 	console.log('무전번호 체크');
 	var input_messageTarget = $('#remessage-send-user-target-input').val();
 	if (input_messageTarget == null || input_messageTarget == "") {
@@ -824,7 +835,8 @@ function reSendUfmiCheckTime(){
 				input_messageTarget[i] = lastIndex + inputReceiverNum[0];
 
 				console.log(input_messageTarget[i]);
-				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				$('#remessage-send-user-ufmi-span').text(
+						"실제 전송번호:" + input_messageTarget[i]);
 				break;
 
 			case 2:
@@ -833,20 +845,20 @@ function reSendUfmiCheckTime(){
 						|| !num_check.test(inputReceiverNum[1])
 						|| inputReceiverNum[1].length > 6) {
 
-				
 					$('#remessage-send-user-target-input').focus();
 					return false;
 				}
 
-				input_messageTarget[i] = firstIndex + inputReceiverNum[0]
-						+ "*" + inputReceiverNum[1];
+				input_messageTarget[i] = firstIndex + inputReceiverNum[0] + "*"
+						+ inputReceiverNum[1];
 				console.log(input_messageTarget[i]);
-				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				$('#remessage-send-user-ufmi-span').text(
+						"실제 전송번호:" + input_messageTarget[i]);
 				break;
 			// 별 2개이면 p1 p2 체크
 			case 3:
 				if (inputReceiverNum[0].length > 2) {
-					
+
 					$('#remessage-send-user-target-input').focus();
 					return false;
 				}
@@ -872,19 +884,20 @@ function reSendUfmiCheckTime(){
 					console.log('p2 번호');
 
 				} else {
-				
+
 					$('#remessage-send-user-target-input').focus();
 					return false;
 				}
 				console.log('발송 무전번호');
 				input_messageTarget[i] = inputReceiverNum[0] + "*"
 						+ inputReceiverNum[1] + "*" + inputReceiverNum[2];
-				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				$('#remessage-send-user-ufmi-span').text(
+						"실제 전송번호:" + input_messageTarget[i]);
 
 				break;
 
 			default:
-				
+
 				$('#remessage-send-user-target-input').focus();
 				return false;
 				break;
@@ -898,8 +911,6 @@ function reSendUfmiCheckTime(){
 		console.log('피투');
 		// 01~41 push
 
-	
-
 		for ( var i in input_messageTarget) {
 
 			var inputReceiverNum = input_messageTarget[i].split('*');
@@ -911,7 +922,7 @@ function reSendUfmiCheckTime(){
 				if (!num_check.test(inputReceiverNum[0])
 						|| inputReceiverNum[0].length > 4) {
 					console.log(inputReceiverNum[0].length);
-					
+
 					$('#remessage-send-user-target-input').focus();
 					return false;
 				}
@@ -919,7 +930,8 @@ function reSendUfmiCheckTime(){
 
 				console.log("실제 전송번호");
 				console.log(input_messageTarget[i]);
-				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				$('#remessage-send-user-ufmi-span').text(
+						"실제 전송번호:" + input_messageTarget[i]);
 				break;
 			case 2:
 				console.log('케이스 2');
@@ -929,22 +941,23 @@ function reSendUfmiCheckTime(){
 						|| inputReceiverNum[1].length > 4) {
 					console.log(inputReceiverNum[0].length);
 					console.log(inputReceiverNum[1].length);
-				
+
 					$('#remessage-send-user-target-input').focus();
 					return false;
 				}
 
-				input_messageTarget[i] = firstIndex + inputReceiverNum[0]
-						+ "*" + inputReceiverNum[1];
+				input_messageTarget[i] = firstIndex + inputReceiverNum[0] + "*"
+						+ inputReceiverNum[1];
 				console.log("실제 전송번호");
 				console.log(input_messageTarget[i]);
-				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				$('#remessage-send-user-ufmi-span').text(
+						"실제 전송번호:" + input_messageTarget[i]);
 				break;
 
 			case 3:
 				console.log('케이스 3');
 				if (inputReceiverNum[0].length > 2) {
-				
+
 					$('#remessage-send-user-target-input').focus();
 					return false;
 				}
@@ -970,18 +983,19 @@ function reSendUfmiCheckTime(){
 					console.log('p2 번호');
 
 				} else {
-					
+
 					$('#remessage-send-user-target-input').focus();
 					return false;
 				}
 				console.log('발송 무전번호');
 				input_messageTarget[i] = inputReceiverNum[0] + "*"
 						+ inputReceiverNum[1] + "*" + inputReceiverNum[2];
-				$('#remessage-send-user-ufmi-span').text("실제 전송번호:" + input_messageTarget[i]);
+				$('#remessage-send-user-ufmi-span').text(
+						"실제 전송번호:" + input_messageTarget[i]);
 				break;
 
 			default:
-			
+
 				$('#remessage-send-user-target-input').focus();
 				return false;
 				break;
@@ -991,7 +1005,6 @@ function reSendUfmiCheckTime(){
 
 	console.log('무전번호 체크');
 }
-
 
 // message-send-user-textarea
 $('#remessage-send-user-textarea').bind('input keyup paste', function() {
