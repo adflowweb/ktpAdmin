@@ -280,7 +280,7 @@ function MessageSendUserFunction() {
 
 		}
 
-		if (confirm(messageData.receivers + " 해당 무전번호 로 총 " + sendCount
+		if (confirm(messageData.receivers + " 해당 무전번호로 총 " + sendCount
 				+ "건의 메시지가 전송 됩니다. 전송 하시겠습니까?") == true) {
 
 		} else {
@@ -399,7 +399,7 @@ function ufmiCheckTime() {
 				if (!num_check.test(inputReceiverNum[0])
 						|| inputReceiverNum[0].length > 6) {
 					console.log(inputReceiverNum[0].length);
-					alert('개인번호만 입력시 1~6자리 숫자만 입력. ex)1234');
+					
 					$('#message-send-user-target-input').focus();
 					return false;
 				}

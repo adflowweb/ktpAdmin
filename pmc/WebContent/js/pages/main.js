@@ -468,7 +468,7 @@ function sysLogin() {
 	$('#svc_message_list_month_li').hide();
 	$('#sys_message_list_month_li').show();
 	sessionStorage.setItem("monitoringStatus", "disable");
-
+	$('#phone_span').hide();
 }
 // svcLogin
 function svcLogin() {
@@ -554,6 +554,7 @@ function svcAdmLogin() {
 	});
 
 	$('#messagelist-date-input').prop('disabled', true);
+	$('#phone_span').hide();
 
 }
 

@@ -828,7 +828,7 @@ function reSendUfmiCheckTime() {
 				if (!num_check.test(inputReceiverNum[0])
 						|| inputReceiverNum[0].length > 6) {
 					console.log(inputReceiverNum[0].length);
-					alert('개인번호만 입력시 1~6자리 숫자만 입력. ex)1234');
+				
 					$('#remessage-send-user-target-input').focus();
 					return false;
 				}

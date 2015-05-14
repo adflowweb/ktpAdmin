@@ -3943,7 +3943,7 @@ textarea.input-group-sm>.form-control,textarea.input-group-sm>.input-group-addon
 .navbar-fixed-top {
 	top: 0;
 	border-width: 0 0 1px;
-	background-color: lightblue;
+	background-color: white;
 }
 
 .navbar-fixed-bottom {
