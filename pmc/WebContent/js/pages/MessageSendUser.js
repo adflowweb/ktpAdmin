@@ -353,12 +353,14 @@ function contentLengthCheck() {
 	console.log(input_messageContent.Length());
 	var strongLength = input_messageContent.Length();
 	if (strongLength > 140) {
-		$('#message-send-length-strong').text(strongLength);
+		
 
 		alert('140자 이내로 입력하세요!');
 		$('#message-send-user-textarea').val(
 				input_messageContent.substring(0,
 						input_messageContent.length - 1));
+		var input_messageContent = $('#message-send-user-textarea').val();
+		$('#message-send-length-strong').text(input_messageContent.Length());
 		return false;
 	} else {
 		$('#message-send-length-strong').text(strongLength);

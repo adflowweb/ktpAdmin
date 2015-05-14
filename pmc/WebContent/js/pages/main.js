@@ -8,7 +8,9 @@ $(document).ready(
 			if (localTokenId) {
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
-
+					/*
+					 * alert('해당 계정으로는 로그인 할 수 없습니다.'); return false;
+					 */
 					$("#page-wrapper").load(
 							"pages/userManagerPageWrapper.html", function() {
 								sysLogin();
@@ -21,6 +23,9 @@ $(document).ready(
 							});
 
 				} else if (userRole == "svcadm") {
+					/*
+					 * alert('해당 계정으로는 로그인 할 수 없습니다.'); return false;
+					 */
 					$("#page-wrapper").load(
 							"pages/messageListPageWrapper.html", function() {
 								svcAdmLogin();
@@ -383,11 +388,14 @@ function loginFunction(atag) {
 
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
+					// alert('해당 계정으로는 로그인 할 수 없습니다.');
+					// return false;
 
 					$("#page-wrapper").load(
 							"pages/userManagerPageWrapper.html", function() {
 								sysLogin();
 							});
+
 				} else if (userRole == "svc") {
 					$("#page-wrapper").load(
 							"pages/messageListPageWrapper.html", function() {
@@ -399,6 +407,9 @@ function loginFunction(atag) {
 					infLogin();
 
 				} else if (userRole = "svcadm") {
+					// alert('해당 계정으로는 로그인 할 수 없습니다.');
+					// return false;
+
 					$("#page-wrapper").load(
 							"pages/messageListPageWrapper.html", function() {
 								svcAdmLogin();

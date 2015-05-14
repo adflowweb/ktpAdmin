@@ -828,7 +828,7 @@ function reSendUfmiCheckTime() {
 				if (!num_check.test(inputReceiverNum[0])
 						|| inputReceiverNum[0].length > 6) {
 					console.log(inputReceiverNum[0].length);
-				
+
 					$('#remessage-send-user-target-input').focus();
 					return false;
 				}
@@ -1022,12 +1022,13 @@ function contentReSendLengthCheck() {
 	console.log(input_messageContent.Length());
 	var strongLength = input_messageContent.Length();
 	if (strongLength > 140) {
-		$('#remessage-send-length-strong').text(strongLength);
 
 		alert('140자 이내로 입력하세요!');
 		$('#remessage-send-user-textarea').val(
 				input_messageContent.substring(0,
 						input_messageContent.length - 1));
+		var input_messageContent = $('#message-send-user-textarea').val();
+		$('#message-send-length-strong').text(input_messageContent.Length());
 		return false;
 	} else {
 		$('#remessage-send-length-strong').text(strongLength);
