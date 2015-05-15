@@ -56,7 +56,9 @@ var reservationListTable = $('#reservation-datatable')
 											if (dataResult.length == 0) {
 												$("#reservaton-checkbox-id")
 														.hide();
+												$('#reservation-cancel-div').hide();
 											}else{
+												$('#reservation-cancel-div').show();
 												$("#reservaton-checkbox-id")
 												.show();
 											}
