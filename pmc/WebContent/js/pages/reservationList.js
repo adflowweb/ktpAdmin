@@ -14,6 +14,14 @@ var reservationListTable = $('#reservation-datatable')
 					'bServerSide' : true,
 					'bFilter' : false,
 					"pageLength" : 25,
+					"oLanguage" : {
+						"oPaginate" : {
+							"sFirst" : "처음",
+							"sLast" : "끝",
+							"sNext" : "다음",
+							"sPrevious" : "이전"
+						}
+					},
 					// 'dom' : 'T<"clear">lrtip',
 					'columns' : [ {
 						"data" : "msgId"

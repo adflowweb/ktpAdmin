@@ -1,0 +1,50 @@
+
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">사용자 정보 업데이트</h1>
+	</div>
+</div>
+<!-- /.row -->
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">사용자 정보(최초 로그인시 이름정보를 입력해야합니다.)</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<form role="form">
+					<div class="form-group">
+						<label>아이디</label> <input class="form-control"
+							id="first-info-id-input" disabled="disabled"/>
+					</div>
+					<div class="form-group">
+						<label>무전번호</label> <input class="form-control"
+							id="first-info-ufmi-input" disabled="disabled"/>
+					</div>
+					<div class="form-group">
+						<label>이름</label> <input maxlength="10" class="form-control" id="first-info-name-input"
+							placeholder="이름 입력" />
+					</div>
+
+					<input type="button" onclick="javascript:userAddNameFunction();"
+						class="btn btn-default" value="이름 등록"></input>
+					
+				</form>
+
+			</div>
+			<!-- /.panel-body -->
+		</div>
+
+		<!-- /.panel -->
+	</div>
+
+</div>
+
+<script src="js/pages/userNameAdd.js"></script>
+
+
+
+
+
+
+

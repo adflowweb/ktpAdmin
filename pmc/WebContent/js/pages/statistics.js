@@ -67,6 +67,14 @@ var statisticsTable = $('#statistics-datatable')
 					'bServerSide' : true,
 					'bSort' : false,
 					"pageLength" : 25,
+					"oLanguage" : {
+						"oPaginate" : {
+							"sFirst" : "처음",
+							"sLast" : "끝",
+							"sNext" : "다음",
+							"sPrevious" : "이전"
+						}
+					},
 					bScrollCollapse : true,
 					scrollX : true,
 					'dom' : '<"clear">lrtip',
@@ -128,7 +136,7 @@ var statisticsTable = $('#statistics-datatable')
 
 													dataResult[i].pmaAckType = '응답없음';
 												} else {
-													dataResult[i].pmaAckType = '기기응답';
+													dataResult[i].pmaAckType = '수신확인';
 													var dateTime = dataResult[i].pmaAckTime;
 													dataResult[i].pmaAckTime = new Date(
 															dateTime)
@@ -139,7 +147,7 @@ var statisticsTable = $('#statistics-datatable')
 
 													dataResult[i].appAckType = '응답없음';
 												} else {
-													dataResult[i].appAckType = '유저응답';
+													dataResult[i].appAckType = '메시지확인';
 													var dateTime = dataResult[i].appAckTime;
 													dataResult[i].appAckTime = new Date(
 															dateTime)
@@ -401,6 +409,14 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 					'bServerSide' : true,
 					'bSort' : false,
 					"pageLength" : 25,
+					"oLanguage" : {
+						"oPaginate" : {
+							"sFirst" : "처음",
+							"sLast" : "끝",
+							"sNext" : "다음",
+							"sPrevious" : "이전"
+						}
+					},
 					'dom' : '<"clear">lrtip',
 					'columns' : [ {
 						"data" : "reservationTime"

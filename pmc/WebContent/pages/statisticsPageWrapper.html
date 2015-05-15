@@ -43,8 +43,8 @@
 						onchange="javascript:searchSelectSysChange();">
 						<option value="0">선택</option>
 						<option value="1">발송상태</option>
-						<option value="2">MsgId</option>
-						<option value="3">수신자</option>
+						<option value="2">메시지 ID</option>
+						<option value="3">수신번호</option>
 						<option value="4">응답상태</option>
 					</select>
 
@@ -68,8 +68,8 @@
 					<label>응답 상태 선택</label> <select class="form-control"
 						id="statistics-search-ack-select">
 						<option value="0">응답없음</option>
-						<option value="1">기기응답</option>
-						<option value="2">유저응답</option>
+						<option value="1">수신확인</option>
+						<option value="2">메시지확인</option>
 					</select>
 
 				</div>
@@ -110,9 +110,9 @@
 
 				<div class="form-group">
 					<input type="button" onclick="javascript:statisticsDateSearch()"
-						class="btn btn-default" value="Search"></input> <input
+						class="btn btn-default" value="검색"></input> <input
 						type="button" onclick="javascript:statisticsDateReset()"
-						class="btn btn-default" value="Reset"></input>
+						class="btn btn-default" value="재설정"></input>
 				</div>
 				<div class="table-responsive">
 					<!--table-bordered  -->
@@ -161,7 +161,7 @@
 						<i class="fa fa-tasks fa-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right">
-						<div style="font-size: 4opx;">해당월에 예약한 메시지 목록 조회</div>
+						<div style="font-size: 4opx;">예약한 메시지 목록 조회</div>
 						<div style="font-size: 40px;" class="huge"
 							id="statisticsList-reservation-Cnt_div"></div>
 					</div>
@@ -238,20 +238,20 @@
 				<div class="form-group">
 					<input type="button"
 						onclick="javascript:statisticsReservationSearch()"
-						class="btn btn-default" value="Search"></input> <input
+						class="btn btn-default" value="검색"></input> <input
 						type="button" onclick="javascript:statisticsReservationReset()"
-						class="btn btn-default" value="Reset"></input>
+						class="btn btn-default" value="재설정"></input>
 				</div>
 				<div class="table-responsive">
-					<table class="table table-striped table-bordered table-hover"
+					<table class="table table-striped  table-hover"
 						id="statistics-reservation-datatable" width="100%">
 						<thead>
 							<tr>
 								<th>예약발송 시간</th>
-								<th>송신자</th>
-								<th>수신자</th>
+								<th>발송번호</th>
+								<th>수신번호</th>
 								<th>ServiceId</th>
-								<th>MsgId</th>
+								<th>메시지 ID</th>
 
 
 							</tr>

@@ -77,11 +77,11 @@ function monthSvcSearch() {
 								statusD2Cnt = successData.msgCnt;
 								totalMsgCnt += successData.msgCnt;
 								break;
-			/*				case -1:
-								// dataResult[i].status = "허용갯수초과";
-								statusD1Cnt = successData.msgCnt;
-								totalMsgCnt += successData.msgCnt;
-								break;*/
+							/*
+							 * case -1: // dataResult[i].status = "허용갯수초과";
+							 * statusD1Cnt = successData.msgCnt; totalMsgCnt +=
+							 * successData.msgCnt; break;
+							 */
 							case 0:
 								// dataResult[i].status = "발송중";
 								statusP0Cnt = successData.msgCnt;
@@ -116,11 +116,11 @@ function monthSvcSearch() {
 								statusRD2Cnt = successData.msgCnt;
 								totalMsgCntR += successData.msgCnt;
 								break;
-				/*			case -1:
-								// dataResult[i].status = "허용갯수초과";
-								statusRD1Cnt = successData.msgCnt;
-								totalMsgCntR += successData.msgCnt;
-								break;*/
+							/*
+							 * case -1: // dataResult[i].status = "허용갯수초과";
+							 * statusRD1Cnt = successData.msgCnt; totalMsgCntR +=
+							 * successData.msgCnt; break;
+							 */
 							case 0:
 								// dataResult[i].status = "발송중";
 								statusRP0Cnt = successData.msgCnt;
@@ -151,7 +151,7 @@ function monthSvcSearch() {
 						"totalMsgCnt" : totalMsgCnt,
 						"msgCnt" : statusP1Cnt,
 						"sending" : statusP0Cnt,
-					/*	"limitOver" : statusD1Cnt,*/
+						/* "limitOver" : statusD1Cnt, */
 						"userNotFound" : statusD2Cnt,
 						"serverError" : statusD99Cnt,
 						"pmaAck" : pmaAck,
@@ -163,7 +163,7 @@ function monthSvcSearch() {
 						"msgCnt" : statusRP1Cnt,
 						"resCancel" : statusRP2Cnt,
 						"sending" : statusRP0Cnt,
-					/*	"limitOver" : statusRD1Cnt,*/
+						/* "limitOver" : statusRD1Cnt, */
 						"userNotFound" : statusRD2Cnt,
 						"serverError" : statusRD99Cnt,
 						"pmaAck" : pmaAckR,
@@ -176,6 +176,7 @@ function monthSvcSearch() {
 						bJQueryUI : true,
 						"pageLength" : 25,
 						bDestroy : true,
+
 						"bPaginate" : false,
 						"bInfo" : false,
 						"bLengthChange" : false,
@@ -195,9 +196,9 @@ function monthSvcSearch() {
 						}, {
 							mData : 'sending'
 						},
-					/*	{
-							mData : 'limitOver'
-						},*/
+						/*
+						 * { mData : 'limitOver' },
+						 */
 						{
 							mData : 'userNotFound'
 						}, {
@@ -216,6 +217,7 @@ function monthSvcSearch() {
 						"bPaginate" : false,
 						"pageLength" : 25,
 						"bInfo" : false,
+			
 						"bLengthChange" : false,
 						"dom" : 'T<"clear">lrtip',
 						"tableTools" : {
@@ -235,9 +237,9 @@ function monthSvcSearch() {
 						}, {
 							mData : 'sending'
 						},
-				/*		{
-							mData : 'limitOver'
-						},*/
+						/*
+						 * { mData : 'limitOver' },
+						 */
 						{
 							mData : 'userNotFound'
 						}, {

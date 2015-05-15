@@ -21,11 +21,14 @@ $.ajax({
 			$('#userInfo-id-input').val(dataResult.userId);
 			$('#userInfo-name-input').val(dataResult.userName);
 			if (userInfoRole == "svc") {
-				$('#userInfo-name-div').hide();
+				//$('#userInfo-name-div').hide();
+				$('#userInfo-phone-input').val(dataResult.ufmi);
+			}else{
+				$('#userInfo-phone-div').hide();
 			}
 
 			// $('#userInfo-token-input').val(dataResult.applicationToken);
-			$('#userInfo-phone-input').val(dataResult.ufmi);
+			
 		} else {
 
 			alert('계정 목록을 가지고오는데 실패하였습니다.');

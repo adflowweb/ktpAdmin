@@ -12,53 +12,78 @@
 			<div class="panel-body">
 
 
-				<div class="form-group">
-					<label>수신무전 번호<span
-						style="font-size: x-small; font-style: italic; font-weight: bold;">(무전 번호를 입력한 후 플러스(+)버튼을 누르세요!)</span>
-					</label><br /> <span id="message-send-user-text-span"></span><span
-						id="message-send-user-ufmi-span"></span>
-					<div class="input-group">
-						<input maxlength="16" type="text" class="form-control"
-							id="message-send-user-target-input"
-							placeholder="무전번호 전체입력 또는 부분입력! ex)82*00*0000 or 00*0000 or 0000"></input>
-						<span style="cursor: pointer;"
-							onclick="javascript:plusUfmiCheck();" class="input-group-addon"><span
-							class="glyphicon glyphicon-plus"></span> </span>
-					</div>
-				
+				<div class="panel panel-warning">
+					<div class="panel-heading">무전 번호입력</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<label>Ptalk 유형 선택 : </label> <label>Ptalk1.0</label> <input type="radio"
+								name="pnum-radio" id="pnum-p1-radio" value="82"
+								checked="checked"> &nbsp;<label>Ptalk2.0</label> <input type="radio"
+								name="pnum-radio" id="pnum-p2-radio" value="01">
+						</div>
 
+						<div class="form-group">
+							<label>fleet/확장 번호<span
+								style="font-size: x-small; font-style: italic; font-weight: lighter;">(Ptalk1.0은  fleet번호,  Ptalk2.0은 확장번호를 입력해 주세요.)</span></label> <input type="text"
+								class="form-control" id="fleep-bunch-input" maxlength="6">
+						</div>
+
+						<div class="form-group">
+							<label>개별 번호<span
+								style="font-size: x-small; font-style: italic; font-weight: lighter;">(개별
+									번호를 입력한 후 플러스(+)버튼을 누르세요!)</span>
+							</label><br />
+							<div class="input-group">
+								<input maxlength="6" type="text" class="form-control"
+									id="private-input" placeholder=""></input> <span
+									style="cursor: pointer;" onclick="javascript:plusUfmiCheck();"
+									class="input-group-addon"><span
+									class="glyphicon glyphicon-plus"></span> </span>
+							</div>
+						</div>
+						<div class="form-group" id="message-send-user-target-show-div"
+							style="display: none;">
+							<label>수신 무전번호 목록 </label><br />
+							<textarea class="form-control"
+								id="message-send-user-target-show-input" disabled="disabled"></textarea>
+
+						</div>
+
+					</div>
 				</div>
-				<div class="form-group">
-					
-						<textarea class="form-control"
-							id="message-send-user-target-show-input" disabled="disabled" style="display: none;"></textarea>
-				
-				</div>
+
 
 				<div class="form-group">
 					<input id="message-send-user-repeat-check" type="checkbox"
-						onclick="repeatCheck(this)" /><label>&nbsp; 반복 메시지 횟수<span
-						style="font-size: x-small; font-style: italic; font-weight: lighter;">(설정시
-							반복 휫수 +1 건의 메시지가 발송 됩니다.)</span>
-					</label> <input maxlength="2" class="form-control"
-						id="message-send-user-resendCount-input"
-						placeholder="옵션       반복 횟수 (최대 10건)" disabled="disabled">
+						onclick="repeatCheck(this)" /><label>&nbsp; 반복 메시지 </label>
 				</div>
-				<div class="form-group">
-					<label>반복 시간</label><span
-						style="font-size: x-small; font-style: italic; font-weight: lighter;">(반복 시간은 최대 24시간(1440분) 입력 가능합니다!)</span> <input class="form-control"
-						maxlength="4" id="message-send-user-resendInterval-input"
-						placeholder="옵션       반복 시간(분 단위)" disabled="disabled">
+				<div id="resend-div" style="display: none;">
+					<div class="form-group">
+						<label>횟수 <span
+							style="font-size: x-small; font-style: italic; font-weight: lighter;">(반복
+								휫수 +1 건의 메시지가 발송 됩니다.)</span></label> <input maxlength="2" class="form-control"
+							id="message-send-user-resendCount-input"
+							placeholder="옵션       반복 횟수 (최대 10건)" disabled="disabled">
+					</div>
+					<div class="form-group">
+						<label>반복 시간</label><span
+							style="font-size: x-small; font-style: italic; font-weight: lighter;">(반복
+							시간은 최대 24시간(1440분) 입력 가능합니다!)</span> <input class="form-control"
+							maxlength="4" id="message-send-user-resendInterval-input"
+							placeholder="옵션       반복 시간(분 단위)" disabled="disabled">
+					</div>
 				</div>
-
 				<div class="form-group">
 					<label>메시지 내용</label><span
-						style="font-size: x-small; font-style: italic; font-weight: lighter;">(140 자 를 넘으면 mms로 전환됩니다!)</span>
+						style="font-size: x-small; font-style: italic; font-weight: lighter;">(140
+						자 를 넘으면 mms로 전환됩니다!)</span>
 
 					<textarea class="form-control" id="message-send-user-textarea"
 						rows="5"> </textarea>
 					<p>
-						<strong id="message-send-length-strong">0</strong>/<span id="message-send-length-max">140</span><span id="message-send-length-byte">자</span>
+						<strong id="message-send-length-strong">0</strong>/<span
+							id="message-send-length-max">140</span><span
+							id="message-send-length-byte">자</span>
 					</p>
 
 
@@ -66,7 +91,8 @@
 
 				<div class="form-group">
 					<label>예약 메시지 설정<span
-						style="font-size: x-small; font-style: italic; font-weight: lighter;">(예약메시지 발송이 필요한 경우 오른쪽 캘린더 설정을 해주세요.)</span>
+						style="font-size: x-small; font-style: italic; font-weight: lighter;">(예약메시지
+							발송이 필요한 경우 오른쪽 캘린더 설정을 해주세요.)</span>
 					</label>
 					<div class='input-group date'
 						id='message-send-user-reservation-div'>
@@ -79,10 +105,10 @@
 
 
 				<input type="button" onclick="javascript:MessageSendUserFunction();"
-					class="btn btn-default" value="Message Send"></input> <input
+					class="btn btn-default" value="메시지 전송"></input> <input
 					type="button"
 					onclick="javascript:wrapperFunction('MessageSendUser');"
-					class="btn btn-default" value="Reset"></input>
+					class="btn btn-default" value="재설정"></input>
 
 			</div>
 			<!-- /.panel-body -->
