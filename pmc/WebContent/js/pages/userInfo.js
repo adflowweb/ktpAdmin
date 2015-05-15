@@ -20,7 +20,11 @@ $.ajax({
 			console.log(dataResult);
 			$('#userInfo-id-input').val(dataResult.userId);
 			$('#userInfo-name-input').val(dataResult.userName);
-		//	$('#userInfo-token-input').val(dataResult.applicationToken);
+			if (userInfoRole == "svc") {
+				$('#userInfo-name-div').hide();
+			}
+
+			// $('#userInfo-token-input').val(dataResult.applicationToken);
 			$('#userInfo-phone-input').val(dataResult.ufmi);
 		} else {
 
