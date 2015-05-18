@@ -2,7 +2,7 @@ function userAddNameFunction() {
 	var formCheck = userNameAddFormCheck();
 	var userToken = sessionStorage.getItem("token");
 	if (formCheck) {
-		if (confirm("이름을 등록 하시겠습니까?") == true) {
+		if (confirm("발송번호를 등록 하시겠습니까?") == true) {
 			var first_info_name_input = $('#first-info-name-input').val();
 
 			var userNameAdd = new Object();
@@ -22,8 +22,8 @@ function userAddNameFunction() {
 				async : false,
 				success : function(data) {
 					if (!data.result.errors) {
-						alert('이름을 등록하였습니다.');
-						console.log('이름 변경 성공');
+						alert('발송번호를 등록하였습니다.');
+						// console.log('이름 변경 성공');
 						sessionStorage.setItem("userName",
 								first_info_name_input);
 
@@ -35,14 +35,14 @@ function userAddNameFunction() {
 								});
 
 					} else {
-						alert('이름 등록에 실패 하였습니다.');
-						console.log('이름 업데이트 실패');
+						alert('발송번호 등록에 실패 하였습니다.');
+						// console.log('이름 업데이트 실패');
 					}
 
 				},
 				error : function(data, textStatus, request) {
-					alert('이름 등록에 실패 하였습니다.');
-					console.log('이름 업데이트 실패');
+					alert('발송번호 등록에 실패 하였습니다.');
+					// console.log('이름 업데이트 실패');
 				}
 			});
 		} else {
@@ -57,7 +57,7 @@ function userNameAddFormCheck() {
 	var first_info_name_input = $('#first-info-name-input').val();
 
 	if (first_info_name_input == "" || first_info_name_input == null) {
-		alert('이름을 입력해주세요');
+		alert('발송번호를 입력해주세요');
 		$('#first-info-name-input').focus();
 		return false;
 	}

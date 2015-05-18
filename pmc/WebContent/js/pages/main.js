@@ -10,56 +10,52 @@ $(document).ready(
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
 
-					// alert('해당 계정으로는 로그인 할 수 없습니다.');
-					// sessionStorage.removeItem("token");
-					// return false;
+					// logOutRole();
 
 					$("#page-wrapper").load(
 							"pages/userManagerPageWrapper.html", function() {
 								sysLogin();
 							});
 				} else if (userRole == "svc") {
-					alert('해당 계정으로는 로그인 할 수 없습니다.');
-					sessionStorage.removeItem("token");
-					return false;
-					// var userName = sessionStorage.getItem("userName");
-					// console.log('서비스 계정 새로고침');
-					// console.log(userName);
-					// if (userName == null || userName == ""
-					// || userName == "null") {
-					// console.log('유저네임 널');
-					// $("#page-wrapper")
-					// .load(
-					// "pages/userNameUpdatePageWrapper.html",
-					// function() {
-					// var userUpdteUfmi = sessionStorage
-					// .getItem("ufmi");
-					// var userUpdateId = sessionStorage
-					// .getItem("userId");
-					// $('#first-info-id-input').val(
-					// userUpdateId);
-					// $('#first-info-ufmi-input').val(
-					// userUpdteUfmi);
-					// $('#change_pw_li').hide();
-					// });
-					//
-					// } else {
-					// console.log('유저네임 널이아님');
-					// $("#page-wrapper").load(
-					// "pages/messageListPageWrapper.html",
-					// function() {
-					// svcLogin();
-					// });
-					//
-					// }
+
+					// logOutRole();
+
+					var userName = sessionStorage.getItem("userName");
+					console.log('서비스 계정 새로고침');
+					console.log(userName);
+					if (userName == null || userName == ""
+							|| userName == "null") {
+						console.log('유저네임 널');
+						$("#page-wrapper")
+								.load(
+										"pages/userNameUpdatePageWrapper.html",
+										function() {
+											var userUpdteUfmi = sessionStorage
+													.getItem("ufmi");
+											var userUpdateId = sessionStorage
+													.getItem("userId");
+											$('#first-info-id-input').val(
+													userUpdateId);
+											$('#first-info-ufmi-input').val(
+													userUpdteUfmi);
+											$('#change_pw_li').hide();
+										});
+
+					} else {
+						console.log('유저네임 널이아님');
+						$("#page-wrapper").load(
+								"pages/messageListPageWrapper.html",
+								function() {
+									svcLogin();
+								});
+
+					}
 
 				} else if (userRole == "svcadm") {
 
-//					alert('해당 계정으로는 로그인 할 수 없습니다.');
-//					sessionStorage.removeItem("token");
-//					return false;
+					// logOutRole();
 
-					 $("#page-wrapper").load(
+					$("#page-wrapper").load(
 							"pages/messageListPageWrapper.html", function() {
 								svcAdmLogin();
 
@@ -427,61 +423,55 @@ function loginFunction(atag) {
 				sessionStorage.setItem("userName", userName);
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
-//					alert('해당 계정으로는 로그인 할 수 없습니다.');
-//					sessionStorage.removeItem("token");
-//					return false;
+					// logOutRole();
 
-					 $("#page-wrapper").load(
+					$("#page-wrapper").load(
 							"pages/userManagerPageWrapper.html", function() {
 								sysLogin();
 							});
 
 				} else if (userRole == "svc") {
-					alert('해당 계정으로는 로그인 할 수 없습니다.');
-					sessionStorage.removeItem("token");
-					return false;
-//					if (userName == null || userName == ""
-//							|| userName == "null") {
-//						$("#page-wrapper")
-//								.load(
-//										"pages/userNameUpdatePageWrapper.html",
-//										function() {
-//											$('#ul_userInfo').show();
-//											$('#change_pw_li').hide();
-//											var userUpdteUfmi = sessionStorage
-//													.getItem("ufmi");
-//											var userUpdateId = sessionStorage
-//													.getItem("userId");
-//											$('#first-info-id-input').val(
-//													userUpdateId);
-//											$('#first-info-ufmi-input').val(
-//													userUpdteUfmi);
-//										});
-//
-//					} else {
-//
-//						$("#page-wrapper").load(
-//								"pages/messageListPageWrapper.html",
-//								function() {
-//									svcLogin();
-//								});
-//
-//					}
+					// logOutRole();
+					if (userName == null || userName == ""
+							|| userName == "null") {
+						$("#page-wrapper")
+								.load(
+										"pages/userNameUpdatePageWrapper.html",
+										function() {
+											$('#ul_userInfo').show();
+											$('#change_pw_li').hide();
+											var userUpdteUfmi = sessionStorage
+													.getItem("ufmi");
+											var userUpdateId = sessionStorage
+													.getItem("userId");
+											$('#first-info-id-input').val(
+													userUpdateId);
+											$('#first-info-ufmi-input').val(
+													userUpdteUfmi);
+										});
+
+					} else {
+
+						$("#page-wrapper").load(
+								"pages/messageListPageWrapper.html",
+								function() {
+									svcLogin();
+								});
+
+					}
 
 				} else if (userRole == "inf") {
 
 					infLogin();
 
 				} else if (userRole = "svcadm") {
-					// alert('해당 계정으로는 로그인 할 수 없습니다.');
-					// sessionStorage.removeItem("token");
-					// return false;
+					// logOutRole();
 
-					 $("#page-wrapper").load(
-					 "pages/messageListPageWrapper.html", function() {
-					 svcAdmLogin();
-					
-					 });
+					$("#page-wrapper").load(
+							"pages/messageListPageWrapper.html", function() {
+								svcAdmLogin();
+
+							});
 
 				}
 
@@ -875,6 +865,33 @@ String.Length = function(arg) {
 // }
 // return len;
 // }
+
+function logOutRole() {
+	alert("해당 계정으로 로그인 할 수 없습니다.");
+	$("#page-wrapper").load("pages/login.html", function() {
+		sessionStorage.removeItem("token");
+		sessionStorage.removeItem("userId");
+		sessionStorage.removeItem("role");
+		sessionStorage.removeItem("monitoringStatus");
+		sessionStorage.removeItem("groupTopic");
+		sessionStorage.removeItem("ufmi");
+		sessionStorage.removeItem("userName");
+		$('#ul_userInfo').hide();
+		$('.navbar-static-side').hide();
+		$('#loginId').keypress(function(e) {
+			if (e.keyCode != 13)
+				return;
+			$('#loginPass').focus();
+		});
+		$('#loginPass').keypress(function(e) {
+			if (e.keyCode != 13)
+				return;
+			$("#login_ahref").click();
+
+		});
+
+	});
+}
 
 // Date Formating
 Date.prototype.yyyymmdd = function() {
