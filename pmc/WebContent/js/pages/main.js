@@ -10,12 +10,12 @@ $(document).ready(
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
 
-					// logOutRole();
+					logOutRole();
 
-					$("#page-wrapper").load(
-							"pages/userManagerPageWrapper.html", function() {
-								sysLogin();
-							});
+					// $("#page-wrapper").load(
+					// "pages/userManagerPageWrapper.html", function() {
+					// sysLogin();
+					// });
 				} else if (userRole == "svc") {
 
 					// logOutRole();
@@ -53,13 +53,13 @@ $(document).ready(
 
 				} else if (userRole == "svcadm") {
 
-					// logOutRole();
+					logOutRole();
 
-					$("#page-wrapper").load(
-							"pages/messageListPageWrapper.html", function() {
-								svcAdmLogin();
-
-							});
+					// $("#page-wrapper").load(
+					// "pages/messageListPageWrapper.html", function() {
+					// svcAdmLogin();
+					//
+					// });
 
 				}
 
@@ -423,12 +423,12 @@ function loginFunction(atag) {
 				sessionStorage.setItem("userName", userName);
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
-					// logOutRole();
+					logOutRole();
 
-					$("#page-wrapper").load(
-							"pages/userManagerPageWrapper.html", function() {
-								sysLogin();
-							});
+					// $("#page-wrapper").load(
+					// "pages/userManagerPageWrapper.html", function() {
+					// sysLogin();
+					// });
 
 				} else if (userRole == "svc") {
 					// logOutRole();
@@ -465,13 +465,13 @@ function loginFunction(atag) {
 					infLogin();
 
 				} else if (userRole = "svcadm") {
-					// logOutRole();
+					logOutRole();
 
-					$("#page-wrapper").load(
-							"pages/messageListPageWrapper.html", function() {
-								svcAdmLogin();
-
-							});
+					// $("#page-wrapper").load(
+					// "pages/messageListPageWrapper.html", function() {
+					// svcAdmLogin();
+					//
+					// });
 
 				}
 
