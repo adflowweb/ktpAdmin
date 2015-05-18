@@ -81,7 +81,7 @@ var statisticsTable = $('#statistics-datatable')
 					'columns' : [ {
 						"data" : "updateTime"
 					}, {
-						"data" : "updateId"
+						"data" : "issueName"
 					}, {
 						"data" : "receiver"
 					}, {
@@ -131,6 +131,10 @@ var statisticsTable = $('#statistics-datatable')
 													.text(
 															data.result.data.recordsTotal);
 											for ( var i in dataResult) {
+
+												if (dataResult[i].issueName == null) {
+													dataResult[i].issueName = dataResult[i].updateId;
+												}
 
 												if (dataResult[i].pmaAckType == null) {
 
@@ -421,7 +425,7 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 					'columns' : [ {
 						"data" : "reservationTime"
 					}, {
-						"data" : "updateId"
+						"data" : "issueName"
 					}, {
 						"data" : "receiver"
 					}, {
@@ -454,6 +458,10 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 													.text(
 															data.result.data.recordsTotal);
 											for ( var i in dataResult) {
+
+												if (dataResult[i].issueName == null) {
+													dataResult[i].issueName = dataResult[i].updateId;
+												}
 
 												var dateTime = dataResult[i].reservationTime;
 
@@ -662,8 +670,8 @@ $("#statistics-reservation-account-select").change(
 		function() {
 
 			$('#statistics-reservation-account-select').val();
-//			$('#statistics-reservation-search-date-start-input').val("");
-//			$('#statistics-reservation-search-date-end-input').val("");
+			// $('#statistics-reservation-search-date-start-input').val("");
+			// $('#statistics-reservation-search-date-end-input').val("");
 			$('#statistics-reservation-search-input').val("");
 			$("#statistics-reservation-search-select option:eq(0)").attr(
 					"selected", "selected");
@@ -1082,15 +1090,16 @@ function checkReservationSearch() {
 		defaultMonth = defaultMonth - 1;
 	}
 
-//	var searchDateStart = $('#statistics-reservation-search-date-start-input')
-//			.val();
-//	searchDateStart = dateFormating(searchDateStart);
-//
-//	if (typeof searchDateStart === undefined
-//			|| typeof searchDateStart === 'undefined') {
-//
-//		searchDateStart = "";
-//	}
+	// var searchDateStart =
+	// $('#statistics-reservation-search-date-start-input')
+	// .val();
+	// searchDateStart = dateFormating(searchDateStart);
+	//
+	// if (typeof searchDateStart === undefined
+	// || typeof searchDateStart === 'undefined') {
+	//
+	// searchDateStart = "";
+	// }
 
 	// var searchDateEnd = $('#statistics-reservation-search-date-end-input')
 	// .val();
@@ -1100,7 +1109,7 @@ function checkReservationSearch() {
 	// || typeof searchDateEnd === 'undefined') {
 	//
 	// searchDateEnd = "";
-	//	}
+	// }
 
 	if (selectOptionValue != 0) {
 		if (inputSearchValue == null || inputSearchValue == "") {
@@ -1118,33 +1127,33 @@ function checkReservationSearch() {
 
 	}
 
-//	if (searchDateStart != null && searchDateStart != "") {
-//
-//		if (searchDateEnd == null || searchDateEnd == "") {
-//			alert('검색 종료일을 입력해 주세요');
-//			return false;
-//		} else {
-//			if (searchDateStart >= searchDateEnd) {
-//				alert('검색 시작일이 종료일보다 클 수 없습니다');
-//				return false;
-//			} else if (searchDateStart.getMonth() === searchDateEnd.getMonth()
-//					&& defaultMonth === searchDateEnd.getMonth()
-//					&& defaultMonth === searchDateStart.getMonth()) {
-//
-//				return true;
-//			} else if (searchDateStart.getMonth() !== searchDateEnd.getMonth()
-//					|| defaultMonth !== searchDateEnd.getMonth()
-//					|| defaultMonth !== searchDateStart.getMonth()) {
-//
-//				alert('같은 달에서만 검색이 가능합니다');
-//				return false;
-//			} else {
-//				return true;
-//			}
-//
-//		}
-//
-//	}
+	// if (searchDateStart != null && searchDateStart != "") {
+	//
+	// if (searchDateEnd == null || searchDateEnd == "") {
+	// alert('검색 종료일을 입력해 주세요');
+	// return false;
+	// } else {
+	// if (searchDateStart >= searchDateEnd) {
+	// alert('검색 시작일이 종료일보다 클 수 없습니다');
+	// return false;
+	// } else if (searchDateStart.getMonth() === searchDateEnd.getMonth()
+	// && defaultMonth === searchDateEnd.getMonth()
+	// && defaultMonth === searchDateStart.getMonth()) {
+	//
+	// return true;
+	// } else if (searchDateStart.getMonth() !== searchDateEnd.getMonth()
+	// || defaultMonth !== searchDateEnd.getMonth()
+	// || defaultMonth !== searchDateStart.getMonth()) {
+	//
+	// alert('같은 달에서만 검색이 가능합니다');
+	// return false;
+	// } else {
+	// return true;
+	// }
+	//
+	// }
+	//
+	// }
 
 	// if (searchDateEnd != null && searchDateEnd != "") {
 	//
@@ -1164,6 +1173,5 @@ function checkReservationSearch() {
 	// }
 	console.log("예약 서치 폼체크");
 	return true;
-	
 
 }

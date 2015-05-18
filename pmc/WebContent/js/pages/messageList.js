@@ -77,7 +77,7 @@ var messageTable = $('#dataTables-messageList')
 						"data" : "updateTime",
 						'sClass' : 'one-line'
 					}, {
-						"data" : "updateId"
+						"data" : "issueName"
 					}, {
 						"data" : "receiver"
 					}, {
@@ -123,6 +123,11 @@ var messageTable = $('#dataTables-messageList')
 											dataResult = data.result.data.data;
 											messageListResult = dataResult;
 											for ( var i in dataResult) {
+
+												if (dataResult[i].issueName == null) {
+													console.log('이슈 네임이 널임');
+													dataResult[i].issueName = dataResult[i].updateId;
+												}
 
 												if (dataResult[i].pmaAckType == null) {
 
@@ -387,9 +392,11 @@ $('#dataTables-messageList tbody')
 								var receiver_split = messageListResult[i].receiver
 										.split('*');
 								if (receiver_split[0] == "82") {
-									$('input:radio[id="repnum-p1-radio"]').attr("checked", true);
+									$('input:radio[id="repnum-p1-radio"]')
+											.attr("checked", true);
 								} else {
-									$('input:radio[id="repnum-p2-radio"]').attr("checked", true);
+									$('input:radio[id="repnum-p2-radio"]')
+											.attr("checked", true);
 								}
 								$('#refleep-bunch-input')
 										.val(receiver_split[1]);

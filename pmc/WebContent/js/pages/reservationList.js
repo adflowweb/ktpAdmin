@@ -28,7 +28,7 @@ var reservationListTable = $('#reservation-datatable')
 					}, {
 						"data" : "reservationTime"
 					}, {
-						"data" : "updateId"
+						"data" : "issueName"
 					}, {
 						"data" : "receiver"
 					} ],
@@ -56,16 +56,22 @@ var reservationListTable = $('#reservation-datatable')
 											if (dataResult.length == 0) {
 												$("#reservaton-checkbox-id")
 														.hide();
-												$('#reservation-cancel-div').hide();
-											}else{
-												$('#reservation-cancel-div').show();
+												$('#reservation-cancel-div')
+														.hide();
+											} else {
+												$('#reservation-cancel-div')
+														.show();
 												$("#reservaton-checkbox-id")
-												.show();
+														.show();
 											}
 											$('#reservationListCnt_div')
 													.text(
 															data.result.data.recordsTotal);
 											for ( var i in dataResult) {
+												if (dataResult[i].issueName == null) {
+													dataResult[i].issueName = dataResult[i].updateId;
+												}
+
 												var dateTime = dataResult[i].reservationTime;
 												dataResult[i].msgId = '<input name="reservatoin-checkbox" type="checkbox" value="'
 														+ dataResult[i].msgId
@@ -172,48 +178,47 @@ var reservationListTable = $('#reservation-datatable')
 							$('#reservation-date-input').val(messageMonth);
 						}
 
-						var reservationStartDate="";
-						var reservationEndDate="";
-						var reservationMonth=messageMonth.split('/');
-						
-						reservationStartDate = new Date(reservationMonth[0], reservationMonth[1]-1, 1).toISOString();
-						reservationEndDate=new Date(reservationMonth[0], reservationMonth[1], 0).toISOString();
+						var reservationStartDate = "";
+						var reservationEndDate = "";
+						var reservationMonth = messageMonth.split('/');
+
+						reservationStartDate = new Date(reservationMonth[0],
+								reservationMonth[1] - 1, 1).toISOString();
+						reservationEndDate = new Date(reservationMonth[0],
+								reservationMonth[1], 0).toISOString();
 						console.log('예약메시지 시작 끝');
 						console.log(reservationStartDate);
 						console.log(reservationEndDate);
 						messageMonth = messageMonth.replace("/", "");
 
-						
-						
-//						aoData.push({
-//							'name' : 'cSearchDate',
-//							'value' : messageMonth
-//						});
+						// aoData.push({
+						// 'name' : 'cSearchDate',
+						// 'value' : messageMonth
+						// });
 
 						aoData.push({
 							'name' : 'cSearchDateStart',
 							'value' : reservationStartDate
 						});
-//					
+						//					
 						aoData.push({
 							'name' : 'cSearchDateEnd',
 							'value' : reservationEndDate
 						});
-						
-					
-//						if (searchDateStart != "") {
-//							searchDateStart = dateFormating(searchDateStart);
-//							// 시작일
-//							if (searchDateStart) {
-//
-//								searchDateStart = searchDateStart.toISOString();
-//
-//								aoData.push({
-//									'name' : 'cSearchDateStart',
-//									'value' : searchDateStart
-//								});
-//							}
-//						}
+
+						// if (searchDateStart != "") {
+						// searchDateStart = dateFormating(searchDateStart);
+						// // 시작일
+						// if (searchDateStart) {
+						//
+						// searchDateStart = searchDateStart.toISOString();
+						//
+						// aoData.push({
+						// 'name' : 'cSearchDateStart',
+						// 'value' : searchDateStart
+						// });
+						// }
+						// }
 
 						// if (searchDateEnd != "") {
 						// searchDateEnd = dateFormating(searchDateEnd);
@@ -226,9 +231,9 @@ var reservationListTable = $('#reservation-datatable')
 						// aoData.push({
 						// 'name' : 'cSearchDateEnd',
 						// 'value' : searchDateEnd
-						//								});
-						//							}
-						//						}
+						// });
+						// }
+						// }
 
 					}
 
@@ -240,30 +245,30 @@ var reservationListTable = $('#reservation-datatable')
 //
 // });
 // dateChange
-//function changeDateInputRes() {
-//	var messagelist_Picker = $("#reservation-date-input").val();
-//	var messageList_Result = []
-//	messageList_Result = messagelist_Picker.split("/");
-//	$('#reservation-search-date-start-div').datetimepicker().data(
-//			"DateTimePicker").setDate(
-//			chageDateF(messageList_Result[0], messageList_Result[1]));
-//	$('#reservation-search-date-end-div').datetimepicker().data(
-//			"DateTimePicker").setDate(
-//			chageDateL(messageList_Result[0], messageList_Result[1]));
-//	$('#reservation-search-date-start-div').datetimepicker().data(
-//			"DateTimePicker").setMinDate(
-//			chageDateF(messageList_Result[0], messageList_Result[1]));
-//	$('#reservation-search-date-start-div').datetimepicker().data(
-//			"DateTimePicker").setMaxDate(
-//			chageDateL(messageList_Result[0], messageList_Result[1]));
-//	$('#reservation-search-date-end-div').datetimepicker().data(
-//			"DateTimePicker").setMinDate(
-//			chageDateF(messageList_Result[0], messageList_Result[1]));
-//	$('#reservation-search-date-end-div').datetimepicker().data(
-//			"DateTimePicker").setMaxDate(
-//			chageDateL(messageList_Result[0], messageList_Result[1]));
+// function changeDateInputRes() {
+// var messagelist_Picker = $("#reservation-date-input").val();
+// var messageList_Result = []
+// messageList_Result = messagelist_Picker.split("/");
+// $('#reservation-search-date-start-div').datetimepicker().data(
+// "DateTimePicker").setDate(
+// chageDateF(messageList_Result[0], messageList_Result[1]));
+// $('#reservation-search-date-end-div').datetimepicker().data(
+// "DateTimePicker").setDate(
+// chageDateL(messageList_Result[0], messageList_Result[1]));
+// $('#reservation-search-date-start-div').datetimepicker().data(
+// "DateTimePicker").setMinDate(
+// chageDateF(messageList_Result[0], messageList_Result[1]));
+// $('#reservation-search-date-start-div').datetimepicker().data(
+// "DateTimePicker").setMaxDate(
+// chageDateL(messageList_Result[0], messageList_Result[1]));
+// $('#reservation-search-date-end-div').datetimepicker().data(
+// "DateTimePicker").setMinDate(
+// chageDateF(messageList_Result[0], messageList_Result[1]));
+// $('#reservation-search-date-end-div').datetimepicker().data(
+// "DateTimePicker").setMaxDate(
+// chageDateL(messageList_Result[0], messageList_Result[1]));
 //
-//}
+// }
 // searchBtn Click
 function reservationSearch() {
 
@@ -354,7 +359,7 @@ function checkSearchReservation() {
 
 	var selectOptionValue = $('#reservation-search-select').val();
 	var inputSearchValue = $('#reservation-search-input').val();
-	//var searchDateStart = $('#reservation-search-date-start-input').val();
+	// var searchDateStart = $('#reservation-search-date-start-input').val();
 	var defaultMonth = $('#reservation-date-input').val();
 
 	if (defaultMonth.substring(5, 6) == 0) {
@@ -365,13 +370,13 @@ function checkSearchReservation() {
 		defaultMonth = defaultMonth.substring(5);
 		defaultMonth = defaultMonth - 1;
 	}
-//	searchDateStart = dateFormating(searchDateStart);
+	// searchDateStart = dateFormating(searchDateStart);
 
 	// if (typeof searchDateStart === undefined
 	// || typeof searchDateStart === 'undefined') {
 	//
 	// searchDateStart = "";
-	//	}
+	// }
 
 	// var searchDateEnd = $('#reservation-search-date-end-input').val();
 	//
@@ -380,7 +385,7 @@ function checkSearchReservation() {
 	// || typeof searchDateEnd === 'undefined') {
 	//
 	// searchDateEnd = "";
-	//	}
+	// }
 
 	// if (selectOptionValue == 0) {
 	// alert('검색할 항목을 선택해 주세요');
@@ -419,9 +424,9 @@ function checkSearchReservation() {
 	// return true;
 	// }
 	//
-	//		}
+	// }
 	//
-	//	}
+	// }
 	return true;
 }
 
