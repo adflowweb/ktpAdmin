@@ -4,49 +4,62 @@ $(document).ready(
 
 			$('.navbar-static-side').hide();
 			var localTokenId = sessionStorage.getItem("token");
-			
+
 			sessionStorage.setItem("monitoringStatus", "disable");
 			if (localTokenId) {
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
-					/*
-					 * alert('해당 계정으로는 로그인 할 수 없습니다.'); return false;
-					 */
+
+					// alert('해당 계정으로는 로그인 할 수 없습니다.');
+					// sessionStorage.removeItem("token");
+					// return false;
+
 					$("#page-wrapper").load(
 							"pages/userManagerPageWrapper.html", function() {
 								sysLogin();
 							});
 				} else if (userRole == "svc") {
-					var userName = sessionStorage.getItem("userName");
-					console.log('서비스 계정 새로고침');
-					console.log(userName);
-					if (userName==null||userName==""||userName=="null") {
-						console.log('유저네임 널');
-						$("#page-wrapper").load(
-								"pages/userNameUpdatePageWrapper.html",
-								function() {
-									var userUpdteUfmi = sessionStorage.getItem("ufmi");
-									var userUpdateId = sessionStorage.getItem("userId");
-									$('#first-info-id-input').val(userUpdateId);
-									$('#first-info-ufmi-input').val(userUpdteUfmi);
-									$('#change_pw_li').hide();
-								});
-
-					} else {
-						console.log('유저네임 널이아님');
-						$("#page-wrapper").load(
-								"pages/messageListPageWrapper.html",
-								function() {
-									svcLogin();
-								});
-
-					}
+					alert('해당 계정으로는 로그인 할 수 없습니다.');
+					sessionStorage.removeItem("token");
+					return false;
+					// var userName = sessionStorage.getItem("userName");
+					// console.log('서비스 계정 새로고침');
+					// console.log(userName);
+					// if (userName == null || userName == ""
+					// || userName == "null") {
+					// console.log('유저네임 널');
+					// $("#page-wrapper")
+					// .load(
+					// "pages/userNameUpdatePageWrapper.html",
+					// function() {
+					// var userUpdteUfmi = sessionStorage
+					// .getItem("ufmi");
+					// var userUpdateId = sessionStorage
+					// .getItem("userId");
+					// $('#first-info-id-input').val(
+					// userUpdateId);
+					// $('#first-info-ufmi-input').val(
+					// userUpdteUfmi);
+					// $('#change_pw_li').hide();
+					// });
+					//
+					// } else {
+					// console.log('유저네임 널이아님');
+					// $("#page-wrapper").load(
+					// "pages/messageListPageWrapper.html",
+					// function() {
+					// svcLogin();
+					// });
+					//
+					// }
 
 				} else if (userRole == "svcadm") {
-					/*
-					 * alert('해당 계정으로는 로그인 할 수 없습니다.'); return false;
-					 */
-					$("#page-wrapper").load(
+
+//					alert('해당 계정으로는 로그인 할 수 없습니다.');
+//					sessionStorage.removeItem("token");
+//					return false;
+
+					 $("#page-wrapper").load(
 							"pages/messageListPageWrapper.html", function() {
 								svcAdmLogin();
 
@@ -55,10 +68,11 @@ $(document).ready(
 				}
 
 			} else {
+				$('#ul_userInfo').hide();
+				$('.navbar-static-side').hide();
 
 				$("#page-wrapper").load("pages/login.html", function() {
-					$('#ul_userInfo').hide();
-					$('.navbar-static-side').hide();
+
 					$('#loginId').keypress(function(e) {
 						if (e.keyCode != 13)
 							return;
@@ -89,9 +103,9 @@ function wrapperFunction(data) {
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
 						}
-						
+
 						if (data === "userNameUpdate") {
-						
+
 						}
 
 						if (data === "MessageSendAdm") {
@@ -399,7 +413,7 @@ function loginFunction(atag) {
 				var userId = data.result.data.userId;
 				var ufmi = data.result.data.ufmi;
 				var groupTopic = data.result.data.groupTopic;
-			    var userName=data.result.data.userName;
+				var userName = data.result.data.userName;
 				if (ufmi != null) {
 					sessionStorage.setItem("ufmi", ufmi);
 
@@ -413,36 +427,46 @@ function loginFunction(atag) {
 				sessionStorage.setItem("userName", userName);
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
-					// alert('해당 계정으로는 로그인 할 수 없습니다.');
-					// return false;
+//					alert('해당 계정으로는 로그인 할 수 없습니다.');
+//					sessionStorage.removeItem("token");
+//					return false;
 
-					$("#page-wrapper").load(
+					 $("#page-wrapper").load(
 							"pages/userManagerPageWrapper.html", function() {
 								sysLogin();
 							});
 
 				} else if (userRole == "svc") {
-					if (userName==null||userName==""||userName=="null") {
-						$("#page-wrapper").load(
-								"pages/userNameUpdatePageWrapper.html",
-								function() {
-									$('#ul_userInfo').show();
-									$('#change_pw_li').hide();
-									var userUpdteUfmi = sessionStorage.getItem("ufmi");
-									var userUpdateId = sessionStorage.getItem("userId");
-									$('#first-info-id-input').val(userUpdateId);
-									$('#first-info-ufmi-input').val(userUpdteUfmi);
-								});
-
-					} else {
-
-						$("#page-wrapper").load(
-								"pages/messageListPageWrapper.html",
-								function() {
-									svcLogin();
-								});
-
-					}
+					alert('해당 계정으로는 로그인 할 수 없습니다.');
+					sessionStorage.removeItem("token");
+					return false;
+//					if (userName == null || userName == ""
+//							|| userName == "null") {
+//						$("#page-wrapper")
+//								.load(
+//										"pages/userNameUpdatePageWrapper.html",
+//										function() {
+//											$('#ul_userInfo').show();
+//											$('#change_pw_li').hide();
+//											var userUpdteUfmi = sessionStorage
+//													.getItem("ufmi");
+//											var userUpdateId = sessionStorage
+//													.getItem("userId");
+//											$('#first-info-id-input').val(
+//													userUpdateId);
+//											$('#first-info-ufmi-input').val(
+//													userUpdteUfmi);
+//										});
+//
+//					} else {
+//
+//						$("#page-wrapper").load(
+//								"pages/messageListPageWrapper.html",
+//								function() {
+//									svcLogin();
+//								});
+//
+//					}
 
 				} else if (userRole == "inf") {
 
@@ -450,13 +474,14 @@ function loginFunction(atag) {
 
 				} else if (userRole = "svcadm") {
 					// alert('해당 계정으로는 로그인 할 수 없습니다.');
+					// sessionStorage.removeItem("token");
 					// return false;
 
-					$("#page-wrapper").load(
-							"pages/messageListPageWrapper.html", function() {
-								svcAdmLogin();
-
-							});
+					 $("#page-wrapper").load(
+					 "pages/messageListPageWrapper.html", function() {
+					 svcAdmLogin();
+					
+					 });
 
 				}
 
@@ -562,7 +587,13 @@ function svcLogin() {
 	});
 
 	$('#messagelist-date-input').prop('disabled', true);
-	$('#phone_span').text(sessionStorage.getItem('ufmi'));
+	var loginUfmiNum = $('#phone_span').text();
+	if (loginUfmiNum == null || loginUfmiNum == "" || loginUfmiNum == "null") {
+		$('#phone_span').hide();
+	} else {
+		$('#phone_span').text(sessionStorage.getItem('ufmi'));
+	}
+
 }
 // inf Login
 function infLogin() {
