@@ -2,6 +2,10 @@ th,td {
 	white-space: nowrap;
 }
 
+tr.row_selected td {
+	background-color: #ddd !important;
+}
+
 div.dataTables_wrapper {
 	width: calc(100% -100px);
 	margin: 0 auto;
@@ -9,10 +13,7 @@ div.dataTables_wrapper {
 
 table.dataTable tbody th,table.dataTable tbody td {
 	white-space: nowrap;
-	
 }
-
-
 
 div.dataTables_length label {
 	float: left;
@@ -189,7 +190,6 @@ div.DTTT_print_info h6 {
 	font-weight: normal;
 	line-height: 28px;
 }
-
 
 div.DTTT_print_info p {
 	font-size: 14px;

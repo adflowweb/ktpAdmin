@@ -2,7 +2,7 @@
 var reservationListToken = sessionStorage.getItem("token");
 // getRole
 var reservationListRole = sessionStorage.getItem("role");
-var reservationListResult="";
+var reservationListResult = "";
 // // reservationInput disable
 // $("#reservation-search-date-start-input").prop('disabled', true);
 // // reseravationInput disable
@@ -25,13 +25,19 @@ var reservationListTable = $('#reservation-datatable')
 					},
 					// 'dom' : 'T<"clear">lrtip',
 					'columns' : [ {
-						"data" : "msgId"
-					}, {
 						"data" : "reservationTime"
 					}, {
 						"data" : "issueName"
 					}, {
 						"data" : "receiver"
+					}, {
+						"data" : "content"
+					}, {
+						"data" : "contentType",
+						"visible" : false
+					}, {
+						"data" : "msgId",
+						"visible" : false
 					} ],
 					'sPaginationType' : 'full_numbers',
 					'sAjaxSource' : '/v1/pms/adm/' + reservationListRole
@@ -53,14 +59,14 @@ var reservationListTable = $('#reservation-datatable')
 										if (!data.result.errors) {
 
 											var dataResult = data.result.data.data;
-											
+
 											if (dataResult.length == 0) {
 												$("#reservaton-checkbox-id")
 														.hide();
 												$('#reservation-cancel-div')
 														.hide();
 											} else {
-												reservationListResult=dataResult;
+												reservationListResult = dataResult;
 												$('#reservation-cancel-div')
 														.show();
 												$("#reservaton-checkbox-id")
@@ -70,20 +76,27 @@ var reservationListTable = $('#reservation-datatable')
 													.text(
 															data.result.data.recordsTotal);
 											for ( var i in dataResult) {
+
+												dataResult[i].content = b64_to_utf8(dataResult[i].content);
+												dataResult[i].contentType = dataResult[i].content;
+												if (dataResult[i].content.length > 15) {
+
+													dataResult[i].content = dataResult[i].content
+															.substring(0, 15)
+															+ "..";
+												}
 												if (dataResult[i].issueName == null) {
 													dataResult[i].issueName = dataResult[i].updateId;
 												}
 
 												var dateTime = dataResult[i].reservationTime;
-												dataResult[i].msgId = '<input name="reservatoin-checkbox" type="checkbox" value="'
-														+ dataResult[i].msgId
-														+ '"/>&nbsp;'
-														+ dataResult[i].msgId;
 
 												if (dateTime != null) {
-													dataResult[i].reservationTime = new Date(
-															dateTime)
-															.toLocaleString();
+													dataResult[i].reservationTime = '<input name="reservatoin-checkbox" type="checkbox" value="'
+															+ dataResult[i].msgId
+															+ '"/>&nbsp;'
+															+ new Date(dateTime)
+																	.toLocaleString();
 												}
 											}
 
@@ -246,34 +259,20 @@ $('#reservation-datatable tbody')
 				'tr',
 				function() {
 					if (reservationListResult.length > 0) {
+						$("#reservation-datatable tbody tr").removeClass(
+								'row_selected');
+						console.log('이벤트 발생');
+						$(this).addClass('row_selected');
 
 						$('#reservation-detail-div').show();
-						var messageListContent = "";
-						var tableClickData = $(this).children("td").map(
-								function() {
-									return $(this).text();
-								}).get();
-						console.log(tableClickData);
-						tableClickData[0]=compactTrim(tableClickData[0]);
-						console.log(tableClickData[0]);
-						for ( var i in reservationListResult) {
-							  var msgIdSplit= reservationListResult[i].msgId.split(";");
-							if (msgIdSplit[1] == tableClickData[0]) {
-								console.log('예약 리스트 내용 ');
 
-								if (reservationListResult[i].contentType == "application/base64") {
-									messageListContent = b64_to_utf8(reservationListResult[i].content);
-									// messageListResult[i].content =
-									// b64_to_utf8(messageListResult[i].content);
-								}
+						var reservationClickData = reservationListTable
+								.fnGetData(this);
 
-								$('#reservation-detail-textarea').val(
-										messageListContent);
-					
-							
-							}
+						console.log(reservationClickData);
 
-						}
+						$('#reservation-detail-textarea').val(
+								reservationClickData.contentType);
 
 					}
 				});

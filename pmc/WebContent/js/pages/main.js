@@ -912,7 +912,7 @@ $.ajaxSetup({
 
 		},
 		401 : function(data) {
-			alert("토큰이 만료 되어 로그인 화면으로 이동합니다.");
+			alert("사용시간이 경과되어 자동 로그아웃 됩니다.");
 			$("#page-wrapper").load("pages/login.html", function() {
 				sessionStorage.removeItem("token");
 				sessionStorage.removeItem("userId");

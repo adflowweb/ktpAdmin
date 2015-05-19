@@ -81,7 +81,6 @@
 						onchange="javascript:searchSelectChange();">
 						<option value="0">선택</option>
 						<option value="1">발송상태</option>
-						<option value="2">메시지 ID</option>
 						<option value="3">수신번호</option>
 						<option value="4">응답상태</option>
 					</select>
@@ -117,8 +116,8 @@
 				</div>
 				<div class="form-group">
 					<input type="button" onclick="javascript:messageListSearch()"
-						class="btn btn-default" value="검색"></input> <input
-						type="button" onclick="javascript:wrapperFunction('messageList');"
+						class="btn btn-default" value="검색"></input> <input type="button"
+						onclick="javascript:wrapperFunction('messageList');"
 						class="btn btn-default" value="재설정"></input>
 				</div>
 
@@ -139,7 +138,7 @@
 								<th>메시지확인시간</th>
 								<th>반복횟수</th>
 								<th>반복시간</th>
-								<th>메시지ID</th>
+								<th>메시지내용</th>
 							</tr>
 						</thead>
 						<tbody id="messageListDataTbody" cellpadding="0" cellspacing="0"
@@ -151,10 +150,11 @@
 
 					</table>
 					<div class="form-group">
-						<input type="hidden" id="hidden-messageListCnt"></input> <input
-							type="button" onclick="javascript:messageListCsvExport()"
+						<input type="button" onclick="javascript:messageListCsvExport()"
 							class="btn btn-default" value="csv 파일로 다운로드"></input>
+
 					</div>
+
 				</div>
 
 			</div>
@@ -176,15 +176,16 @@
 					<div class="panel-heading">무전 번호입력</div>
 					<div class="panel-body">
 						<div class="form-group">
-							<label>Ptalk 유형 선택 : </label> <label>Ptalk1.0</label> <input type="radio"
-								name="repnum-radio" id="repnum-p1-radio" value="82"
+							<label>Ptalk 유형 선택 : </label> <label>Ptalk1.0</label> <input
+								type="radio" name="repnum-radio" id="repnum-p1-radio" value="82"
 								checked="checked"> &nbsp;<label>Ptalk2.0</label> <input
 								type="radio" name="repnum-radio" id="repnum-p2-radio" value="01">
 						</div>
 
 						<div class="form-group">
 							<label>fleet/확장 번호<span
-								style="font-size: x-small; font-style: italic; font-weight: lighter;">(Ptalk1.0은  fleet번호,  Ptalk2.0은 확장번호를 입력해 주세요.)</span></label> <input type="text"
+								style="font-size: x-small; font-style: italic; font-weight: lighter;">(Ptalk1.0은
+									fleet번호, Ptalk2.0은 확장번호를 입력해 주세요.)</span></label> <input type="text"
 								class="form-control" id="refleep-bunch-input" maxlength="6">
 						</div>
 
@@ -196,7 +197,8 @@
 							<div class="input-group">
 								<input maxlength="6" type="text" class="form-control"
 									id="reprivate-input" placeholder=""></input> <span
-									style="cursor: pointer;" onclick="javascript:replusUfmiCheck();"
+									style="cursor: pointer;"
+									onclick="javascript:replusUfmiCheck();"
 									class="input-group-addon"><span
 									class="glyphicon glyphicon-plus"></span> </span>
 							</div>
@@ -216,14 +218,14 @@
 				<div class="form-group">
 					<label>메시지 내용</label><span
 						style="font-size: x-small; font-style: italic; font-weight: lighter;">(140
-						자 를 넘으면 mms로 전환됩니다!)</span>
+						byte 를 넘으면 mms로 전환됩니다!)</span>
 
 					<textarea class="form-control" id="remessage-send-user-textarea"
 						rows="5"> </textarea>
 					<p id="remessage-send-p">
 						<strong id="remessage-send-length-strong">0</strong>/<span
 							id="remessage-send-length-max">140</span><span
-							id="remessage-send-length-byte">자</span>
+							id="remessage-send-length-byte">byte</span>
 
 					</p>
 

@@ -128,17 +128,17 @@ function MessageSendUserFunction() {
 										+ '건의 메시지를 발송하였습니다.');
 							}
 
-							wrapperFunction('MessageSendUser');
+					
 						} else {
 							alert('메시지 전송에 실패 하였습니다.');
 
-							wrapperFunction('MessageSendUser');
+						
 						}
 
 					},
 					error : function(data, textStatus, request) {
 						alert('메시지 전송에 실패 하였습니다.');
-						wrapperFunction('MessageSendUser');
+					
 					}
 				});
 	}
@@ -164,7 +164,7 @@ function contentLengthCheck() {
 	} else {
 		$('#message-send-user-textarea').css('color', 'black');
 		$('#message-send-length-max').text("140");
-		$('#message-send-length-byte').text("자");
+		$('#message-send-length-byte').text("byte");
 		$('#message-send-length-strong').text(strongLength);
 	}
 

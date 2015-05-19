@@ -57,7 +57,7 @@ function changeDateInput() {
 var messageTable = $('#dataTables-messageList')
 		.dataTable(
 				{
-
+					'bAutoWidth' : false,
 					'bSort' : false,
 					'bServerSide' : true,
 					'bFilter' : false,
@@ -95,7 +95,14 @@ var messageTable = $('#dataTables-messageList')
 					}, {
 						"data" : "resendInterval"
 					}, {
-						"data" : "msgId"
+						"data" : "content",
+						"sWidth" : "10%"
+					}, {
+						"data" : "msgId",
+						"visible" : false
+					}, {
+						"data" : "contentType",
+						"visible" : false
 					} ],
 					'sPaginationType' : 'full_numbers',
 					'sAjaxSource' : '/v1/pms/adm/' + messageListRole
@@ -117,13 +124,20 @@ var messageTable = $('#dataTables-messageList')
 
 										if (!data.result.errors) {
 											var dataResult = data.result.data;
-											$('#hidden-messageListCnt')
-													.val(
-															data.result.data.recordsTotal);
+								
 											dataResult = data.result.data.data;
-											messageListResult = dataResult;
+											messageListResult = data.result.data.data;
+											console.log('데이터 result');
+											console.log(messageListResult);
 											for ( var i in dataResult) {
+												dataResult[i].content = b64_to_utf8(dataResult[i].content);
+												dataResult[i].contentType = dataResult[i].content;
+												if (dataResult[i].content.length > 15) {
 
+													dataResult[i].content = dataResult[i].content
+															.substring(0, 15)
+															+ "..";
+												}
 												if (dataResult[i].issueName == null) {
 													console.log('이슈 네임이 널임');
 													dataResult[i].issueName = dataResult[i].updateId;
@@ -375,78 +389,61 @@ $('#dataTables-messageList tbody')
 				'click',
 				'tr',
 				function() {
+
+					$("#dataTables-messageList tbody tr").removeClass(
+							'row_selected');
+					console.log('이벤트 발생');
+					$(this).addClass('row_selected');
+
+					var clickData = messageTable.fnGetData(this);
+					console.log('데어터');
+					console.log(clickData.msgId);
+
 					if (messageListResult.length > 0) {
 
 						$('#remessage-div').show();
 						var messageListContent = "";
-						var tableClickData = $(this).children("td").map(
-								function() {
-									return $(this).text();
-								}).get();
-						for ( var i in messageListResult) {
-							if (messageListResult[i].msgId == tableClickData[10]) {
-								// $('input:radio[name="repnum-radio"]:checked')
-								// $('#reprivate-input')
-								// $('#refleep-bunch-input')
-								// messageListResult[i].receiver
-								var receiver_split = messageListResult[i].receiver
-										.split('*');
-								if (receiver_split[0] == "82") {
-									$('input:radio[id="repnum-p1-radio"]')
-											.attr("checked", true);
-								} else {
-									$('input:radio[id="repnum-p2-radio"]')
-											.attr("checked", true);
-								}
-								$('#refleep-bunch-input')
-										.val(receiver_split[1]);
-								$('#reprivate-input').val(receiver_split[2]);
+						var receiver_split = clickData.receiver.split('*');
+						if (receiver_split[0] == "82") {
+							$('input:radio[id="repnum-p1-radio"]').attr(
+									"checked", true);
+						} else {
+							$('input:radio[id="repnum-p2-radio"]').attr(
+									"checked", true);
+						}
+						$('#refleep-bunch-input').val(receiver_split[1]);
+						$('#reprivate-input').val(receiver_split[2]);
 
-								if (messageListResult[i].contentType == "application/base64") {
-									messageListContent = b64_to_utf8(messageListResult[i].content);
-									// messageListResult[i].content =
-									// b64_to_utf8(messageListResult[i].content);
-								}
+						messageListContent = clickData.contentType;
+						console.log('메시지 내용입니다.');
+						console.log(messageListContent);
 
-								$('#remessage-send-user-textarea').val(
-										messageListContent);
-								if (messageListRole == "svc") {
-									$('#remessage-send-p').show();
-									messageListContent = messageListContent
-											.trim();
+						$('#remessage-send-user-textarea').val(
+								messageListContent);
+						if (messageListRole == "svc") {
+							$('#remessage-send-p').show();
+							messageListContent = messageListContent.trim();
 
-									if (messageListContent.Length() > 140) {
-										$('#remessage-send-user-textarea').css(
-												'color', 'blue');
-										$('#remessage-send-length-max')
-												.text("");
-										$('#remessage-send-length-byte').text(
-												"MMS");
-										$('#remessage-send-length-strong')
-												.text(
-														messageListContent
-																.Length());
-									} else {
-										$('#remessage-send-user-textarea').css(
-												'color', 'black');
-										$('#remessage-send-length-max').text(
-												"140");
-										$('#remessage-send-length-byte').text(
-												"자");
-										$('#remessage-send-length-strong')
-												.text(
-														messageListContent
-																.Length());
-									}
-
-								} else {
-									$('#remessage-send-p').hide();
-								}
-								$('#remessage-send-serviceid').val(
-										messageListResult[i].serviceId);
+							if (messageListContent.Length() > 140) {
+								$('#remessage-send-user-textarea').css('color',
+										'blue');
+								$('#remessage-send-length-max').text("");
+								$('#remessage-send-length-byte').text("MMS");
+								$('#remessage-send-length-strong').text(
+										messageListContent.Length());
+							} else {
+								$('#remessage-send-user-textarea').css('color',
+										'black');
+								$('#remessage-send-length-max').text("140");
+								$('#remessage-send-length-byte').text("byte");
+								$('#remessage-send-length-strong').text(
+										messageListContent.Length());
 							}
 
+						} else {
+							$('#remessage-send-p').hide();
 						}
+						$('#remessage-send-serviceid').val(clickData.serviceId);
 
 					}
 				});
