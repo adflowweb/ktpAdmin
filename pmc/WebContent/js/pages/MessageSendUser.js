@@ -83,17 +83,30 @@ function MessageSendUserFunction() {
 
 		}
 
-		if (confirm(messageData.receivers + " 해당 무전번호로 총 " + sendCount
-				+ "건의 메시지가 전송 됩니다. 전송 하시겠습니까?") == true) {
-			$('#message-send-user-target-show-input').val("");
-			$('#message-send-user-textarea').val("");
-			$('#message-send-length-strong').text("0");
-			$('#message-send-user-reservationdate-input').val("");
-			 $('#message-send-user-resendCount-input').val("");
-			 $('#message-send-user-resendInterval-input')
-				.val("");
+		if (messageData.reservationTime) {
+			if (confirm(messageData.receivers + " 해당 무전번호로 총 " + sendCount
+					+ "건의 메시지가 예약발송 됩니다. 전송 하시겠습니까?") == true) {
+				$('#message-send-user-target-show-input').val("");
+				$('#message-send-user-textarea').val("");
+				$('#message-send-length-strong').text("0");
+				$('#message-send-user-reservationdate-input').val("");
+				$('#message-send-user-resendCount-input').val("");
+				$('#message-send-user-resendInterval-input').val("");
+			} else {
+				return false;
+			}
 		} else {
-			return false;
+			if (confirm(messageData.receivers + " 해당 무전번호로 총 " + sendCount
+					+ "건의 메시지가 전송 됩니다. 전송 하시겠습니까?") == true) {
+				$('#message-send-user-target-show-input').val("");
+				$('#message-send-user-textarea').val("");
+				$('#message-send-length-strong').text("0");
+				$('#message-send-user-reservationdate-input').val("");
+				$('#message-send-user-resendCount-input').val("");
+				$('#message-send-user-resendInterval-input').val("");
+			} else {
+				return false;
+			}
 		}
 
 		/*
@@ -126,13 +139,19 @@ function MessageSendUserFunction() {
 								messageData.resendMaxCount = messageData.resendMaxCount * 1;
 								asendCount = (messageData.receivers.length * messageData.resendMaxCount)
 										+ messageData.receivers.length
-							
+
 								alert('반복 메시지를 포함하여 총' + asendCount
 										+ '건의 메시지를 발송하였습니다.');
 
 							} else {
-								alert('총' + messageData.receivers.length
-										+ '건의 메시지를 발송하였습니다.');
+								if (messageData.reservationTime) {
+									alert('총' + messageData.receivers.length
+											+ '건의 메시지가  예약 되었습니다.');
+								} else {
+									alert('총' + messageData.receivers.length
+											+ '건의 메시지를 발송하였습니다.');
+								}
+
 							}
 
 						} else {
@@ -162,14 +181,14 @@ function contentLengthCheck() {
 	console.log(input_messageContent.Length());
 	var strongLength = input_messageContent.Length();
 	if (strongLength > 140) {
-	//	$('#message-send-user-textarea').css('color', 'blue');
+		// $('#message-send-user-textarea').css('color', 'blue');
 		$('#message-send-user-textarea').css('background-color', '#ddd');
-		//#66afe9
+		// #66afe9
 		$('#message-send-length-max').text("");
 		$('#message-send-length-byte').text("MMS");
 		$('#message-send-length-strong').text(strongLength);
 	} else {
-	//	$('#message-send-user-textarea').css('color', 'black');
+		// $('#message-send-user-textarea').css('color', 'black');
 		$('#message-send-user-textarea').css('background-color', 'white');
 		$('#message-send-length-max').text("140");
 		$('#message-send-length-byte').text("byte");

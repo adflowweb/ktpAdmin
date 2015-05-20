@@ -222,14 +222,12 @@ function wrapperFunction(data) {
 									"disable");
 							$('#pcc-messagelist-search-date-start-div')
 									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
-										defaultDate : getCurrentDayF()
+										format : "YYYY/MM/DD hh:mm a"
 									});
 
 							$('#pcc-messagelist-search-date-end-div')
 									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
-										defaultDate : getCurrentDayL()
+										format : "YYYY/MM/DD hh:mm a"
 									});
 						}
 
@@ -376,51 +374,72 @@ function compactTrim(value) {
 }
 
 // dateFormating
+
+
+//dateFormating
 function dateFormating(value) {
-	// 06/12/20146:27PM
-
 	var result = compactTrim(value);
-	if (result.length == 16) {
-		var month = result.substring(0, 2);
-		console.log('달', month);
-		console.log(month);
-		var day = result.substring(3, 5);
-		console.log(day);
-		var year = result.substring(6, 10);
+	var year = result.substring(0, 4);
+	var month = result.substring(5, 7);
+	var day = result.substring(8, 10);
+	var hour = result.substring(10, 12);
 
-		var hour = result.substring(10, 11);
-		console.log(hour);
-		var minute = result.substring(12, 14);
-		var amPm = result.substring(14, 16);
-		if (amPm === 'PM') {
-			hour *= 1;
-			hour = hour + 12;
-		}
-		console.log(hour);
-		value = new Date(year, month - 1, day, hour, minute);
-		console.log(value);
-		return value;
+	var minute = result.substring(13, 15);
+	var amPm = result.substring(15, 17);
+	if (amPm === 'pm') {
+		hour *= 1;
+		hour = hour + 12;
 	}
+	value = new Date(year, month - 1, day, hour, minute);
+	return value;
 
-	if (result.length == 17) {
-		// 06/12/2014 06:27PM
-		var month = result.substring(0, 2);
-		var day = result.substring(3, 5);
-		var year = result.substring(6, 10);
-		var hour = result.substring(10, 12);
-		console.log(hour);
-		var minute = result.substring(13, 15);
-		var amPm = result.substring(15, 17);
-		if (amPm === 'PM') {
-			hour *= 1;
-			hour = hour + 12;
-		}
-		console.log(hour);
-		value = new Date(year, month - 1, day, hour, minute);
-		console.log(value);
-		return value;
-	}
 }
+
+//function dateFormating(value) {
+//	// 06/12/20146:27PM
+//
+//	var result = compactTrim(value);
+//	if (result.length == 16) {
+//		var month = result.substring(0, 2);
+//		console.log('달', month);
+//		console.log(month);
+//		var day = result.substring(3, 5);
+//		console.log(day);
+//		var year = result.substring(6, 10);
+//
+//		var hour = result.substring(10, 11);
+//		console.log(hour);
+//		var minute = result.substring(12, 14);
+//		var amPm = result.substring(14, 16);
+//		if (amPm === 'PM') {
+//			hour *= 1;
+//			hour = hour + 12;
+//		}
+//		console.log(hour);
+//		value = new Date(year, month - 1, day, hour, minute);
+//		console.log(value);
+//		return value;
+//	}
+//
+//	if (result.length == 17) {
+//		// 06/12/2014 06:27PM
+//		var month = result.substring(0, 2);
+//		var day = result.substring(3, 5);
+//		var year = result.substring(6, 10);
+//		var hour = result.substring(10, 12);
+//		console.log(hour);
+//		var minute = result.substring(13, 15);
+//		var amPm = result.substring(15, 17);
+//		if (amPm === 'PM') {
+//			hour *= 1;
+//			hour = hour + 12;
+//		}
+//		console.log(hour);
+//		value = new Date(year, month - 1, day, hour, minute);
+//		console.log(value);
+//		return value;
+//	}
+//}
 
 // ///////////////////////////////////////////////////////////////
 // utf8_to_b64(str)

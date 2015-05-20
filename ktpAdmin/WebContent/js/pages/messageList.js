@@ -1,6 +1,163 @@
 var pcsMessageListToken = sessionStorage.getItem("tokenID");
 $('#pcc-messagelist-search-date-start-input').prop('disabled', true);
 $('#pcc-messagelist-search-date-end-input').prop('disabled', true);
+
+var pcsMessageTable = $('#dataTables-pcc').dataTable(
+		{
+			'bAutoWidth' : false,
+			'bSort' : false,
+			'bServerSide' : true,
+			'bFilter' : false,
+			bScrollCollapse : true,
+			// "autoWidth" : false,
+			scrollX : true,
+			"oLanguage" : {
+				"oPaginate" : {
+					"sFirst" : "처음",
+					"sLast" : "끝",
+					"sNext" : "다음",
+					"sPrevious" : "이전"
+				}
+			},
+			"pageLength" : 25,
+			'columns' : [ {
+				data : 'id'
+			}, {
+				data : 'sender'
+			}, {
+				data : 'receiver'
+			}, {
+				data : 'type'
+			}, {
+				data : 'issue'
+			} ],
+			'sPaginationType' : 'full_numbers',
+			'sAjaxSource' : '/v1/messages',
+
+			'fnServerData' : function(sSource, aoData, fnCallback) {
+				$
+						.ajax({
+							dataType : 'json',
+							contentType : 'application/json;charset=UTF-8',
+							type : 'GET',
+							url : sSource,
+							headers : {
+								'X-ApiKey' : pcsMessageListToken
+							},
+							data : aoData,
+
+							success : function(data) {
+
+								if (!data.result.errors) {
+									var dataResult = data.result.data;
+
+									dataResult = data.result.data.data;
+
+									console.log('데이터 result');
+
+									for ( var i in dataResult) {
+
+										dataResult[i].issue = new Date(
+												dataResult[i].issue)
+												.toLocaleString();
+
+										if (dataResult[i].type == "102") {
+											dataResult[i].type = "KeepAlive";
+										} else if (dataResult[i].type == "104") {
+											dataResult[i].type = "FirmwareUpdate";
+										} else if (dataResult[i].type == "105") {
+											dataResult[i].type = "DIGAccountInfo";
+										} else {
+											dataResult[i].type = "일반메시지";
+										}
+									}
+
+									data.result.data.data = dataResult;
+									fnCallback(data.result.data);
+
+								} else {
+
+									alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+
+								}
+
+							},
+
+							error : function(e) {
+								alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
+							}
+						});
+			},
+			'fnServerParams' : function(aoData) {
+				var searchSelectValue = $(
+						'#pcc-messagelist-search-type-select').val();
+
+				var searchDateStart = $(
+						'#pcc-messagelist-search-date-start-input')
+						.val();
+				var searchDateEnd = $(
+						'#pcc-messagelist-search-date-end-input').val();
+
+				searchSelectValue = searchSelectValue * 1;
+
+				switch (searchSelectValue) {
+				case 0:
+
+					break;
+				case 2:
+					aoData.push({
+						'name' : 'cSearchType',
+						'value' : '102'
+					});
+					break;
+				case 4:
+					aoData.push({
+						'name' : 'cSearchType',
+						'value' : '104'
+					});
+					break;
+				case 5:
+					aoData.push({
+						'name' : 'cSearchType',
+						'value' : '105'
+					});
+					break;
+
+				default:
+					break;
+				}
+				console.log("서버 리퀘스트");
+				console.log(searchDateStart);
+				if (searchDateStart != "") {
+					searchDateStart = dateFormating(searchDateStart);
+					console.log("시작일");
+					// 시작일
+					if (searchDateStart) {
+						searchDateStart = searchDateStart.toISOString();
+						aoData.push({
+							'name' : 'cSearchDateStart',
+							'value' : searchDateStart
+						});
+					}
+				}
+
+				if (searchDateEnd != "") {
+					searchDateEnd = dateFormating(searchDateEnd);
+
+					// 종료일
+					if (searchDateEnd) {
+						searchDateEnd = searchDateEnd.toISOString();
+						aoData.push({
+							'name' : 'cSearchDateEnd',
+							'value' : searchDateEnd
+						});
+					}
+				}
+			}
+
+		});
+
+
 $('#dataTables-pcc tbody').on('click', 'tr', function() {
 	console.log('message list id click');
 
@@ -66,160 +223,7 @@ $('#dataTables-pcc tbody').on('click', 'tr', function() {
 
 });
 
-var pcsMessageTable = $('#dataTables-pcc')
-		.dataTable(
-				{
 
-					'bAutoWidth' : false,
-					'bSort' : false,
-					'bServerSide' : true,
-					'bFilter' : false,
-					bScrollCollapse : true,
-					// "autoWidth" : false,
-					scrollX : true,
-					"oLanguage" : {
-						"oPaginate" : {
-							"sFirst" : "처음",
-							"sLast" : "끝",
-							"sNext" : "다음",
-							"sPrevious" : "이전"
-						}
-					},
-					"pageLength" : 25,
-					'columns' : [ {
-						data : 'id'
-					}, {
-						data : 'sender'
-					}, {
-						data : 'receiver'
-					}, {
-						data : 'type'
-					}, {
-						data : 'issue'
-					} ],
-					'sPaginationType' : 'full_numbers',
-					'sAjaxSource' : '/v1/messages?type=sent',
-
-					'fnServerData' : function(sSource, aoData, fnCallback) {
-						$
-								.ajax({
-									dataType : 'json',
-									contentType : 'application/json;charset=UTF-8',
-									type : 'GET',
-									url : sSource,
-									headers : {
-										'X-Application-Token' : pcsMessageListToken
-									},
-									data : aoData,
-
-									success : function(data) {
-
-										if (!data.result.errors) {
-											var dataResult = data.result.data;
-
-											dataResult = data.result.data.data;
-
-											console.log('데이터 result');
-
-											for ( var i in dataResult) {
-
-												dataResult[i].issue = new Date(
-														dataResult[i].issue)
-														.toLocaleString();
-
-												if (dataResult[i].type == "102") {
-													dataResult[i].type = "KeepAlive";
-												} else if (dataResult[i].type == "104") {
-													dataResult[i].type = "FirmwareUpdate";
-												} else if (dataResult[i].type == "105") {
-													dataResult[i].type = "DIGAccountInfo";
-												} else {
-													dataResult[i].type = "일반메시지";
-												}
-											}
-
-											data.result.data.data = dataResult;
-											fnCallback(data.result.data);
-
-										} else {
-
-											alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
-
-										}
-
-									},
-
-									error : function(e) {
-										alert('발송 메시지 목록을 가지고 오는데 실패 하였습니다.');
-									}
-								});
-					},
-					'fnServerParams' : function(aoData) {
-						var searchSelectValue = $(
-								'#pcc-messagelist-search-type-select').val();
-
-						var searchDateStart = $(
-								'#pcc-messagelist-search-date-start-input')
-								.val();
-						var searchDateEnd = $(
-								'#pcc-messagelist-search-date-end-input').val();
-
-						searchSelectValue = searchSelectValue * 1;
-
-						switch (searchSelectValue) {
-						case 0:
-
-							break;
-						case 2:
-							aoData.push({
-								'name' : 'cSearchType',
-								'value' : '102'
-							});
-							break;
-						case 4:
-							aoData.push({
-								'name' : 'cSearchType',
-								'value' : '104'
-							});
-							break;
-						case 5:
-							aoData.push({
-								'name' : 'cSearchType',
-								'value' : '105'
-							});
-							break;
-
-						default:
-							break;
-						}
-
-						if (searchDateStart != "") {
-							searchDateStart = dateFormating(searchDateStart);
-							// 시작일
-							if (searchDateStart) {
-								searchDateStart = searchDateStart.toISOString();
-								aoData.push({
-									'name' : 'cSearchDateStart',
-									'value' : searchDateStart
-								});
-							}
-						}
-
-						if (searchDateEnd != "") {
-							searchDateEnd = dateFormating(searchDateEnd);
-
-							// 종료일
-							if (searchDateEnd) {
-								searchDateEnd = searchDateEnd.toISOString();
-								aoData.push({
-									'name' : 'cSearchDateEnd',
-									'value' : searchDateEnd
-								});
-							}
-						}
-					}
-
-				});
 
 function pccResend() {
 
@@ -368,6 +372,7 @@ function pccCheckSearch() {
 	var searchDateStart = $('#pcc-messagelist-search-date-start-input').val();
 	var searchDateEnd = $('#pcc-messagelist-search-date-end-input').val();
 
+	
 	searchDateStart = dateFormating(searchDateStart);
 
 	if (typeof searchDateStart === undefined
