@@ -10,7 +10,7 @@ $(document).ready(
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
 
-					// logOutRole();
+//					 logOutRole();
 
 					$("#page-wrapper").load(
 							"pages/userManagerPageWrapper.html", function() {
@@ -18,42 +18,42 @@ $(document).ready(
 							});
 				} else if (userRole == "svc") {
 
-					// logOutRole();
+					 logOutRole();
 
-					var userName = sessionStorage.getItem("userName");
-					console.log('서비스 계정 새로고침');
-					console.log(userName);
-					if (userName == null || userName == ""
-							|| userName == "null") {
-						console.log('유저네임 널');
-						$("#page-wrapper")
-								.load(
-										"pages/userNameUpdatePageWrapper.html",
-										function() {
-											var userUpdteUfmi = sessionStorage
-													.getItem("ufmi");
-											var userUpdateId = sessionStorage
-													.getItem("userId");
-											$('#first-info-id-input').val(
-													userUpdateId);
-											$('#first-info-ufmi-input').val(
-													userUpdteUfmi);
-											$('#change_pw_li').hide();
-										});
-
-					} else {
-						console.log('유저네임 널이아님');
-						$("#page-wrapper").load(
-								"pages/messageListPageWrapper.html",
-								function() {
-									svcLogin();
-								});
-
-					}
+//					var userName = sessionStorage.getItem("userName");
+//					console.log('서비스 계정 새로고침');
+//					console.log(userName);
+//					if (userName == null || userName == ""
+//							|| userName == "null") {
+//						console.log('유저네임 널');
+//						$("#page-wrapper")
+//								.load(
+//										"pages/userNameUpdatePageWrapper.html",
+//										function() {
+//											var userUpdteUfmi = sessionStorage
+//													.getItem("ufmi");
+//											var userUpdateId = sessionStorage
+//													.getItem("userId");
+//											$('#first-info-id-input').val(
+//													userUpdateId);
+//											$('#first-info-ufmi-input').val(
+//													userUpdteUfmi);
+//											$('#change_pw_li').hide();
+//										});
+//
+//					} else {
+//						console.log('유저네임 널이아님');
+//						$("#page-wrapper").load(
+//								"pages/messageListPageWrapper.html",
+//								function() {
+//									svcLogin();
+//								});
+//
+//					}
 
 				} else if (userRole == "svcadm") {
 
-					// logOutRole();
+//					 logOutRole();
 
 					$("#page-wrapper").load(
 							"pages/messageListPageWrapper.html", function() {
@@ -423,7 +423,7 @@ function loginFunction(atag) {
 				sessionStorage.setItem("userName", userName);
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
-					//logOutRole();
+//					logOutRole();
 
 					 $("#page-wrapper").load(
 							"pages/userManagerPageWrapper.html", function() {
@@ -431,41 +431,41 @@ function loginFunction(atag) {
 							});
 
 				} else if (userRole == "svc") {
-					// logOutRole();
-					if (userName == null || userName == ""
-							|| userName == "null") {
-						$("#page-wrapper")
-								.load(
-										"pages/userNameUpdatePageWrapper.html",
-										function() {
-											$('#ul_userInfo').show();
-											$('#change_pw_li').hide();
-											var userUpdteUfmi = sessionStorage
-													.getItem("ufmi");
-											var userUpdateId = sessionStorage
-													.getItem("userId");
-											$('#first-info-id-input').val(
-													userUpdateId);
-											$('#first-info-ufmi-input').val(
-													userUpdteUfmi);
-										});
-
-					} else {
-
-						$("#page-wrapper").load(
-								"pages/messageListPageWrapper.html",
-								function() {
-									svcLogin();
-								});
-
-					}
+					 logOutRole();
+//					if (userName == null || userName == ""
+//							|| userName == "null") {
+//						$("#page-wrapper")
+//								.load(
+//										"pages/userNameUpdatePageWrapper.html",
+//										function() {
+//											$('#ul_userInfo').show();
+//											$('#change_pw_li').hide();
+//											var userUpdteUfmi = sessionStorage
+//													.getItem("ufmi");
+//											var userUpdateId = sessionStorage
+//													.getItem("userId");
+//											$('#first-info-id-input').val(
+//													userUpdateId);
+//											$('#first-info-ufmi-input').val(
+//													userUpdteUfmi);
+//										});
+//
+//					} else {
+//
+//						$("#page-wrapper").load(
+//								"pages/messageListPageWrapper.html",
+//								function() {
+//									svcLogin();
+//								});
+//
+//					}
 
 				} else if (userRole == "inf") {
 
 					infLogin();
 
 				} else if (userRole = "svcadm") {
-					// logOutRole();
+//					 logOutRole();
 
 					$("#page-wrapper").load(
 							"pages/messageListPageWrapper.html", function() {

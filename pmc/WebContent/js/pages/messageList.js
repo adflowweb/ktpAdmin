@@ -732,7 +732,7 @@ function contentReSendLengthCheck() {
 	} else {
 		$('#remessage-send-user-textarea').css('color', 'black');
 		$('#remessage-send-length-max').text("140");
-		$('#remessage-send-length-byte').text("자");
+		$('#remessage-send-length-byte').text("byte");
 		$('#remessage-send-length-strong').text(strongLength);
 	}
 

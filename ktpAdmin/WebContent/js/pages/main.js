@@ -220,101 +220,22 @@ function wrapperFunction(data) {
 
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
-							var tableData = [];
-							$.ajax({
-								url : '/v1/messages?type=sent',
-								type : 'GET',
-								headers : {
-									'X-ApiKey' : tokenID
-								},
-								contentType : "application/json",
-								async : false,
-								success : function(data) {
+							$('#pcs-messagelist-search-date-start-div')
+									.datetimepicker({
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayF(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
 
-									if (data.result.data) {
+									});
 
-										for ( var i in data.result.data) {
-
-											var item = data.result.data[i];
-											console.log(item);
-											// var status = "";
-											// if (item.status == 0) {
-											// status = "발송 준비중";
-											// } else if (item.status == 1) {
-											// status = "push 발송됨";
-											// } else {
-											// status = item.status;
-											// }
-
-											var dateTime = item.issue;
-
-											var time = new Date(dateTime)
-													.toLocaleString();
-											// 102 keepalive
-											// 103 precheck
-											// 104 firmware update (base64
-											// encoding)
-											// 105 diginfo
-											if (item.type == "102") {
-												item.type="KeepAlive";
-											} else if (item.type == "104") {
-												item.type="FirmwareUpdate";
-											} else if (item.type == "105"){
-												item.type="DIGAccountInfo";
-											}else{
-												itme.type="일반메시지";
-											}
-
-												tableData.push({
-													"MessageId" : item.id,
-													"Sender" : item.sender,
-													"Receiver" : item.receiver,
-													"goal" : item.type,
-													// "qos" : item.qos,
-													// "status" : status,
-													"time" : time
-
-												});
-										}
-
-										console.log(tableData);
-
-										// 테이블 생성
-										$('#dataTables-example').dataTable({
-											bJQueryUI : true,
-											aaData : tableData,
-											bDestroy : true,
-											aoColumns : [ {
-												mData : 'MessageId'
-											}, {
-												mData : 'Sender'
-											}, {
-												mData : 'Receiver'
-											}, {
-												mData : 'goal'
-											},
-											// , {
-											// mData : 'qos'
-											// }
-											// , {
-											// mData : 'status'
-											// },
-
-											{
-												mData : 'time'
-											} ],
-											aaSorting : [ [ 0, 'desc' ] ]
-										});
-									} else {
-										alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
-									}
-								},
-								error : function(data, textStatus, request) {
-									console.log(data);
-									alert('메세지 발송 정보를 가지고 오는데 실패 하였습니다.');
-								}
-							});
-
+							$('#pcs-messagelist-search-date-end-div')
+									.datetimepicker({
+										format : "YYYY/MM/DD hh:mm a",
+										defaultDate : getCurrentDayL(),
+										minDate : getCurrentDayF(),
+										maxDate : getCurrentDayL()
+									});
 						}
 
 					});
