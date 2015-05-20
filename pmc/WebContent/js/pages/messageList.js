@@ -424,16 +424,19 @@ $('#dataTables-messageList tbody')
 							$('#remessage-send-p').show();
 							messageListContent = messageListContent.trim();
 
+							
+
+							
+							
+							
 							if (messageListContent.Length() > 140) {
-								$('#remessage-send-user-textarea').css('color',
-										'blue');
+								$('#remessage-send-user-textarea').css('background-color', '#ddd');
 								$('#remessage-send-length-max').text("");
 								$('#remessage-send-length-byte').text("MMS");
 								$('#remessage-send-length-strong').text(
 										messageListContent.Length());
 							} else {
-								$('#remessage-send-user-textarea').css('color',
-										'black');
+								$('#remessage-send-user-textarea').css('background-color', 'white');
 								$('#remessage-send-length-max').text("140");
 								$('#remessage-send-length-byte').text("byte");
 								$('#remessage-send-length-strong').text(
@@ -725,12 +728,13 @@ function contentReSendLengthCheck() {
 	console.log(input_messageContent.Length());
 	var strongLength = input_messageContent.Length();
 	if (strongLength > 140) {
-		$('#remessage-send-user-textarea').css('color', 'blue');
+		//$('#remessage-send-user-textarea').css('background-color', '#66afe9');
+		$('#remessage-send-user-textarea').css('background-color', '#ddd');
 		$('#remessage-send-length-max').text("");
 		$('#remessage-send-length-byte').text("MMS");
 		$('#remessage-send-length-strong').text(strongLength);
 	} else {
-		$('#remessage-send-user-textarea').css('color', 'black');
+		$('#remessage-send-user-textarea').css('background-color', 'white');
 		$('#remessage-send-length-max').text("140");
 		$('#remessage-send-length-byte').text("byte");
 		$('#remessage-send-length-strong').text(strongLength);

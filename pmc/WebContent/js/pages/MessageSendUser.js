@@ -163,7 +163,7 @@ function contentLengthCheck() {
 	var strongLength = input_messageContent.Length();
 	if (strongLength > 140) {
 	//	$('#message-send-user-textarea').css('color', 'blue');
-		$('#message-send-user-textarea').css('background-color', '#66afe9');
+		$('#message-send-user-textarea').css('background-color', '#ddd');
 		//#66afe9
 		$('#message-send-length-max').text("");
 		$('#message-send-length-byte').text("MMS");
