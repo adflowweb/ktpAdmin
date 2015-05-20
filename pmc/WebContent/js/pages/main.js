@@ -10,7 +10,7 @@ $(document).ready(
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
 
-//					 logOutRole();
+					// logOutRole();
 
 					$("#page-wrapper").load(
 							"pages/userManagerPageWrapper.html", function() {
@@ -18,42 +18,41 @@ $(document).ready(
 							});
 				} else if (userRole == "svc") {
 
-					 logOutRole();
+					// logOutRole();
 
-//					var userName = sessionStorage.getItem("userName");
-//					console.log('서비스 계정 새로고침');
-//					console.log(userName);
-//					if (userName == null || userName == ""
-//							|| userName == "null") {
-//						console.log('유저네임 널');
-//						$("#page-wrapper")
-//								.load(
-//										"pages/userNameUpdatePageWrapper.html",
-//										function() {
-//											var userUpdteUfmi = sessionStorage
-//													.getItem("ufmi");
-//											var userUpdateId = sessionStorage
-//													.getItem("userId");
-//											$('#first-info-id-input').val(
-//													userUpdateId);
-//											$('#first-info-ufmi-input').val(
-//													userUpdteUfmi);
-//											$('#change_pw_li').hide();
-//										});
-//
-//					} else {
-//						console.log('유저네임 널이아님');
-//						$("#page-wrapper").load(
-//								"pages/messageListPageWrapper.html",
-//								function() {
-//									svcLogin();
-//								});
-//
-//					}
+					var userName = sessionStorage.getItem("userName");
+
+					if (userName == null || userName == ""
+							|| userName == "null") {
+						console.log('유저네임 널');
+						$("#page-wrapper")
+								.load(
+										"pages/userNameUpdatePageWrapper.html",
+										function() {
+											var userUpdteUfmi = sessionStorage
+													.getItem("ufmi");
+											var userUpdateId = sessionStorage
+													.getItem("userId");
+											$('#first-info-id-input').val(
+													userUpdateId);
+											$('#first-info-ufmi-input').val(
+													userUpdteUfmi);
+											$('#change_pw_li').hide();
+										});
+
+					} else {
+						console.log('유저네임 널이아님');
+						$("#page-wrapper").load(
+								"pages/MessageSendUserPageWrapper.html",
+								function() {
+									svcLogin();
+								});
+
+					}
 
 				} else if (userRole == "svcadm") {
 
-//					 logOutRole();
+					// logOutRole();
 
 					$("#page-wrapper").load(
 							"pages/messageListPageWrapper.html", function() {
@@ -423,49 +422,49 @@ function loginFunction(atag) {
 				sessionStorage.setItem("userName", userName);
 				var userRole = sessionStorage.getItem("role");
 				if (userRole == "sys") {
-//					logOutRole();
+					// logOutRole();
 
-					 $("#page-wrapper").load(
+					$("#page-wrapper").load(
 							"pages/userManagerPageWrapper.html", function() {
 								sysLogin();
 							});
 
 				} else if (userRole == "svc") {
-					 logOutRole();
-//					if (userName == null || userName == ""
-//							|| userName == "null") {
-//						$("#page-wrapper")
-//								.load(
-//										"pages/userNameUpdatePageWrapper.html",
-//										function() {
-//											$('#ul_userInfo').show();
-//											$('#change_pw_li').hide();
-//											var userUpdteUfmi = sessionStorage
-//													.getItem("ufmi");
-//											var userUpdateId = sessionStorage
-//													.getItem("userId");
-//											$('#first-info-id-input').val(
-//													userUpdateId);
-//											$('#first-info-ufmi-input').val(
-//													userUpdteUfmi);
-//										});
-//
-//					} else {
-//
-//						$("#page-wrapper").load(
-//								"pages/messageListPageWrapper.html",
-//								function() {
-//									svcLogin();
-//								});
-//
-//					}
+					// logOutRole();
+					if (userName == null || userName == ""
+							|| userName == "null") {
+						$("#page-wrapper")
+								.load(
+										"pages/userNameUpdatePageWrapper.html",
+										function() {
+											$('#ul_userInfo').show();
+											$('#change_pw_li').hide();
+											var userUpdteUfmi = sessionStorage
+													.getItem("ufmi");
+											var userUpdateId = sessionStorage
+													.getItem("userId");
+											$('#first-info-id-input').val(
+													userUpdateId);
+											$('#first-info-ufmi-input').val(
+													userUpdteUfmi);
+										});
+
+					} else {
+
+						$("#page-wrapper").load(
+								"pages/MessageSendUserPageWrapper.html",
+								function() {
+									svcLogin();
+								});
+
+					}
 
 				} else if (userRole == "inf") {
 
 					infLogin();
 
 				} else if (userRole = "svcadm") {
-//					 logOutRole();
+					// logOutRole();
 
 					$("#page-wrapper").load(
 							"pages/messageListPageWrapper.html", function() {
@@ -554,29 +553,42 @@ function svcLogin() {
 	$('#svc_message_list_month_li').show();
 	$('#sys_message_list_month_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
-	$('#messagelist-search-date-start-div').datetimepicker({
+	// $('#messagelist-search-date-start-div').datetimepicker({
+	// format : "YYYY/MM/DD hh:mm a",
+	// defaultDate : getCurrentDayF(),
+	// minDate : getCurrentDayF(),
+	// maxDate : getCurrentDayL()
+	//
+	// });
+	//
+	// $('#messagelist-search-date-end-div').datetimepicker({
+	// format : "YYYY/MM/DD hh:mm a",
+	// defaultDate : getCurrentDayL(),
+	// minDate : getCurrentDayF(),
+	// maxDate : getCurrentDayL()
+	// });
+	//
+	// $('#messagelist-date-div').datetimepicker({
+	// viewMode : 'years',
+	// format : 'YYYY/MM',
+	// minViewMode : "months",
+	// pickTime : false
+	// });
+	//
+	// $('#messagelist-date-input').prop('disabled', true);
+
+	var nowDate = new Date();
+	var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate
+			.getDate(), 0, 0, 0, 0);
+	var today_30 = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate
+			.getDate() + 30, 0, 0, 0, 0);
+	$('#message-send-user-reservation-div').datetimepicker({
 		format : "YYYY/MM/DD hh:mm a",
-		defaultDate : getCurrentDayF(),
-		minDate : getCurrentDayF(),
-		maxDate : getCurrentDayL()
-
+		minDate : today,
+		maxDate : today_30
 	});
+	$("#message-send-user-reservationdate-input").prop('disabled', true);
 
-	$('#messagelist-search-date-end-div').datetimepicker({
-		format : "YYYY/MM/DD hh:mm a",
-		defaultDate : getCurrentDayL(),
-		minDate : getCurrentDayF(),
-		maxDate : getCurrentDayL()
-	});
-
-	$('#messagelist-date-div').datetimepicker({
-		viewMode : 'years',
-		format : 'YYYY/MM',
-		minViewMode : "months",
-		pickTime : false
-	});
-
-	$('#messagelist-date-input').prop('disabled', true);
 	var loginUfmiNum = $('#phone_span').text();
 	if (loginUfmiNum == null || loginUfmiNum == "" || loginUfmiNum == "null") {
 		$('#phone_span').hide();

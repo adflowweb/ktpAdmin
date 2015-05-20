@@ -220,21 +220,16 @@ function wrapperFunction(data) {
 
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
-							$('#pcs-messagelist-search-date-start-div')
+							$('#pcc-messagelist-search-date-start-div')
 									.datetimepicker({
 										format : "YYYY/MM/DD hh:mm a",
-										defaultDate : getCurrentDayF(),
-										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
-
+										defaultDate : getCurrentDayF()
 									});
 
-							$('#pcs-messagelist-search-date-end-div')
+							$('#pcc-messagelist-search-date-end-div')
 									.datetimepicker({
 										format : "YYYY/MM/DD hh:mm a",
-										defaultDate : getCurrentDayL(),
-										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
+										defaultDate : getCurrentDayL()
 									});
 						}
 
@@ -476,6 +471,31 @@ Date.prototype.yyyymmdd = function() {
 			+ (hour[1] ? hour : "0" + hour[0]) + ":"
 			+ (minute[1] ? minute : "0" + minute[0]); // padding
 };
+
+
+//getCurrent First Day
+function getCurrentDayF() {
+	var nowDate = new Date();
+	var defaultFirstDay = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+	var nowYear = defaultFirstDay.getFullYear();
+	var nowMonth = defaultFirstDay.getMonth();
+	nowMonth = nowMonth * 1 + 1;
+	var firstDay = defaultFirstDay.getDate();
+	return nowYear + "/" + nowMonth + "/" + firstDay;
+
+}
+
+// getCurrent Last Day
+function getCurrentDayL() {
+	var nowDate = new Date();
+	var defaultLastDay = new Date(nowDate.getFullYear(),
+			nowDate.getMonth() + 1, 0);
+	var nowYear = defaultLastDay.getFullYear();
+	var nowMonth = defaultLastDay.getMonth() + 1;
+	var lastDay = defaultLastDay.getDate();
+	// return nowYear + "/" + nowMonth + "/" + lastDay + "/23:59";
+	return moment(nowYear + "/" + nowMonth + "/" + lastDay + " 23:59");
+}
 
 $.ajaxSetup({
 	beforeSend : function() {

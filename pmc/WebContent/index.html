@@ -20,13 +20,16 @@
 <link href="css/sb-admin.css" rel="stylesheet">
 <!-- ladda -->
 <link href="css/ladda.min.css" rel="stylesheet">
-<link rel="shortcut icon" href="images/title_icon.jpg"/>
+<link rel="shortcut icon" href="images/title_icon.jpg" />
 
 
 <!-- 	<link rel="stylesheet" href="css/TableBarChart.css" /> -->
 
 
-
+<!--[if lte IE 8]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+		<![endif]-->
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -57,17 +60,17 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html"> <img alt="" src="images/KTP_CI_White.jpg" height="25px"> </a>
+				<a class="navbar-brand" href="index.html"> <img alt=""
+					src="images/KTP_CI_White.jpg" height="25px">
+				</a>
 
 			</div>
 
 			<ul id="ul_userInfo" class="nav navbar-top-links navbar-right">
-			
+
 				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"><span id="phone_span"></span> <i class="fa fa-user fa-fw"></i>
-						<i class="fa fa-caret-down"></i>
-							
-				</a>
+					data-toggle="dropdown" href="#"><span id="phone_span"></span> <i
+						class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i> </a>
 					<ul class="dropdown-menu dropdown-user">
 						<!-- 						<li><a href="#" onclick="javascript:userInfo();"><i -->
 						<!-- 								class="fa fa-user fa-fw"></i> User Profile</a></li> -->
@@ -104,25 +107,22 @@
 
 								<li id="svc_message_reservation_li"><a href="#"
 									onclick="javascript:wrapperFunction('reservationList');">예약
-										메시지  현황</a></li>
+										메시지 현황</a></li>
 								<!-- 서비스 메뉴 -->
 
 								<li id="sys_message_list_li"><a href="#"
 									onclick="javascript:wrapperFunction('statistics');">메시지 발송
 										현황</a></li>
 								<li id="sys_message_list_month_li"><a href="#"
-									onclick="javascript:wrapperFunction('monthSys');">월별
-										통계</a></li>
+									onclick="javascript:wrapperFunction('monthSys');">월간 통계</a></li>
 								<li id="svc_message_list_month_li"><a href="#"
-									onclick="javascript:wrapperFunction('monthSvc');">월별
-										통계</a></li>
+									onclick="javascript:wrapperFunction('monthSvc');">월간 통계</a></li>
 
 
 							</ul></li>
 
 						<li id="message_send_li"><a href="#"><i
-								class="fa fa-envelope fa-fw"></i> 이지 메시지<span
-								class="fa arrow"></a>
+								class="fa fa-envelope fa-fw"></i> 이지 메시지<span class="fa arrow"></a>
 
 							<ul class="nav nav-second-level">
 								<!-- 기능삭제 -->
@@ -142,15 +142,13 @@
 								class="fa fa-user fa-fw"></i> Admin<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li><a href="#"
-									onclick="javascript:wrapperFunction('userManager');">계정
-										관리</a></li>
+									onclick="javascript:wrapperFunction('userManager');">계정 관리</a></li>
 								<li><a href="#"
-									onclick="javascript:wrapperFunction('userAdd');">계정 등록</a>
-								</li>
+									onclick="javascript:wrapperFunction('userAdd');">계정 등록</a></li>
 
-<!-- 								<li><a href="#" -->
-<!-- 									onclick="javascript:wrapperFunction('codeList');">코드 -->
-<!-- 										목록(관리자)</a></li> -->
+								<!-- 								<li><a href="#" -->
+								<!-- 									onclick="javascript:wrapperFunction('codeList');">코드 -->
+								<!-- 										목록(관리자)</a></li> -->
 
 
 

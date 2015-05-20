@@ -85,7 +85,13 @@ function MessageSendUserFunction() {
 
 		if (confirm(messageData.receivers + " 해당 무전번호로 총 " + sendCount
 				+ "건의 메시지가 전송 됩니다. 전송 하시겠습니까?") == true) {
-
+			$('#message-send-user-target-show-input').val("");
+			$('#message-send-user-textarea').val("");
+			$('#message-send-length-strong').text("0");
+			$('#message-send-user-reservationdate-input').val("");
+			 $('#message-send-user-resendCount-input').val("");
+			 $('#message-send-user-resendInterval-input')
+				.val("");
 		} else {
 			return false;
 		}
@@ -120,25 +126,24 @@ function MessageSendUserFunction() {
 								messageData.resendMaxCount = messageData.resendMaxCount * 1;
 								asendCount = (messageData.receivers.length * messageData.resendMaxCount)
 										+ messageData.receivers.length
-
+							
 								alert('반복 메시지를 포함하여 총' + asendCount
 										+ '건의 메시지를 발송하였습니다.');
+
 							} else {
 								alert('총' + messageData.receivers.length
 										+ '건의 메시지를 발송하였습니다.');
 							}
 
-					
 						} else {
 							alert('메시지 전송에 실패 하였습니다.');
 
-						
 						}
 
 					},
 					error : function(data, textStatus, request) {
 						alert('메시지 전송에 실패 하였습니다.');
-					
+
 					}
 				});
 	}
@@ -157,12 +162,15 @@ function contentLengthCheck() {
 	console.log(input_messageContent.Length());
 	var strongLength = input_messageContent.Length();
 	if (strongLength > 140) {
-		$('#message-send-user-textarea').css('color', 'blue');
+	//	$('#message-send-user-textarea').css('color', 'blue');
+		$('#message-send-user-textarea').css('background-color', '#66afe9');
+		//#66afe9
 		$('#message-send-length-max').text("");
 		$('#message-send-length-byte').text("MMS");
 		$('#message-send-length-strong').text(strongLength);
 	} else {
-		$('#message-send-user-textarea').css('color', 'black');
+	//	$('#message-send-user-textarea').css('color', 'black');
+		$('#message-send-user-textarea').css('background-color', 'white');
 		$('#message-send-length-max').text("140");
 		$('#message-send-length-byte').text("byte");
 		$('#message-send-length-strong').text(strongLength);
@@ -249,8 +257,6 @@ function plusUfmiCheck() {
 	var private_input = $('#private-input').val();
 	var fleep_bunch_input = $('#fleep-bunch-input').val();
 
-
-
 	if (fleep_bunch_input == null || fleep_bunch_input == "") {
 		alert('fleep번호 또는 bunch 번호 를 입력해주세요!');
 		$('#fleep-bunch-input').focus();
@@ -261,8 +267,6 @@ function plusUfmiCheck() {
 		$('#private-input').focus();
 		return false;
 	}
-
-
 
 	var ufmiResult = ufmiVerCheck_radio + "*" + fleep_bunch_input + "*"
 			+ private_input;

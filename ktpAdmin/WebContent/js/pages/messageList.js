@@ -1,5 +1,6 @@
 var pcsMessageListToken = sessionStorage.getItem("tokenID");
-
+$('#pcc-messagelist-search-date-start-input').prop('disabled', true);
+$('#pcc-messagelist-search-date-end-input').prop('disabled', true);
 $('#dataTables-pcc tbody').on('click', 'tr', function() {
 	console.log('message list id click');
 
@@ -165,11 +166,32 @@ var pcsMessageTable = $('#dataTables-pcc')
 
 						searchSelectValue = searchSelectValue * 1;
 
-						aoData.push({
-							'name' : 'cSearchType',
-							'value' : searchSelectValue
-						});
+						switch (searchSelectValue) {
+						case 0:
 
+							break;
+						case 2:
+							aoData.push({
+								'name' : 'cSearchType',
+								'value' : '102'
+							});
+							break;
+						case 4:
+							aoData.push({
+								'name' : 'cSearchType',
+								'value' : '104'
+							});
+							break;
+						case 5:
+							aoData.push({
+								'name' : 'cSearchType',
+								'value' : '105'
+							});
+							break;
+
+						default:
+							break;
+						}
 
 						if (searchDateStart != "") {
 							searchDateStart = dateFormating(searchDateStart);
