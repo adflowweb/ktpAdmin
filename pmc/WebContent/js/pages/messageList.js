@@ -124,11 +124,15 @@ var messageTable = $('#dataTables-messageList')
 
 										if (!data.result.errors) {
 											var dataResult = data.result.data;
-								
+
 											dataResult = data.result.data.data;
 											messageListResult = data.result.data.data;
 											console.log('데이터 result');
 											console.log(messageListResult);
+											$('#messagelist-cnt')
+													.val(
+															data.result.data.recordsTotal);
+
 											for ( var i in dataResult) {
 												dataResult[i].content = b64_to_utf8(dataResult[i].content);
 												dataResult[i].contentType = dataResult[i].content;
@@ -384,72 +388,66 @@ var messageTable = $('#dataTables-messageList')
 
 				});
 // dataTable Click
-$('#dataTables-messageList tbody')
-		.on(
-				'click',
-				'tr',
-				function() {
+$('#dataTables-messageList tbody').on(
+		'click',
+		'tr',
+		function() {
 
-					$("#dataTables-messageList tbody tr").removeClass(
-							'row_selected');
-					console.log('이벤트 발생');
-					$(this).addClass('row_selected');
+			$("#dataTables-messageList tbody tr").removeClass('row_selected');
+			console.log('이벤트 발생');
+			$(this).addClass('row_selected');
 
-					var clickData = messageTable.fnGetData(this);
-					console.log('데어터');
-					console.log(clickData.msgId);
+			var clickData = messageTable.fnGetData(this);
+			console.log('데어터');
+			console.log(clickData.msgId);
 
-					if (messageListResult.length > 0) {
+			if (messageListResult.length > 0) {
 
-						$('#remessage-div').show();
-						var messageListContent = "";
-						var receiver_split = clickData.receiver.split('*');
-						if (receiver_split[0] == "82") {
-							$('input:radio[id="repnum-p1-radio"]').attr(
-									"checked", true);
-						} else {
-							$('input:radio[id="repnum-p2-radio"]').attr(
-									"checked", true);
-						}
-						$('#refleep-bunch-input').val(receiver_split[1]);
-						$('#reprivate-input').val(receiver_split[2]);
+				$('#remessage-div').show();
+				var messageListContent = "";
+				var receiver_split = clickData.receiver.split('*');
+				if (receiver_split[0] == "82") {
+					$('input:radio[id="repnum-p1-radio"]')
+							.attr("checked", true);
+				} else {
+					$('input:radio[id="repnum-p2-radio"]')
+							.attr("checked", true);
+				}
+				$('#refleep-bunch-input').val(receiver_split[1]);
+				$('#reprivate-input').val(receiver_split[2]);
 
-						messageListContent = clickData.contentType;
-						console.log('메시지 내용입니다.');
-						console.log(messageListContent);
+				messageListContent = clickData.contentType;
+				console.log('메시지 내용입니다.');
+				console.log(messageListContent);
 
-						$('#remessage-send-user-textarea').val(
-								messageListContent);
-						if (messageListRole == "svc") {
-							$('#remessage-send-p').show();
-							messageListContent = messageListContent.trim();
+				$('#remessage-send-user-textarea').val(messageListContent);
+				if (messageListRole == "svc") {
+					$('#remessage-send-p').show();
+					messageListContent = messageListContent.trim();
 
-							
-
-							
-							
-							
-							if (messageListContent.Length() > 140) {
-								$('#remessage-send-user-textarea').css('background-color', '#ddd');
-								$('#remessage-send-length-max').text("");
-								$('#remessage-send-length-byte').text("MMS");
-								$('#remessage-send-length-strong').text(
-										messageListContent.Length());
-							} else {
-								$('#remessage-send-user-textarea').css('background-color', 'white');
-								$('#remessage-send-length-max').text("140");
-								$('#remessage-send-length-byte').text("byte");
-								$('#remessage-send-length-strong').text(
-										messageListContent.Length());
-							}
-
-						} else {
-							$('#remessage-send-p').hide();
-						}
-						$('#remessage-send-serviceid').val(clickData.serviceId);
-
+					if (messageListContent.Length() > 140) {
+						$('#remessage-send-user-textarea').css(
+								'background-color', '#ddd');
+						$('#remessage-send-length-max').text("");
+						$('#remessage-send-length-byte').text("MMS");
+						$('#remessage-send-length-strong').text(
+								messageListContent.Length());
+					} else {
+						$('#remessage-send-user-textarea').css(
+								'background-color', 'white');
+						$('#remessage-send-length-max').text("140");
+						$('#remessage-send-length-byte').text("byte");
+						$('#remessage-send-length-strong').text(
+								messageListContent.Length());
 					}
-				});
+
+				} else {
+					$('#remessage-send-p').hide();
+				}
+				$('#remessage-send-serviceid').val(clickData.serviceId);
+
+			}
+		});
 
 // selectChange
 function searchSelectChange() {
@@ -588,6 +586,8 @@ function MessageReSendUserFunction() {
 			messageData.expiry = 0;
 
 			var messageDataResult = JSON.stringify(messageData);
+			console.log('재전송 데이터');
+			console.log(messageDataResult);
 
 			/*
 			 * if (utf8ByteLength(messageDataResult) > 512000) { alert('메시지 사이즈가
@@ -728,7 +728,8 @@ function contentReSendLengthCheck() {
 	console.log(input_messageContent.Length());
 	var strongLength = input_messageContent.Length();
 	if (strongLength > 140) {
-		//$('#remessage-send-user-textarea').css('background-color', '#66afe9');
+		// $('#remessage-send-user-textarea').css('background-color',
+		// '#66afe9');
 		$('#remessage-send-user-textarea').css('background-color', '#ddd');
 		$('#remessage-send-length-max').text("");
 		$('#remessage-send-length-byte').text("MMS");
@@ -766,7 +767,7 @@ function resendFormCheck() {
 // exportCsv
 function messageListCsvExport() {
 
-	var messageCount = $('#hidden-messageListCnt').val();
+	var messageCount = $('#messagelist-cnt').val();
 	messageCount = messageCount * 1;
 
 	if (messageCount == 0) {

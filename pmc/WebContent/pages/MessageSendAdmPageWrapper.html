@@ -18,32 +18,37 @@
 							대상에게 전송시에 ,로 구분하여 입력해주세요.)</span>
 					</label><br /> <input type="text" class="form-control"
 						id="message-send-target-input"
-						placeholder="필수       메세지 발송 대상 ex) topic 입력"></input>
+						placeholder="필수       메세지 발송 대상 ex) topic 입력  mms/82/P1/50/1212"></input>
 
 				</div>
 				<div class="form-group">
 					<label>대상 서비스</label> <input class="form-control"
 						id="message-send-service-input"
-						placeholder="필수       서비스 아이디 입력  ex) kr.co.ktpowertel.kakao">
+						placeholder="필수       서비스 아이디 입력  ex) kr.co.ktpowertel.push.mms">
 				</div>
 
 				<div class="form-group">
 					<label>메시지 타입</label> <input class="form-control"
-						id="message-send-messageType-input" placeholder="필수       메세지 타입 입력(숫자)" value="10">
+						id="message-send-messageType-input"
+						placeholder="필수       메세지 타입 입력(숫자)" value="10">
 				</div>
 
 				<div class="form-group">
 					<label>메시지 소멸 시간</label> <input class="form-control"
-						id="message-send-messageExpire-input" placeholder="옵션       메세지 소멸 시간(초)">
+						id="message-send-messageExpire-input"
+						placeholder="옵션       메세지 소멸 시간(초)">
 				</div>
-					<div class="form-group">
+				<div class="form-group">
 					<label>반복메시지 횟수<span
-						style="font-size: x-small; font-style: italic; font-weight: lighter;">(설정시 반복 휫수 +1 건의 메시지가 발송 됩니다.)</span></label> <input class="form-control"
-						id="message-send-resendCount-input" placeholder="옵션       반복 횟수 (최대 10건)">
+						style="font-size: x-small; font-style: italic; font-weight: lighter;">(설정시
+							반복 휫수 +1 건의 메시지가 발송 됩니다.)</span></label> <input class="form-control"
+						id="message-send-resendCount-input"
+						placeholder="옵션       반복 횟수 (최대 10건)">
 				</div>
-					<div class="form-group">
+				<div class="form-group">
 					<label>반복 시간</label> <input class="form-control"
-						id="message-send-resendInterval-input" placeholder="옵션       반복 시간(분 단위)">
+						id="message-send-resendInterval-input"
+						placeholder="옵션       반복 시간(분 단위)">
 				</div>
 
 				<div class="form-group">
@@ -74,6 +79,20 @@
 					<textarea class="form-control" id="message-send-textarea" rows="5"> </textarea>
 
 				</div>
+				<div class="form-group">
+					<i class="fa fa-paperclip blue"></i>&nbsp; <label>파일 첨부</label>&nbsp;
+
+					<!-- #section:custom/file-input -->
+
+					<form id="pms-sysadmin-image-upload-form" method="post"
+						enctype="multipart/form-data">
+						<input type="file" id="pms-sysadmin-image-upload-input"> 
+					</form>
+
+					<input type="hidden" id="pms-sysadmin-md5"> <input
+						type="hidden" id="pms-sysadmin-thumbnail">
+
+				</div>
 
 				<div class="form-group">
 					<label>예약 메시지 설정<span
@@ -91,7 +110,8 @@
 
 				<input type="button" onclick="javascript:MessageSendFunction();"
 					class="btn btn-default" value="메시지 전송"></input> <input
-					type="button" onclick="javascript:wrapperFunction('MessageSendAdm');"
+					type="button"
+					onclick="javascript:wrapperFunction('MessageSendAdm');"
 					class="btn btn-default" value="재설정"></input>
 
 			</div>
@@ -109,7 +129,9 @@
 
 <script src="js/pages/MessageSendAdm.js"></script>
 <script src="js/moment.js"></script>
+<script src="js/md5-min.js"></script>
 <script src="js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="js/elements.fileinput.js"></script>
 <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
 <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
 

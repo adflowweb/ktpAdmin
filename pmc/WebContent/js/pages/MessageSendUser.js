@@ -29,11 +29,12 @@ function MessageSendUserFunction() {
 		input_messageTarget = compactTrim(input_messageTarget);
 		var input_messageContent = $('#message-send-user-textarea').val();
 		input_messageContent = utf8_to_b64(input_messageContent);
-		var input_reservation = $('#message-send-user-reservationdate-input')
-				.val();
+
 		var input_resendCount = $('#message-send-user-resendCount-input').val();
 		var input_resendInterval = $('#message-send-user-resendInterval-input')
 				.val();
+		var input_reservation = $('#message-send-user-reservationdate-input')
+		.val();
 		var dateResult = "";
 
 		if (input_reservation != "") {

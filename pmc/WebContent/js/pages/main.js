@@ -18,37 +18,37 @@ $(document).ready(
 							});
 				} else if (userRole == "svc") {
 
-					// logOutRole();
+					logOutRole();
 
-					var userName = sessionStorage.getItem("userName");
-
-					if (userName == null || userName == ""
-							|| userName == "null") {
-						console.log('유저네임 널');
-						$("#page-wrapper")
-								.load(
-										"pages/userNameUpdatePageWrapper.html",
-										function() {
-											var userUpdteUfmi = sessionStorage
-													.getItem("ufmi");
-											var userUpdateId = sessionStorage
-													.getItem("userId");
-											$('#first-info-id-input').val(
-													userUpdateId);
-											$('#first-info-ufmi-input').val(
-													userUpdteUfmi);
-											$('#change_pw_li').hide();
-										});
-
-					} else {
-						console.log('유저네임 널이아님');
-						$("#page-wrapper").load(
-								"pages/MessageSendUserPageWrapper.html",
-								function() {
-									svcLogin();
-								});
-
-					}
+					// var userName = sessionStorage.getItem("userName");
+					//
+					// if (userName == null || userName == ""
+					// || userName == "null") {
+					// console.log('유저네임 널');
+					// $("#page-wrapper")
+					// .load(
+					// "pages/userNameUpdatePageWrapper.html",
+					// function() {
+					// var userUpdteUfmi = sessionStorage
+					// .getItem("ufmi");
+					// var userUpdateId = sessionStorage
+					// .getItem("userId");
+					// $('#first-info-id-input').val(
+					// userUpdateId);
+					// $('#first-info-ufmi-input').val(
+					// userUpdteUfmi);
+					// $('#change_pw_li').hide();
+					// });
+					//
+					// } else {
+					// console.log('유저네임 널이아님');
+					// $("#page-wrapper").load(
+					// "pages/MessageSendUserPageWrapper.html",
+					// function() {
+					// svcLogin();
+					// });
+					//
+					// }
 
 				} else if (userRole == "svcadm") {
 
@@ -430,34 +430,34 @@ function loginFunction(atag) {
 							});
 
 				} else if (userRole == "svc") {
-					// logOutRole();
-					if (userName == null || userName == ""
-							|| userName == "null") {
-						$("#page-wrapper")
-								.load(
-										"pages/userNameUpdatePageWrapper.html",
-										function() {
-											$('#ul_userInfo').show();
-											$('#change_pw_li').hide();
-											var userUpdteUfmi = sessionStorage
-													.getItem("ufmi");
-											var userUpdateId = sessionStorage
-													.getItem("userId");
-											$('#first-info-id-input').val(
-													userUpdateId);
-											$('#first-info-ufmi-input').val(
-													userUpdteUfmi);
-										});
-
-					} else {
-
-						$("#page-wrapper").load(
-								"pages/MessageSendUserPageWrapper.html",
-								function() {
-									svcLogin();
-								});
-
-					}
+					logOutRole();
+					// if (userName == null || userName == ""
+					// || userName == "null") {
+					// $("#page-wrapper")
+					// .load(
+					// "pages/userNameUpdatePageWrapper.html",
+					// function() {
+					// $('#ul_userInfo').show();
+					// $('#change_pw_li').hide();
+					// var userUpdteUfmi = sessionStorage
+					// .getItem("ufmi");
+					// var userUpdateId = sessionStorage
+					// .getItem("userId");
+					// $('#first-info-id-input').val(
+					// userUpdateId);
+					// $('#first-info-ufmi-input').val(
+					// userUpdteUfmi);
+					// });
+					//
+					// } else {
+					//
+					// $("#page-wrapper").load(
+					// "pages/MessageSendUserPageWrapper.html",
+					// function() {
+					// svcLogin();
+					// });
+					//
+					// }
 
 				} else if (userRole == "inf") {
 
@@ -904,6 +904,29 @@ function logOutRole() {
 
 	});
 }
+
+function dataURItoBlob(dataURI) {
+	// convert base64/URLEncoded data component to raw binary data held in a
+	// string
+	var byteString;
+	if (dataURI.split(',')[0].indexOf('base64') >= 0)
+		byteString = atob(dataURI.split(',')[1]);
+	else
+		byteString = unescape(dataURI.split(',')[1]);
+
+	// separate out the mime component
+	var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+	// write the bytes of the string to a typed array
+	var ia = new Uint8Array(byteString.length);
+	for (var i = 0; i < byteString.length; i++) {
+		ia[i] = byteString.charCodeAt(i);
+	}
+
+	return new Blob([ ia ], {
+		type : mimeString
+	});
+};
 
 // Date Formating
 Date.prototype.yyyymmdd = function() {

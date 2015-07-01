@@ -202,19 +202,24 @@ $('#dataTables-usermanager tbody')
 					if (tableData[3] == "관리자") {
 						$("#user-role-select option:eq(1)").attr("selected",
 								"selected");
+						$('#svcuser-change-pass-div').hide();
 						// $('#user-messagecount-div').hide();
 					} else if (tableData[3] == "서비스") {
 						$("#user-role-select option:eq(2)").attr("selected",
 								"selected");
+						$('#svcuser-change-pass-div').show();
 						// $('#user-messagecount-div').show();
+					//	$('#svcuser-change-pass-div').hide();
 						$('#user-message-input').val(tableData[4]);
 					} else if (tableData[3] == "Interface Open") {
 						$("#user-role-select option:eq(4)").attr("selected",
 								"selected");
+						$('#svcuser-change-pass-div').hide();
 						// $('#user-messagecount-div').hide();
 					} else if (tableData[3] == "서비스 어드민") {
 						$("#user-role-select option:eq(3)").attr("selected",
 								"selected");
+						$('#svcuser-change-pass-div').hide();
 						// $('#user-messagecount-div').hide();
 					}
 
@@ -385,6 +390,78 @@ function userOptionUpdateFunction() {
 
 	}
 }
+
+function userPassChangeFunction() {
+
+	var pass = $('#user-changepass-before-input').val();
+	var confirmPass = $('#user-changepass-after-input').val();
+	var userId = $('#user-id-input').val();
+
+	if (pass == null || pass == "") {
+		alert('변경할 비밀 번호를 입력해주세요');
+		$('#user-changepass-before-input').focus();
+		return false;
+	}
+
+	if (confirmPass == null || confirmPass == "") {
+		alert('변경할 비밀 번호를  입력해주세요');
+		$('#user-changepass-after-input').focus();
+		return false;
+	}
+
+	if (confirmPass != null && pass != null) {
+		if (confirmPass !== pass) {
+			$('#user-changepass-after-input').focus();
+			alert('입력하신 비밀 번호와 재입력한 비밀번호가 같지 않습니다 확인해주세요');
+			return false;
+		}
+	}
+
+	if (confirm("계정 비밀 번호를를 변경 하시겠습니까?") == true) {
+
+		var userChange = new Object();
+		userChange.newPassword = pass;
+		userChange.rePassword = confirmPass;
+		var userChangeReq = JSON.stringify(userChange);
+
+		$.ajax({
+			url : '/v1/pms/adm/sys/users/' + userId + '/resetpw',
+			type : 'PUT',
+			contentType : "application/json",
+			headers : {
+				'X-Application-Token' : userToken
+			},
+			dataType : 'json',
+			data : userChangeReq,
+
+			async : false,
+			success : function(data) {
+
+				if (!data.result.errors) {
+					var dataResult = data.result.info;
+					console.log(dataResult);
+
+					alert('비밀번호를 변경 하였습니다.');
+					wrapperFunction('userManager');
+				} else {
+
+					alert('비밀번호 변경에 실패하였습니다.');
+					wrapperFunction('userManager');
+				}
+
+			},
+			error : function(data, textStatus, request) {
+
+				alert('비밀번호 변경에 실패하였습니다.');
+				wrapperFunction('userManager');
+			}
+		});
+	} else {
+		return;
+	}
+
+}
+
 // userDelete
 function userDeleteFunction() {
 

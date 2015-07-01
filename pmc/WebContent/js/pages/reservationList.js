@@ -50,7 +50,7 @@ var reservationListTable = $('#reservation-datatable')
 									type : 'GET',
 									url : sSource,
 									headers : {
-										'X-Application-Token' : messageListToken
+										'X-Application-Token' : reservationListToken
 									},
 									data : aoData,
 
@@ -397,7 +397,6 @@ function checkSearchReservation() {
 
 	var selectOptionValue = $('#reservation-search-select').val();
 	var inputSearchValue = $('#reservation-search-input').val();
-	// var searchDateStart = $('#reservation-search-date-start-input').val();
 	var defaultMonth = $('#reservation-date-input').val();
 
 	if (defaultMonth.substring(5, 6) == 0) {
@@ -408,27 +407,7 @@ function checkSearchReservation() {
 		defaultMonth = defaultMonth.substring(5);
 		defaultMonth = defaultMonth - 1;
 	}
-	// searchDateStart = dateFormating(searchDateStart);
 
-	// if (typeof searchDateStart === undefined
-	// || typeof searchDateStart === 'undefined') {
-	//
-	// searchDateStart = "";
-	// }
-
-	// var searchDateEnd = $('#reservation-search-date-end-input').val();
-	//
-	// searchDateEnd = dateFormating(searchDateEnd);
-	// if (typeof searchDateEnd === undefined
-	// || typeof searchDateEnd === 'undefined') {
-	//
-	// searchDateEnd = "";
-	// }
-
-	// if (selectOptionValue == 0) {
-	// alert('검색할 항목을 선택해 주세요');
-	// return false;
-	// }
 
 	if (selectOptionValue == 1 || selectOptionValue == 2) {
 		if (inputSearchValue == null || inputSearchValue == "") {
@@ -438,33 +417,6 @@ function checkSearchReservation() {
 		}
 	}
 
-	// if (searchDateStart != null && searchDateStart != "") {
-	//
-	// if (searchDateEnd == null || searchDateEnd == "") {
-	// alert('검색 종료일을 입력해 주세요');
-	// return false;
-	// } else {
-	// if (searchDateStart >= searchDateEnd) {
-	// alert('검색 시작일이 종료일보다 클 수 없습니다');
-	// return false;
-	// } else if (searchDateStart.getMonth() === searchDateEnd.getMonth()
-	// && defaultMonth === searchDateEnd.getMonth()
-	// && defaultMonth === searchDateStart.getMonth()) {
-	//
-	// return true;
-	// } else if (searchDateStart.getMonth() !== searchDateEnd.getMonth()
-	// || defaultMonth !== searchDateEnd.getMonth()
-	// || defaultMonth !== searchDateStart.getMonth()) {
-	//
-	// alert('같은 달에서만 검색이 가능합니다');
-	// return false;
-	// } else {
-	// return true;
-	// }
-	//
-	// }
-	//
-	// }
 	return true;
 }
 
