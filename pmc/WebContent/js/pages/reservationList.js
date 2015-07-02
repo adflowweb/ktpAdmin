@@ -200,7 +200,7 @@ var reservationListTable = $('#reservation-datatable')
 						reservationStartDate = new Date(reservationMonth[0],
 								reservationMonth[1] - 1, 1).toISOString();
 						reservationEndDate = new Date(reservationMonth[0],
-								reservationMonth[1], 0).toISOString();
+								reservationMonth[1], 0, 23, 59).toISOString();
 						console.log('예약메시지 시작 끝');
 						console.log(reservationStartDate);
 						console.log(reservationEndDate);
@@ -407,7 +407,6 @@ function checkSearchReservation() {
 		defaultMonth = defaultMonth.substring(5);
 		defaultMonth = defaultMonth - 1;
 	}
-
 
 	if (selectOptionValue == 1 || selectOptionValue == 2) {
 		if (inputSearchValue == null || inputSearchValue == "") {

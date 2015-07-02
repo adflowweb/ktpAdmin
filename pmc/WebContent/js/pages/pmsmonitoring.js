@@ -97,6 +97,7 @@ $.ajax({
 
 			pmsDiskUsed = pmsDiskUsed + pmsDiskUsed11;
 			pmsDiskFree = pmsDiskFree + pmsDiskFree11;
+			
 			tpsData.push(0);
 			moveData.push([ 0, tpsData[0] ]);
 			tpsData.push(pmsTps * 1);
@@ -444,4 +445,4 @@ var monitoringInterval = setInterval(
 						});
 			}
 
-		}, 3000);
+		}, 6000);

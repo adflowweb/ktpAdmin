@@ -41,6 +41,7 @@
 <script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
 <script src="js/plugins/morris/morris.js"></script>
 <script src="js/ladda.js"></script>
+<script src="js/jquery.flot.js"></script>
 <script src="js/spin.js"></script>
 <!-- ladda -->
 
