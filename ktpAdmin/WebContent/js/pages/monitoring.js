@@ -68,9 +68,9 @@ $.ajax({
 			heapUsed = heapUsed.toFixed(1);
 			heapFree = heapFree.toFixed(1);
 			diskUsed = item.disk[0].used;
-			diskUsed11 = item.disk[11].used;
+			diskUsed11 = item.disk[26].used;
 			diskFree = item.disk[0].avail;
-			diskFree11 = item.disk[11].avail;
+			diskFree11 = item.disk[26].avail;
 			diskUsed = diskUsed.slice(0, -1);
 			diskUsed11 = diskUsed11.slice(0, -1);
 			diskFree = diskFree.slice(0, -1);
@@ -84,11 +84,11 @@ $.ajax({
 				diskUsed *= 0.000001;
 			}
 
-			if (item.disk[11].used.indexOf("G") > -1) {
+			if (item.disk[26].used.indexOf("G") > -1) {
 				diskUsed11 *= 1;
-			} else if (item.disk[11].used.indexOf("M") > -1) {
+			} else if (item.disk[26].used.indexOf("M") > -1) {
 				diskUsed11 *= 0.001;
-			} else if (item.disk[11].used.indexOf("K") > -1) {
+			} else if (item.disk[26].used.indexOf("K") > -1) {
 				diskUsed11 *= 0.000001;
 			}
 
@@ -100,11 +100,11 @@ $.ajax({
 				diskFree *= 0.000001;
 			}
 
-			if (item.disk[11].avail.indexOf("G") > -1) {
+			if (item.disk[26].avail.indexOf("G") > -1) {
 				diskFree11 *= 1;
-			} else if (item.disk[11].avail.indexOf("M") > -1) {
+			} else if (item.disk[26].avail.indexOf("M") > -1) {
 				diskFree11 *= 0.001;
-			} else if (item.disk[11].avail.indexOf("K") > -1) {
+			} else if (item.disk[26].avail.indexOf("K") > -1) {
 				diskFree11 *= 0.000001;
 			}
 			diskUsed = diskUsed + diskUsed11;
@@ -386,9 +386,9 @@ var monitoringInterval = setInterval(
 									heapUsed = heapUsed.toFixed(1);
 									heapFree = heapFree.toFixed(1);
 									diskUsed = item.disk[0].used;
-									diskUsed11 = item.disk[11].used;
+									diskUsed11 = item.disk[26].used;
 									diskFree = item.disk[0].avail;
-									diskFree11 = item.disk[11].avail;
+									diskFree11 = item.disk[26].avail;
 									diskUsed = diskUsed.slice(0, -1);
 									diskUsed11 = diskUsed11.slice(0, -1);
 									diskFree = diskFree.slice(0, -1);
@@ -402,11 +402,11 @@ var monitoringInterval = setInterval(
 										diskUsed *= 0.000001;
 									}
 
-									if (item.disk[11].used.indexOf("G") > -1) {
+									if (item.disk[26].used.indexOf("G") > -1) {
 										diskUsed11 *= 1;
-									} else if (item.disk[11].used.indexOf("M") > -1) {
+									} else if (item.disk[26].used.indexOf("M") > -1) {
 										diskUsed11 *= 0.001;
-									} else if (item.disk[11].used.indexOf("K") > -1) {
+									} else if (item.disk[26].used.indexOf("K") > -1) {
 										diskUsed11 *= 0.000001;
 									}
 
@@ -418,11 +418,11 @@ var monitoringInterval = setInterval(
 										diskFree *= 0.000001;
 									}
 
-									if (item.disk[11].avail.indexOf("G") > -1) {
+									if (item.disk[26].avail.indexOf("G") > -1) {
 										diskFree11 *= 1;
-									} else if (item.disk[11].avail.indexOf("M") > -1) {
+									} else if (item.disk[26].avail.indexOf("M") > -1) {
 										diskFree11 *= 0.001;
-									} else if (item.disk[11].avail.indexOf("K") > -1) {
+									} else if (item.disk[26].avail.indexOf("K") > -1) {
 										diskFree11 *= 0.000001;
 									}
 
