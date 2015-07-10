@@ -162,19 +162,21 @@ function wrapperFunction(data) {
 
 							$('#messagelist-search-date-start-div')
 									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
+										format : "YYYY/MM/DD",
 										defaultDate : getCurrentDayF(),
 										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
+										maxDate : getCurrentDayL(),
+										pickTime : false
 
 									});
 
 							$('#messagelist-search-date-end-div')
 									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
+										format : "YYYY/MM/DD",
 										defaultDate : getCurrentDayL(),
 										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
+										maxDate : getCurrentDayL(),
+										pickTime : false
 									});
 
 							$('#messagelist-date-div').datetimepicker({
@@ -244,18 +246,20 @@ function wrapperFunction(data) {
 
 							$('#monthsys-search-date-start-div')
 									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
+										format : "YYYY/MM/DD",
 										defaultDate : getCurrentDayF(),
 										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
+										maxDate : getCurrentDayL(),
+										pickTime : false
 
 									});
 
 							$('#monthsys-search-date-end-div').datetimepicker({
-								format : "YYYY/MM/DD hh:mm a",
+								format : "YYYY/MM/DD",
 								defaultDate : getCurrentDayL(),
 								minDate : getCurrentDayF(),
-								maxDate : getCurrentDayL()
+								maxDate : getCurrentDayL(),
+								pickTime : false
 							});
 
 							$('#month-sys-date-div').datetimepicker({
@@ -282,18 +286,20 @@ function wrapperFunction(data) {
 									'disabled', true);
 							$('#monthsvc-search-date-start-div')
 									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
+										format : "YYYY/MM/DD",
 										defaultDate : getCurrentDayF(),
 										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
+										maxDate : getCurrentDayL(),
+										pickTime : false
 
 									});
 
 							$('#monthsvc-search-date-end-div').datetimepicker({
-								format : "YYYY/MM/DD hh:mm a",
+								format : "YYYY/MM/DD",
 								defaultDate : getCurrentDayL(),
 								minDate : getCurrentDayF(),
-								maxDate : getCurrentDayL()
+								maxDate : getCurrentDayL(),
+								pickTime : false
 							});
 
 							$('#month-svc-date-div').datetimepicker({
@@ -311,18 +317,20 @@ function wrapperFunction(data) {
 									"disable");
 							$('#statistics-search-date-start-div')
 									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
+										format : "YYYY/MM/DD",
 										defaultDate : getCurrentDayF(),
 										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
+										maxDate : getCurrentDayL(),
+										pickTime : false
 									});
 
 							$('#statistics-search-date-end-div')
 									.datetimepicker({
-										format : "YYYY/MM/DD hh:mm a",
+										format : "YYYY/MM/DD",
 										defaultDate : getCurrentDayL(),
 										minDate : getCurrentDayF(),
-										maxDate : getCurrentDayL()
+										maxDate : getCurrentDayL(),
+										pickTime : false
 									});
 
 							// $('#statistics-reservation-search-date-start-div')
@@ -619,20 +627,21 @@ function svcAdmLogin() {
 	$('#sys_message_list_month_li').hide();
 	sessionStorage.setItem("monitoringStatus", "disable");
 	$('#messagelist-search-date-start-div').datetimepicker({
-		format : "YYYY/MM/DD hh:mm a",
+		format : "YYYY/MM/DD",
 		defaultDate : getCurrentDayF(),
 		minDate : getCurrentDayF(),
-		maxDate : getCurrentDayL()
+		maxDate : getCurrentDayL(),
+		pickTime : false
 
 	});
 
 	$('#messagelist-search-date-end-div').datetimepicker({
-		format : "YYYY/MM/DD hh:mm a",
+		format : "YYYY/MM/DD",
 		defaultDate : getCurrentDayL(),
 		minDate : getCurrentDayF(),
-		maxDate : getCurrentDayL()
+		maxDate : getCurrentDayL(),
+		pickTime : false
 	});
-
 	$('#messagelist-date-div').datetimepicker({
 		viewMode : 'years',
 		format : 'YYYY/MM',
@@ -647,6 +656,60 @@ function svcAdmLogin() {
 
 // dateFormating
 function dateFormating(value) {
+	var result = compactTrim(value);
+	var year = result.substring(0, 4);
+	var month = result.substring(5, 7);
+	var day = result.substring(8, 10);
+	var hour = result.substring(10, 12);
+
+	var minute = result.substring(13, 15);
+	var amPm = result.substring(15, 17);
+	if (amPm === 'pm') {
+		hour *= 1;
+		hour = hour + 12;
+	}
+	value = new Date(year, month - 1, day, hour, minute);
+	return value;
+
+}
+
+function dateFormatingStart(value) {
+	var result = compactTrim(value);
+	var year = result.substring(0, 4);
+	var month = result.substring(5, 7);
+	var day = result.substring(8, 10);
+	// var hour = result.substring(10, 12);
+
+	// var minute = result.substring(13, 15);
+	// var amPm = result.substring(15, 17);
+	// if (amPm === 'pm') {
+	// hour *= 1;
+	// hour = hour + 12;
+	// }
+	value = new Date(year, month - 1, day, 00, 00);
+	return value;
+}
+
+function dateFormatingEnd(value) {
+	var result = compactTrim(value);
+	var year = result.substring(0, 4);
+	var month = result.substring(5, 7);
+	var day = result.substring(8, 10);
+	// var hour = result.substring(10, 12);
+
+	// var minute = result.substring(13, 15);
+	// var amPm = result.substring(15, 17);
+	// if (amPm === 'pm') {
+	// hour *= 1;
+	// hour = hour + 12;
+	// }
+	value = new Date(year, month - 1, day, 23, 59);
+	return value;
+
+}
+
+function dateFormatingRes(value) {
+	// 2015/06/01
 	var result = compactTrim(value);
 	var year = result.substring(0, 4);
 	var month = result.substring(5, 7);

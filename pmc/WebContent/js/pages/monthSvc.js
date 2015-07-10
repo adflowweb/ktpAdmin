@@ -14,8 +14,8 @@ function monthSvcSearch() {
 		var ajaxUrl = "";
 
 		if (searchDateStart != "") {
-			searchDateStart = dateFormating(searchDateStart);
-			searchDateEnd = dateFormating(searchDateEnd);
+			searchDateStart = dateFormatingStart(searchDateStart);
+			searchDateEnd = dateFormatingEnd(searchDateEnd);
 			searchDateStart = searchDateStart.toISOString();
 			searchDateEnd = searchDateEnd.toISOString();
 			ajaxUrl = '/v1/pms/adm/' + monthSvcRole + '/messages/summary/'
@@ -323,7 +323,7 @@ function monthSvcFormCheck() {
 		inputMonthValue = inputMonthValue.substring(5);
 		inputMonthValue = inputMonthValue - 1;
 	}
-	searchDateStart = dateFormating(searchDateStart);
+	searchDateStart = dateFormatingStart(searchDateStart);
 
 	if (typeof searchDateStart === undefined
 			|| typeof searchDateStart === 'undefined') {
@@ -331,7 +331,7 @@ function monthSvcFormCheck() {
 		searchDateStart = "";
 	}
 
-	searchDateEnd = dateFormating(searchDateEnd);
+	searchDateEnd = dateFormatingEnd(searchDateEnd);
 	if (typeof searchDateEnd === undefined
 			|| typeof searchDateEnd === 'undefined') {
 

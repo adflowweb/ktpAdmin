@@ -278,7 +278,7 @@ var statisticsTable = $('#statistics-datatable')
 						//						
 
 						if (searchDateStart != "") {
-							searchDateStart = dateFormating(searchDateStart);
+							searchDateStart = dateFormatingStart(searchDateStart);
 							// 시작일
 							if (searchDateStart) {
 
@@ -292,7 +292,7 @@ var statisticsTable = $('#statistics-datatable')
 						}
 
 						if (searchDateEnd != "") {
-							searchDateEnd = dateFormating(searchDateEnd);
+							searchDateEnd = dateFormatingEnd(searchDateEnd);
 
 							// 종료일
 							if (searchDateEnd) {
@@ -720,7 +720,7 @@ function checkSearchStatistics() {
 		defaultMonth = defaultMonth.substring(5);
 		defaultMonth = defaultMonth - 1;
 	}
-	searchDateStart = dateFormating(searchDateStart);
+	searchDateStart = dateFormatingStart(searchDateStart);
 
 	if (typeof searchDateStart === undefined
 			|| typeof searchDateStart === 'undefined') {
@@ -730,7 +730,7 @@ function checkSearchStatistics() {
 
 	var searchDateEnd = $('#statistics-search-date-end-input').val();
 
-	searchDateEnd = dateFormating(searchDateEnd);
+	searchDateEnd = dateFormatingEnd(searchDateEnd);
 	if (typeof searchDateEnd === undefined
 			|| typeof searchDateEnd === 'undefined') {
 
@@ -918,7 +918,7 @@ function statisticsCsvExport() {
 			requestUrl = requestUrl + 'cSearchDate=' + searchMonth;
 
 			if (searchDateStart != "") {
-				searchDateStart = dateFormating(searchDateStart);
+				searchDateStart = dateFormatingStart(searchDateStart);
 				// 시작일
 				if (searchDateStart) {
 
@@ -930,7 +930,7 @@ function statisticsCsvExport() {
 			}
 
 			if (searchDateEnd != "") {
-				searchDateEnd = dateFormating(searchDateEnd);
+				searchDateEnd = dateFormatingEnd(searchDateEnd);
 
 				// 종료일
 				if (searchDateEnd) {

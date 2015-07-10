@@ -355,7 +355,7 @@ var messageTable = $('#dataTables-messageList')
 						});
 
 						if (searchDateStart != "") {
-							searchDateStart = dateFormating(searchDateStart);
+							searchDateStart = dateFormatingStart(searchDateStart);
 							// 시작일
 							if (searchDateStart) {
 								searchDateStart = searchDateStart.toISOString();
@@ -367,7 +367,7 @@ var messageTable = $('#dataTables-messageList')
 						}
 
 						if (searchDateEnd != "") {
-							searchDateEnd = dateFormating(searchDateEnd);
+							searchDateEnd = dateFormatingEnd(searchDateEnd);
 
 							// 종료일
 							if (searchDateEnd) {
@@ -412,9 +412,9 @@ $('#dataTables-messageList tbody').on('click', 'tr', function() {
 		var fileName = $('#resend-file-name-hidden').val();
 		var fileFormat = $('#resend-file-format-hidden').val();
 		if (fileName != "" && fileFormat != "") {
-			messageData.fileName = fileName;
-			messageData.fileFormat = fileFormat;
-			messageData.mms = true;
+			$('#resend-file').show();
+		} else {
+			$('#resend-file').hide();
 		}
 	}
 });
@@ -558,9 +558,9 @@ function MessageReSendUserFunction() {
 			var fileFormat = $('#resend-file-format-hidden').val();
 			var expiry = $('#resend-expiry-hidden').val();
 			if (fileName != "" && fileFormat != "") {
-				$('#resend-file').show();
-			} else {
-				$('#resend-file').hide();
+				messageData.fileName = fileName;
+				messageData.fileFormat = fileFormat;
+				messageData.mms = true;
 			}
 
 			messageData.expiry = expiry;
@@ -784,7 +784,7 @@ function messageListCsvExport() {
 			requestUrl = requestUrl + 'cSearchDate=' + messageMonth;
 
 			if (searchDateStart != "") {
-				searchDateStart = dateFormating(searchDateStart);
+				searchDateStart = dateFormatingStart(searchDateStart);
 				if (searchDateStart) {
 					searchDateStart = searchDateStart.toISOString();
 					requestUrl = requestUrl + '&cSearchDateStart='
@@ -793,7 +793,7 @@ function messageListCsvExport() {
 			}
 
 			if (searchDateEnd != "") {
-				searchDateEnd = dateFormating(searchDateEnd);
+				searchDateEnd = dateFormatingEnd(searchDateEnd);
 
 				if (searchDateEnd) {
 					searchDateEnd = searchDateEnd.toISOString();
@@ -937,7 +937,7 @@ function checkSearch() {
 		defaultMonth = defaultMonth.substring(5);
 		defaultMonth = defaultMonth - 1;
 	}
-	searchDateStart = dateFormating(searchDateStart);
+	searchDateStart = dateFormatingStart(searchDateStart);
 
 	if (typeof searchDateStart === undefined
 			|| typeof searchDateStart === 'undefined') {
@@ -946,7 +946,7 @@ function checkSearch() {
 
 	var searchDateEnd = $('#messagelist-search-date-end-input').val();
 
-	searchDateEnd = dateFormating(searchDateEnd);
+	searchDateEnd = dateFormatingEnd(searchDateEnd);
 	if (typeof searchDateEnd === undefined
 			|| typeof searchDateEnd === 'undefined') {
 		searchDateEnd = "";

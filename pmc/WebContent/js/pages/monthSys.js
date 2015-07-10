@@ -63,8 +63,8 @@ function monthSearch() {
 
 		if (searchDateStart != "") {
 
-			searchDateStart = dateFormating(searchDateStart);
-			searchDateEnd = dateFormating(searchDateEnd);
+			searchDateStart = dateFormatingStart(searchDateStart);
+			searchDateEnd = dateFormatingEnd(searchDateEnd);
 			searchDateStart = searchDateStart.toISOString();
 			searchDateEnd = searchDateEnd.toISOString();
 			ajaxUrl = '/v1/pms/adm/sys/messages/summary/' + input_month_value
@@ -908,7 +908,7 @@ function monthFormCheck() {
 		inputMonthValue = inputMonthValue.substring(5);
 		inputMonthValue = inputMonthValue - 1;
 	}
-	searchDateStart = dateFormating(searchDateStart);
+	searchDateStart = dateFormatingStart(searchDateStart);
 
 	if (typeof searchDateStart === undefined
 			|| typeof searchDateStart === 'undefined') {
@@ -916,7 +916,7 @@ function monthFormCheck() {
 		searchDateStart = "";
 	}
 
-	searchDateEnd = dateFormating(searchDateEnd);
+	searchDateEnd = dateFormatingEnd(searchDateEnd);
 	if (typeof searchDateEnd === undefined
 			|| typeof searchDateEnd === 'undefined') {
 

@@ -436,6 +436,12 @@ function messageSendFormCheck() {
 			$('#message-send-resendInterval-input').focus();
 			return false;
 		}
+		
+		if(input_resendInterval==0){
+			alert('0 은 입력 할수 없습니다!');
+			$('#message-send-resendInterval-input').focus();
+			return false;
+		}
 
 	}
 
