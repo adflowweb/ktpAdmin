@@ -23,62 +23,46 @@
 				</div>
 				<div class="form-group">
 					<label>대상 서비스</label> <input class="form-control"
-						id="message-send-service-input"
+						id="message-send-service-input" value="kr.co.ktpowertel.push.mms"
 						placeholder="필수       서비스 아이디 입력  ex) kr.co.ktpowertel.push.mms">
 				</div>
 
-				<div class="form-group">
+				<div class="form-group" style="display: none;">
 					<label>메시지 타입</label> <input class="form-control"
 						id="message-send-messageType-input"
 						placeholder="필수       메세지 타입 입력(숫자)" value="10">
 				</div>
 
-				<div class="form-group">
-					<label>메시지 소멸 시간</label> <input class="form-control"
-						id="message-send-messageExpire-input"
-						placeholder="옵션       메세지 소멸 시간(초)">
-				</div>
-				<div class="form-group">
-					<label>반복메시지 횟수<span
-						style="font-size: x-small; font-style: italic; font-weight: lighter;">(설정시
-							반복 휫수 +1 건의 메시지가 발송 됩니다.)</span></label> <input class="form-control"
-						id="message-send-resendCount-input"
-						placeholder="옵션       반복 횟수 (최대 10건)">
-				</div>
-				<div class="form-group">
-					<label>반복 시간</label> <input class="form-control"
-						id="message-send-resendInterval-input"
-						placeholder="옵션       반복 시간(분 단위)">
-				</div>
 
-				<div class="form-group">
-					<label>Qos 설정</label> <select id="message-send-qos-select"
-						class="form-control">
-						<option value="2">2:메시지 전송 보장</option>
-						<option value="1">1:메세지를 한번 전달하며 전달 여부는 확인 하지 않습니다.</option>
-
-					</select>
-				</div>
-
-				<div class="form-group">
-					<div class="checkbox">
-						<label> <input type="checkbox"
-							id="message-send-ackckeck-input" checked>응답 여부
-						</label>
-					</div>
-				</div>
-				<div class="form-group">
+				<div class="form-group" style="display: none;">
 					<label>Content-Type</label> <select
 						id="message-send-contentType-select" class="form-control">
 						<option value="1">application/base64</option>
 					</select>
 				</div>
+
+				<div class="form-group">
+					<label>메시지 소멸 시간(초단위 입력!)<span
+						style="font-size: x-small; font-style: italic; font-weight: lighter;">(입력
+							하지 않으면 메시지가 소멸되지 않습니다!)</span></label> <input class="form-control"
+						id="message-send-messageExpire-input" value="3600"
+						placeholder="옵션       메세지 소멸 시간(초)">
+				</div>
+
 				<div class="form-group">
 					<label>메시지 내용</label>
 
 					<textarea class="form-control" id="message-send-textarea" rows="5"> </textarea>
 
 				</div>
+
+				<input type="button" onclick="javascript:MessageSendFunction();"
+					class="btn btn-default" value="메시지 전송"></input> <input
+					type="button"
+					onclick="javascript:wrapperFunction('MessageSendAdm');"
+					class="btn btn-default" value="재설정"></input>
+
+				<hr />
 				<div class="form-group">
 					<i class="fa fa-paperclip blue"></i>&nbsp; <label>파일 첨부</label>&nbsp;
 
@@ -86,7 +70,7 @@
 
 					<form id="pms-sysadmin-image-upload-form" method="post"
 						enctype="multipart/form-data">
-						<input type="file" id="pms-sysadmin-image-upload-input"> 
+						<input type="file" id="pms-sysadmin-image-upload-input">
 					</form>
 
 					<input type="hidden" id="pms-sysadmin-md5"> <input
@@ -107,12 +91,53 @@
 				</div>
 
 
+				<div class="form-group">
+					<label>반복메시지 횟수<span
+						style="font-size: x-small; font-style: italic; font-weight: lighter;">(설정시
+							반복 휫수 +1 건의 메시지가 발송 됩니다.)</span></label> <select
+						id="message-send-resendCount-input" class="form-control">
+						<option value="0">0</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+					</select>
+					<!-- <input class="form-control"
+						id="message-send-resendCount-input"
+						placeholder="옵션       반복 횟수 (최대 10건)"> -->
+				</div>
+				<div class="form-group">
+					<label>반복 시간</label> <input class="form-control"
+						id="message-send-resendInterval-input"
+						placeholder="옵션       반복 시간(분 단위)">
+				</div>
 
-				<input type="button" onclick="javascript:MessageSendFunction();"
-					class="btn btn-default" value="메시지 전송"></input> <input
-					type="button"
-					onclick="javascript:wrapperFunction('MessageSendAdm');"
-					class="btn btn-default" value="재설정"></input>
+				<div class="form-group" style="display: none;">
+					<label>Qos 설정</label> <select id="message-send-qos-select"
+						class="form-control">
+						<option value="2">2:메시지 전송 보장</option>
+						<option value="1">1:메세지를 한번 전달하며 전달 여부는 확인 하지 않습니다.</option>
+
+					</select>
+				</div>
+
+				<div class="form-group" style="display: none;">
+					<div class="checkbox">
+						<label> <input type="checkbox"
+							id="message-send-ackckeck-input" checked>응답 여부
+						</label>
+					</div>
+				</div>
+
+
+
+
 
 			</div>
 			<!-- /.panel-body -->

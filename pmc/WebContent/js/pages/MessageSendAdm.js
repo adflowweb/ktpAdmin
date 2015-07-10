@@ -23,211 +23,212 @@ function MessageSendFunction() {
 				.getElementById("pms-sysadmin-image-upload-input").files[0];
 		var maxSize = 3 * 1024 * 1024;
 
-	}
-
-	if (fileName != null && fileData != null) {
-		if (fileData.size > maxSize) {
-			alert('파일 첨부 용량을 초과 하였습니다(3MB 이하)');
-			// $('.remove').click();
-			return false;
-		}
-
-		if (confirm('첨부된 파일이 있습니다 파일을 업로드 하시겠습니까?') == true) {
-
-			var fileFormat = fileName.substr(fileName.lastIndexOf('.') + 1);
-			var replaceImageText = fileName.replace(/^.*\\/, "");
-			console.log(fileFormat);
-			var md5 = $('#pms-sysadmin-md5').val();
-			replaceImageText = encodeURIComponent(replaceImageText);
-			messageData.mms = true;
-			messageData.fileName = md5;
-			messageData.fileFormat = fileFormat;
-
-			// /
-
-			// head check
-			var xhrHeadReq = new XMLHttpRequest();
-			xhrHeadReq.open("HEAD", "/cts/v1/users/" + userId, false);
-			xhrHeadReq.setRequestHeader("md5", md5);
-			xhrHeadReq.setRequestHeader("token", tokenID);
-			xhrHeadReq.setRequestHeader("file", replaceImageText);
-			xhrHeadReq.send();
-
-			if (xhrHeadReq.status == 404) {
-
-				console.log('test');
-
-				console.log(xhrHeadReq.status);
-				var formdata = new FormData();
-				formdata.append("fileData", fileData);
-				var xhrFileReq = new XMLHttpRequest();
-				xhrFileReq.open("POST", "/cts/v1/users/" + userId, false);
-				xhrFileReq.setRequestHeader("md5", md5);
-				xhrFileReq.setRequestHeader("token", tokenID);
-				xhrFileReq.setRequestHeader("file", replaceImageText);
-				xhrFileReq.send(formdata);
-				if (xhrFileReq.status == 200) {
-
-					console.log('파일 전송 성공');
-					console.log(xhrFileReq.status);
-
-				} else {
-
-					console.log(xhrFileReq.status);
-
-					alert('첨부 파일 전송에 실패 하였습니다!');
-					return false;
-				}
-			} else if (xhrHeadReq.status == 409) {
-
-				console.log(xhrHeadReq.status);
-				console.log('파일이 존재함');
-			} else {
-
-				console.log(xhrHeadReq.status);
-
-				alert('첨부 파일 전송에 실패 하였습니다!');
+		if (fileName != null && fileData != null) {
+			if (fileData.size > maxSize) {
+				alert('파일 첨부 용량을 초과 하였습니다(3MB 이하)');
+				// $('.remove').click();
 				return false;
 			}
 
-			// 이미지 파일일 경우 thumbnail 전송
-			if (fileFormat == "jpg" || fileFormat == "jpeg"
-					|| fileFormat == "png") {
-				var xhrHeadThumReq = new XMLHttpRequest();
-				xhrHeadThumReq.open("HEAD", "/cts/v1/users/" + userId
-						+ "/thumb", false);
-				xhrHeadThumReq.setRequestHeader("md5", md5);
-				xhrHeadThumReq.setRequestHeader("token", tokenID);
-				xhrHeadThumReq.setRequestHeader("file", ".png");
-				xhrHeadThumReq.send();
-				if (xhrHeadThumReq.status == 404) {
-					console.log(xhrHeadThumReq.status);
-					var thumbNail = $('#pms-sysadmin-thumbnail').val();
-					console.log('썸네일');
-					console.log(thumbNail);
-					if (thumbNail == null || thumbNail == "") {
+			if (confirm('첨부된 파일이 있습니다 파일을 업로드 하시겠습니까?') == true) {
 
-						alert('첨부 파일 전송에 실패 하였습니다!');
-						return false;
-					}
-					thumbNail = dataURItoBlob(thumbNail);
-					var formDataThumb = new FormData();
-					formDataThumb.append("fileData", thumbNail);
-					var xhrFileThumReq = new XMLHttpRequest();
-					xhrFileThumReq.open("POST", "/cts/v1/users/" + userId
-							+ "/thumb", false);
-					xhrFileThumReq.setRequestHeader("md5", md5);
-					xhrFileThumReq.setRequestHeader("token", tokenID);
-					xhrFileThumReq.setRequestHeader("file", ".png");
-					xhrFileThumReq.send(formDataThumb);
-					if (xhrFileThumReq.status == 200) {
+				var fileFormat = fileName.substr(fileName.lastIndexOf('.') + 1);
+				var replaceImageText = fileName.replace(/^.*\\/, "");
+				console.log(fileFormat);
+				var md5 = $('#pms-sysadmin-md5').val();
+				replaceImageText = encodeURIComponent(replaceImageText);
+				messageData.mms = true;
+				messageData.fileName = md5;
+				messageData.fileFormat = fileFormat;
 
-						console.log('썸 파일 전송 성공');
-						console.log(xhrFileThumReq.status);
+				// /
+
+				// head check
+				var xhrHeadReq = new XMLHttpRequest();
+				xhrHeadReq.open("HEAD", "/cts/v1/users/" + userId, false);
+				xhrHeadReq.setRequestHeader("md5", md5);
+				xhrHeadReq.setRequestHeader("token", tokenID);
+				xhrHeadReq.setRequestHeader("file", replaceImageText);
+				xhrHeadReq.send();
+
+				if (xhrHeadReq.status == 404) {
+
+					console.log('test');
+
+					console.log(xhrHeadReq.status);
+					var formdata = new FormData();
+					formdata.append("fileData", fileData);
+					var xhrFileReq = new XMLHttpRequest();
+					xhrFileReq.open("POST", "/cts/v1/users/" + userId, false);
+					xhrFileReq.setRequestHeader("md5", md5);
+					xhrFileReq.setRequestHeader("token", tokenID);
+					xhrFileReq.setRequestHeader("file", replaceImageText);
+					xhrFileReq.send(formdata);
+					if (xhrFileReq.status == 200) {
+
+						console.log('파일 전송 성공');
+						console.log(xhrFileReq.status);
 
 					} else {
 
-						console.log(xhrFileThumReq.status);
+						console.log(xhrFileReq.status);
 
 						alert('첨부 파일 전송에 실패 하였습니다!');
 						return false;
 					}
-				} else if (xhrHeadThumReq.status == 409) {
+				} else if (xhrHeadReq.status == 409) {
 
-					console.log(xhrHeadThumReq.status);
+					console.log(xhrHeadReq.status);
 					console.log('파일이 존재함');
 				} else {
 
-					console.log(xhrHeadThumReq.status);
+					console.log(xhrHeadReq.status);
 
 					alert('첨부 파일 전송에 실패 하였습니다!');
 					return false;
 				}
 
-			}
-		} else {
+				// 이미지 파일일 경우 thumbnail 전송
+				if (fileFormat == "jpg" || fileFormat == "jpeg"
+						|| fileFormat == "png") {
+					var xhrHeadThumReq = new XMLHttpRequest();
+					xhrHeadThumReq.open("HEAD", "/cts/v1/users/" + userId
+							+ "/thumb", false);
+					xhrHeadThumReq.setRequestHeader("md5", md5);
+					xhrHeadThumReq.setRequestHeader("token", tokenID);
+					xhrHeadThumReq.setRequestHeader("file", ".png");
+					xhrHeadThumReq.send();
+					if (xhrHeadThumReq.status == 404) {
+						console.log(xhrHeadThumReq.status);
+						var thumbNail = $('#pms-sysadmin-thumbnail').val();
+						console.log('썸네일');
+						console.log(thumbNail);
+						if (thumbNail == null || thumbNail == "") {
 
-		}
+							alert('첨부 파일 전송에 실패 하였습니다!');
+							return false;
+						}
+						thumbNail = dataURItoBlob(thumbNail);
+						var formDataThumb = new FormData();
+						formDataThumb.append("fileData", thumbNail);
+						var xhrFileThumReq = new XMLHttpRequest();
+						xhrFileThumReq.open("POST", "/cts/v1/users/" + userId
+								+ "/thumb", false);
+						xhrFileThumReq.setRequestHeader("md5", md5);
+						xhrFileThumReq.setRequestHeader("token", tokenID);
+						xhrFileThumReq.setRequestHeader("file", ".png");
+						xhrFileThumReq.send(formDataThumb);
+						if (xhrFileThumReq.status == 200) {
 
-	}
-	// file end
-	var input_messageTarget = $('#message-send-target-input').val();
-	var input_messageService = $('#message-send-service-input').val();
-	var input_messageContent = $('#message-send-textarea').val();
-	var input_messageType = $('#message-send-messageType-input').val();
-	input_messageContent = utf8_to_b64(input_messageContent);
-	var input_reservation = $('#message-send-reservationdate-input').val();
-	var input_resendCount = $('#message-send-resendCount-input').val();
-	var input_resendInterval = $('#message-send-resendInterval-input').val();
-	var input_messageExpire = $('#message-send-messageExpire-input').val();
-	var qos = 0;
-	qos = $("#message-send-qos-select").val();
-	var contentType = $("#message-send-contentType-select").val();
+							console.log('썸 파일 전송 성공');
+							console.log(xhrFileThumReq.status);
 
-	if (contentType == 1) {
-		contentType = "application/base64";
-	}
-	var dateResult = "";
+						} else {
 
-	if (input_reservation != "") {
-		dateResult = dateFormating(input_reservation);
-		dateResult = dateResult.toISOString();
-	}
+							console.log(xhrFileThumReq.status);
 
-	input_messageTarget = input_messageTarget.split(",");
+							alert('첨부 파일 전송에 실패 하였습니다!');
+							return false;
+						}
+					} else if (xhrHeadThumReq.status == 409) {
 
-	messageData.receivers = input_messageTarget;
-	messageData.content = input_messageContent;
-	messageData.serviceId = input_messageService;
-	messageData.contentType = contentType;
-	messageData.ack = ackcheck;
-	messageData.msgType = input_messageType;
-	messageData.qos = qos;
-	messageData.expiry = input_messageExpire;
-	if (dateResult != "") {
-		messageData.reservationTime = dateResult;
-	}
+						console.log(xhrHeadThumReq.status);
+						console.log('파일이 존재함');
+					} else {
 
-	if (input_resendCount != "") {
-		messageData.resendMaxCount = input_resendCount;
-	}
-	if (input_resendInterval != "") {
-		messageData.resendInterval = input_resendInterval;
-	}
-	var messageDataResult = JSON.stringify(messageData);
+						console.log(xhrHeadThumReq.status);
 
-	if (utf8ByteLength(messageDataResult) > 512000) {
-		alert('메시지 사이즈가 너무 큽니다.');
-		return false;
-	}
+						alert('첨부 파일 전송에 실패 하였습니다!');
+						return false;
+					}
 
-	$.ajax({
-		url : '/v1/pms/adm/' + role + '/messages',
-		type : 'POST',
-		headers : {
-			'X-Application-Token' : tokenID
-		},
-		contentType : "application/json",
-		dataType : 'json',
-		async : false,
-		data : messageDataResult,
-
-		success : function(data) {
-
-			if (!data.result.errors) {
-				alert('메시지를 발송하였습니다.');
-				wrapperFunction('MessageSendAdm');
+				}
 			} else {
-				alert("메시지 전송에 실패 하였습니다.");
-				wrapperFunction('MessageSendAdm');
+
 			}
 
-		},
-		error : function(data, textStatus, request) {
-			alert('메시지 전송에 실패 하였습니다.');
-			wrapperFunction('MessageSendAdm');
 		}
-	});
+		// file end
+		var input_messageTarget = $('#message-send-target-input').val();
+		var input_messageService = $('#message-send-service-input').val();
+		var input_messageContent = $('#message-send-textarea').val();
+		var input_messageType = $('#message-send-messageType-input').val();
+		input_messageContent = utf8_to_b64(input_messageContent);
+		var input_reservation = $('#message-send-reservationdate-input').val();
+		var input_resendCount = $('#message-send-resendCount-input').val();
+		var input_resendInterval = $('#message-send-resendInterval-input')
+				.val();
+		var input_messageExpire = $('#message-send-messageExpire-input').val();
+		var qos = 0;
+		qos = $("#message-send-qos-select").val();
+		var contentType = $("#message-send-contentType-select").val();
+
+		if (contentType == 1) {
+			contentType = "application/base64";
+		}
+		var dateResult = "";
+
+		if (input_reservation != "") {
+			dateResult = dateFormating(input_reservation);
+			dateResult = dateResult.toISOString();
+		}
+
+		input_messageTarget = input_messageTarget.split(",");
+
+		messageData.receivers = input_messageTarget;
+		messageData.content = input_messageContent;
+		messageData.serviceId = input_messageService;
+		messageData.contentType = contentType;
+		messageData.ack = ackcheck;
+		messageData.msgType = input_messageType;
+		messageData.qos = qos;
+		messageData.expiry = input_messageExpire;
+		if (dateResult != "") {
+			messageData.reservationTime = dateResult;
+		}
+
+		if (input_resendCount != 0) {
+			messageData.resendMaxCount = input_resendCount;
+		}
+		if (input_resendInterval != "") {
+			messageData.resendInterval = input_resendInterval;
+		}
+		var messageDataResult = JSON.stringify(messageData);
+
+		if (utf8ByteLength(messageDataResult) > 512000) {
+			alert('메시지 사이즈가 너무 큽니다.');
+			return false;
+		}
+
+		$.ajax({
+			url : '/v1/pms/adm/' + role + '/messages',
+			type : 'POST',
+			headers : {
+				'X-Application-Token' : tokenID
+			},
+			contentType : "application/json",
+			dataType : 'json',
+			async : false,
+			data : messageDataResult,
+
+			success : function(data) {
+
+				if (!data.result.errors) {
+					alert('메시지를 발송하였습니다.');
+					wrapperFunction('MessageSendAdm');
+				} else {
+					alert("메시지 전송에 실패 하였습니다.");
+					wrapperFunction('MessageSendAdm');
+				}
+
+			},
+			error : function(data, textStatus, request) {
+				alert('메시지 전송에 실패 하였습니다.');
+				wrapperFunction('MessageSendAdm');
+			}
+		});
+
+	}
 
 }
 

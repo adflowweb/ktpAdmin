@@ -77,8 +77,6 @@ var messageTable = $('#dataTables-messageList')
 						"data" : "updateTime",
 						'sClass' : 'one-line'
 					}, {
-						"data" : "issueName"
-					}, {
 						"data" : "receiver"
 					}, {
 						"data" : "status"
@@ -141,10 +139,6 @@ var messageTable = $('#dataTables-messageList')
 													dataResult[i].content = dataResult[i].content
 															.substring(0, 15)
 															+ "..";
-												}
-												if (dataResult[i].issueName == null) {
-													console.log('이슈 네임이 널임');
-													dataResult[i].issueName = dataResult[i].updateId;
 												}
 
 												if (dataResult[i].pmaAckType == null) {
@@ -388,66 +382,42 @@ var messageTable = $('#dataTables-messageList')
 
 				});
 // dataTable Click
-$('#dataTables-messageList tbody').on(
-		'click',
-		'tr',
-		function() {
+$('#dataTables-messageList tbody').on('click', 'tr', function() {
 
-			$("#dataTables-messageList tbody tr").removeClass('row_selected');
-			console.log('이벤트 발생');
-			$(this).addClass('row_selected');
+	$("#dataTables-messageList tbody tr").removeClass('row_selected');
+	console.log('이벤트 발생');
+	$(this).addClass('row_selected');
 
-			var clickData = messageTable.fnGetData(this);
-			console.log('데어터');
-			console.log(clickData.msgId);
+	var clickData = messageTable.fnGetData(this);
+	console.log('데어터');
+	console.log(clickData);
 
-			if (messageListResult.length > 0) {
+	if (messageListResult.length > 0) {
 
-				$('#remessage-div').show();
-				var messageListContent = "";
-				var receiver_split = clickData.receiver.split('*');
-				if (receiver_split[0] == "82") {
-					$('input:radio[id="repnum-p1-radio"]')
-							.attr("checked", true);
-				} else {
-					$('input:radio[id="repnum-p2-radio"]')
-							.attr("checked", true);
-				}
-				$('#refleep-bunch-input').val(receiver_split[1]);
-				$('#reprivate-input').val(receiver_split[2]);
+		$('#remessage-div').show();
+		var messageListContent = "";
 
-				messageListContent = clickData.contentType;
-				console.log('메시지 내용입니다.');
-				console.log(messageListContent);
+		messageListContent = clickData.contentType;
+		console.log('메시지 내용입니다.');
+		console.log(messageListContent);
 
-				$('#remessage-send-user-textarea').val(messageListContent);
-				if (messageListRole == "svc") {
-					$('#remessage-send-p').show();
-					messageListContent = messageListContent.trim();
+		$('#remessage-send-user-textarea').val(messageListContent);
 
-					if (messageListContent.Length() > 140) {
-						$('#remessage-send-user-textarea').css(
-								'background-color', '#ddd');
-						$('#remessage-send-length-max').text("");
-						$('#remessage-send-length-byte').text("MMS");
-						$('#remessage-send-length-strong').text(
-								messageListContent.Length());
-					} else {
-						$('#remessage-send-user-textarea').css(
-								'background-color', 'white');
-						$('#remessage-send-length-max').text("140");
-						$('#remessage-send-length-byte').text("byte");
-						$('#remessage-send-length-strong').text(
-								messageListContent.Length());
-					}
+		$('#remessage-send-serviceid').val(clickData.serviceId);
+		$('#remessage-send-user-target-show-input').val(clickData.receiver);
+		$('#resend-file-format-hidden').val(clickData.fileFormat);
+		$('#resend-file-name-hidden').val(clickData.fileName);
+		$('#resend-expiry-hidden').val(clickData.expiry);
 
-				} else {
-					$('#remessage-send-p').hide();
-				}
-				$('#remessage-send-serviceid').val(clickData.serviceId);
-
-			}
-		});
+		var fileName = $('#resend-file-name-hidden').val();
+		var fileFormat = $('#resend-file-format-hidden').val();
+		if (fileName != "" && fileFormat != "") {
+			messageData.fileName = fileName;
+			messageData.fileFormat = fileFormat;
+			messageData.mms = true;
+		}
+	}
+});
 
 // selectChange
 function searchSelectChange() {
@@ -583,7 +553,17 @@ function MessageReSendUserFunction() {
 			messageData.ack = true;
 			messageData.msgType = 10;
 			messageData.qos = 2;
-			messageData.expiry = 0;
+
+			var fileName = $('#resend-file-name-hidden').val();
+			var fileFormat = $('#resend-file-format-hidden').val();
+			var expiry = $('#resend-expiry-hidden').val();
+			if (fileName != "" && fileFormat != "") {
+				$('#resend-file').show();
+			} else {
+				$('#resend-file').hide();
+			}
+
+			messageData.expiry = expiry;
 
 			var messageDataResult = JSON.stringify(messageData);
 			console.log('재전송 데이터');
@@ -650,7 +630,7 @@ function reprivateInputCheck() {
 	var ufmiVerCheck_radio = $('input:radio[name="repnum-radio"]:checked')
 			.val();
 
-	if (ufmiVerCheck_radio == "01") {
+	if (ufmiVerCheck_radio == "1") {
 		$("#reprivate-input").attr('maxlength', '4');
 	}
 
@@ -667,7 +647,7 @@ function refleepBunchCheck() {
 	var ufmiVerCheck_radio = $('input:radio[name="repnum-radio"]:checked')
 			.val();
 
-	if (ufmiVerCheck_radio == "01") {
+	if (ufmiVerCheck_radio == "1") {
 		$("#refleep-bunch-input").attr('maxlength', '4');
 	}
 	if (!num_check.test(fleep_bunch_input)) {
@@ -896,7 +876,7 @@ function messageListCsvExport() {
 						if (isSafari) {
 
 							var a = document.createElement('a');
-							a.href = 'data:attachment/csv,'
+							a.href = 'data:attachment/csv;charset=utf-8,%EF%BB%BF,'
 									+ encodeURI(xmlhttp.responseText);
 							document.body.appendChild(a);
 							var evObj = document.createEvent('MouseEvents');
@@ -905,7 +885,7 @@ function messageListCsvExport() {
 						} else {
 
 							var a = document.createElement('a');
-							a.href = 'data:attachment/csv,'
+							a.href = 'data:attachment/csv;charset=utf-8,%EF%BB%BF,'
 									+ encodeURI(xmlhttp.responseText);
 							a.target = '_blank';
 							a.download = 'message.csv';

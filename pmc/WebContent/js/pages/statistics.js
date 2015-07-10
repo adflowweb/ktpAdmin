@@ -530,12 +530,36 @@ var statisticsReservationTable = $('#statistics-reservation-datatable')
 									.val(searchMonth);
 						}
 
-						searchMonth = searchMonth.replace("/", "");
+						// searchMonth = searchMonth.replace("/", "");
+
+						var reservationStartDate = "";
+						var reservationEndDate = "";
+						var reservationMonth = searchMonth.split('/');
+
+						reservationStartDate = new Date(reservationMonth[0],
+								reservationMonth[1] - 1, 1)
+
+						reservationEndDate = new Date(reservationMonth[0],
+								reservationMonth[1], 0, 23, 59)
+
+						reservationStartDate = reservationStartDate
+								.toISOString();
+						reservationEndDate = reservationEndDate.toISOString();
 
 						aoData.push({
-							'name' : 'cSearchDate',
-							'value' : searchMonth
+							'name' : 'cSearchDateStart',
+							'value' : reservationStartDate
 						});
+
+						aoData.push({
+							'name' : 'cSearchDateEnd',
+							'value' : reservationEndDate
+						});
+
+						// aoData.push({
+						// 'name' : 'cSearchDate',
+						// 'value' : searchMonth
+						// });
 
 						// if (searchDateStart != "") {
 						// searchDateStart = dateFormating(searchDateStart);
@@ -675,7 +699,7 @@ $("#statistics-reservation-account-select").change(
 			$('#statistics-reservation-search-input').val("");
 			$("#statistics-reservation-search-select option:eq(0)").attr(
 					"selected", "selected");
-			setTimeout(changeDateInputStatisticsR, 500);
+			// setTimeout(changeDateInputStatisticsR, 500);
 			statisticsReservationTable.fnFilter();
 
 		});

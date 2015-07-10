@@ -118,8 +118,8 @@
 					<input type="button" onclick="javascript:messageListSearch()"
 						class="btn btn-default" value="검색"></input> <input type="button"
 						onclick="javascript:wrapperFunction('messageList');"
-						class="btn btn-default" value="재설정"></input>
-					<input type="hidden"  id="messagelist-cnt">
+						class="btn btn-default" value="재설정"></input> <input type="hidden"
+						id="messagelist-cnt">
 				</div>
 
 				<div class="table-responsive">
@@ -130,7 +130,7 @@
 						<thead>
 							<tr>
 								<th>발송시간</th>
-								<th>발송번호</th>
+
 								<th>수신번호</th>
 								<th>발송상태</th>
 								<th>수신확인</th>
@@ -172,66 +172,34 @@
 
 
 			<div class="panel-body">
-
-				<div class="panel panel-warning">
-					<div class="panel-heading">무전 번호입력</div>
-					<div class="panel-body">
-						<div class="form-group">
-							<label>Ptalk 유형 선택 : </label> <label>Ptalk1.0</label> <input
-								type="radio" name="repnum-radio" id="repnum-p1-radio" value="82"
-								checked="checked"> &nbsp;<label>Ptalk2.0</label> <input
-								type="radio" name="repnum-radio" id="repnum-p2-radio" value="01">
-						</div>
-
-						<div class="form-group">
-							<label>fleet/확장 번호<span
-								style="font-size: x-small; font-style: italic; font-weight: lighter;">(Ptalk1.0은
-									fleet번호, Ptalk2.0은 확장번호를 입력해 주세요.)</span></label> <input type="text"
-								class="form-control" id="refleep-bunch-input" maxlength="6">
-						</div>
-
-						<div class="form-group">
-							<label>개별 번호<span
-								style="font-size: x-small; font-style: italic; font-weight: lighter;">(개별
-									번호를 입력한 후 플러스(+)버튼을 누르세요!)</span>
-							</label><br />
-							<div class="input-group">
-								<input maxlength="6" type="text" class="form-control"
-									id="reprivate-input" placeholder=""></input> <span
-									style="cursor: pointer;"
-									onclick="javascript:replusUfmiCheck();"
-									class="input-group-addon"><span
-									class="glyphicon glyphicon-plus"></span> </span>
-							</div>
-						</div>
-						<div class="form-group" id="remessage-send-user-target-show-div"
-							style="display: none;">
-							<label>수신 무전번호 목록 </label><br />
-							<textarea class="form-control"
-								id="remessage-send-user-target-show-input" disabled="disabled"></textarea>
-
-						</div>
-
-					</div>
+				<div class="form-group" id="remessage-send-user-target-show-div">
+					<label>수신번호<span
+						style="font-size: x-small; font-style: italic; font-weight: lighter;">(Topic
+							입력 mms/P2/82/50/p1334 형태로입력)</span>
+					</label><br />
+					<textarea class="form-control"
+						id="remessage-send-user-target-show-input"></textarea>
 				</div>
 
-
 				<div class="form-group">
-					<label>메시지 내용</label><span
-						style="font-size: x-small; font-style: italic; font-weight: lighter;">(140
-						byte 를 넘으면 mms로 전환됩니다!)</span>
+					<label>메시지 내용</label>
 
 					<textarea class="form-control" id="remessage-send-user-textarea"
 						rows="5"> </textarea>
-					<p id="remessage-send-p">
-						<strong id="remessage-send-length-strong">0</strong>/<span
-							id="remessage-send-length-max">140</span><span
-							id="remessage-send-length-byte">byte</span>
 
-					</p>
 
-					<input type="hidden" id="remessage-send-serviceid" />
+					<input type="hidden" id="remessage-send-serviceid" /> <input
+						type="hidden" id="resend-file-format-hidden" /> <input
+						type="hidden" id="resend-file-name-hidden" /> <input
+						type="hidden" id="resend-expiry-hidden" />
 				</div>
+
+				<div id="resend-file" style="display: none;">
+					<i class="ace-icon fa fa-paperclip blue"></i><label
+						class="text-primary">첨부된 파일이 있습니다</label>
+				
+				</div>
+
 				<input type="button"
 					onclick="javascript:MessageReSendUserFunction();"
 					class="btn btn-default" value="재전송"></input> <input type="button"
