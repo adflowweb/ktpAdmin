@@ -876,8 +876,8 @@ function messageListCsvExport() {
 						if (isSafari) {
 
 							var a = document.createElement('a');
-							a.href = 'data:attachment/csv;charset=utf-8,%EF%BB%BF,'
-									+ encodeURI(xmlhttp.responseText);
+							a.href = 'data:attachment/csv;charset=utf-8,%EF%BB%BF'
+									+ encodeURIComponent(xmlhttp.responseText);
 							document.body.appendChild(a);
 							var evObj = document.createEvent('MouseEvents');
 							evObj.initMouseEvent('click', true, true, window);
@@ -885,8 +885,8 @@ function messageListCsvExport() {
 						} else {
 
 							var a = document.createElement('a');
-							a.href = 'data:attachment/csv;charset=utf-8,%EF%BB%BF,'
-									+ encodeURI(xmlhttp.responseText);
+							a.href = 'data:attachment/csv;charset=utf-8,%EF%BB%BF'
+									+ encodeURIComponent(xmlhttp.responseText);
 							a.target = '_blank';
 							a.download = 'message.csv';
 							document.body.appendChild(a);
