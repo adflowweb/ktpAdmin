@@ -6,9 +6,9 @@ var free;
 var heapMax;
 var heapUsed;
 var heapFree;
-var diskUsed;
+var diskUsed = 0;
 var diskUsed11;
-var diskFree;
+var diskFree = 0;
 var diskFree11;
 sessionStorage.setItem("rcs-moveCount", 1);
 sessionStorage.setItem("dig-moveCount", 1);
@@ -52,7 +52,7 @@ $.ajax({
 			idle = idle * 100;
 			used = item.memory.used * 0.001;
 			free = item.memory.free * 0.001;
-		//	tpsDigAccount: 0tpsPreckeck: 0
+			// tpsDigAccount: 0tpsPreckeck: 0
 			rcsTps = item.tpsPreckeck;
 			digTps = item.tpsDigAccount;
 
@@ -67,48 +67,53 @@ $.ajax({
 			heapMax = heapMax.toFixed(1);
 			heapUsed = heapUsed.toFixed(1);
 			heapFree = heapFree.toFixed(1);
-			diskUsed = item.disk[0].used;
-			diskUsed11 = item.disk[26].used;
-			diskFree = item.disk[0].avail;
-			diskFree11 = item.disk[26].avail;
-			diskUsed = diskUsed.slice(0, -1);
-			diskUsed11 = diskUsed11.slice(0, -1);
-			diskFree = diskFree.slice(0, -1);
-			diskFree11 = diskFree11.slice(0, -1);
 
-			if (item.disk[0].used.indexOf("G") > -1) {
-				diskUsed *= 1;
-			} else if (item.disk[0].used.indexOf("M") > -1) {
-				diskUsed *= 0.001;
-			} else if (item.disk[0].used.indexOf("K") > -1) {
-				diskUsed *= 0.000001;
+			for ( var i in item.disk) {
+				var orgDiskUsed = item.disk[i].used;
+				var orgDiskFree = item.disk[i].avail;
+				var sliceDiskUsed = 0;
+				var sliceDiskFree = 0;
+
+				if (orgDiskUsed.indexOf("G") > -1) {
+					sliceDiskUsed = orgDiskUsed.slice(0, -1);
+					sliceDiskUsed *= 1;
+				} else if (orgDiskUsed.indexOf("M") > -1) {
+					sliceDiskUsed = orgDiskUsed.slice(0, -1);
+					sliceDiskUsed *= 0.001;
+				} else if (orgDiskUsed.indexOf("K") > -1) {
+					console.log('K')
+					sliceDiskUsed = orgDiskUsed.slice(0, -1);
+					sliceDiskUsed *= 0.000001;
+				} else {
+					sliceDiskUsed = 0
+
+				}
+
+				if (orgDiskFree.indexOf("G") > -1) {
+					sliceDiskFree = orgDiskFree.slice(0, -1);
+					sliceDiskFree *= 1;
+				} else if (orgDiskFree.indexOf("M") > -1) {
+					sliceDiskFree = orgDiskFree.slice(0, -1);
+					sliceDiskFree *= 0.001;
+				} else if (orgDiskFree.indexOf("K") > -1) {
+					sliceDiskFree = orgDiskFree.slice(0, -1);
+					sliceDiskFree *= 0.000001;
+				} else {
+					sliceDiskFree = 0;
+				}
+				console.log(sliceDiskUsed);
+				console.log(sliceDiskFree);
+
+				diskUsed = diskUsed + sliceDiskUsed;
+				console.log(diskUsed);
+				diskFree = diskFree + sliceDiskFree;
+				console.log(diskUsed);
 			}
 
-			if (item.disk[26].used.indexOf("G") > -1) {
-				diskUsed11 *= 1;
-			} else if (item.disk[26].used.indexOf("M") > -1) {
-				diskUsed11 *= 0.001;
-			} else if (item.disk[26].used.indexOf("K") > -1) {
-				diskUsed11 *= 0.000001;
-			}
-
-			if (item.disk[0].avail.indexOf("G") > -1) {
-				diskFree *= 1;
-			} else if (item.disk[0].avail.indexOf("M") > -1) {
-				diskFree *= 0.001;
-			} else if (item.disk[0].avail.indexOf("K") > -1) {
-				diskFree *= 0.000001;
-			}
-
-			if (item.disk[26].avail.indexOf("G") > -1) {
-				diskFree11 *= 1;
-			} else if (item.disk[26].avail.indexOf("M") > -1) {
-				diskFree11 *= 0.001;
-			} else if (item.disk[26].avail.indexOf("K") > -1) {
-				diskFree11 *= 0.000001;
-			}
-			diskUsed = diskUsed + diskUsed11;
-			diskFree = diskFree + diskFree11;
+			console.log('디스크 free');
+			console.log(diskFree);
+			console.log('디스크 사용');
+			console.log(diskUsed);
 
 			combined = combined.toFixed(1);
 			idle = idle.toFixed(1);
@@ -385,50 +390,62 @@ var monitoringInterval = setInterval(
 									heapMax = heapMax.toFixed(1);
 									heapUsed = heapUsed.toFixed(1);
 									heapFree = heapFree.toFixed(1);
-									diskUsed = item.disk[0].used;
-									diskUsed11 = item.disk[26].used;
-									diskFree = item.disk[0].avail;
-									diskFree11 = item.disk[26].avail;
-									diskUsed = diskUsed.slice(0, -1);
-									diskUsed11 = diskUsed11.slice(0, -1);
-									diskFree = diskFree.slice(0, -1);
-									diskFree11 = diskFree11.slice(0, -1);
+									diskUsed = 0;
+									diskFree = 0;
+									for ( var i in item.disk) {
+										var orgDiskUsed = item.disk[i].used;
+										var orgDiskFree = item.disk[i].avail;
+										var sliceDiskUsed = 0;
+										var sliceDiskFree = 0;
 
-									if (item.disk[0].used.indexOf("G") > -1) {
-										diskUsed *= 1;
-									} else if (item.disk[0].used.indexOf("M") > -1) {
-										diskUsed *= 0.001;
-									} else if (item.disk[0].used.indexOf("K") > -1) {
-										diskUsed *= 0.000001;
+										if (orgDiskUsed.indexOf("G") > -1) {
+											sliceDiskUsed = orgDiskUsed.slice(
+													0, -1);
+
+											sliceDiskUsed *= 1;
+										} else if (orgDiskUsed.indexOf("M") > -1) {
+											sliceDiskUsed = orgDiskUsed.slice(
+													0, -1);
+											sliceDiskUsed *= 0.001;
+										} else if (orgDiskUsed.indexOf("K") > -1) {
+											console.log('K')
+											sliceDiskUsed = orgDiskUsed.slice(
+													0, -1);
+											sliceDiskUsed *= 0.000001;
+										} else {
+											sliceDiskUsed = 0
+
+										}
+
+										if (orgDiskFree.indexOf("G") > -1) {
+											sliceDiskFree = orgDiskFree.slice(
+													0, -1);
+											sliceDiskFree *= 1;
+										} else if (orgDiskFree.indexOf("M") > -1) {
+											sliceDiskFree = orgDiskFree.slice(
+													0, -1);
+											sliceDiskFree *= 0.001;
+										} else if (orgDiskFree.indexOf("K") > -1) {
+											sliceDiskFree = orgDiskFree.slice(
+													0, -1);
+											sliceDiskFree *= 0.000001;
+										} else {
+											sliceDiskFree = 0;
+										}
+
+										console.log(sliceDiskUsed);
+										console.log(sliceDiskFree);
+
+										diskUsed = diskUsed + sliceDiskUsed;
+										console.log(diskUsed);
+										diskFree = diskFree + sliceDiskFree;
+										console.log(diskUsed);
 									}
 
-									if (item.disk[26].used.indexOf("G") > -1) {
-										diskUsed11 *= 1;
-									} else if (item.disk[26].used.indexOf("M") > -1) {
-										diskUsed11 *= 0.001;
-									} else if (item.disk[26].used.indexOf("K") > -1) {
-										diskUsed11 *= 0.000001;
-									}
-
-									if (item.disk[0].avail.indexOf("G") > -1) {
-										diskFree *= 1;
-									} else if (item.disk[0].avail.indexOf("M") > -1) {
-										diskFree *= 0.001;
-									} else if (item.disk[0].avail.indexOf("K") > -1) {
-										diskFree *= 0.000001;
-									}
-
-									if (item.disk[26].avail.indexOf("G") > -1) {
-										diskFree11 *= 1;
-									} else if (item.disk[26].avail.indexOf("M") > -1) {
-										diskFree11 *= 0.001;
-									} else if (item.disk[26].avail.indexOf("K") > -1) {
-										diskFree11 *= 0.000001;
-									}
-
-									diskUsed = diskUsed + diskUsed11;
-									diskFree = diskFree + diskFree11;
-
+									console.log('디스크 free');
+									console.log(diskFree);
+									console.log('디스크 사용');
+									console.log(diskUsed);
 									rcsTpsData.push(rcsTps * 1);
 
 									if (rcsmoveCount > 599) {

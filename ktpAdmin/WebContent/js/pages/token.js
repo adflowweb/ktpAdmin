@@ -50,65 +50,65 @@ function tokenSearch() {
 						});
 
 						// 토큰클릭
-						$('#dataTable_Token tbody')
-								.on(
-										'click',
-										'tr',
-										function() {
-
-											var tableData = $(this)
-													.children("td")
-													.map(
-															function() {
-																return $(
-																		this)
-																		.text();
-															}).get();
-
-										
-											var token = tableData[0];
-											var hiddenUserID = tableData[1];
-											$('#hiddenUserID').val(
-													hiddenUserID);
-											$('#h3_tokenid').val(
-													token + "("
-															+ hiddenUserID
-															+ ")");
-											$
-													.ajax({
-														url : '/v1/clients/'
-																+ token,
-														type : 'GET',
-														headers : {
-															'X-ApiKey' : tokenID
-														},
-														contentType : "application/json",
-														async : false,
-														success : function(
-																data) {
-															var tableData = [];
-															if (data.result.data) {
-
-																$(
-																		'#h2_tokenstatus')
-																		.val(
-																				data.result.data.status);
-															} else {
-																alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
-																wrapperFunction('tokenManager');
-															}
-														},
-														error : function(
-																data,
-																textStatus,
-																request) {
-
-															alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
-															wrapperFunction('tokenManager');
-														}
-													});
-
-										});
+						// $('#dataTable_Token tbody')
+						// .on(
+						// 'click',
+						// 'tr',
+						// function() {
+						//
+						// var tableData = $(this)
+						// .children("td")
+						// .map(
+						// function() {
+						// return $(
+						// this)
+						// .text();
+						// }).get();
+						//
+						//										
+						// var token = tableData[0];
+						// var hiddenUserID = tableData[1];
+						// $('#hiddenUserID').val(
+						// hiddenUserID);
+						// $('#h3_tokenid').val(
+						// token + "("
+						// + hiddenUserID
+						// + ")");
+						// $
+						// .ajax({
+						// url : '/v1/clients/'
+						// + token,
+						// type : 'GET',
+						// headers : {
+						// 'X-ApiKey' : tokenID
+						// },
+						// contentType : "application/json",
+						// async : false,
+						// success : function(
+						// data) {
+						// var tableData = [];
+						// if (data.result.data) {
+						//
+						// $(
+						// '#h2_tokenstatus')
+						// .val(
+						// data.result.data.status);
+						// } else {
+						// alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
+						// wrapperFunction('tokenManager');
+						// }
+						// },
+						//														error : function(
+						//																data,
+						//																textStatus,
+						//																request) {
+						//
+						//															alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
+						//															wrapperFunction('tokenManager');
+						//														}
+						//													});
+						//
+						//										});
 
 					} else {
 						alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
@@ -163,65 +163,65 @@ function tokenSearch() {
 						});
 
 						// 토큰클릭
-						$('#dataTable_Token tbody')
-								.on(
-										'click',
-										'tr',
-										function() {
-
-											var tableData = $(this)
-													.children("td")
-													.map(
-															function() {
-																return $(
-																		this)
-																		.text();
-															}).get();
-
-										
-											var token = tableData[0];
-											var hiddenUserID = tableData[1];
-											$('#hiddenUserID').val(
-													hiddenUserID);
-											$('#h3_tokenid').val(
-													token + "("
-															+ hiddenUserID
-															+ ")");
-											$
-													.ajax({
-														url : '/v1/clients/'
-																+ token,
-														type : 'GET',
-														headers : {
-															'X-ApiKey' : tokenID
-														},
-														contentType : "application/json",
-														async : false,
-														success : function(
-																data) {
-															var tableData = [];
-															if (data.result.data) {
-
-																$(
-																		'#h2_tokenstatus')
-																		.val(
-																				data.result.data.status);
-															} else {
-																alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
-																wrapperFunction('tokenManager');
-															}
-														},
-														error : function(
-																data,
-																textStatus,
-																request) {
-
-															alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
-															wrapperFunction('tokenManager');
-														}
-													});
-
-										});
+						// $('#dataTable_Token tbody')
+						// .on(
+						// 'click',
+						// 'tr',
+						// function() {
+						//
+						// var tableData = $(this)
+						// .children("td")
+						// .map(
+						// function() {
+						// return $(
+						// this)
+						// .text();
+						// }).get();
+						//
+						//										
+						// var token = tableData[0];
+						// var hiddenUserID = tableData[1];
+						// $('#hiddenUserID').val(
+						// hiddenUserID);
+						// $('#h3_tokenid').val(
+						// token + "("
+						// + hiddenUserID
+						// + ")");
+						// $
+						// .ajax({
+						// url : '/v1/clients/'
+						// + token,
+						// type : 'GET',
+						// headers : {
+						// 'X-ApiKey' : tokenID
+						// },
+						// contentType : "application/json",
+						// async : false,
+						// success : function(
+						// data) {
+						// var tableData = [];
+						// if (data.result.data) {
+						//
+						// $(
+						// '#h2_tokenstatus')
+						// .val(
+						// data.result.data.status);
+						// } else {
+						// alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
+						// wrapperFunction('tokenManager');
+						// }
+						// },
+						// error : function(
+						// data,
+						// textStatus,
+						// request) {
+						//
+						// alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
+						// wrapperFunction('tokenManager');
+						// }
+						// });
+						//
+						// });
 
 					} else {
 						alert('토큰 정보를 가지고 오는데 실패 하였습니다.');
