@@ -7,10 +7,10 @@ var pmsFree;
 var pmsHeapMax;
 var pmsHeapUsed;
 var pmsHeapFree;
-var pmsDiskUsed;
-var pmsDiskUsed11;
-var pmsDiskFree;
-var pmsDiskFree11;
+var pmsDiskUsed = 0;
+
+var pmsDiskFree = 0;
+
 var pmsTps;
 sessionStorage.setItem("moveCount", 1);
 var pmsMovecontainer = $("#monitoring-transaction-second");
@@ -54,50 +54,47 @@ $.ajax({
 			pmsHeapUsed = pmsHeapUsed.toFixed(1);
 			pmsHeapFree = pmsHeapFree.toFixed(1);
 			pmsTps = item.tps;
-			pmsDiskUsed = item.disk[0].used;
-			pmsDiskUsed11 = item.disk[26].used;
-			pmsDiskFree = item.disk[0].avail;
-			pmsDiskFree11 = item.disk[26].avail;
-			pmsDiskUsed = pmsDiskUsed.slice(0, -1);
-			pmsDiskUsed11 = pmsDiskUsed11.slice(0, -1);
-			pmsDiskFree = pmsDiskFree.slice(0, -1);
-			pmsDiskFree11 = pmsDiskFree11.slice(0, -1);
 
-			if (item.disk[0].used.indexOf("G") > -1) {
-				pmsDiskUsed *= 1;
-			} else if (item.disk[0].used.indexOf("M") > -1) {
-				pmsDiskUsed *= 0.001;
-			} else if (item.disk[0].used.indexOf("K") > -1) {
-				pmsDiskUsed *= 0.000001;
+			for ( var i in item.disk) {
+				var orgDiskUsed = item.disk[i].used;
+				var orgDiskFree = item.disk[i].avail;
+				var sliceDiskUsed = 0;
+				var sliceDiskFree = 0;
+
+				if (orgDiskUsed.indexOf("G") > -1) {
+					sliceDiskUsed = orgDiskUsed.slice(0, -1);
+					sliceDiskUsed *= 1;
+				} else if (orgDiskUsed.indexOf("M") > -1) {
+					sliceDiskUsed = orgDiskUsed.slice(0, -1);
+					sliceDiskUsed *= 0.001;
+				} else if (orgDiskUsed.indexOf("K") > -1) {
+					console.log('K')
+					sliceDiskUsed = orgDiskUsed.slice(0, -1);
+					sliceDiskUsed *= 0.000001;
+				} else {
+					sliceDiskUsed = 0
+
+				}
+
+				if (orgDiskFree.indexOf("G") > -1) {
+					sliceDiskFree = orgDiskFree.slice(0, -1);
+					sliceDiskFree *= 1;
+				} else if (orgDiskFree.indexOf("M") > -1) {
+					sliceDiskFree = orgDiskFree.slice(0, -1);
+					sliceDiskFree *= 0.001;
+				} else if (orgDiskFree.indexOf("K") > -1) {
+					sliceDiskFree = orgDiskFree.slice(0, -1);
+					sliceDiskFree *= 0.000001;
+				} else {
+					sliceDiskFree = 0;
+				}
+
+				pmsDiskUsed = pmsDiskUsed + sliceDiskUsed;
+
+				pmsDiskFree = pmsDiskFree + sliceDiskFree;
+
 			}
 
-			if (item.disk[26].used.indexOf("G") > -1) {
-				pmsDiskUsed11 *= 1;
-			} else if (item.disk[26].used.indexOf("M") > -1) {
-				pmsDiskUsed11 *= 0.001;
-			} else if (item.disk[26].used.indexOf("K") > -1) {
-				pmsDiskUsed11 *= 0.000001;
-			}
-
-			if (item.disk[0].avail.indexOf("G") > -1) {
-				pmsDiskFree *= 1;
-			} else if (item.disk[0].avail.indexOf("M") > -1) {
-				pmsDiskFree *= 0.001;
-			} else if (item.disk[0].avail.indexOf("K") > -1) {
-				pmsDiskFree *= 0.000001;
-			}
-
-			if (item.disk[26].avail.indexOf("G") > -1) {
-				pmsDiskFree11 *= 1;
-			} else if (item.disk[26].avail.indexOf("M") > -1) {
-				pmsDiskFree11 *= 0.001;
-			} else if (item.disk[26].avail.indexOf("K") > -1) {
-				pmsDiskFree11 *= 0.000001;
-			}
-
-			pmsDiskUsed = pmsDiskUsed + pmsDiskUsed11;
-			pmsDiskFree = pmsDiskFree + pmsDiskFree11;
-			
 			tpsData.push(0);
 			moveData.push([ 0, tpsData[0] ]);
 			tpsData.push(pmsTps * 1);
@@ -283,49 +280,57 @@ var monitoringInterval = setInterval(
 									pmsHeapMax = pmsHeapMax.toFixed(1);
 									pmsHeapUsed = pmsHeapUsed.toFixed(1);
 									pmsHeapFree = pmsHeapFree.toFixed(1);
-									pmsDiskUsed = item.disk[0].used;
-									pmsDiskUsed11 = item.disk[26].used;
-									pmsDiskFree = item.disk[0].avail;
-									pmsDiskFree11 = item.disk[26].avail;
-									pmsDiskUsed = pmsDiskUsed.slice(0, -1);
-									pmsDiskUsed11 = pmsDiskUsed11.slice(0, -1);
-									pmsDiskFree = pmsDiskFree.slice(0, -1);
-									pmsDiskFree11 = pmsDiskFree11.slice(0, -1);
+									pmsDiskUsed = 0;
 
-									if (item.disk[0].used.indexOf("G") > -1) {
-										pmsDiskUsed *= 1;
-									} else if (item.disk[0].used.indexOf("M") > -1) {
-										pmsDiskUsed *= 0.001;
-									} else if (item.disk[0].used.indexOf("K") > -1) {
-										pmsDiskUsed *= 0.000001;
+									pmsDiskFree = 0;
+
+									for ( var i in item.disk) {
+										var orgDiskUsed = item.disk[i].used;
+										var orgDiskFree = item.disk[i].avail;
+										var sliceDiskUsed = 0;
+										var sliceDiskFree = 0;
+
+										if (orgDiskUsed.indexOf("G") > -1) {
+											sliceDiskUsed = orgDiskUsed.slice(
+													0, -1);
+											sliceDiskUsed *= 1;
+										} else if (orgDiskUsed.indexOf("M") > -1) {
+											sliceDiskUsed = orgDiskUsed.slice(
+													0, -1);
+											sliceDiskUsed *= 0.001;
+										} else if (orgDiskUsed.indexOf("K") > -1) {
+											console.log('K')
+											sliceDiskUsed = orgDiskUsed.slice(
+													0, -1);
+											sliceDiskUsed *= 0.000001;
+										} else {
+											sliceDiskUsed = 0
+
+										}
+
+										if (orgDiskFree.indexOf("G") > -1) {
+											sliceDiskFree = orgDiskFree.slice(
+													0, -1);
+											sliceDiskFree *= 1;
+										} else if (orgDiskFree.indexOf("M") > -1) {
+											sliceDiskFree = orgDiskFree.slice(
+													0, -1);
+											sliceDiskFree *= 0.001;
+										} else if (orgDiskFree.indexOf("K") > -1) {
+											sliceDiskFree = orgDiskFree.slice(
+													0, -1);
+											sliceDiskFree *= 0.000001;
+										} else {
+											sliceDiskFree = 0;
+										}
+
+										pmsDiskUsed = pmsDiskUsed
+												+ sliceDiskUsed;
+
+										pmsDiskFree = pmsDiskFree
+												+ sliceDiskFree;
+
 									}
-
-									if (item.disk[26].used.indexOf("G") > -1) {
-										pmsDiskUsed11 *= 1;
-									} else if (item.disk[26].used.indexOf("M") > -1) {
-										pmsDiskUsed11 *= 0.001;
-									} else if (item.disk[26].used.indexOf("K") > -1) {
-										pmsDiskUsed11 *= 0.000001;
-									}
-
-									if (item.disk[0].avail.indexOf("G") > -1) {
-										pmsDiskFree *= 1;
-									} else if (item.disk[0].avail.indexOf("M") > -1) {
-										pmsDiskFree *= 0.001;
-									} else if (item.disk[0].avail.indexOf("K") > -1) {
-										pmsDiskFree *= 0.000001;
-									}
-
-									if (item.disk[26].avail.indexOf("G") > -1) {
-										pmsDiskFree11 *= 1;
-									} else if (item.disk[26].avail.indexOf("M") > -1) {
-										pmsDiskFree11 *= 0.001;
-									} else if (item.disk[26].avail.indexOf("K") > -1) {
-										pmsDiskFree11 *= 0.000001;
-									}
-
-									pmsDiskUsed = pmsDiskUsed + pmsDiskUsed11;
-									pmsDiskFree = pmsDiskFree + pmsDiskFree11;
 									tpsData.push(pmsTps * 1);
 
 									if (moveCount > 599) {

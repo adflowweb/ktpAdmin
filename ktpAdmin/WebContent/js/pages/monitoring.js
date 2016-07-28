@@ -7,9 +7,7 @@ var heapMax;
 var heapUsed;
 var heapFree;
 var diskUsed = 0;
-var diskUsed11;
 var diskFree = 0;
-var diskFree11;
 sessionStorage.setItem("rcs-moveCount", 1);
 sessionStorage.setItem("dig-moveCount", 1);
 var pmsMovecontainerDig = $("#monitoring-transaction-second-dig");
@@ -101,19 +99,12 @@ $.ajax({
 				} else {
 					sliceDiskFree = 0;
 				}
-				console.log(sliceDiskUsed);
-				console.log(sliceDiskFree);
 
 				diskUsed = diskUsed + sliceDiskUsed;
-				console.log(diskUsed);
-				diskFree = diskFree + sliceDiskFree;
-				console.log(diskUsed);
-			}
 
-			console.log('디스크 free');
-			console.log(diskFree);
-			console.log('디스크 사용');
-			console.log(diskUsed);
+				diskFree = diskFree + sliceDiskFree;
+
+			}
 
 			combined = combined.toFixed(1);
 			idle = idle.toFixed(1);
@@ -433,19 +424,12 @@ var monitoringInterval = setInterval(
 											sliceDiskFree = 0;
 										}
 
-										console.log(sliceDiskUsed);
-										console.log(sliceDiskFree);
-
 										diskUsed = diskUsed + sliceDiskUsed;
-										console.log(diskUsed);
+
 										diskFree = diskFree + sliceDiskFree;
-										console.log(diskUsed);
+
 									}
 
-									console.log('디스크 free');
-									console.log(diskFree);
-									console.log('디스크 사용');
-									console.log(diskUsed);
 									rcsTpsData.push(rcsTps * 1);
 
 									if (rcsmoveCount > 599) {
