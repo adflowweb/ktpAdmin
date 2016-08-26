@@ -249,7 +249,7 @@ function tokenSearch() {
 // 토큰 삭제
 
 function tokenDelete() {
-	var formCheck = tokenIDFormCheck();
+	var formCheck = tokenIDDeleteFormCheck();
 	var h3_tokenid = $('#h3_tokenid').val();
 	var tokenIdArr = [];
 	tokenIdArr = h3_tokenid.split('(');
@@ -339,7 +339,7 @@ function tokenSubscribe() {
 				if (data.result.data) {
 					if (data.result.info) {
 						alert('subscription 정보가 없습니다.');
-						return;
+						// return;
 						// wrapperFunction('tokenManager');
 					}
 
@@ -456,6 +456,20 @@ function tokenIDFormCheck() {
 		return false;
 		break;
 	}
+	if (h3_tokenid == "" || h3_tokenid == null) {
+
+		alert('토큰 대상을 입력해 주세요');
+		$('#h3_tokenid').focus();
+		return false;
+
+	}
+	return true;
+
+}
+
+function tokenIDDeleteFormCheck() {
+	var h3_tokenid = $('#h3_tokenid').val();
+
 	if (h3_tokenid == "" || h3_tokenid == null) {
 
 		alert('토큰 대상을 입력해 주세요');
