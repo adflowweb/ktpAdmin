@@ -1,0 +1,57 @@
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">프로비저닝 정보</h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">Cluster별 사용자 현황 조회</div>
+			<div class="panel-body">
+				<div class="form-group">
+						<label>Cluster 이름 입력</label>
+						<input class="form-control" id="input_cluster" placeholder ="ex) clusterA"></input>
+				</div>
+			<input type="button" onclick="javascript:userInfoSearch();" class="btn btn-default" value="Search"></input>
+			<input type="button" onclick="javascript:provResetFunction()" class="btn btn-default" value="Reset"></input>
+			</div>
+		</div>
+	</div>
+		<div class="col-lg-12" id="amdin-user-list" style="display:none;">
+		<div class="panel panel-default">
+			<div class="panel-heading">Cluster별 사용자 현황 조회</div>
+			<div class="panel-body" >
+				<div class="form-group">
+					<textarea class="form-control" rows="5" id="userList" readonly="readonly" ></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">특정 사용자의 Cluster 현황 조회</div>
+			<div class="panel-body">
+				<div class="form-group">
+						<label>전화번호 입력</label>
+						<input class="form-control" id="input_userId" placeholder ="ex) 01012345678"></input>
+				</div>
+				<input type="button" onclick="javascript:clusterInfoSearch();" class="btn btn-default" value="Search"></input>
+				<input type="button" onclick="javascript:provResetFunction()" class="btn btn-default" value="Reset"></input>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-lg-12" id="amdin-cluster-info" style="display:none;">
+		<div class="panel panel-default">
+			<div class="panel-heading">특정 사용자의 Cluster 현황 조회</div>
+			<div class="panel-body" >
+				<div class="form-group">
+					<textarea class="form-control" rows="5" id="clusterList" readonly="readonly" ></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="js/pages/provisionInfo.js"></script>

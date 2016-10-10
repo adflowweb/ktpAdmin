@@ -38,6 +38,10 @@ function resetFunction() {
 	wrapperFunction('tokenManager');
 }
 
+function provResetFunction() {
+	wrapperFunction('provisioning');
+}
+
 // page wrapperfunction
 function wrapperFunction(data) {
 
@@ -53,6 +57,11 @@ function wrapperFunction(data) {
 						console.log(userID);
 
 						if (data === "keepAlive") {
+							sessionStorage.setItem("monitoringStatus",
+									"disable");
+						}
+
+						if (data === "provisioning") {
 							sessionStorage.setItem("monitoringStatus",
 									"disable");
 						}
@@ -375,8 +384,7 @@ function compactTrim(value) {
 
 // dateFormating
 
-
-//dateFormating
+// dateFormating
 function dateFormating(value) {
 	var result = compactTrim(value);
 	var year = result.substring(0, 4);
@@ -395,51 +403,51 @@ function dateFormating(value) {
 
 }
 
-//function dateFormating(value) {
-//	// 06/12/20146:27PM
+// function dateFormating(value) {
+// // 06/12/20146:27PM
 //
-//	var result = compactTrim(value);
-//	if (result.length == 16) {
-//		var month = result.substring(0, 2);
-//		console.log('달', month);
-//		console.log(month);
-//		var day = result.substring(3, 5);
-//		console.log(day);
-//		var year = result.substring(6, 10);
+// var result = compactTrim(value);
+// if (result.length == 16) {
+// var month = result.substring(0, 2);
+// console.log('달', month);
+// console.log(month);
+// var day = result.substring(3, 5);
+// console.log(day);
+// var year = result.substring(6, 10);
 //
-//		var hour = result.substring(10, 11);
-//		console.log(hour);
-//		var minute = result.substring(12, 14);
-//		var amPm = result.substring(14, 16);
-//		if (amPm === 'PM') {
-//			hour *= 1;
-//			hour = hour + 12;
-//		}
-//		console.log(hour);
-//		value = new Date(year, month - 1, day, hour, minute);
-//		console.log(value);
-//		return value;
-//	}
+// var hour = result.substring(10, 11);
+// console.log(hour);
+// var minute = result.substring(12, 14);
+// var amPm = result.substring(14, 16);
+// if (amPm === 'PM') {
+// hour *= 1;
+// hour = hour + 12;
+// }
+// console.log(hour);
+// value = new Date(year, month - 1, day, hour, minute);
+// console.log(value);
+// return value;
+// }
 //
-//	if (result.length == 17) {
-//		// 06/12/2014 06:27PM
-//		var month = result.substring(0, 2);
-//		var day = result.substring(3, 5);
-//		var year = result.substring(6, 10);
-//		var hour = result.substring(10, 12);
-//		console.log(hour);
-//		var minute = result.substring(13, 15);
-//		var amPm = result.substring(15, 17);
-//		if (amPm === 'PM') {
-//			hour *= 1;
-//			hour = hour + 12;
-//		}
-//		console.log(hour);
-//		value = new Date(year, month - 1, day, hour, minute);
-//		console.log(value);
-//		return value;
-//	}
-//}
+// if (result.length == 17) {
+// // 06/12/2014 06:27PM
+// var month = result.substring(0, 2);
+// var day = result.substring(3, 5);
+// var year = result.substring(6, 10);
+// var hour = result.substring(10, 12);
+// console.log(hour);
+// var minute = result.substring(13, 15);
+// var amPm = result.substring(15, 17);
+// if (amPm === 'PM') {
+// hour *= 1;
+// hour = hour + 12;
+// }
+// console.log(hour);
+// value = new Date(year, month - 1, day, hour, minute);
+// console.log(value);
+// return value;
+// }
+// }
 
 // ///////////////////////////////////////////////////////////////
 // utf8_to_b64(str)
@@ -491,8 +499,7 @@ Date.prototype.yyyymmdd = function() {
 			+ (minute[1] ? minute : "0" + minute[0]); // padding
 };
 
-
-//getCurrent First Day
+// getCurrent First Day
 function getCurrentDayF() {
 	var nowDate = new Date();
 	var defaultFirstDay = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
