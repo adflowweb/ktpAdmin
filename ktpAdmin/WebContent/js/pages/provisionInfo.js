@@ -2,12 +2,11 @@ var tokenID = sessionStorage.getItem("tokenID");
 
 
 function userInfoSearch(){
-//	wrapperFunction('provisioning');
 	var checkForm = clusterFormCheck();
 	if(checkForm){
 		var userSelect = $('#input_cluster').val();
 		$.ajax({
-			url : 'http://14.63.217.141:38083/mqttbroker/'+ userSelect,
+			url : 'http://211.188.11.90:8083/mqttbroker/'+ userSelect,
 			type : 'GET',
 			contentType : "application/json",
 			data:{
@@ -42,12 +41,11 @@ function userInfoSearch(){
 	}
 }
 function clusterInfoSearch(){
-//	wrapperFunction('provisioning');
 	var checkForm = userFormCheck();
 	if(checkForm){
 		var clusterSelect = $('#input_userId').val();
 		$.ajax({
-			url : 'http://14.63.217.141:38083/user/'+clusterSelect,
+			url : 'http://211.188.11.90:8083/user/'+clusterSelect,
 			type : "get",
 			contentType : "application/json",
 			data:{
