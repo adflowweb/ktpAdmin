@@ -48,8 +48,8 @@ $.ajax({
 			idle = item.cpu.idle;
 			combined = combined * 100;
 			idle = idle * 100;
-			used = item.memory.used * 0.001;
-			free = item.memory.free * 0.001;
+			used = item.memory.actualUsed * 0.001;
+			free = item.memory.actualFree * 0.001;
 			// tpsDigAccount: 0tpsPreckeck: 0
 			rcsTps = item.tpsPreckeck;
 			digTps = item.tpsDigAccount;
@@ -367,8 +367,8 @@ var monitoringInterval = setInterval(
 									idle = item.cpu.idle;
 									combined = combined * 100;
 									idle = idle * 100;
-									used = item.memory.used * 0.001;
-									free = item.memory.free * 0.001;
+									used = item.memory.actualUsed * 0.001;
+									free = item.memory.actualFree * 0.001;
 									used = used.toFixed(1);
 									free = free.toFixed(1);
 									combined = combined.toFixed(1);
