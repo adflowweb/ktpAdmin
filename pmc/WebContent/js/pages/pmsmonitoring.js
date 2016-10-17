@@ -41,9 +41,9 @@ $.ajax({
 			pmsIdle = item.cpu.idle;
 			pmsCombined = pmsCombined * 100;
 			pmsIdle = pmsIdle * 100;
-			pmsUsed = item.memory.used * 0.001;
+			pmsUsed = item.memory.actualUsed * 0.001;
 
-			pmsFree = item.memory.free * 0.001;
+			pmsFree = item.memory.actualFree * 0.001;
 
 			pmsHeapMax = item.heap.heapMax;
 			pmsHeapUsed = item.heap.heapUsed;
@@ -267,8 +267,8 @@ var monitoringInterval = setInterval(
 									pmsIdle = item.cpu.idle;
 									pmsCombined = pmsCombined * 100;
 									pmsIdle = pmsIdle * 100;
-									pmsUsed = item.memory.used * 0.001;
-									pmsFree = item.memory.free * 0.001;
+									pmsUsed = item.memory.actualUsed * 0.001;
+									pmsFree = item.memory.actualFree * 0.001;
 									pmsUsed = pmsUsed.toFixed(1);
 									pmsFree = pmsFree.toFixed(1);
 									pmsCombined = pmsCombined.toFixed(1);
