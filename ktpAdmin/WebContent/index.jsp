@@ -95,9 +95,6 @@
                            	<li><a href="#"
 								onclick="javascript:wrapperFunction('tokenManager');">토큰 관리</a>
 							</li>
-							<li><a href="#"
-								onclick="javascript:wrapperFunction('provisioning');">프로비저닝 정보</a>
-							</li>
                             </ul>
                             
                         </li>
