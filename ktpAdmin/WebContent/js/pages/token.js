@@ -20,10 +20,30 @@ function tokenSearch() {
 						success : function(data) {
 							var tableData = [];
 							if (data.result.data) {
-								$('#amdin-token-list').show();
-								for ( var i in data.result.data) {
+								
+								//데이터 정렬 추가				
+								var arrayData = data.result.data;
+								for(var j=0; j<arrayData.length-1;j++){
+									
+									for(var i=0; i<arrayData.length-1;i++){
+										if(arrayData[i].issue < arrayData[i+1].issue){
+											var temp;
+											temp = arrayData[i];
+											arrayData[i]=arrayData[i+1];
+											arrayData[i+1]=temp;
+											
+										}
+										}
+								
+								}
 
-									var item = data.result.data[i];
+								// 데이터 정렬 추가 종료 
+								$('#amdin-token-list').show();
+//데이터 최신순으로 재배
+//								for ( var i in data.result.data) {
+//									var item = data.result.data[i];
+								for ( var i in arrayData) {
+									var item = arrayData[i];
 									console.log(item);
 									tableData.push({
 										"TokenID" : item.tokenID,
@@ -39,6 +59,7 @@ function tokenSearch() {
 								}
 
 								token_Table = $('#dataTable_Token').dataTable({
+									aaSorting : [],
 									bJQueryUI : true,
 									bDestroy : true,
 									aaData : tableData,
@@ -107,10 +128,32 @@ function tokenSearch() {
 						success : function(data) {
 							var tableData = [];
 							if (data.result.data) {
-								$('#amdin-token-list').show();
-								for ( var i in data.result.data) {
+								
+								//데이터 정렬 추가				
+								var arrayData = data.result.data;
+								for(var j=0; j<arrayData.length-1;j++){
+									
+									for(var i=0; i<arrayData.length-1;i++){
+										if(arrayData[i].issue < arrayData[i+1].issue){
+											var temp;
+											temp = arrayData[i];
+											arrayData[i]=arrayData[i+1];
+											arrayData[i+1]=temp;
+											
+										}
+										}
+								
+								}
 
-									var item = data.result.data[i];
+								// 데이터 정렬 추가 종료 
+								
+								$('#amdin-token-list').show();
+
+								//데이터 최신순으로 재배
+//								for ( var i in data.result.data) {
+//									var item = data.result.data[i];
+								for ( var i in arrayData) {
+									var item = arrayData[i];
 									console.log(item);
 									tableData.push({
 										"TokenID" : item.tokenID,
@@ -126,6 +169,7 @@ function tokenSearch() {
 								}
 
 								token_Table = $('#dataTable_Token').dataTable({
+									aaSorting : [],
 									bJQueryUI : true,
 									bDestroy : true,
 									aaData : tableData,
